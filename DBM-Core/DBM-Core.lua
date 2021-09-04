@@ -1,7 +1,7 @@
 -- *********************************************************
 -- **               Deadly Boss Mods - Core               **
--- **            http://www.deadlybossmods.com            **
--- **        https://www.patreon.com/deadlybossmods       **
+-- **              https://deadlybossmods.com             **
+-- **          https://patreon.com/deadlybossmods         **
 -- *********************************************************
 --
 -- This addon is written and copyrighted by:
@@ -11,8 +11,8 @@
 --
 -- The localizations are written by:
 --    * enGB/enUS: Omegal				Twitter @MysticalOS
---    * deDE: Ebmor						http://www.deadlybossmods.com/forum/memberlist.php?mode=viewprofile&u=79
---    * ruRU: TOM_RUS					http://www.curseforge.com/profiles/TOM_RUS/
+--    * deDE: Ebmor
+--    * ruRU: TOM_RUS					https://curseforge.com/profiles/TOM_RUS/
 --    * zhTW: Whyv						ultrashining@gmail.com
 --    * koKR: Elnarfim					---
 --    * zhCN: Mini Dragon				projecteurs@gmail.com
@@ -22,19 +22,6 @@
 --    * Arta
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --    * nBlueWiz (a lot of previous fixes in the koKR localization as well as boss mod work) Contact: everfinale@gmail.com
---
---
--- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
--- All included textures and sounds are copyrighted by their respective owners, license information for these media files can be found in the modules that make use of them.
---
---
---  You are free:
---    * to Share - to copy, distribute, display, and perform the work
---    * to Remix - to make derivative works
---  Under the following conditions:
---    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). (A link to http://www.deadlybossmods.com is sufficient)
---    * Noncommercial. You may not use this work for commercial purposes.
---    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 local _, private = ...
 

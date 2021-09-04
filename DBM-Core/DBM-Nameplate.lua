@@ -9,6 +9,7 @@ local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
 local twipe, floor = table.wipe, math.floor
+local DEFAULT_LINE_COLOR = {1, 0, 0, 1}
 
 --------------------
 --  Create Frame  --
@@ -41,7 +42,7 @@ do
                 return frame.texture_index[texture]
             else
                 -- find unused icon:
-                for _,icon in ipairs(frame.icons) do
+                for _, icon in ipairs(frame.icons) do
                     if not icon:IsShown() then
                         return icon
                     end
@@ -56,7 +57,7 @@ do
         if not frame.icons or #frame.icons == 0 then return end
 
         local prev,total_width,first_icon
-        for _,icon in ipairs(frame.icons) do
+        for _, icon in ipairs(frame.icons) do
             if icon:IsShown() then
                 icon:ClearAllPoints()
 
@@ -79,6 +80,25 @@ do
                 -floor(total_width/2),0)
         end
     end
+	local function AuraFrame_CreateLine(frame)
+		local line = UIParent:CreateLine(nil,'OVERLAY')
+
+		line.GetPoint = function() return end
+		line:SetThickness(4)
+		line:Hide()
+		frame.line = line
+
+		return line
+	end
+	local function AuraFrame_ShowLine(frame,parent_icon,color)
+		local line = frame.line or frame:CreateLine()
+
+		line.parent_icon = parent_icon
+		line:SetColorTexture(unpack(color))
+		line:SetStartPoint('CENTER',UIParent)
+		line:SetEndPoint('BOTTOM',frame.parent)
+		line:Show()
+	end
     local function AuraFrame_AddAura(frame,aura_tbl)
         if not frame.icons then
             frame.icons = {}
@@ -91,6 +111,10 @@ do
         icon:SetTexture(aura_tbl.texture)
         icon:Show()
 
+        if aura_tbl.line then
+            frame:ShowLine(icon,aura_tbl.lineColor or DEFAULT_LINE_COLOR)
+        end
+
         frame.texture_index[aura_tbl.texture] = icon
         frame:ArrangeIcons()
     end
@@ -102,6 +126,10 @@ do
         if not icon then return end
 
         icon:Hide()
+        if frame.line and frame.line.parent_icon == icon then
+            frame.line.parent_icon = nil
+            frame.line:Hide()
+        end
         frame.texture_index[texture] = nil
 
         if not batch then
@@ -121,6 +149,8 @@ do
         CreateIcon = AuraFrame_CreateIcon,
         GetIcon = AuraFrame_GetIcon,
         ArrangeIcons = AuraFrame_ArrangeIcons,
+        CreateLine = AuraFrame_CreateLine,
+        ShowLine = AuraFrame_ShowLine,
         AddAura = AuraFrame_AddAura,
         RemoveAura = AuraFrame_RemoveAura,
         RemoveAll = AuraFrame_RemoveAll,
@@ -210,7 +240,7 @@ end
 
 --isGUID: guid or name (bool)
 --ie, anchored to UIParent Center (ie player is in center) and to bottom of nameplate aura.
-function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate)
+function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturate, addLine, lineColor)
     -- nameplate icons are disabled;
     if DBM.Options.DontShowNameplateIcons then return end
 
@@ -222,7 +252,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 
     -- Supported by nameplate mod, passing to their handler;
     if self:SupportedNPMod() then
-        DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, currentTexture, duration, desaturate)
+        DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, currentTexture, duration, desaturate, addLine, lineColor)
         DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 3)
         return
     end
@@ -240,7 +270,9 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
     end
 
     tinsert(units[unit], {
-        texture = currentTexture
+        texture = currentTexture,
+		line = addLine,
+		lineColor = lineColor
     })
 
     -- find frame for this unit;

@@ -112,6 +112,7 @@ L.MOD_DEFAULT_LOADED			= "此戰鬥的預設選項已套用。"
 
 L.WORLDBOSS_ENGAGED				= "在你的伺服器上的%s已在百分之%s時開戰(%s發送)。"
 L.WORLDBOSS_DEFEATED			= "在你的伺服器上的%s已被擊敗(%s發送)。"
+L.WORLDBUFF_STARTED			= "在你的伺服器上的%s增益已由%s陣營開始(%s發送)。"
 
 L.TIMER_FORMAT_SECS				= "%.2f秒"
 L.TIMER_FORMAT_MINS				= "%d分鐘"
@@ -615,5 +616,13 @@ L.LAG_FOOTER					= "無回應:%s"
 --LDB
 L.LDB_TOOLTIP_HELP1				= "點擊開啟" .. L.DBM
 L.SILENTMODE_IS                 = "無聲模式是 "
-L.LDB_LOAD_MODS					= "載入首領模組"
-L.LDB_ENABLE_BOSS_MOD			= "啟用首領模組"
+
+--Localizers, do not copy entire table, follow same guidelines as other tables, overwrite each entry with L.WORLD_BUFFS.hordeOny = "stuff" for example.
+L.WORLD_BUFFS.hordeOny						= "部落的人民，奧格瑪的城民，來吧，聚集到一起歡慶部落英雄的誕生。"
+L.WORLD_BUFFS.allianceOny					= "暴風城的城民和盟友們，今天，有人創造了歷史。"
+L.WORLD_BUFFS.hordeNef						= "奈法利安被!@#掉了！奧格瑪的人們" -- this is probably not correct (need to get rid of @#)
+L.WORLD_BUFFS.allianceNef					= "聯盟的人民們，黑石領主已經被幹掉了！"
+L.WORLD_BUFFS.zgHeart						= "只差最後一步，我們就可以擺脫靈魂掠奪者的威脅了……"
+L.WORLD_BUFFS.zgHeartBooty					= "靈魂掠奪者血神已經被打敗了！我們不再有危險了！"
+L.WORLD_BUFFS.zgHeartYojamba				= "開始儀式，我的僕從們。我們必須把哈卡完全打回扭曲虛空中！"
+L.WORLD_BUFFS.rendHead						= "那個假的酋長，雷德·黑手，已經倒下了！"

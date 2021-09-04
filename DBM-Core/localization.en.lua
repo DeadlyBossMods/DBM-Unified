@@ -646,36 +646,45 @@ L.DUR_HEADER						= L.DEADLY_BOSS_MODS.. " - Durability Results"
 L.DUR_ENTRY							= "%s: Durability [%d percent] / Gear broken [%s]"
 L.LAG_FOOTER						= "No Response: %s"
 
+local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
 --Role Icons
-L.TANK_ICON							= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
-L.DAMAGE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
-L.HEALER_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
+L.TANK_ICON							= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
+L.DAMAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
+L.HEALER_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
 
-L.TANK_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
-L.DAMAGE_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
-L.HEALER_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
+L.TANK_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
+L.DAMAGE_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
+L.HEALER_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
 --Importance Icons
-L.HEROIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
-L.DEADLY_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
-L.IMPORTANT_ICON					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
-L.MYTHIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:40:58|t" -- NO TRANSLATE
+L.HEROIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
+L.DEADLY_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
+L.IMPORTANT_ICON					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
+L.MYTHIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:40:58|t" -- NO TRANSLATE
 
-L.HEROIC_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:14:14:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
-L.DEADLY_ICON_SMALL					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:14:14:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
-L.IMPORTANT_ICON_SMALL				= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:12:12:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
+L.HEROIC_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:14:14:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
+L.DEADLY_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:14:14:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
+L.IMPORTANT_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
 --Type Icons
-L.INTERRUPT_ICON					= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:198:214:7:27|t" -- NO TRANSLATE
-L.MAGIC_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:229:247:7:27|t" -- NO TRANSLATE
-L.CURSE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t" -- NO TRANSLATE
-L.POISON_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:40:58|t" -- NO TRANSLATE
-L.DISEASE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t" -- NO TRANSLATE
-L.ENRAGE_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t" -- NO TRANSLATE
-L.BLEED_ICON						= "|TInterface\\EncounterJournal\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:40:58|t" -- NO TRANSLATE
+L.INTERRUPT_ICON					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:198:214:7:27|t" -- NO TRANSLATE
+L.MAGIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:229:247:7:27|t" -- NO TRANSLATE
+L.CURSE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t" -- NO TRANSLATE
+L.POISON_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:40:58|t" -- NO TRANSLATE
+L.DISEASE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t" -- NO TRANSLATE
+L.ENRAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t" -- NO TRANSLATE
+L.BLEED_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:40:58|t" -- NO TRANSLATE
 
 --LDB
 L.LDB_TOOLTIP_HELP1					= "Click to open " .. L.DBM
+L.LDB_TOOLTIP_HELP2					= "Alt+right click to toggle Silent Mode"
 L.SILENTMODE_IS						= "SilentMode is "
 
-L.LDB_LOAD_MODS						= "Load boss mods"
-
-L.LDB_ENABLE_BOSS_MOD				= "Enable boss mod"
+L.WORLD_BUFFS = {
+	hordeOny						= "People of the Horde, citizens of Orgrimmar, come, gather round and celebrate a hero of the Horde",
+	allianceOny						= "Citizens and allies of Stormwind, on this day, history has been made.",
+	hordeNef						= "NEFARIAN IS SLAIN! People of Orgrimmar",
+	allianceNef						= "Citizens of the Alliance, the Lord of Blackrock is slain!",
+	zgHeart							= "Now, only one step remains to rid us of the Soulflayer's threat",
+	zgHeartBooty					= "The Blood God, the Soulflayer, has been defeated!  We are imperiled no longer!",
+	zgHeartYojamba					= "Begin the ritual, my servants.  We must banish the heart of Hakkar back into the void!",
+	rendHead						= "The false Warchief, Rend Blackhand, has fallen!"
+}

@@ -6,6 +6,15 @@ DBM.RangeCheck = {}
 --------------
 --  Locals  --
 --------------
+local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+
+local function UnitPhaseReasonHack(uId)
+	if isRetail then
+		return not UnitPhaseReason(uId)
+	end
+	return UnitInPhase(uId)
+end
+
 local L = DBM_CORE_L
 local rangeCheck = DBM.RangeCheck
 local mainFrame = CreateFrame("Frame")
@@ -14,40 +23,39 @@ local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For 
 
 -- Function for automatically converting inputed ranges from old mods to be ones that have valid item/api checks
 local function setCompatibleRestrictedRange(range)
-	if range <= 4 then
-		range = 4
-	elseif range <= 6 then
-		range = 6
+	if range <= 4 and isRetail then
+		return 4
+	elseif range <= 6 and isRetail then
+		return 6
 	elseif range <= 8 then
-		range = 8
+		return 8
 	elseif range <= 10 then
-		range = 10
+		return 10
 	elseif range <= 11 then
-		range = 11
+		return 11
 	elseif range <= 13 then
-		range = 13
+		return 13
 	elseif range <= 18 then
-		range = 18
+		return 18
 	elseif range <= 23 then
-		range = 23
+		return 23
 	elseif range <= 28 then
-		range = 28
-	elseif range <= 30 then
-		range = 30
+		return 28
+	elseif range <= 30 and isRetail then
+		return 30
 	elseif range <= 33 then
-		range = 33
-	elseif range <= 43 then
-		range = 43
-	elseif range <= 48 then
-		range = 48
-	elseif range <= 53 then
-		range = 53
-	elseif range <= 60 then
-		range = 60
-	elseif range <= 80 then
-		range = 80
+		return 33
+	elseif range <= 43 and isRetail then
+		return 43
+	elseif range <= 48 and isRetail then
+		return 48
+	elseif range <= 53 and isRetail then
+		return 53
+	elseif range <= 60 and isRetail then
+		return 60
+	elseif range <= 80 and isRetail then
+		return 80
 	end
-	return range
 end
 
 local itsBCAgain
@@ -57,30 +65,40 @@ do
 	-- All ranges are tested and compared against UnitDistanceSquared.
 	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
 	local itemRanges = {
-		[4] = 90175, -- Gin-Ji Knife Set
-		[6] = 37727, -- Ruby Acorn
 		[8] = 8149, -- Voodoo Charm
-		[13] = 32321, -- Sparrowhawk Net
+		[13] = isRetail and 32321 or 17626, -- Sparrowhawk Net / Frostwolf Muzzle
 		[18] = 6450, -- Silk Bandage
 		[23] = 21519, -- Mistletoe
 		[28] = 13289,--Egan's Blaster
 		[33] = 1180, -- Scroll of Stamina
-		[43] = 34471, -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
-		[48] = 32698, -- Wrangling Rope
-		[53] = 116139, -- Haunting Memento
-		[60] = 32825, -- Soul Cannon
-		[80] = 35278, -- Reinforced Net
 	}
+	if isRetail then
+		itemRanges[4] = 90175 -- Gin-Ji Knife Set
+		itemRanges[6] = 37727 -- Ruby Acorn
+		itemRanges[43] = 34471 -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
+		itemRanges[48] = 32698 -- Wrangling Rope
+		itemRanges[53] = 116139 -- Haunting Memento
+		itemRanges[60] = 32825 -- Soul Cannon
+		itemRanges[80] = 35278 -- Reinforced Net
+	end
 
 	local apiRanges = {
 		[10] = 3, -- CheckInteractDistance (Duel)
 		[11] = 2, -- CheckInteractDistance (Trade)
-		[30] = 1, -- CheckInteractDistance (Inspect)
 	}
+	if isRetail then
+		apiRanges[30] = 1 -- CheckInteractDistance (Inspect), Classic: Inspect range is 10
+	end
 
 	function itsBCAgain(uId, checkrange)
 		if checkrange then -- Specified range, this check only cares whether unit is within specific range
-			if itemRanges[checkrange] then -- Only query item range for requested active range check
+			if isClassic and checkrange == 43 then -- Only classic uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
+				if UnitInRange(uId) then
+					return checkrange
+				else
+					return 1000
+				end
+			elseif itemRanges[checkrange] then -- Only query item range for requested active range check
 				return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
 			elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
 				return CheckInteractDistance(uId, apiRanges[checkrange]) and checkrange or 1000
@@ -88,22 +106,22 @@ do
 				 return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
 			end
 		else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
-			if IsItemInRange(90175, uId) then return 4
-			elseif IsItemInRange(37727, uId) then return 6
+			if isRetail and IsItemInRange(90175, uId) then return 4
+			elseif isRetail IsItemInRange(37727, uId) then return 6
 			elseif IsItemInRange(8149, uId) then return 8
 			elseif CheckInteractDistance(uId, 3) then return 10
 			elseif CheckInteractDistance(uId, 2) then return 11
-			elseif IsItemInRange(32321, uId) then return 13
+			elseif IsItemInRange(isRetail and 32321 or 17626, uId) then return 13
 			elseif IsItemInRange(6450, uId) then return 18
 			elseif IsItemInRange(21519, uId) then return 23
 			elseif IsItemInRange(13289, uId) then return 28
-			elseif CheckInteractDistance(uId, 1) then return 30
+			elseif isRetail and CheckInteractDistance(uId, 1) then return 30
 			elseif IsItemInRange(1180, uId) then return 33
-			elseif UnitInRange(uId) then return 43
-			elseif IsItemInRange(32698, uId) then return 48
-			elseif IsItemInRange(116139, uId) then return 53
-			elseif IsItemInRange(32825, uId) then return 60
-			elseif IsItemInRange(35278, uId) then return 80
+			elseif isRetail and UnitInRange(uId) then return 43
+			elseif isRetail and IsItemInRange(32698, uId) then return 48
+			elseif isRetail and IsItemInRange(116139, uId) then return 53
+			elseif isRetail and IsItemInRange(32825, uId) then return 60
+			elseif isRetail and IsItemInRange(35278, uId) then return 80
 			else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
 		end
 	end
@@ -678,7 +696,7 @@ do
 			local uId = unitList[i]
 			local dot = radarFrame.dots[i]
 			local mapId = GetBestMapForUnit(uId) or 0
-			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and not UnitPhaseReason(uId) and (not filter or filter(uId)) then
+			if UnitExists(uId) and playerMapId == mapId and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitPhaseReasonHack(uId) and (not filter or filter(uId)) then
 				local range = restricted and itsBCAgain(uId, activeRange) or UnitDistanceSquared(uId) ^ 0.5
 				local inRange = false
 				if range < activeRange + 0.5 then
@@ -798,7 +816,7 @@ do
 	function getDistanceBetweenAll(checkrange)
 		local range
 		for uId in DBM:GetGroupMembers() do
-			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and not UnitPhaseReason(uId) then
+			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitPhaseReasonHack(uId) then
 				range = DBM:HasMapRestrictions() and itsBCAgain(uId, checkrange) or UnitDistanceSquared(uId) * 0.5
 				if checkrange < (range + 0.5) then
 					return true

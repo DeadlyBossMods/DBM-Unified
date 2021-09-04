@@ -597,6 +597,11 @@ L.LDB_TOOLTIP_HELP1	= "左键 打开" .. L.DBM
 L.LDB_TOOLTIP_HELP2	= "右键 启用安静模式"
 L.SILENTMODE_IS     = "静音模式为："
 
-L.LDB_LOAD_MODS		= "载入首领模块"
-
-L.LDB_ENABLE_BOSS_MOD	= "启用首领模块"
+L.WORLD_BUFFS.hordeOny		 = "部落的人民，奥格瑞玛的居民，来吧，聚集在一起，欢庆部落英雄的诞生"
+L.WORLD_BUFFS.allianceOny	 = "暴风城的城民和盟友们，今天，有人创造了历史"
+L.WORLD_BUFFS.hordeNef		 = "奈法利安被杀掉了！奥格瑞玛的居民"
+L.WORLD_BUFFS.allianceNef	 = "联盟的人民们，黑石领主已经被干掉了！"
+L.WORLD_BUFFS.zgHeart		 = "我们就要摆脱夺灵者的威胁了，只差最后一步……"
+L.WORLD_BUFFS.zgHeartBooty	 = "夺灵者已经被打败了！我们不再有危险了！"
+L.WORLD_BUFFS.zgHeartYojamba = "开始仪式，我的仆从们。我们必须把哈卡完全打回扭曲虚空中！"
+L.WORLD_BUFFS.rendHead		 = "那个假的酋长，雷德·黑手，已经倒下了！"
