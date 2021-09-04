@@ -93,11 +93,7 @@ do
 	function itsBCAgain(uId, checkrange)
 		if checkrange then -- Specified range, this check only cares whether unit is within specific range
 			if isClassic and checkrange == 43 then -- Only classic uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
-				if UnitInRange(uId) then
-					return checkrange
-				else
-					return 1000
-				end
+				return UnitInRange(uId) and checkrange or 1000
 			elseif itemRanges[checkrange] then -- Only query item range for requested active range check
 				return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
 			elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
