@@ -93,6 +93,7 @@ globals = {
 	"HIDE",
 	"LARGE",
 	"LOCK_FRAME",
+	"MAX_TALENT_TABS", -- Classic
 	"MISCELLANEOUS",
 	"NO",
 	"NONE",
@@ -146,6 +147,7 @@ globals = {
 	"GameFontNormalSmall",
 	"MovieFrame",
 	"ObjectiveTrackerFrame",
+	"QuestWatchFrame", -- Classic
 	"RaidBossEmoteFrame",
 	"RolePollPopup",
 	"SlashCmdList",
@@ -192,6 +194,8 @@ globals = {
 	"C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo",
 	"AcceptGroup",
 	"Ambiguate",
+	"BNGetFriendInfoByID", -- Classic
+	"BNGetGameAccountInfo", -- Classic
 	"BNGetNumFriends",
 	"BNIsSelf",
 	"BNSendGameData",
@@ -226,6 +230,7 @@ globals = {
 	"GetDungeonInfo",
 	"GetExpansionLevel",
 	"GetGameTime",
+	"GetGuildInfo", -- Classic
 	"GetGuildRosterInfo",
 	"GetGuildRosterShowOffline",
 	"GetLFGMode",
@@ -240,6 +245,7 @@ globals = {
 	"GetNumGuildMembers",
 	"GetNumSavedInstances",
 	"GetNumSubgroupMembers",
+	"GetNumTalentTabs", -- Classic
 	"GetNumTrackedAchievements",
 	"GetPartyAssignment",
 	"GetPlayerFacing",
@@ -249,6 +255,7 @@ globals = {
 	"GetRealmName",
 	"GetRealZoneText",
 	"GetSavedInstanceInfo",
+	"GetShapeshiftFormID", -- Classic
 	"GetSpecialization",
 	"GetSpecializationInfo",
 	"GetSpecializationInfoByID",
@@ -257,6 +264,7 @@ globals = {
 	"GetSpellInfo",
 	"GetSpellTexture",
 	"GetSubZoneText",
+	"GetTalentTabInfo", -- Classic
 	"GetTime",
 	"GetUnitName",
 	"GetZoneText",
@@ -274,6 +282,7 @@ globals = {
 	"IsMacClient",
 	"IsPartyLFG",
 	"IsShiftKeyDown",
+	"IsSpellKnown",
 	"IsTestBuild",
 	"IsWindowsClient",
 	"ItemRefTooltip",
@@ -298,11 +307,13 @@ globals = {
 	"UnitCanAttack",
 	"UnitCastingInfo",
 	"UnitChannelInfo",
+	"UnitCharacterPoints", -- Classic
 	"UnitClass",
 	"UnitDebuff",
 	"UnitDetailedThreatSituation",
 	"UnitDistanceSquared",
 	"UnitExists",
+	"UnitFactionGroup", -- Classic
 	"UnitGetTotalAbsorbs",
 	"UnitGUID",
 	"UnitGroupRolesAssigned",

@@ -60,3 +60,4 @@ DBM-Nameplate.lua
 # Modules
 modules\MinimapButton.lua
 modules\Sounds.lua
+modules\SpecRole.lua
