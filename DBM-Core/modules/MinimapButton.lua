@@ -1,3 +1,5 @@
+local _, private = ...
+
 local L = DBM_CORE_L
 
 local LibStub = _G["LibStub"]
@@ -7,7 +9,7 @@ if not LibStub("LibDataBroker-1.1", true) or not LibStub("LibDBIcon-1.0") then
 	return
 end
 
-dataBroker = LibStub("LibDataBroker-1.1"):NewDataObject("DBM", {
+private.dataBroker = LibStub("LibDataBroker-1.1"):NewDataObject("DBM", {
 	type	= "launcher",
 	label	= "DBM",
 	icon	= "Interface\\AddOns\\DBM-Core\\textures\\dbm_airhorn"

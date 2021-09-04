@@ -36,6 +36,7 @@
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
+local _, private = ...
 
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
@@ -417,7 +418,6 @@ local dbmToc = 0
 local breakTimerStart
 local AddMsg
 local delayedFunction
-local dataBroker
 local voiceSessionDisabled = false
 local handleSync
 
@@ -1369,7 +1369,7 @@ do
 				DBM_MinimapIcon = {}
 			end
 			if LibStub("LibDBIcon-1.0", true) then
-				LibStub("LibDBIcon-1.0"):Register("DBM", dataBroker, DBM_MinimapIcon)
+				LibStub("LibDBIcon-1.0"):Register("DBM", private.dataBroker, DBM_MinimapIcon)
 			end
 			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
 			--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.
