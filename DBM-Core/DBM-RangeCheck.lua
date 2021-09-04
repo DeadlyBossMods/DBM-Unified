@@ -107,7 +107,7 @@ do
 			end
 		else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
 			if isRetail and IsItemInRange(90175, uId) then return 4
-			elseif isRetail IsItemInRange(37727, uId) then return 6
+			elseif isRetail and IsItemInRange(37727, uId) then return 6
 			elseif IsItemInRange(8149, uId) then return 8
 			elseif CheckInteractDistance(uId, 3) then return 10
 			elseif CheckInteractDistance(uId, 2) then return 11
