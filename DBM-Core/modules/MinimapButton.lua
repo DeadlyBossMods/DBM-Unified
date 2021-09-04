@@ -9,11 +9,12 @@ if not LibStub("LibDataBroker-1.1", true) or not LibStub("LibDBIcon-1.0") then
 	return
 end
 
-private.dataBroker = LibStub("LibDataBroker-1.1"):NewDataObject("DBM", {
+local dataBroker = LibStub("LibDataBroker-1.1"):NewDataObject("DBM", {
 	type	= "launcher",
 	label	= "DBM",
 	icon	= "Interface\\AddOns\\DBM-Core\\textures\\dbm_airhorn"
 })
+private.dataBroker = dataBroker
 
 function dataBroker.OnClick(self, button)
 	if IsShiftKeyDown() then return end
