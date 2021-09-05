@@ -174,6 +174,7 @@ globals = {
 	"C_EncounterJournal.GetSectionIconFlags",
 	"C_EncounterJournal.GetSectionInfo",
 	"C_FriendList.GetFriendInfo",
+	"C_GamePad.SetVibration",
 	"C_Garrison.IsOnGarrisonMap",
 	"C_LFGInfo",
 	"C_LFGInfo.GetDungeonInfo",
