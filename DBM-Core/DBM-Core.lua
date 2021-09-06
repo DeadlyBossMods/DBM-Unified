@@ -443,17 +443,15 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Suramar",--Renamed to DBM-Nighthold
 	"DBM-KulTiras",--Merged to DBM-BfA
 	"DBM-Zandalar",--Merged to DBM-BfA
-	"DBM-Azeroth",--Merged into DBM-Core events mod.
 	"DBM-Argus",--Merged into DBM-BrokenIsles mod
 	"DBM-GarrisonInvasions",--Merged into DBM-Draenor mod
 	"DBM-Azeroth-BfA",--renamed to DBM-BfA
 	"DBM-BattlefieldBarrens",--Apparently people are still running this
 }
 if isRetail then
-	-- ZG and ZA are now part of the party mods for Cataclysm
-	-- Remove restriction in classic wow versions
-	table.insert(bannedMods, "DBM-ZulAman")
-	table.insert(bannedMods, "DBM-ZG")
+	table.insert(bannedMods, "DBM-ZulAman") -- Part of Cataclysm party mods
+	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods
+	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
 end
 
 --[InstanceID]={level,zoneType}
@@ -1117,7 +1115,7 @@ do
 			else
 				local match = false
 				for i = #mods, 1, -1 do
-					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event)  then
+					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event) then
 						tremove(mods, i)
 						match = true
 					end
@@ -1417,7 +1415,7 @@ do
 			if soundChannels < 64 then
 				SetCVar("Sound_NumChannels", 64)
 			end
-			self.Voices = { {text = "None",value  = "None"}, }--Create voice table, with default "None" value
+			self.Voices = { {text = "None",value = "None"}, }--Create voice table, with default "None" value
 			self.VoiceVersions = {}
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
@@ -3387,7 +3385,7 @@ end
 
 function DBM:IsTrivial(customLevel)
 	--if timewalking or chromie time, it's always non trivial content
-	if C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33 then
+	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33 then
 		return false
 	end
 	--if custom level passed, we always hard check that level for trivial vs non trivial
@@ -4020,7 +4018,7 @@ do
 	function DBM:CheckAvailableMods()
 		if _G["BigWigs"] or modAdvertisementShown then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature (such as brawlers) and not nag
 		if isRetail then
-			local timeWalking =  C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33
+			local timeWalking = C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33
 			if oldDungeons[LastInstanceMapID] and (timeWalking or playerLevel < 50) and not GetAddOnInfo("DBM-Party-BC") then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Old Dungeon mods"))
 				modAdvertisementShown = true
@@ -5450,7 +5448,7 @@ do
 	end
 
 	function DBM:PLAYER_REGEN_ENABLED()
-		if delayedFunction then--Will throw error if not a function, purposely not doing and type(delayedFunction) == "function" for now to make sure code works though  cause it always should be function
+		if delayedFunction then--Will throw error if not a function, purposely not doing and type(delayedFunction) == "function" for now to make sure code works though because it always should be function
 			delayedFunction()
 			delayedFunction = nil
 		end
@@ -6792,7 +6790,7 @@ end
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
 --Keep an eye on C_SpellBook.GetSpellInfo, but don't use it YET as direction of existing GetSpellInfo isn't finalized yet
 function DBM:GetSpellInfo(spellId)
-	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId  = GetSpellInfo(spellId)
+	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
 	if not returnedSpellId then--Bad request all together
 		if type(spellId) == "string" then
 			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId.." as a string!")
@@ -7388,7 +7386,7 @@ function DBM:Capitalize(str)
 		numBytes = 4
 	elseif firstByte >= 0xE0 then -- firstByte & 0b11100000
 		numBytes = 3
-	elseif firstByte >= 0xC0 then  -- firstByte & 0b11000000
+	elseif firstByte >= 0xC0 then -- firstByte & 0b11000000
 		numBytes = 2
 	end
 	return str:sub(1, numBytes):upper()..str:sub(numBytes + 1):lower()
@@ -7516,9 +7514,9 @@ end
 --Taint the script that disables /run /dump, etc
 --ScriptsDisallowedForBeta = function() return false end
 
--------------------
---  Movie Filter --
--------------------
+--------------------
+--  Movie Filter  --
+--------------------
 do
 	local neverFilter = {
 		[486] = true, -- Tomb of Sarg Intro
@@ -8284,7 +8282,7 @@ do
 						return true
 					end
 				end
-				local inRange =  DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
+				local inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
 				rangeCache[cidOrGuid] = inRange
 				rangeUpdated[cidOrGuid] = GetTime()
 				if inRange and (inRange > distance) then--You are not near the person tanking boss
@@ -8603,7 +8601,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 		return hp, uId, UnitName(uId)
 	--Focus, does not exist in classic
 	elseif isRetail and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
-		if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0  and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
+		if bossHealth[cIdOrGUID] and (UnitHealth("focus") == 0 and not UnitIsDead("focus")) then return bossHealth[cIdOrGUID], "focus", UnitName("focus") end--Return last non 0 value if value is 0, since it's last valid value we had.
 		local hp = UnitHealth("focus") / UnitHealthMax("focus") * 100
 		if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
 			bossHealth[cIdOrGUID] = hp
@@ -11126,7 +11124,7 @@ do
 			else
 				spellName = DBM:GetSpellInfo(spellId)
 			end
-			--Name wasn't provided, but we succeeded in gettinga  name, generate one into object now for caching purposes
+			--Name wasn't provided, but we succeeded in getting a name, generate one into object now for caching purposes
 			--This would really only happen if GetSpellInfo failed to return spell name on first attempt (which now happens in 9.0)
 			if spellName then
 				self.name = spellName
