@@ -61,3 +61,5 @@ DBM-Nameplate.lua
 modules\MinimapButton.lua
 modules\Sounds.lua
 modules\SpecRole.lua
+
+modules\objects\Localization.lua

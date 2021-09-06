@@ -355,9 +355,7 @@ local bossModPrototype = {}
 local usedProfile = "Default"
 local dbmIsEnabled = true
 local lastCombatStarted = GetTime()
-local loadcIds = {}
-local inCombat = {}
-local oocBWComms = {}
+local loadcIds, inCombat, oocBWComms = {}, {}, {}
 local combatInfo = {}
 local bossIds = {}
 local updateFunctions = {}
@@ -369,7 +367,6 @@ local chatPrefixShort = "<DBM> "
 --local ver = ("%s (%s)"):format(DBM.DisplayVersion, tostring(DBM.Revision))
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
 local newerVersionPerson = {}
-local newerRevisionPerson = {}
 local combatInitialized = false
 local healthCombatInitialized = false
 local pformat
@@ -401,7 +398,6 @@ local bossuIdCache = {}
 local savedDifficulty, difficultyText, difficultyIndex, difficultyModifier = nil, nil, nil, 0
 local lastBossEngage = {}
 local lastBossDefeat = {}
-local lastWorldBuff = {}
 local bossuIdFound = false
 local timerRequestInProgress = false
 local updateNotificationDisplayed = 0
@@ -418,7 +414,6 @@ local iconSetPerson = {}
 local addsGUIDs = {}
 local targetEventsRegistered = false
 local targetMonitor = {}
-local targetMonitorFilter = {}
 local statusWhisperDisabled = false
 local statusGuildDisabled = false
 local dbmToc = 0
@@ -574,28 +569,6 @@ local function checkEntry(t, val)
 	return false
 end
 
-local function findEntry(t, val)
-	for _, v in ipairs(t) do
-		if v and val and val:find(v) then
-			return true
-		end
-	end
-	return false
-end
-
--- removes all occurrences of a value in an array
--- returns true if at least one occurrence was remove, false otherwise
-local function removeEntry(t, val)
-	local existed = false
-	for i = #t, 1, -1 do
-		if t[i] == val then
-			tremove(t, i)
-			existed = true
-		end
-	end
-	return existed
-end
-
 --Whisper/Whisper Sync filter function
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, isRealIdMessage)
 	if checkFriends then
@@ -651,11 +624,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 			if not name then break end
 			name = Ambiguate(name, "none")
 			if name == sender then
-				if filterRaid and DBM:GetRaidUnitId(name) then--Person is in raid group and filter raid enabled
-					return false--just set sender as unsafe
-				else
-					return true
-				end
+				return not (filterRaid and DBM:GetRaidUnitId(name))
 			end
 		end
 	end
@@ -714,10 +683,8 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 			local sameRealm = false
 			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
 			if accountInfo then
-				local gameAccountID, isOnline, userRealm = accountInfo.gameAccountInfo.gameAccountID, accountInfo.gameAccountInfo.isOnline, accountInfo.gameAccountInfo.realmName
-				if gameAccountID and isOnline and userRealm then
-					--local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(presenceID)--Just in case required, if it can't actually be pulled from sub table of accountInfo above
-					--local userRealm = accountInfo.gameAccountInfo.realmName or L.UNKNOWN
+				if accountInfo.gameAccountInfo.gameAccountID and accountInfo.gameAccountInfo.isOnline and accountInfo.gameAccountInfo.realmName then
+					local userRealm = accountInfo.gameAccountInfo.realmName
 					if connectedServers then
 						for j = 1, #connectedServers do
 							if userRealm == connectedServers[j] then
@@ -731,7 +698,7 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 						end
 					end
 					if sameRealm then
-						BNSendGameData(gameAccountID, DBMPrefix, prefix.."\t"..msg)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
+						BNSendGameData(accountInfo.gameAccountInfo.gameAccountID, DBMPrefix, prefix.."\t"..msg)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
 					end
 				end
 			end
@@ -1506,9 +1473,7 @@ do
 									else
 										local id = tonumber(subTabs[k])
 										if id then
-											local name = GetRealZoneText(id):trim() or id
-											local subname = strsplit("-", name)--For handling zones like Warfront: Arathi - Alliance
-											self.AddOns[#self.AddOns].subTabs[k] = subname
+											self.AddOns[#self.AddOns].subTabs[k] = strsplit("-", GetRealZoneText(id):trim() or id)--For handling zones like Warfront: Arathi - Alliance
 										else
 											self.AddOns[#self.AddOns].subTabs[k] = (subTabs[k]):trim()
 										end
@@ -2991,7 +2956,7 @@ do
 				if not v.updated then
 					raidGuids[v.guid] = nil
 					raid[i] = nil
-					removeEntry(newerVersionPerson, i)
+					tDeleteItem(newerVersionPerson, i)
 					fireEvent("DBM_raidLeave", i)
 				else
 					v.updated = nil
@@ -3058,7 +3023,7 @@ do
 				if not v.updated then
 					raidGuids[v.guid] = nil
 					raid[i] = nil
-					removeEntry(newerVersionPerson, i)
+					tDeleteItem(newerVersionPerson, i)
 					fireEvent("DBM_partyLeave", i)
 				else
 					v.updated = nil
@@ -5639,7 +5604,7 @@ do
 			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == type and checkEntry(v.msgs, msg) or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
 					self:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
-				elseif v.type == "combat_" .. type .. "find" and findEntry(v.msgs, msg) or v.type == "combat_" .. type and checkEntry(v.msgs, msg) then
+				elseif v.type == "combat_" .. type .. "find" and tContains(v.msgs, msg) or v.type == "combat_" .. type and checkEntry(v.msgs, msg) then
 					if IsInInstance() then--Indoor boss that uses both combat and message for combat, so in other words (such as hodir), don't require "target" of boss for yell like scanForCombat does for World Bosses
 						self:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
 					else--World Boss
@@ -6168,7 +6133,7 @@ do
 	end
 
 	function DBM:EndCombat(mod, wipe, srmIncluded)
-		if removeEntry(inCombat, mod) then
+		if tDeleteItem(inCombat, mod) then
 			local scenario = mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
 				if srmIncluded then-- unregister all events including SPELL_AURA_REMOVED events
@@ -6439,7 +6404,6 @@ do
 				eeSyncSender = {}
 				eeSyncReceived = 0
 				twipe(targetMonitor)
-				twipe(targetMonitorFilter)
 				self:CreatePizzaTimer(time, "", nil, nil, nil, true)--Auto Terminate infinite loop timers on combat end
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
@@ -10580,12 +10544,12 @@ do
 				end
 			end
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid)
-			if not findEntry(self.startedTimers, id) then--Make sure timer doesn't exist already before adding it
+			if not tContains(self.startedTimers, id) then--Make sure timer doesn't exist already before adding it
 				tinsert(self.startedTimers, id)
 			end
 			if not self.keep then--Don't ever remove startedTimers on a schedule, if it's a keep timer
-				self.mod:Unschedule(removeEntry, self.startedTimers, id)
-				self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
+				self.mod:Unschedule(tDeleteItem, self.startedTimers, id)
+				self.mod:Schedule(timer, tDeleteItem, self.startedTimers, id)
 			end
 			return bar
 		else
@@ -11522,7 +11486,7 @@ end
 function bossModPrototype:RemoveOption(name)
 	self.Options[name] = nil
 	for i, options in pairs(self.optionCategories) do
-		removeEntry(options, name)
+		tDeleteItem(options, name)
 		if #options == 0 then
 			self.optionCategories[i] = nil
 		end
@@ -11534,7 +11498,7 @@ end
 
 function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
-		removeEntry(options, name)
+		tDeleteItem(options, name)
 	end
 	if not self.optionCategories[cat] then
 		self.optionCategories[cat] = {}
@@ -12239,108 +12203,7 @@ function bossModPrototype:SetModelSound(long, short)--PlaySoundFile prototype fo
 	self.modelSoundShort = short
 end
 
---------------------
---  Localization  --
---------------------
 function bossModPrototype:GetLocalizedStrings()
 	self.localization.miscStrings.name = self.localization.general.name
 	return self.localization.miscStrings
-end
-
--- Not really good, needs a few updates
-do
-	local modLocalizations = {}
-	local modLocalizationPrototype = {}
-	local mt = {__index = modLocalizationPrototype}
-	local returnKey = {__index = function(t, k) return k end}
-	local defaultCatLocalization = {
-		__index = setmetatable({
-			timer				= L.OPTION_CATEGORY_TIMERS,
-			announce			= L.OPTION_CATEGORY_WARNINGS,
-			announceother		= L.OPTION_CATEGORY_WARNINGS_OTHER,
-			announcepersonal	= L.OPTION_CATEGORY_WARNINGS_YOU,
-			announcerole		= L.OPTION_CATEGORY_WARNINGS_ROLE,
-			sound				= L.OPTION_CATEGORY_SOUNDS,
-			yell				= L.OPTION_CATEGORY_YELLS,
-			icon				= L.OPTION_CATEGORY_ICONS,
-			nameplate			= L.OPTION_CATEGORY_NAMEPLATES,
-			misc				= MISCELLANEOUS
-		}, returnKey)
-	}
-	local defaultTimerLocalization = {
-		__index = setmetatable({
-			timer_berserk = L.GENERIC_TIMER_BERSERK,
-			timer_combat = L.GENERIC_TIMER_COMBAT
-		}, returnKey)
-	}
-	local defaultAnnounceLocalization = {
-		__index = setmetatable({
-			warning_berserk = L.GENERIC_WARNING_BERSERK
-		}, returnKey)
-	}
-	local defaultOptionLocalization = {
-		__index = setmetatable({
-			timer_berserk = L.OPTION_TIMER_BERSERK,
-			timer_combat = L.OPTION_TIMER_COMBAT,
-		}, returnKey)
-	}
-	local defaultMiscLocalization = {
-		__index = {}
-	}
-
-	function modLocalizationPrototype:SetGeneralLocalization(t)
-		for i, v in pairs(t) do
-			self.general[i] = v
-		end
-	end
-
-	function modLocalizationPrototype:SetWarningLocalization(t)
-		for i, v in pairs(t) do
-			self.warnings[i] = v
-		end
-	end
-
-	function modLocalizationPrototype:SetTimerLocalization(t)
-		for i, v in pairs(t) do
-			self.timers[i] = v
-		end
-	end
-
-	function modLocalizationPrototype:SetOptionLocalization(t)
-		for i, v in pairs(t) do
-			self.options[i] = v
-		end
-	end
-
-	function modLocalizationPrototype:SetOptionCatLocalization(t)
-		for i, v in pairs(t) do
-			self.cats[i] = v
-		end
-	end
-
-	function modLocalizationPrototype:SetMiscLocalization(t)
-		for i, v in pairs(t) do
-			self.miscStrings[i] = v
-		end
-	end
-
-	function DBM:CreateModLocalization(name)
-		name = tostring(name)
-		local obj = {
-			general = setmetatable({}, returnKey),
-			warnings = setmetatable({}, defaultAnnounceLocalization),
-			options = setmetatable({}, defaultOptionLocalization),
-			timers = setmetatable({}, defaultTimerLocalization),
-			miscStrings = setmetatable({}, defaultMiscLocalization),
-			cats = setmetatable({}, defaultCatLocalization),
-		}
-		setmetatable(obj, mt)
-		modLocalizations[name] = obj
-		return obj
-	end
-
-	function DBM:GetModLocalization(name)
-		name = tostring(name)
-		return modLocalizations[name] or self:CreateModLocalization(name)
-	end
 end
