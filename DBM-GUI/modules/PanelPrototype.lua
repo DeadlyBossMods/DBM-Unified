@@ -1,7 +1,7 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
-local setmetatable, select, type, tonumber, strsplit, mmax, tinsert, tremove = setmetatable, select, type, tonumber, strsplit, math.max, table.insert, table.remove
+local setmetatable, select, type, tonumber, strsplit, mmax, tinsert = setmetatable, select, type, tonumber, strsplit, math.max, table.insert
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
@@ -142,7 +142,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	return slider
 end
 
-function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, fading, fontobject)
+function PanelPrototype:CreateScrollingMessageFrame(width, height, _, fading, fontobject)
 	local scroll = CreateFrame("ScrollingMessageFrame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	scroll:SetSize(width or 200, height or 150)
 	scroll:SetJustifyH("LEFT")
@@ -334,7 +334,7 @@ do
 			buttonText = CreateFrame("SimpleHTML", "$parentText", button)
 			buttonText:SetFontObject("GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
-			buttonText:SetScript("OnHyperlinkEnter", function(self, data, link)
+			buttonText:SetScript("OnHyperlinkEnter", function(self, data)
 				GameTooltip:SetOwner(self, "ANCHOR_NONE")
 				local linkType = strsplit(":", data)
 				if linkType == "http" then
@@ -353,7 +353,7 @@ do
 				end
 				GameTooltip:Show()
 				currActiveButton = self:GetParent()
-				updateFrame:SetScript("OnUpdate", function(self, elapsed)
+				updateFrame:SetScript("OnUpdate", function(self)
 					local inHitBox = GetCursorPosition() - currActiveButton:GetCenter() < -100
 					if currActiveButton.fakeHighlight and not inHitBox then
 						currActiveButton:UnlockHighlight()
@@ -372,7 +372,7 @@ do
 					self:GetParent():LockHighlight()
 				end
 			end)
-			buttonText:SetScript("OnHyperlinkLeave", function(self, data, link)
+			buttonText:SetScript("OnHyperlinkLeave", function(self)
 				GameTooltip:Hide()
 				updateFrame:SetScript("OnUpdate", nil)
 				if self:GetParent().fakeHighlight then
@@ -402,25 +402,25 @@ do
 		button.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
-				button:SetChecked(DBM.Options[dbmvar])
+				self:SetChecked(DBM.Options[dbmvar])
 			end)
-			button:SetScript("OnClick", function(self)
+			button:SetScript("OnClick", function()
 				DBM.Options[dbmvar] = not DBM.Options[dbmvar]
 			end)
 		end
 		if dbtvar then
 			button:SetScript("OnShow", function(self)
-				button:SetChecked(DBT.Options[dbtvar])
+				self:SetChecked(DBT.Options[dbtvar])
 			end)
-			button:SetScript("OnClick", function(self)
+			button:SetScript("OnClick", function()
 				DBT:SetOption(dbtvar, not DBT.Options[dbtvar])
 			end)
 		end
 		if globalvar and _G[globalvar] ~= nil then
 			button:SetScript("OnShow", function(self)
-				button:SetChecked(_G[globalvar])
+				self:SetChecked(_G[globalvar])
 			end)
-			button:SetScript("OnClick", function(self)
+			button:SetScript("OnClick", function()
 				_G[globalvar] = not _G[globalvar]
 			end)
 		end
@@ -451,7 +451,7 @@ function PanelPrototype:CreateArea(name)
 	})
 end
 
-function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, sortID, displayName)
+function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, _, displayName)
 	local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), _G["DBM_GUI_OptionsFramePanelContainer"])
 	panel.mytype = "panel"
 	panel.ID = self:GetCurrentID()

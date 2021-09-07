@@ -724,7 +724,7 @@ do
 	-- note: doesn't handle cases like %%%s correctly at the moment (should become %unknown, but becomes %%s)
 	-- also, the end of the format directive is not detected in all cases, but handles everything that occurs in our boss mods ;)
 	--> not suitable for general-purpose use, just for our warnings and timers (where an argument like a spell-target might be nil due to missing target information from unreliable detection methods)
-	local function replace(cap1, cap2)
+	local function replace(cap1)
 		return cap1 == "%" and L.UNKNOWN
 	end
 
@@ -736,10 +736,11 @@ end
 
 -- sends a whisper to a player by his or her character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
-local function sendWhisper(target, msg)
+local sendWhisper
+function sendWhisper(target, msg)
 	if type(target) == "number" then
 		if not BNIsSelf(target) then -- never send BNet whispers to ourselves
-			BNSendWhisper(target, msg)
+			sendWhisper(target, msg)
 			return true
 		end
 	elseif type(target) == "string" then
@@ -748,7 +749,6 @@ local function sendWhisper(target, msg)
 		return true
 	end
 end
-local BNSendWhisper = sendWhisper
 
 --Another custom server name strip function that first strips out the "><" DBM wraps around playernames
 local function stripServerName(cap)
@@ -879,7 +879,7 @@ do
 					frame = CreateFrame("Frame")
 					if uId == "mouseover" then
 						-- work-around for mouse-over events (broken!)
-						frame:SetScript("OnEvent", function(self, event, uId, ...)
+						frame:SetScript("OnEvent", function(self, event, _, ...)
 							-- we registered mouseover events, so we only want mouseover events, thanks.
 							handleEvent(self, event, "mouseover", ...)
 						end)
@@ -2137,7 +2137,7 @@ do
 			Break(tonumber(msg) or 10)
 		end
 	end
-	SlashCmdList["DEADLYBOSSMODSRPULL"] = function(msg)
+	SlashCmdList["DEADLYBOSSMODSRPULL"] = function()
 		Pull(30)
 	end
 	SlashCmdList["DEADLYBOSSMODS"] = function(msg)
@@ -2453,16 +2453,13 @@ do
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
-		local r = tonumber(msg) or 10
-		updateRangeFrame(r, false)
+		updateRangeFrame(tonumber(msg) or 10, false)
 	end
-	SlashCmdList["DBMHUDAR"] = function(msg)
-		local r = tonumber(msg) or 10
-		DBM.HudMap:ToggleHudar(r)
+	SlashCmdList["DBMHUDAR"] = function()
+		DBM.HudMap:ToggleHudar()
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
-		local r = tonumber(msg) or 10
-		updateRangeFrame(r, true)
+		updateRangeFrame(tonumber(msg) or 10, true)
 	end
 end
 
@@ -2584,7 +2581,7 @@ do
 		end
 	end
 	if LL then
-		LL:Register("DBM", function(homelag, worldlag, sender, channel)
+		LL:Register("DBM", function(homelag, worldlag, sender)
 			if sender and raid[sender] then
 				raid[sender].homelag = homelag
 				raid[sender].worldlag = worldlag
@@ -2630,7 +2627,7 @@ do
 		end
 	end
 	if LD then
-		LD:Register("DBM", function(percent, broken, sender, channel)
+		LD:Register("DBM", function(percent, broken, sender)
 			if sender and raid[sender] then
 				raid[sender].durpercent = percent
 				raid[sender].durbroken = broken
@@ -2766,7 +2763,7 @@ do
 		PlaySound(850)
 	end
 
-	local function linkHook(self, link, string, button, ...)
+	local function linkHook(self, link)
 		local _, linkType, arg1, arg2, arg3, arg4, arg5, arg6 = strsplit(":", link)
 		if linkType ~= "DBM" then
 			return
@@ -4477,7 +4474,7 @@ do
 		DBM:Debug("Raid leader has disabled guild progress messages")
 	end
 
-	syncHandlers["IS"] = function(sender, guid, ver, optionName)
+	syncHandlers["IS"] = function(_, guid, ver, optionName)
 		ver = tonumber(ver) or 0
 		if ver > (iconSetRevision[optionName] or 0) then--Save first synced version and person, ignore same version. refresh occurs only above version (fastest person)
 			iconSetRevision[optionName] = ver
@@ -4492,7 +4489,7 @@ do
 		DBM:Debug(name.." was elected icon setter for "..optionName, 2)
 	end
 
-	syncHandlers["K"] = function(sender, cId)
+	syncHandlers["K"] = function(_, cId)
 		if select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "none" then return end
 		cId = tonumber(cId or "")
 		if cId then DBM:OnMobKill(cId, true) end
@@ -4741,12 +4738,12 @@ do
 	end
 
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
-	syncHandlers["H"] = function(sender)
+	syncHandlers["H"] = function()
 		DBM:Unschedule(SendVersion)--Throttle so we don't needlessly send tons of comms during initial raid invites
 		DBM:Schedule(3, SendVersion)--Send version if 3 seconds have past since last "Hi" sync
 	end
 
-	guildSyncHandlers["GH"] = function(sender)
+	guildSyncHandlers["GH"] = function()
 		if DBM.ReleaseRevision >= DBM.HighestRelease then--Do not send version to guild if it's not up to date, since this is only used for update notifcation
 			DBM:Unschedule(SendVersion, true)
 			--Throttle so we don't needlessly send tons of comms
@@ -4818,7 +4815,7 @@ do
 		end
 	end
 
-	guildSyncHandlers["GCB"] = function(sender, modId, ver, difficulty, difficultyModifier, name)
+	guildSyncHandlers["GCB"] = function(_, modId, ver, difficulty, difficultyModifier, name)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
 		if not ver or not (ver == "3") then return end--Ignore old versions
 		if DBM:AntiSpam(10, "GCB") then
@@ -4849,7 +4846,7 @@ do
 		end
 	end
 
-	guildSyncHandlers["GCE"] = function(sender, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
+	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
 		if not ver or not (ver == "6") then return end--Ignore old versions
 		if DBM:AntiSpam(5, "GCE") then
@@ -5081,7 +5078,7 @@ do
 	end
 	DBM.CHAT_MSG_ADDON_LOGGED = DBM.CHAT_MSG_ADDON
 
-	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, channel, sender)
+	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, _, sender)
 		if prefix == DBMPrefix and msg then
 			handleSync("BN_WHISPER", sender, strsplit("\t", msg))
 		end
@@ -6523,13 +6520,12 @@ do
 				currentSpecID, currentSpecName = fallbackClassToRole[playerClass], playerClass
 			end
 		else
-			local talentPoints = UnitCharacterPoints("player")
 			local numTabs = GetNumTalentTabs()
 			local highestPointsSpent = 0
 			if MAX_TALENT_TABS then
 				for i=1, MAX_TALENT_TABS do
 					if ( i <= numTabs ) then
-						local name, iconTexture, pointsSpent = GetTalentTabInfo(i)
+						local _, _, pointsSpent = GetTalentTabInfo(i)
 						if pointsSpent > highestPointsSpent then
 							highestPointsSpent = pointsSpent
 							currentSpecGroup = i
@@ -7086,14 +7082,6 @@ do
 			end
 		end
 		return alive
-	end
-
-	local function isOnSameServer(presenceId)
-		local toonID, client = select(6, BNGetFriendInfoByID(presenceId))
-		if client ~= "WoW" then
-			return false
-		end
-		return GetRealmName() == select(4, BNGetGameAccountInfo(toonID))
 	end
 
 	--Cleanup in 8.x with C_Map.GetMapGroupMembersInfo
@@ -9244,7 +9232,7 @@ do
 		return newAnnounce(self, "you", spellId, color or 1, ...)
 	end
 
-	function bossModPrototype:NewTargetNoFilterAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter)
+	function bossModPrototype:NewTargetNoFilterAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
 		return newAnnounce(self, "target", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
 	end
 
@@ -9288,7 +9276,7 @@ do
 		return newAnnounce(self, "stack", spellId, color or 2, ...)
 	end
 
-	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, noArg, soundOption)
+	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, _, soundOption) -- spellId, color, castTime, icon, optionDefault, optionName, noArg, soundOption
 		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, soundOption)
 	end
 
@@ -9301,11 +9289,11 @@ do
 	end
 
 	--This object disables sounds, it's almost always used in combation with a countdown timer. Even if not a countdown, its a text only spam not a sound spam
-	function bossModPrototype:NewCountdownAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter)
+	function bossModPrototype:NewCountdownAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, _, noFilter) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
 		return newAnnounce(self, "countdown", spellId, color or 4, icon, optionDefault, optionName, castTime, preWarnTime, 0, noFilter)
 	end
 
-	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, noArg, soundOption)
+	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, _, soundOption) -- spellId, time, color, icon, optionDefault, optionName, noArg, soundOption
 		return newAnnounce(self, "prewarn", spellId, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
 	end
 
@@ -9890,7 +9878,7 @@ do
 		scheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
 	end
 
-	function specialWarningPrototype:Cancel(t, ...)
+	function specialWarningPrototype:Cancel(_, ...) -- t, ...
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
@@ -10281,7 +10269,7 @@ do
 		frame:SetFrameStrata("HIGH")
 	end
 
-	function DBM:ShowTestSpecialWarning(text, number, noSound, force)
+	function DBM:ShowTestSpecialWarning(_, number, noSound, force) -- text, number, noSound, force
 		if moving then
 			return
 		end
@@ -10339,7 +10327,7 @@ do
 		end
 	end
 
-	local function playCountSound(timerId, path)
+	local function playCountSound(_, path) -- timerId, path
 		DBM:PlaySoundFile(path)
 	end
 
@@ -11195,7 +11183,7 @@ do
 		return obj
 	end
 
-	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
+	function bossModPrototype:NewCombatTimer(timer, _, barText, barIcon) -- timer, text, barText, barIcon
 		timer = timer or 10
 		--NewTimer(timer, name, texture, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b)
 		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5)

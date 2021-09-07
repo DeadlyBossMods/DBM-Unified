@@ -798,7 +798,7 @@ local anim = updater:CreateAnimation()
 anim:SetDuration(0.05)
 
 mainFrame:SetSize(0, 0)
-mainFrame:SetScript("OnEvent", function(self, event, ...)
+mainFrame:SetScript("OnEvent", function(self, event)
 	if event == "GROUP_ROSTER_UPDATE" or event == "RAID_TARGET_UPDATE" then
 		updateIcon()
 	end

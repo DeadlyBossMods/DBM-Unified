@@ -16,7 +16,7 @@ local dataBroker = LibStub("LibDataBroker-1.1"):NewDataObject("DBM", {
 })
 private.dataBroker = dataBroker
 
-function dataBroker.OnClick(self, button)
+function dataBroker.OnClick(self) -- self, button
 	if IsShiftKeyDown() then return end
 	--[[
 		if IsAltKeyDown() and button == "RightButton" then
