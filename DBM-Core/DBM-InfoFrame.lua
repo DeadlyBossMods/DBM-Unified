@@ -7,7 +7,6 @@ DBM.InfoFrame = {}
 -- Local Globals --
 -------------------
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 
 local DBM = DBM
 local L = DBM_CORE_L
@@ -414,7 +413,7 @@ local function updateEnemyPower()
 	local specificUnit = value[3]
 	if powerType then -- Only do power type defined
 		if specificUnit then
-			if isBCC then
+			if not isRetail then
 				specificUnit = UnitExists(specificUnit) or DBM:GetUnitIdFromGUID(specificUnit)--unitID already passed or GUID we convert into unitID
 			end
 			if UnitExists(specificUnit) then
@@ -440,7 +439,7 @@ local function updateEnemyPower()
 		end
 	else -- Check primary power type and alternate power types together. This should only be used if BOTH power types exist on same boss, else fix your shit MysticalOS
 		if specificUnit then
-			if isBCC then
+			if not isRetail then
 				specificUnit = UnitExists(specificUnit) or DBM:GetUnitIdFromGUID(specificUnit)--unitID already passed or GUID we convert into unitID
 			end
 			if UnitExists(specificUnit) then
@@ -490,7 +489,7 @@ local function updateEnemyAbsorb()
 	local totalAbsorb = value[2]
 	local specificUnit = value[3]
 	if specificUnit then
-		if isBCC then
+		if not isRetail then
 			specificUnit = UnitExists(specificUnit) or DBM:GetUnitIdFromGUID(specificUnit)--unitID already passed or GUID we convert into unitID
 		end
 		if UnitExists(specificUnit) then
