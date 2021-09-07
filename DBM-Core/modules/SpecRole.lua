@@ -402,7 +402,7 @@ if isRetail then
 	specRoleTable[261] = specRoleTable[259]--Subtlety Rogue same as Assassination
 	specRoleTable[266] = specRoleTable[265]--Demonology Warlock same as Affliction
 	specRoleTable[267] = specRoleTable[265]--Destruction Warlock same as Affliction
-elseif isClassic then
+else
 	local IsSpellKnown = IsSpellKnown
 
 	specRoleTable = {
@@ -416,7 +416,7 @@ elseif isClassic then
 			["HasInterrupt"] = true,
 			["HasImmunity"] = true,
 			["RemoveCurse"] = true,
-			--["MagicDispeller"] = true,--Spellsteal in TBC
+			["MagicDispeller"] = IsSpellKnown(30449),--Spellsteal in TBC
 		},
 		["PALADIN1"] = {	--Holy Paladin
 			["Healer"] = true,
@@ -468,7 +468,7 @@ elseif isClassic then
 			["Melee"] = true,
 			["Physical"] = true,
 			["HasInterrupt"] = true,
-			["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925)),--Shield Slam
+			["MagicDispeller"] = (IsSpellKnown(23922) or IsSpellKnown(23923) or IsSpellKnown(23924) or IsSpellKnown(23925) or IsSpellKnown(25258) or IsSpellKnown(30356)),--Shield Slam
 		},
 		["DRUID1"] = {	--Balance Druid
 			["Healer"] = true,
