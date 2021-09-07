@@ -6557,7 +6557,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 3 or difficulty == 175 then--Legacy 10 man Normal Raid
 		return "normal10", difficultyName.." - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 4 ir difficulty == 176 then--Legacy 25 man Normal Raid
+	elseif difficulty == 4 or difficulty == 176 then--Legacy 25 man Normal Raid
 		return "normal25", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 5 then--Legacy 10 man Heroic Raid
 		return "heroic10", difficultyName.." - ", difficulty, instanceGroupSize, 0

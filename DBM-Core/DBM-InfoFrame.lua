@@ -417,7 +417,7 @@ local function updateEnemyPower()
 			if isBCC then
 				specificUnit = UnitExists(specificUnit) or DBM:GetUnitIdFromGUID(specificUnit)--unitID already passed or GUID we convert into unitID
 			end
-			if UnitExists(usedUnit) then
+			if UnitExists(specificUnit) then
 				local currentPower, maxPower = UnitPower(specificUnit, powerType), UnitPowerMax(specificUnit, powerType)
 				if maxPower and maxPower > 0 then
 					local percent = currentPower / maxPower * 100
@@ -443,7 +443,7 @@ local function updateEnemyPower()
 			if isBCC then
 				specificUnit = UnitExists(specificUnit) or DBM:GetUnitIdFromGUID(specificUnit)--unitID already passed or GUID we convert into unitID
 			end
-			if UnitExists(usedUnit) then
+			if UnitExists(specificUnit) then
 				-- Primary Power
 				local currentPower, maxPower = UnitPower(specificUnit), UnitPowerMax(specificUnit)
 				if maxPower and maxPower > 0 then
@@ -456,7 +456,7 @@ local function updateEnemyPower()
 				local currentAltPower, maxAltPower = UnitPower(specificUnit, 10), UnitPowerMax(specificUnit, 10)
 				if maxAltPower and maxAltPower > 0 then
 					if currentAltPower / maxAltPower * 100 >= threshold then
-						lines[UnitName(uId)] = L.INFOFRAME_ALT .. currentAltPower
+						lines[UnitName(specificUnit)] = L.INFOFRAME_ALT .. currentAltPower
 					end
 				end
 			end

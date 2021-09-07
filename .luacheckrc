@@ -39,6 +39,7 @@ globals = {
 
 	-- Lua
 	"bit.band",
+	"date",
 	"string.split",
 	"table.wipe",
 	"time",
@@ -170,7 +171,6 @@ globals = {
 	"C_ChatInfo.RegisterAddonMessagePrefix",
 	"C_ChatInfo.SendAddonMessageLogged",
 	"C_ChatInfo.SendAddonMessage",
-	"C_DateAndTime.GetCurrentCalendarTime",
 	"C_EncounterJournal.GetSectionIconFlags",
 	"C_EncounterJournal.GetSectionInfo",
 	"C_FriendList.GetFriendInfo",
