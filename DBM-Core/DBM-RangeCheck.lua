@@ -7,6 +7,7 @@ DBM.RangeCheck = {}
 --  Locals  --
 --------------
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 
 local function UnitPhaseReasonHack(uId)
 	if isRetail then
@@ -45,13 +46,13 @@ local function setCompatibleRestrictedRange(range)
 		return 30
 	elseif range <= 33 then
 		return 33
-	elseif range <= 43 and isRetail then
+	elseif range <= 43 and not isClassic then
 		return 43
-	elseif range <= 48 and isRetail then
+	elseif range <= 48 and not isClassic then
 		return 48
 	elseif range <= 53 and isRetail then
 		return 53
-	elseif range <= 60 and isRetail then
+	elseif range <= 60 and not isClassic then
 		return 60
 	elseif range <= 80 and isRetail then
 		return 80
@@ -66,20 +67,22 @@ do
 	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
 	local itemRanges = {
 		[8] = 8149, -- Voodoo Charm
-		[13] = isRetail and 32321 or 17626, -- Sparrowhawk Net / Frostwolf Muzzle
+		[13] = isClassic and 17626 or 32321, -- Sparrowhawk Net / Frostwolf Muzzle
 		[18] = 6450, -- Silk Bandage
 		[23] = 21519, -- Mistletoe
 		[28] = 13289,--Egan's Blaster
 		[33] = 1180, -- Scroll of Stamina
 	}
 	if isRetail then
-		itemRanges[4] = 90175 -- Gin-Ji Knife Set
-		itemRanges[6] = 37727 -- Ruby Acorn
+		itemRanges[4] = 90175 -- Gin-Ji Knife Set (MoP)
+		itemRanges[6] = 37727 -- Ruby Acorn (WotLK)
+		itemRanges[53] = 116139 -- Haunting Memento (WoD)
+		itemRanges[80] = 35278 -- Reinforced Net (WotLK)
+	end
+	if not isClassic then -- Exists in BCC
 		itemRanges[43] = 34471 -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
 		itemRanges[48] = 32698 -- Wrangling Rope
-		itemRanges[53] = 116139 -- Haunting Memento
 		itemRanges[60] = 32825 -- Soul Cannon
-		itemRanges[80] = 35278 -- Reinforced Net
 	end
 
 	local apiRanges = {
@@ -107,16 +110,16 @@ do
 			elseif IsItemInRange(8149, uId) then return 8
 			elseif CheckInteractDistance(uId, 3) then return 10
 			elseif CheckInteractDistance(uId, 2) then return 11
-			elseif IsItemInRange(isRetail and 32321 or 17626, uId) then return 13
+			elseif IsItemInRange(isClassic and 17626 or 32321 , uId) then return 13
 			elseif IsItemInRange(6450, uId) then return 18
 			elseif IsItemInRange(21519, uId) then return 23
 			elseif IsItemInRange(13289, uId) then return 28
 			elseif isRetail and CheckInteractDistance(uId, 1) then return 30
 			elseif IsItemInRange(1180, uId) then return 33
-			elseif isRetail and UnitInRange(uId) then return 43
-			elseif isRetail and IsItemInRange(32698, uId) then return 48
+			elseif not isClassic and UnitInRange(uId) then return 43
+			elseif not isClassic and IsItemInRange(32698, uId) then return 48
 			elseif isRetail and IsItemInRange(116139, uId) then return 53
-			elseif isRetail and IsItemInRange(32825, uId) then return 60
+			elseif not isClassic and IsItemInRange(32825, uId) then return 60
 			elseif isRetail and IsItemInRange(35278, uId) then return 80
 			else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
 		end
