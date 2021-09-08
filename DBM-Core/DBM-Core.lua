@@ -566,6 +566,17 @@ local function checkEntry(t, val)
 	return false
 end
 
+local function removeEntry(t, val)
+	local existed = false
+	for i = #t, 1, -1 do
+		if t[i] == val then
+			tremove(t, i)
+			existed = true
+		end
+	end
+	return existed
+end
+
 --Whisper/Whisper Sync filter function
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, isRealIdMessage)
 	if checkFriends then
@@ -2950,7 +2961,7 @@ do
 				if not v.updated then
 					raidGuids[v.guid] = nil
 					raid[i] = nil
-					tDeleteItem(newerVersionPerson, i)
+					removeEntry(newerVersionPerson, i)
 					fireEvent("DBM_raidLeave", i)
 				else
 					v.updated = nil
@@ -3017,7 +3028,7 @@ do
 				if not v.updated then
 					raidGuids[v.guid] = nil
 					raid[i] = nil
-					tDeleteItem(newerVersionPerson, i)
+					removeEntry(newerVersionPerson, i)
 					fireEvent("DBM_partyLeave", i)
 				else
 					v.updated = nil
@@ -6127,7 +6138,7 @@ do
 	end
 
 	function DBM:EndCombat(mod, wipe, srmIncluded)
-		if tDeleteItem(inCombat, mod) then
+		if removeEntry(inCombat, mod) then
 			local scenario = mod.addon.type == "SCENARIO" and not mod.soloChallenge
 			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
 				if srmIncluded then-- unregister all events including SPELL_AURA_REMOVED events
@@ -10533,8 +10544,8 @@ do
 				tinsert(self.startedTimers, id)
 			end
 			if not self.keep then--Don't ever remove startedTimers on a schedule, if it's a keep timer
-				self.mod:Unschedule(tDeleteItem, self.startedTimers, id)
-				self.mod:Schedule(timer, tDeleteItem, self.startedTimers, id)
+				self.mod:Unschedule(removeEntry, self.startedTimers, id)
+				self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
 			end
 			return bar
 		else
@@ -11471,7 +11482,7 @@ end
 function bossModPrototype:RemoveOption(name)
 	self.Options[name] = nil
 	for i, options in pairs(self.optionCategories) do
-		tDeleteItem(options, name)
+		removeEntry(options, name)
 		if #options == 0 then
 			self.optionCategories[i] = nil
 		end
@@ -11483,7 +11494,7 @@ end
 
 function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
-		tDeleteItem(options, name)
+		removeEntry(options, name)
 	end
 	if not self.optionCategories[cat] then
 		self.optionCategories[cat] = {}
