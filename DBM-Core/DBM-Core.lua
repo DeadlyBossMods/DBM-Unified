@@ -10010,9 +10010,9 @@ do
 				--Likely 1 and 2 will never be used, but being prototyped just in case
 				local path = isRetail and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
 				if difficulty == 3 then
-					difficultyIcon = "|TInterface\\" .. path "\\UI-EJ-Icons.blp:18:18:0:0:255:66:102:118:7:27|t"
+					difficultyIcon = "|TInterface\\" .. path .. "\\UI-EJ-Icons.blp:18:18:0:0:255:66:102:118:7:27|t"
 				elseif difficulty == 4 then
-					difficultyIcon = "|TInterface\\" .. path "\\UI-EJ-Icons.blp:18:18:0:0:255:66:133:153:40:58|t"
+					difficultyIcon = "|TInterface\\" .. path .. "\\UI-EJ-Icons.blp:18:18:0:0:255:66:133:153:40:58|t"
 				end
 			end
 			obj.option = "SpecWarn"..spellId..announceType..(optionVersion or "")
