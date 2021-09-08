@@ -1621,14 +1621,21 @@ do
 				"CINEMATIC_START",
 				"CINEMATIC_STOP",
 				"PLAYER_LEVEL_CHANGED",
-				"PLAYER_SPECIALIZATION_CHANGED",
-				"CHARACTER_POINTS_CHANGED", -- Classic
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"LOADING_SCREEN_ENABLED",
-				"SCENARIO_COMPLETED",
-				"CHALLENGE_MODE_RESET"
+				"LOADING_SCREEN_ENABLED"
 			)
+			if isRetail then
+				self:RegisterEvents(
+					"CHALLENGE_MODE_RESET",
+					"PLAYER_SPECIALIZATION_CHANGED",
+					"SCENARIO_COMPLETED"
+				)
+			else
+				self:RegisterEvents(
+					"CHARACTER_POINTS_CHANGED"
+				)
+			end
 			if RolePollPopup and RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 			end
