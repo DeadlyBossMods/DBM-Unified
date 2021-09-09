@@ -1611,10 +1611,6 @@ do
 				"RAID_BOSS_EMOTE",
 				"RAID_BOSS_WHISPER",
 				"PLAYER_ENTERING_WORLD",
-				"LFG_ROLE_CHECK_SHOW",
-				"LFG_PROPOSAL_SHOW",
-				"LFG_PROPOSAL_FAILED",
-				"LFG_PROPOSAL_SUCCEEDED",
 				"READY_CHECK",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"PLAY_MOVIE",
@@ -1625,13 +1621,21 @@ do
 				"LOADING_SCREEN_DISABLED",
 				"LOADING_SCREEN_ENABLED"
 			)
+			if not isClassic then -- Retail and BCC
+				self:RegisterEvents(
+					"LFG_PROPOSAL_FAILED",
+					"LFG_PROPOSAL_SHOW",
+					"LFG_PROPOSAL_SUCCEEDED",
+					"LFG_ROLE_CHECK_SHOW"
+				)
+			end
 			if isRetail then
 				self:RegisterEvents(
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED"
 				)
-			else
+			else -- BCC and Classic
 				self:RegisterEvents(
 					"CHARACTER_POINTS_CHANGED"
 				)
