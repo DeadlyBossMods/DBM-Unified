@@ -4248,7 +4248,7 @@ function DBM:LoadMod(mod, force)
 		return false
 	end
 	--Block loading world boss mods by zoneID, except if it's a heroic warfront
-	if mod.isWorldBoss and not IsInInstance() and (not isRetail or (not force and difficultyIndex ~= 149)) then
+	if mod.isWorldBoss and not IsInInstance() and not force and (not isRetail or difficultyIndex ~= 149) then
 		return
 	end
 	if mod.minRevision > self.Revision then
