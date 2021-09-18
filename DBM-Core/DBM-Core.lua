@@ -1455,7 +1455,7 @@ do
 								isExpedition	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Expedition") or 0) == 1,
 								minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
 								minExpansion	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinExpansion") or 0),
-								minToc			= tonumber(GetAddOnMetadata(i, "X-Min-Interface") or 0),
+								minToc			= tonumber(GetAddOnMetadata(i, "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or "")) or 0),
 								modId			= addonName,
 							})
 							for j = #self.AddOns[#self.AddOns].mapId, 1, -1 do
