@@ -75,9 +75,6 @@ local function resize(frame, first)
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
 				for _, child2 in ipairs({ child:GetChildren() }) do
-					if not child2.mytype then
-						print(child2:GetParent().mytype)
-					end
 					if child2.mytype then
 						if child2.mytype == "textblock" then
 							if child2.autowidth then
