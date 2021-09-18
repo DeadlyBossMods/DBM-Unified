@@ -22,6 +22,6 @@
 ## DefaultState: enabled
 ## Author: MysticalOS, QartemisT
 ## Version: @project-version@
-## X-Website: http://www.deadlybossmods.com
+## X-Website: https://deadlybossmods.com
 
 DBT.lua
