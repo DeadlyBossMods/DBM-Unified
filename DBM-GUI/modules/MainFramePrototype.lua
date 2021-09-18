@@ -88,12 +88,13 @@ local function resize(frame, first)
 							buttonText:SetWidth(width - buttonText.widthPad - 57)
 							buttonText:SetText(buttonText.text)
 							if not child2.customPoint then
+								local height = buttonText:GetContentHeight()
 								if not isRetail then
 									-- Classic fix: SimpleHTML needs its height reset
 									local oldPoint1, oldPoint2, oldPoint3, oldPoint4, oldPoint5 = buttonText:GetPoint()
 									buttonText:SetHeight(1)
 									buttonText:SetPoint("TOPLEFT", UIParent)
-									local height = buttonText:GetContentHeight()
+									height = buttonText:GetContentHeight()
 									buttonText:SetPoint(oldPoint1, oldPoint2, oldPoint3, oldPoint4, oldPoint5)
 									-- End classic fix
 								end
