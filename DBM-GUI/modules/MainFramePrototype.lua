@@ -75,35 +75,40 @@ local function resize(frame, first)
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
 				for _, child2 in ipairs({ child:GetChildren() }) do
-					if child2.mytype == "textblock" then
-						if child2.autowidth then
-							child2:SetWidth(width)
-						end
-						neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
-					elseif child2.mytype == "checkbutton" then
-						local buttonText = _G[child2:GetName() .. "Text"]
-						buttonText:SetWidth(width - buttonText.widthPad - 57)
-						buttonText:SetText(buttonText.text)
-						if not child2.customPoint then
-							if lastObject and lastObject.myheight then
-								child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
-							else
-								child2:SetPointOld("TOPLEFT", 10, -12)
-							end
-							child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
-							buttonText:SetHeight(child2.myheight)
-						end
-						lastObject = child2
-					elseif child2.mytype == "line" then
-						child2:SetWidth(width - 20)
-						if lastObject and lastObject.myheight then
-							child2:ClearAllPoints()
-							child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
-							_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
-						end
-						lastObject = child2
+					if not child2.mytype then
+						print(child2:GetParent().mytype)
 					end
-					neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+					if child2.mytype then
+						if child2.mytype == "textblock" then
+							if child2.autowidth then
+								child2:SetWidth(width)
+							end
+							neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
+						elseif child2.mytype == "checkbutton" then
+							local buttonText = _G[child2:GetName() .. "Text"]
+							buttonText:SetWidth(width - buttonText.widthPad - 57)
+							buttonText:SetText(buttonText.text)
+							if not child2.customPoint then
+								if lastObject and lastObject.myheight then
+									child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+								else
+									child2:SetPointOld("TOPLEFT", 10, -12)
+								end
+								child2.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
+								buttonText:SetHeight(child2.myheight)
+							end
+							lastObject = child2
+						elseif child2.mytype == "line" then
+							child2:SetWidth(width - 20)
+							if lastObject and lastObject.myheight then
+								child2:ClearAllPoints()
+								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+								_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
+							end
+							lastObject = child2
+						end
+						neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+					end
 				end
 				child:SetHeight(neededHeight)
 			end

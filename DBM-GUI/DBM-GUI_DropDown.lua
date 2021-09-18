@@ -223,6 +223,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 		end
 	end
 	local dropdown = CreateFrame("Frame", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "UIDropDownMenuTemplate")
+	dropdown.mytype = "dropdown"
 	dropdown.values = values
 	dropdown.callfunc = callfunc
 	local dropdownText = _G[dropdown:GetName() .. "Text"]

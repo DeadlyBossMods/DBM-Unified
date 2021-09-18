@@ -144,6 +144,7 @@ end
 
 function PanelPrototype:CreateScrollingMessageFrame(width, height, _, fading, fontobject)
 	local scroll = CreateFrame("ScrollingMessageFrame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
+	scroll.mytype = "scroll"
 	scroll:SetSize(width or 200, height or 150)
 	scroll:SetJustifyH("LEFT")
 	scroll:SetFading(fading or false)
@@ -432,7 +433,7 @@ end
 function PanelPrototype:CreateArea(name)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, DBM:IsShadowlands() and "BackdropTemplate,OptionsBoxTemplate" or "OptionsBoxTemplate")
 	area.mytype = "area"
-	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
+	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	_G[area:GetName() .. "Title"]:SetText(parseDescription(name))
 	if select("#", self.frame:GetChildren()) == 1 then
