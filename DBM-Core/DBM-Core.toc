@@ -22,9 +22,6 @@
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## Author: MysticalOS, QartemisT
-## X-Curse-Project-ID: 3358
-## X-WoWI-ID: 8814
-## X-Wago-ID: qv633o6b
 ## Version: @project-version@
 ## X-Website: https://deadlybossmods.com
 
