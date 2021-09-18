@@ -142,15 +142,19 @@ local sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	{ text = "Night Elf Bell", value = isRetail and 11742 or 6674 },
 	{ text = "PvP Flag", value = 8174 },
 })
-if isRetail then
-	tinsert(sounds, { text = "Blizzard Raid Emote", value = 37666 })
-	tinsert(sounds, { text = "C'Thun: You Will Die!", value = 8585 })
-	tinsert(sounds, { text = "Headless Horseman: Laugh", value = 11965 })
-	tinsert(sounds, { text = "Kaz'rogal: Marked", value = 11052 })
-	tinsert(sounds, { text = "Lady Malande: Flee", value = 11482 },
-	tinsert(sounds, { text = "Milhouse: Light You Up", value = 49764 },
-	tinsert(sounds, { text = "Void Reaver: Marked", value = 11213 },
-	tinsert(sounds, { text = "Yogg Saron: Laugh", value = 15757 }
+do
+	local tinsert = table.insert
+
+	if isRetail then
+		tinsert(sounds, { text = "Blizzard Raid Emote", value = 37666 })
+		tinsert(sounds, { text = "C'Thun: You Will Die!", value = 8585 })
+		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 11965 })
+		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 11052 })
+		tinsert(sounds, { text = "Lady Malande: Flee", value = 11482 })
+		tinsert(sounds, { text = "Milhouse: Light You Up", value = 49764 })
+		tinsert(sounds, { text = "Void Reaver: Marked", value = 11213 })
+		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 15757 })
+	end
 end
 
 local specWarnOne = specPanel:CreateArea(L.SpecialWarnHeader1)

@@ -247,10 +247,10 @@ do
 		tinsert(sounds, { text = "C'Thun: You Will Die!", value = 8585 })
 		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 11965 })
 		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 11052 })
-		tinsert(sounds, { text = "Lady Malande: Flee", value = 11482 },
-		tinsert(sounds, { text = "Milhouse: Light You Up", value = 49764 },
-		tinsert(sounds, { text = "Void Reaver: Marked", value = 11213 },
-		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 15757 }
+		tinsert(sounds, { text = "Lady Malande: Flee", value = 11482 })
+		tinsert(sounds, { text = "Milhouse: Light You Up", value = 49764 })
+		tinsert(sounds, { text = "Void Reaver: Marked", value = 11213 })
+		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 15757 })
 	end
 
 	local tcolors = {
