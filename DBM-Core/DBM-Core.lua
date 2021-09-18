@@ -65,15 +65,15 @@ end
 
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
-	ReleaseRevision = releaseDate(2021, 8, 31) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	ReleaseRevision = releaseDate(2021, 9, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 }
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.1.13 alpha"
+	DBM.DisplayVersion = "9.1.14 alpha"
 elseif isClassic then
 	DBM.DisplayVersion = "1.13.79 alpha"
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.12 alpha"
+	DBM.DisplayVersion = "2.5.13 alpha"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -252,7 +252,7 @@ DBM.DefaultOptions = {
 	SpecialWarningFlashCol3 = {1.0, 0.0, 0.0},--Red
 	SpecialWarningFlashCol4 = {1.0, 0.0, 1.0},--Purple
 	SpecialWarningFlashCol5 = {0.2, 1.0, 1.0},--Tealish
-	SpecialWarningFlashDura1 = 0.4,
+	SpecialWarningFlashDura1 = 0.3,
 	SpecialWarningFlashDura2 = 0.4,
 	SpecialWarningFlashDura3 = 1,
 	SpecialWarningFlashDura4 = 0.7,
@@ -425,9 +425,9 @@ local handleSync
 local fakeBWVersion, fakeBWHash
 -- TODO: BCC support
 if isRetail then
-	fakeBWVersion, fakeBWHash = 227, "5438284" -- 227
+	fakeBWVersion, fakeBWHash = 232, "09476e5"
 else
-	fakeBWVersion, fakeBWHash = 14, "42eb186"
+	fakeBWVersion, fakeBWHash = 30, "b5d0123"
 end
 local bwVersionResponseString = "V^%d^%s"
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
