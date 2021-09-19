@@ -24,6 +24,9 @@ jobs:
         with:
           args: "--no-color -q"
 
+      - name: Sets the env SHA
+        run: echo "SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
+
       - name: Run workflows on DBM-Retail
         uses: benc-uk/workflow-dispatch@v1
         with:
@@ -31,7 +34,7 @@ jobs:
           repo: DeadlyBossMods/DBM-Retail
           ref: master
           token: ${{ secrets.PERSONAL_TOKEN }}
-          inputs: '{ "SHA": "${GITHUB_SHA::7}"}'
+          inputs: '{ "SHA": "${{ env.SHA }}"}'
 
       - name: Run workflows on DBM-Classic
         uses: benc-uk/workflow-dispatch@v1
@@ -40,7 +43,7 @@ jobs:
           repo: DeadlyBossMods/DBM-Classic
           ref: master
           token: ${{ secrets.PERSONAL_TOKEN }}
-          inputs: '{ "SHA": "${GITHUB_SHA::7}"}'
+          inputs: '{ "SHA": "${{ env.SHA }}"}'
 
       - name: Run workflows on DBM-TBC-Classic
         uses: benc-uk/workflow-dispatch@v1
@@ -49,7 +52,7 @@ jobs:
           repo: DeadlyBossMods/DBM-TBC-Classic
           ref: master
           token: ${{ secrets.PERSONAL_TOKEN }}
-          inputs: '{ "SHA": "${GITHUB_SHA::7}"}'
+          inputs: '{ "SHA": "${{ env.SHA }}"}'
 
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
