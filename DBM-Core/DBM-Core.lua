@@ -5939,7 +5939,7 @@ do
 			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
 			local name = mod.combatInfo.name
 			local modId = mod.id
-			if C_Scenario.IsInScenario() and (mod.addon.type == "SCENARIO") then
+			if isRetail and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() then
 				mod.inScenario = true
 			end
 			mod.inCombat = true
@@ -7993,8 +7993,12 @@ function bossModPrototype:CheckDispelFilter()
 end
 
 function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
+	if not isRetail then
+		print("bossModPrototype:IsCriteriaCompleted should not be called in classic, report this message")
+		return false
+	end
 	if not criteriaIDToCheck then
-		geterrorhandler()("usage: mod:IsCriteriaComplected(criteriaId)")
+		error("usage: mod:IsCriteriaComplected(criteriaId)")
 		return false
 	end
 	local _, _, numCriteria = C_Scenario.GetStepInfo()
