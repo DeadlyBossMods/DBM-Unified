@@ -24,6 +24,30 @@ jobs:
         with:
           args: "--no-color -q"
 
+      - name: Run workflows on DBM-Retail
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: CI
+          repo: DeadlyBossMods/DBM-Retail
+          ref: master
+          token: ${{ secrets.PERSONAL_TOKEN }}
+
+      - name: Run workflows on DBM-Classic
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: CI
+          repo: DeadlyBossMods/DBM-Classic
+          ref: master
+          token: ${{ secrets.PERSONAL_TOKEN }}
+
+      - name: Run workflows on DBM-TBC-Classic
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: CI
+          repo: DeadlyBossMods/DBM-TBC-Classic
+          ref: master
+          token: ${{ secrets.PERSONAL_TOKEN }}
+
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
         with:
