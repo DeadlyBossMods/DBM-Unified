@@ -191,9 +191,13 @@ globals = {
 	"C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo",
 	"AcceptGroup",
 	"Ambiguate",
+	"BNGetFriendIndex", -- Classic
+	"BNGetFriendInfo", -- Classic
 	"BNGetFriendInfoByID", -- Classic
 	"BNGetGameAccountInfo", -- Classic
 	"BNGetNumFriends",
+	"BNGetNumFriendGameAccounts", -- Classic
+	"BNGetFriendGameAccountInfo", -- Classic
 	"BNIsSelf",
 	"BNSendGameData",
 	"BNSendWhisper",

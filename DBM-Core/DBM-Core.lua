@@ -620,7 +620,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 			--Check Battle.net friends
 			local _, numBNetOnline = BNGetNumFriends()
 			for i = 1, numBNetOnline do
-				local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
+				local presenceID = BNGetFriendInfo(i)
 				if presenceID then
 					local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with bnet launcher or mobile)
 					for j = 1, BNGetNumFriendGameAccounts(friendIndex) do
@@ -727,7 +727,7 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 				end
 			else
 				local presenceID, _, _, _, _, _, _, isFriendOnline = BNGetFriendInfo(i)
-				local _, _, _, _, userRealm = BNGetGAmeAccountInfo(presenceID)
+				local _, _, _, _, userRealm = BNGetGameAccountInfo(presenceID)
 				gameAccountID, isOnline, realmName = presenceID, isFriendOnline, userRealm
 			end
 			if gameAccountID and isOnline and realmName then
@@ -4997,7 +4997,6 @@ do
 				local _, _toonName = BNGetGameAccountInfo(sender)
 				toonName = _toonName
 			end
-			local toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or L.UNKNOWN
 			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), toonName))
