@@ -582,32 +582,60 @@ end
 --Whisper/Whisper Sync filter function
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, isRealIdMessage)
 	if checkFriends then
-		--Check Battle.net friends
-		if isRealIdMessage then
-			if filterRaid then
-				--Since filterRaid is true, we need to get tooninfo to see if they are in raid
-				local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
-				if accountInfo and accountInfo.gameAccountInfo then--game account info means they are logged into a bnet game
-					local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
-					if toonName and client == BNET_CLIENT_WOW and DBM:GetRaidUnitId(toonName) then--Check if toon name exists and if client is wow and if toonName is in raid.
-						return false--just set sender as unsafe
+		if isRetail then
+			--Check Battle.net friends
+			if isRealIdMessage then
+				if filterRaid then
+					--Since filterRaid is true, we need to get tooninfo to see if they are in raid
+					local accountInfo = C_BattleNet.GetAccountInfoByID(sender)
+					if accountInfo and accountInfo.gameAccountInfo then--game account info means they are logged into a bnet game
+						local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
+						if toonName and client == BNET_CLIENT_WOW and DBM:GetRaidUnitId(toonName) then--Check if toon name exists and if client is wow and if toonName is in raid.
+							return false--just set sender as unsafe
+						end
+					end
+				end
+				return true--Basically, if not trying to filter someone who's in raid with us, always return true. Non friends can't send realid/battle.net messages
+			else--Non battle.net message
+				--We still need to see if it's a bnet friend, even if it's not a realID message, just have to iterate over entire friendslist to find matching toonname
+				local _, numBNetOnline = BNGetNumFriends()
+				for i = 1, numBNetOnline do
+					local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
+					if accountInfo and accountInfo.gameAccountInfo then
+						local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
+						--Check if it's a bnet friend sending a non bnet whisper
+						if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+							if toonName == sender then--Now simply see if this is sender
+								if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
+									return false--just set sender as unsafe
+								else
+									return true
+								end
+							end
+						end
 					end
 				end
 			end
-			return true--Basically, if not trying to filter someone who's in raid with us, always return true. Non friends can't send realid/battle.net messages
-		else--Non battle.net message
-			--We still need to see if it's a bnet friend, even if it's not a realID message, just have to iterate over entire friendslist to find matching toonname
+		else
+			--Check Battle.net friends
 			local _, numBNetOnline = BNGetNumFriends()
 			for i = 1, numBNetOnline do
-				local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
-				if accountInfo and accountInfo.gameAccountInfo then
-					local toonName, client = accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.clientProgram or ""
-					--Check if it's a bnet friend sending a non bnet whisper
-					if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
-						if toonName == sender then--Now simply see if this is sender
-							if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
-								return false--just set sender as unsafe
-							else
+				local presenceID, _, _, _, _, _, _, isOnline = BNGetFriendInfo(i)
+				if presenceID then
+					local friendIndex = BNGetFriendIndex(presenceID)--Check if they are on more than one client at once (very likely with bnet launcher or mobile)
+					for j = 1, BNGetNumFriendGameAccounts(friendIndex) do
+						local _, toonName, client = BNGetFriendGameAccountInfo(friendIndex, j)
+						if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
+							if toonName == sender then--Now simply see if this is sender
+								if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
+									return false--just set sender as unsafe
+								else
+									return true
+								end
+							end
+						else
+							--Check if it's a bnet friend sending a bnet whisper who's not in game
+							if presenceID == sender then
 								return true
 							end
 						end
@@ -691,25 +719,32 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 		local connectedServers = GetAutoCompleteRealms()
 		for i = 1, numBNetOnline do
 			local sameRealm = false
-			local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
-			if accountInfo then
-				if accountInfo.gameAccountInfo.gameAccountID and accountInfo.gameAccountInfo.isOnline and accountInfo.gameAccountInfo.realmName then
-					local userRealm = accountInfo.gameAccountInfo.realmName
-					if connectedServers then
-						for j = 1, #connectedServers do
-							if userRealm == connectedServers[j] then
-								sameRealm = true
-								break
-							end
-						end
-					else
-						if userRealm == playerRealm then
+			local gameAccountID, isOnline, realmName
+			if isRetail then
+				local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
+				if accountInfo then
+					gameAccountID, isOnline, realmName = accountInfo.gameAccountInfo.gameAccountID, accountInfo.gameAccountInfo.isOnline, accountInfo.gameAccountInfo.realmName
+				end
+			else
+				local presenceID, _, _, _, _, _, _, isFriendOnline = BNGetFriendInfo(i)
+				local _, _, _, _, userRealm = BNGetGAmeAccountInfo(presenceID)
+				gameAccountID, isOnline, realmName = presenceID, isFriendOnline, userRealm
+			end
+			if gameAccountID and isOnline and realmName then
+				if connectedServers then
+					for j = 1, #connectedServers do
+						if realmName == connectedServers[j] then
 							sameRealm = true
+							break
 						end
 					end
-					if sameRealm then
-						BNSendGameData(accountInfo.gameAccountInfo.gameAccountID, DBMPrefix, prefix.."\t"..msg)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
+				else
+					if realmName == playerRealm then
+						sameRealm = true
 					end
+				end
+				if sameRealm then
+					BNSendGameData(gameAccountID, DBMPrefix, prefix.."\t"..msg)--Just send users realm for pull, so we can eliminate connectedServers checks on sync handler
 				end
 			end
 		end
@@ -4205,7 +4240,7 @@ do
 		--TimerTracker Cleanup, required to work around logic code blizzard put into TimerTracker for /countdown timers
 		--TimerTracker is hard coded that if a type 3 timer exists, to give it prio over type 1 and type 2. This causes the M+ timer not to show, even if only like 0.01 sec was left on the /countdown
 		--We want to avoid situations where players start a 10 second timer, but click keystone with fractions of a second left, preventing them from seeing the M+ timer
-		if not DBM.Options.DontShowPTCountdownText then
+		if not DBM.Options.DontShowPTCountdownText and TimerTracker then -- Doesn't exist in classic
 			for _, tttimer in pairs(TimerTracker.timerList) do
 				if tttimer.type == 3 and not tttimer.isFree then
 					FreeTimerTrackerTimer(tttimer)
@@ -4562,7 +4597,7 @@ do
 			dummyMod.timer:Stop()
 		end
 		local timerTrackerRunning = false
-		if not DBM.Options.DontShowPTCountdownText then
+		if not DBM.Options.DontShowPTCountdownText and TimerTracker then
 			for _, tttimer in pairs(TimerTracker.timerList) do
 				if not tttimer.isFree then--Timer event running
 					if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
@@ -4579,7 +4614,7 @@ do
 		if not DBM.Options.DontShowPT2 then
 			dummyMod.timer:Start(timer, L.TIMER_PULL)
 		end
-		if not DBM.Options.DontShowPTCountdownText then
+		if not DBM.Options.DontShowPTCountdownText and TimerTracker then
 			if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
 				--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
 				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
@@ -4954,7 +4989,14 @@ do
 		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
 		lastBossEngage[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and (isRetail and not IsEncounterInProgress() or #inCombat == 0) then
-			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
+			local toonName
+			if isRetail then
+				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
+				toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
+			else
+				local _, _toonName = BNGetGameAccountInfo(sender)
+				toonName = _toonName
+			end
 			local toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or L.UNKNOWN
@@ -4967,8 +5009,14 @@ do
 		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 		lastBossDefeat[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
-			local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
-			local toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
+			local toonName
+			if isRetail then
+				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
+				toonName = gameAccountInfo and gameAccountInfo.characterName or L.UNKNOWN
+			else
+				local _, _toonName = BNGetGameAccountInfo(sender)
+				toonName = _toonName
+			end
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or L.UNKNOWN
 			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, toonName))
@@ -6068,7 +6116,7 @@ do
 				if dummyMod then--stop pull timer
 					dummyMod.text:Cancel()
 					dummyMod.timer:Stop()
-					if not self.Options.DontShowPTCountdownText then
+					if not self.Options.DontShowPTCountdownText and TimerTracker then
 						for _, tttimer in pairs(TimerTracker.timerList) do
 							if tttimer.type == 3 and not tttimer.isFree then
 								FreeTimerTrackerTimer(tttimer)
