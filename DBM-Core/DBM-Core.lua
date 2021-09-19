@@ -12117,11 +12117,13 @@ do
 				end
 				if not isFiltered then
 					if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
-						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid2, 2)
+						DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitid2, 1)
 						if type(creatureID[cid2]) == "number" then
 							SetRaidTarget(unitid2, creatureID[cid2])
+							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..creatureID[cid2], 2)
 						else
 							SetRaidTarget(unitid2, addsIcon[scanID])
+							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..addsIcon[scanID], 2)
 							if iconSetMethod == 1 then
 								addsIcon[scanID] = addsIcon[scanID] + 1
 							else
@@ -12138,16 +12140,21 @@ do
 							return
 						end
 					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID) or (cid2 == secondCreatureID)) and not addsGUIDs[guid2] then
-						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid2, 2)
+						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid2, 1)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid2, mobIcon)
+							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..mobIcon, 2)
 						else
 							SetRaidTarget(unitid2, addsIcon[scanID])
+							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..addsIcon[scanID], 2)
 							if iconSetMethod == 1 then
 								addsIcon[scanID] = addsIcon[scanID] + 1
 							else
 								addsIcon[scanID] = addsIcon[scanID] - 1
 							end
+						end
+						if DBM.Options.DebugMode and unitid2:find("boss") and not UnitExists(unitid2) then
+							DBM:Debug("SetRaidTarget may have failed on boss unit ID because unit does not yet exist, consider a delay on this method", 1)
 						end
 						addsGUIDs[guid2] = true
 						addsIconSet[scanID] = addsIconSet[scanID] + 1
@@ -12173,11 +12180,13 @@ do
 				end
 				if not isFiltered then
 					if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
-						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 2)
+						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 1)
 						if type(creatureID[cid]) == "number" then
 							SetRaidTarget(unitid, creatureID[cid])
+							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..creatureID[cid2], 2)
 						else
 							SetRaidTarget(unitid, addsIcon[scanID])
+							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..addsIcon[scanID], 2)
 							if iconSetMethod == 1 then
 								addsIcon[scanID] = addsIcon[scanID] + 1
 							else
@@ -12194,11 +12203,13 @@ do
 							return
 						end
 					elseif guid and ((guid == creatureID) or (cid == creatureID) or (cid == secondCreatureID)) and not addsGUIDs[guid] then
-						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 2)
+						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 1)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid, mobIcon)
+							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..mobIcon, 2)
 						else
 							SetRaidTarget(unitid, addsIcon[scanID])
+							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..addsIcon[scanID], 2)
 							if iconSetMethod == 1 then
 								addsIcon[scanID] = addsIcon[scanID] + 1
 							else
