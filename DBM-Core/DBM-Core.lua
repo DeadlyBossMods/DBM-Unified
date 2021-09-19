@@ -12183,7 +12183,7 @@ do
 						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 1)
 						if type(creatureID[cid]) == "number" then
 							SetRaidTarget(unitid, creatureID[cid])
-							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..creatureID[cid2], 2)
+							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..creatureID[cid], 2)
 						else
 							SetRaidTarget(unitid, addsIcon[scanID])
 							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..addsIcon[scanID], 2)
