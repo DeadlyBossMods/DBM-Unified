@@ -31,6 +31,7 @@ jobs:
           repo: DeadlyBossMods/DBM-Retail
           ref: master
           token: ${{ secrets.PERSONAL_TOKEN }}
+          inputs: '{ "SHA": "${GITHUB_SHA::7}"}'
 
       - name: Run workflows on DBM-Classic
         uses: benc-uk/workflow-dispatch@v1
@@ -39,6 +40,7 @@ jobs:
           repo: DeadlyBossMods/DBM-Classic
           ref: master
           token: ${{ secrets.PERSONAL_TOKEN }}
+          inputs: '{ "SHA": "${GITHUB_SHA::7}"}'
 
       - name: Run workflows on DBM-TBC-Classic
         uses: benc-uk/workflow-dispatch@v1
@@ -47,6 +49,7 @@ jobs:
           repo: DeadlyBossMods/DBM-TBC-Classic
           ref: master
           token: ${{ secrets.PERSONAL_TOKEN }}
+          inputs: '{ "SHA": "${GITHUB_SHA::7}"}'
 
       - name: Send Status to Discord
         uses: nebularg/actions-discord-webhook@v1
