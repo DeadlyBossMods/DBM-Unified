@@ -4968,7 +4968,7 @@ do
 
 	guildSyncHandlers["WBA"] = function(sender, bossName, faction, spellId, time, ver) -- Classic only
 		DBM:Debug("WBA sync recieved")
-		if not ver or not (ver == "4") then return end--Ignore old versions
+		if not ver or not (ver == "4") or isRetail then return end--Ignore old versions
 		if lastBossEngage[bossName..faction] and (GetTime() - lastBossEngage[bossName..faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
 		lastBossEngage[bossName..faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
@@ -5024,7 +5024,7 @@ do
 
 	whisperSyncHandlers["WBA"] = function(sender, bossName, faction, spellId, time, ver) -- Classic only
 		DBM:Debug("WBA sync recieved")
-		if not ver or not (ver == "4") then return end--Ignore old versions
+		if not ver or not (ver == "4") or isRetail then return end--Ignore old versions
 		if lastBossEngage[bossName..faction] and (GetTime() - lastBossEngage[bossName..faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
 		lastBossEngage[bossName..faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
