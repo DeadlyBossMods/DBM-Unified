@@ -25,7 +25,6 @@
 ## Version: @project-version@
 ## X-Website: https://deadlybossmods.com
 
-#@no-lib-strip@
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\LibChatAnims\LibChatAnims.xml
@@ -36,7 +35,6 @@ Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\LibDeflate.lua
 Libs\LibSerialize\lib.xml
-#@end-no-lib-strip@
 
 localization.en.lua
 localization.de.lua
