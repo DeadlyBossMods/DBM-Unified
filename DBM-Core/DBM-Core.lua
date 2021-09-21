@@ -6100,9 +6100,7 @@ do
 							self:AddMsg(L.SCENARIO_STARTED:format(difficultyText..name))
 						else
 							self:AddMsg(L.COMBAT_STARTED:format(difficultyText..name))
-							local check = isRetail and
-								((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled) or
-								difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10 -- Classic
+							local check = not statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 							if check and not self.Options.DisableGuildStatus then--Only send relevant content, not guild beating down lich king or LFR.
 								self:Schedule(1.5, delayedGCSync, modId, difficultyIndex, difficultyModifier, name)
 							end
@@ -6374,9 +6372,7 @@ do
 							msg = L.BOSS_DOWN_L:format(difficultyText..name, thisTimeString, strFromTime(lastTime), strFromTime(bestTime), totalKills)
 						end
 					end
-					local check = isRetail and
-						((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty() and not statusGuildDisabled) or
-						difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10 -- Classic
+					local check = not statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and updateNotificationDisplayed == 0 then
 						SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t6\t0\t"..thisTimeString.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name, "GUILD")
 					end
