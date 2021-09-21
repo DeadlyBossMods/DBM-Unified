@@ -425,7 +425,6 @@ local voiceSessionDisabled = false
 local handleSync
 
 local fakeBWVersion, fakeBWHash
--- TODO: BCC support
 if isRetail then
 	fakeBWVersion, fakeBWHash = 232, "09476e5"
 else

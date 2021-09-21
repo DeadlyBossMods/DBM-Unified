@@ -12,7 +12,9 @@ local generalMessagesArea = generalWarningPanel:CreateArea(L.CombatMessages)
 generalMessagesArea:CreateCheckButton(L.ShowEngageMessage, true, nil, "ShowEngageMessage")
 generalMessagesArea:CreateCheckButton(L.ShowDefeatMessage, true, nil, "ShowDefeatMessage")
 generalMessagesArea:CreateCheckButton(L.ShowGuildMessages, true, nil, "ShowGuildMessages")
-generalMessagesArea:CreateCheckButton(L.ShowGuildMessagesPlus, true, nil, "ShowGuildMessagesPlus")
+if isRetail then
+	generalMessagesArea:CreateCheckButton(L.ShowGuildMessagesPlus, true, nil, "ShowGuildMessagesPlus")
+end
 
 local generalExtraAlerts = generalWarningPanel:CreateArea(L.Area_ChatAlerts)
 if isRetail then
