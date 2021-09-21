@@ -4878,11 +4878,11 @@ do
 		if not ver or not (ver == "3") then return end--Ignore old versions
 		if DBM:AntiSpam(10, "GCB") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
+			difficulty = tonumber(difficulty)
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
 			modId = tonumber(modId)
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or L.UNKNOWN
 			if isRetail then
-				difficulty = tonumber(difficulty)
 				local difficultyName
 				if difficulty == 8 then
 					if difficultyModifier and difficultyModifier ~= 0 then
@@ -4909,11 +4909,11 @@ do
 		if not ver or not (ver == "6") then return end--Ignore old versions
 		if DBM:AntiSpam(5, "GCE") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
+			difficulty = tonumber(difficulty)
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
 			modId = tonumber(modId)
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or L.UNKNOWN
 			if isRetail then
-				difficulty = tonumber(difficulty)
 				local difficultyName
 				if difficulty == 8 then
 					if difficultyModifier and difficultyModifier ~= 0 then
