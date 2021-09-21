@@ -787,7 +787,7 @@ local sendWhisper
 function sendWhisper(target, msg)
 	if type(target) == "number" then
 		if not BNIsSelf(target) then -- never send BNet whispers to ourselves
-			sendWhisper(target, msg)
+			BNSendWhisper(target, msg)
 			return true
 		end
 	elseif type(target) == "string" then
