@@ -10310,17 +10310,21 @@ do
 		self:PlaySoundFile(path..number..".ogg")
 	end
 
-	function DBM:CheckVoicePackVersion(value)
-		local activeVP = self.Options.ChosenVoicePack
-		--Check if voice pack out of date
-		if activeVP ~= "None" and activeVP == value then
-			if self.VoiceVersions[value] < 11 then--Version will be bumped when new voice packs released that contain new voices.
-				if self.Options.ShowReminders then
-					self:AddMsg(L.VOICE_PACK_OUTDATED)
+	do
+		local minVoicePackVersion = isRetail and 11 or 10
+
+		function DBM:CheckVoicePackVersion(value)
+			local activeVP = self.Options.ChosenVoicePack
+			--Check if voice pack out of date
+			if activeVP ~= "None" and activeVP == value then
+				if self.VoiceVersions[value] < minVoicePackVersion then--Version will be bumped when new voice packs released that contain new voices.
+					if self.Options.ShowReminders then
+						self:AddMsg(L.VOICE_PACK_OUTDATED)
+					end
+					SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
+				else
+					SWFilterDisabed = minVoicePackVersion
 				end
-				SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
-			else
-				SWFilterDisabed = 11
 			end
 		end
 	end
