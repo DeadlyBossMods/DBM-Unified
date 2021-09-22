@@ -5992,7 +5992,7 @@ do
 			if self.Options.RecordOnlyBosses then
 				self:StartLogging(0, nil)
 			end
-			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and GetNumTrackedAchievements() == 0 and difficultyIndex ~= 8 and not InCombatLockdown() then
+			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and (not isRetail or GetNumTrackedAchievements() == 0) and difficultyIndex ~= 8 and not InCombatLockdown() then
 				if isRetail then
 					if ObjectiveTrackerFrame:IsVisible() then
 						ObjectiveTracker_Collapse()
