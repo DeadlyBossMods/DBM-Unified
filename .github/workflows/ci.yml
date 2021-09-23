@@ -11,18 +11,27 @@ on:
       - master
 
 jobs:
-  build:
+  test:
+    name: Testing
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
-        with:
-          fetch-depth: 100
 
       - name: Install and run Luacheck
         uses: nebularg/actions-luacheck@v1
         with:
           args: "--no-color -q"
+
+  deploy:
+    name: Deployment
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    needs:
+      - test
+
+    steps:
+      - uses: actions/checkout@v1
 
       - name: Sets the env SHA
         run: echo "SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
