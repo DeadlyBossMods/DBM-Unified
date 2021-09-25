@@ -7686,7 +7686,7 @@ do
 			elseif type(nameModifier) == "function" then--custom name modify function
 				t = nameModifier(t or name)
 			else--default name modify
-				t = string.split(",", t or name)
+				t = string.split(",", t or obj.localization.general.name or name)
 			end
 			obj.localization.general.name = t or name
 		else
