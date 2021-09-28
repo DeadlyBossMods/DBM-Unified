@@ -68,13 +68,13 @@ DBM = {
 }
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.1.15"
+	DBM.DisplayVersion = "9.1.16 alpha"
 	DBM.ReleaseRevision = releaseDate(2021, 9, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
-	DBM.DisplayVersion = "1.13.82"
+	DBM.DisplayVersion = "1.13.83 alpha"
 	DBM.ReleaseRevision = releaseDate(2021, 9, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.15"
+	DBM.DisplayVersion = "2.5.16 alpha"
 	DBM.ReleaseRevision = releaseDate(2021, 9, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
