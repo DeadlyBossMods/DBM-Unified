@@ -105,9 +105,9 @@ end
 
 do
 	--Not removing yet because you can bet there will be some reason to use a retail vs classic check again for next major version
-	local isRetailClient = BackdropTemplateMixin and true or false
-	function DBM:IsRetailClient()
-		return isRetailClient
+	local isLatestCodebase = BackdropTemplateMixin and true or false
+	function DBM:IsLatestCodebase()
+		return isLatestCodebase
 	end
 end
 
