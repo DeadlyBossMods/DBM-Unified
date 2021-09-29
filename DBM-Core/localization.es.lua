@@ -110,6 +110,7 @@ L.MOD_DEFAULT_LOADED			= "Se han cargado las opciones por defecto de este encuen
 
 L.WORLDBOSS_ENGAGED			= "Es posible que el encuentro de %s se haya iniciado en tu reino a %s de su salud máxima. (Enviado por %s.)"
 L.WORLDBOSS_DEFEATED			= "Es posible que %s haya sido derrotado en tu reino. (Enviado por %s.)"
+L.WORLDBUFF_STARTED			= "%s ha empezado en tu reino para la facción %s (Enviado por %s)."
 
 L.TIMER_FORMAT_SECS			= "%.2f |4segundo:segundos;"
 L.TIMER_FORMAT_MINS			= "%d |4minuto:minutos;"

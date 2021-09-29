@@ -89,6 +89,7 @@ L.MOD_DEFAULT_LOADED			= "Les options par défaut pour ce combat ont été charg
 
 L.WORLDBOSS_ENGAGED          = "%s a probablement été engagé sur votre royaume à %s de vie. (Envoyé par %s)"
 L.WORLDBOSS_DEFEATED         = "%s a probablement été tué sur votre royaume (Envoyé par %s)."
+L.WORLDBUFF_STARTED			= "%s a commencé sur votre royaume depuis la faction de %s (Envoyé par %s)."
 
 L.TIMER_FORMAT_SECS			= "%.2f |4seconde:secondes;"
 L.TIMER_FORMAT_MINS			= "%d |4minute:minutes;"

@@ -114,6 +114,7 @@ L.SOUNDKIT_MIGRATION			= "한개 이상의 알림/특수 알림 효과음이 호
 
 L.WORLDBOSS_ENGAGED			= "당신이 속한 서버에서 %s 전투가 %s 퍼센트의 체력으로 시작된 것 같습니다. (%s|1이;가; 전송)"
 L.WORLDBOSS_DEFEATED			= "당신이 속한 서버에서 %s|1이;가; 잡힌 것 같습니다. (%s|1이;가; 전송)"
+L.WORLDBUFF_STARTED			= "%s 버프가 당신이 속한 서버의 %s 진영에서 시작됐습니다. (%s|1이;가; 받음)"
 
 L.TIMER_FORMAT_SECS			= "%.2f초"
 L.TIMER_FORMAT_MINS			= "%d분"
