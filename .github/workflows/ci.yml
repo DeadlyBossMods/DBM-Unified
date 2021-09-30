@@ -46,10 +46,10 @@ jobs:
         with:
           repository: 'DeadlyBossMods/${{ matrix.repo }}'
           ref: 'master'
-          path: '.'
           token: ${{ secrets.PERSONAL_TOKEN }}
 
       - name: Deploy on ${{ matrix.repo }}
         run: |
+          cd ${{ matrix.repo }}
           git commit --allow-empty -m ${{ github.event.head_commit.message }}
           git push
