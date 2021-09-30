@@ -51,5 +51,5 @@ jobs:
       - name: Deploy on ${{ matrix.repo }}
         run: |
           cd /home/runner/work/DBM-Unified/${{ matrix.repo }}
-          git commit --allow-empty -m ${{ github.event.head_commit.message }}
+          git commit --allow-empty -m "${{ github.event.head_commit.message }}"
           git push
