@@ -5512,16 +5512,16 @@ do
 				ObjectiveTracker_Expand()
 			else
 				QuestWatchFrame:Show()
-				local QuestieLoader = _G["QuestieLoader"]
-				if QuestieLoader then
-					local QuestieTracker = _G["QuestieTracker"] or QuestieLoader:ImportModule("QuestieTracker")--Might be a global in some versions, but not a global in others
-					if QuestieTracker and questieWatchRestore and QuestieTracker.Enable then
-						QuestieTracker:Enable()
-						questieWatchRestore = false
-					end
-				end
 			end
 			watchFrameRestore = false
+		end
+		local QuestieLoader = _G["QuestieLoader"]
+		if QuestieLoader then
+			local QuestieTracker = _G["QuestieTracker"] or QuestieLoader:ImportModule("QuestieTracker")--Might be a global in some versions, but not a global in others
+			if QuestieTracker and questieWatchRestore and QuestieTracker.Enable then
+				QuestieTracker:Enable()
+				questieWatchRestore = false
+			end
 		end
 	end
 
@@ -6419,16 +6419,16 @@ do
 							ObjectiveTracker_Expand()
 						else
 							QuestWatchFrame:Show()
-							local QuestieLoader = _G["QuestieLoader"]
-							if QuestieLoader then
-								local QuestieTracker = _G["QuestieTracker"] or QuestieLoader:ImportModule("QuestieTracker")--Might be a global in some versions, but not a global in others
-								if QuestieTracker and questieWatchRestore and QuestieTracker.Enable then
-									QuestieTracker:Enable()
-									questieWatchRestore = false
-								end
-							end
 						end
 						watchFrameRestore = false
+					end
+					local QuestieLoader = _G["QuestieLoader"]
+					if QuestieLoader then
+						local QuestieTracker = _G["QuestieTracker"] or QuestieLoader:ImportModule("QuestieTracker")--Might be a global in some versions, but not a global in others
+						if QuestieTracker and questieWatchRestore and QuestieTracker.Enable then
+							QuestieTracker:Enable()
+							questieWatchRestore = false
+						end
 					end
 				end
 				if tooltipsHidden then
