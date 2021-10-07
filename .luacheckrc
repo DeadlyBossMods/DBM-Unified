@@ -335,6 +335,7 @@ globals = {
 	"UnitIsGroupLeader",
 	"UnitIsPlayer",
 	"UnitIsUnit",
+	"UnitIsVisible",
 	"UnitLevel",
 	"UnitName",
 	"UnitPhaseReason",
