@@ -12055,12 +12055,17 @@ do
 		return false
 	end
 
-	local mobUids = {"boss1", "boss2", "boss3", "boss4", "boss5",
-	"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
+	local mobUids = {"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
 	"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
 	"nameplate21", "nameplate22", "nameplate23", "nameplate24", "nameplate25", "nameplate26", "nameplate27", "nameplate28", "nameplate29", "nameplate30",
 	"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40",
-	"mouseover", "target"}
+	"raid1target", "raid2target", "raid3target", "raid4target", "raid5target", "raid6target", "raid7target", "raid8target", "raid9target", "raid10target",
+	"raid11target", "raid12target", "raid13target", "raid14target", "raid15target", "raid16target", "raid17target", "raid18target", "raid19target", "raid20target",
+	"raid21target", "raid22target", "raid23target", "raid24target", "raid25target", "raid26target", "raid27target", "raid28target", "raid29target", "raid30target",
+	"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
+	"party1target", "party2target", "party3target", "party4target",
+	"mouseover", "target", "focus", "targettarget", "mouseovertarget",
+	"boss1", "boss2", "boss3", "boss4", "boss5",}
 	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, allowFriendly, secondCreatureID, skipMarked, allAllowed)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
@@ -12094,70 +12099,7 @@ do
 			if not addsIconSet[scanID] then addsIconSet[scanID] = 0 end
 			if not scanExpires[scanID] then scanExpires[scanID] = timeNow + scanningTime end
 			--DO SCAN NOW
-			for _, unitid2 in ipairs(mobUids) do
-				local guid2 = UnitGUID(unitid2)
-				local cid2 = self:GetCIDFromGUID(guid2)
-				local isFriend = UnitIsFriend("player", unitid2)
-				local isFiltered = false
-				if (not allowFriendly and isFriend) or (skipMarked and GetRaidTargetIndex(unitid2)) then
-					isFiltered = true
-					DBM:Debug(unitid2.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
-				end
-				if not isFiltered then
-					if guid2 and type(creatureID) == "table" and creatureID[cid2] and not addsGUIDs[guid2] then
-						DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitid2, 1)
-						if type(creatureID[cid2]) == "number" then
-							SetRaidTarget(unitid2, creatureID[cid2])
-							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..creatureID[cid2], 2)
-						else
-							SetRaidTarget(unitid2, addsIcon[scanID])
-							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..addsIcon[scanID], 2)
-							if iconSetMethod == 1 then
-								addsIcon[scanID] = addsIcon[scanID] + 1
-							else
-								addsIcon[scanID] = addsIcon[scanID] - 1
-							end
-						end
-						addsGUIDs[guid2] = true
-						addsIconSet[scanID] = addsIconSet[scanID] + 1
-						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-							--clear variables
-							scanExpires[scanID] = nil
-							addsIcon[scanID] = nil
-							addsIconSet[scanID] = nil
-							return
-						end
-					elseif guid2 and ((guid2 == creatureID) or (cid2 == creatureID) or (cid2 == secondCreatureID)) and not addsGUIDs[guid2] then
-						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid2, 1)
-						if iconSetMethod == 2 then
-							SetRaidTarget(unitid2, mobIcon)
-							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..mobIcon, 2)
-						else
-							SetRaidTarget(unitid2, addsIcon[scanID])
-							DBM:Debug("DBM called SetRaidTarget on "..unitid2.." with icon value of "..addsIcon[scanID], 2)
-							if iconSetMethod == 1 then
-								addsIcon[scanID] = addsIcon[scanID] + 1
-							else
-								addsIcon[scanID] = addsIcon[scanID] - 1
-							end
-						end
-						if DBM.Options.DebugMode and unitid2:find("boss") and not UnitExists(unitid2) then
-							DBM:Debug("SetRaidTarget may have failed on boss unit ID because unit does not yet exist, consider a delay on this method", 1)
-						end
-						addsGUIDs[guid2] = true
-						addsIconSet[scanID] = addsIconSet[scanID] + 1
-						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-							--clear variables
-							scanExpires[scanID] = nil
-							addsIcon[scanID] = nil
-							addsIconSet[scanID] = nil
-							return
-						end
-					end
-				end
-			end
-			for uId in DBM:GetGroupMembers() do
-				local unitid = uId.."target"
+			for _, unitid in ipairs(mobUids) do
 				local guid = UnitGUID(unitid)
 				local cid = self:GetCIDFromGUID(guid)
 				local isFriend = UnitIsFriend("player", unitid)
@@ -12168,7 +12110,7 @@ do
 				end
 				if not isFiltered then
 					if guid and type(creatureID) == "table" and creatureID[cid] and not addsGUIDs[guid] then
-						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 1)
+						DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitid, 1)
 						if type(creatureID[cid]) == "number" then
 							SetRaidTarget(unitid, creatureID[cid])
 							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..creatureID[cid], 2)
@@ -12191,7 +12133,7 @@ do
 							return
 						end
 					elseif guid and ((guid == creatureID) or (cid == creatureID) or (cid == secondCreatureID)) and not addsGUIDs[guid] then
-						DBM:Debug("Match found in group target scan, SHOULD be setting icon on "..unitid, 1)
+						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid, 1)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid, mobIcon)
 							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..mobIcon, 2)
@@ -12202,6 +12144,14 @@ do
 								addsIcon[scanID] = addsIcon[scanID] + 1
 							else
 								addsIcon[scanID] = addsIcon[scanID] - 1
+							end
+						end
+						if DBM.Options.DebugMode and unitid:find("boss") then
+							if not UnitExists(unitid) then
+								DBM:Debug("SetRaidTarget may have failed on boss unit ID because unit does not yet exist, consider a delay on this method", 1)
+							end
+							if not UnitIsVisible(unitid) then
+								DBM:Debug("SetRaidTarget may have failed on boss unit ID because unit is not visible yet, consider a delay on this method", 1)
 							end
 						end
 						addsGUIDs[guid] = true
