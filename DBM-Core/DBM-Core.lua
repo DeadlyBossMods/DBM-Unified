@@ -4350,9 +4350,6 @@ end
 
 do
 	local function loadModByUnit(uId)
-		if not uId then
-			uId = "mouseover"
-		end
 		if IsInInstance() or not UnitIsFriend("player", uId) and UnitIsDead("player") or UnitIsDead(uId) then return end--If you're in an instance no reason to waste cpu. If THE BOSS dead, no reason to load a mod for it. To prevent rare lua error, needed to filter on player dead.
 		local guid = UnitGUID(uId)
 		if guid and DBM:IsCreatureGUID(guid) then
@@ -4373,7 +4370,7 @@ do
 
 	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
-		loadModByUnit()
+		loadModByUnit("mouseover")
 	end
 
 	function DBM:NAME_PLATE_UNIT_ADDED(uId)
