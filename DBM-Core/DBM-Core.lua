@@ -4176,7 +4176,7 @@ do
 		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			LastInstanceType = "none"
 			if not targetEventsRegistered then
-				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT")
+				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED")
 				targetEventsRegistered = true
 			end
 		else
@@ -4352,8 +4352,6 @@ do
 	local function loadModByUnit(uId)
 		if not uId then
 			uId = "mouseover"
-		else
-			uId = uId.."target"
 		end
 		if IsInInstance() or not UnitIsFriend("player", uId) and UnitIsDead("player") or UnitIsDead(uId) then return end--If you're in an instance no reason to waste cpu. If THE BOSS dead, no reason to load a mod for it. To prevent rare lua error, needed to filter on player dead.
 		local guid = UnitGUID(uId)
@@ -4373,14 +4371,18 @@ do
 		end
 	end
 
-	--Loading routeens hacks for world bosses based on target or mouseover.
+	--Loading routeens checks for world bosses based on target or mouseover or nameplate.
 	function DBM:UPDATE_MOUSEOVER_UNIT()
 		loadModByUnit()
 	end
 
+	function DBM:NAME_PLATE_UNIT_ADDED(uId)
+		loadModByUnit(uId)
+	end
+
 	function DBM:UNIT_TARGET_UNFILTERED(uId)
 		if targetEventsRegistered then--Allow outdoor mod loading
-			loadModByUnit(uId)
+			loadModByUnit(uId.."target")
 		end
 		--Debug options for seeing where BossUnitTargetScanner can be used.
 		local transcriptor = _G["Transcriptor"]
@@ -4390,7 +4392,7 @@ do
 		end
 		--Active BossUnitTargetScanner
 		if targetMonitor[uId] and UnitExists(uId.."target") and UnitPlayerOrPetInRaid(uId.."target") then
-			self:Debug("targetMonitor for this unit exists, target exists", 2)
+			self:Debug("targetMonitor for this unit exists, target exists in group", 2)
 			local modId, returnFunc = targetMonitor[uId].modid, targetMonitor[uId].returnFunc
 			self:Debug("targetMonitor: "..modId..", "..uId..", "..returnFunc, 2)
 			if not targetMonitor[uId].allowTank then
