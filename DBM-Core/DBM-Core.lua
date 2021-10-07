@@ -68,7 +68,7 @@ DBM = {
 }
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.1.17"
+	DBM.DisplayVersion = "9.1.18 alpha"
 	DBM.ReleaseRevision = releaseDate(2021, 10, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.1 alpha"
