@@ -12103,6 +12103,7 @@ do
 				local cid = self:GetCIDFromGUID(guid)
 				local isFriend = UnitIsFriend("player", unitid)
 				local isFiltered = false
+				local success = false
 				if (not allowFriendly and isFriend) or (skipMarked and GetRaidTargetIndex(unitid)) then
 					isFiltered = true
 					DBM:Debug(unitid.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
@@ -12113,36 +12114,53 @@ do
 						if type(creatureID[cid]) == "number" then
 							SetRaidTarget(unitid, creatureID[cid])
 							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..creatureID[cid], 2)
+							if GetRaidTargetIndex(unitid) then
+								success = true
+							end
 						else
 							SetRaidTarget(unitid, addsIcon[scanID])
 							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..addsIcon[scanID], 2)
-							if iconSetMethod == 1 then
-								addsIcon[scanID] = addsIcon[scanID] + 1
-							else
-								addsIcon[scanID] = addsIcon[scanID] - 1
+							if GetRaidTargetIndex(unitid) then
+								success = true
+								if iconSetMethod == 1 then
+									addsIcon[scanID] = addsIcon[scanID] + 1
+								else
+									addsIcon[scanID] = addsIcon[scanID] - 1
+								end
 							end
 						end
-						addsGUIDs[guid] = true
-						addsIconSet[scanID] = addsIconSet[scanID] + 1
-						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-							--clear variables
-							scanExpires[scanID] = nil
-							addsIcon[scanID] = nil
-							addsIconSet[scanID] = nil
-							return
+						if success then
+							DBM:Debug("SetRaidTarget was successful", 2)
+							addsGUIDs[guid] = true
+							addsIconSet[scanID] = addsIconSet[scanID] + 1
+							if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+								--clear variables
+								scanExpires[scanID] = nil
+								addsIcon[scanID] = nil
+								addsIconSet[scanID] = nil
+								return
+							end
+						else
+							DBM:Debug("SetRaidTarget failed", 2)
 						end
 					elseif guid and ((guid == creatureID) or (cid == creatureID) or (cid == secondCreatureID)) and not addsGUIDs[guid] then
 						DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid, 1)
 						if iconSetMethod == 2 then
 							SetRaidTarget(unitid, mobIcon)
 							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..mobIcon, 2)
+							if GetRaidTargetIndex(unitid) then
+								success = true
+							end
 						else
 							SetRaidTarget(unitid, addsIcon[scanID])
 							DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..addsIcon[scanID], 2)
-							if iconSetMethod == 1 then
-								addsIcon[scanID] = addsIcon[scanID] + 1
-							else
-								addsIcon[scanID] = addsIcon[scanID] - 1
+							if GetRaidTargetIndex(unitid) then
+								success = true
+								if iconSetMethod == 1 then
+									addsIcon[scanID] = addsIcon[scanID] + 1
+								else
+									addsIcon[scanID] = addsIcon[scanID] - 1
+								end
 							end
 						end
 						if DBM.Options.DebugMode and unitid:find("boss") then
@@ -12153,14 +12171,19 @@ do
 								DBM:Debug("SetRaidTarget may have failed on boss unit ID because unit is not visible yet, consider a delay on this method", 1)
 							end
 						end
-						addsGUIDs[guid] = true
-						addsIconSet[scanID] = addsIconSet[scanID] + 1
-						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-							--clear variables
-							scanExpires[scanID] = nil
-							addsIcon[scanID] = nil
-							addsIconSet[scanID] = nil
-							return
+						if success then
+							DBM:Debug("SetRaidTarget was successful", 2)
+							addsGUIDs[guid] = true
+							addsIconSet[scanID] = addsIconSet[scanID] + 1
+							if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
+								--clear variables
+								scanExpires[scanID] = nil
+								addsIcon[scanID] = nil
+								addsIconSet[scanID] = nil
+								return
+							end
+						else
+							DBM:Debug("SetRaidTarget failed", 2)
 						end
 					end
 				end
