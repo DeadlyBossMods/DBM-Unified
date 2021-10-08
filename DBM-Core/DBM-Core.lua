@@ -12064,7 +12064,7 @@ do
 	"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
 	"party1target", "party2target", "party3target", "party4target",
 	"mouseover", "target", "focus", "targettarget", "mouseovertarget",
-	"boss1", "boss2", "boss3", "boss4", "boss5",}
+	"boss1", "boss2", "boss3", "boss4", "boss5", "arena1", "arena2", "arena3", "arena4", "arena5"}
 	function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, allowFriendly, secondCreatureID, skipMarked, allAllowed)
 		if not optionName then optionName = self.findFastestComputer[1] end
 		if canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
