@@ -11859,6 +11859,7 @@ do
 	local addsIcon = {}
 	local addsIconSet = {}
 
+	--bossModPrototype.SetIcon = private:GetModule("Icons").SetIcon
 	function bossModPrototype:SetIcon(target, icon, timer)
 		if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
 		if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank(playerName) == 0 then

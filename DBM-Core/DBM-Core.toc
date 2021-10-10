@@ -47,6 +47,12 @@ localization.kr.lua
 localization.es.lua
 localization.br.lua
 
+# Pre-core modules
+modules\Modules.lua
+
+modules\Icons.lua
+
+# Core
 DBM-Core.lua
 DBM-Arrow.lua
 DBM-Flash.lua
