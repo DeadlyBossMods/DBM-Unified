@@ -125,7 +125,7 @@ local function SetIconBySortedTable(bossModPrototype, startIcon, reverseIcon, re
 	end
 	for _, v in ipairs(iconSortTable[scanId]) do
 		if not bossModPrototype.iconRestore[v] then
-			bossModPrototype.iconRestore[v] = self:GetIcon(v) or 0
+			bossModPrototype.iconRestore[v] = module:GetIcon(v) or 0
 		end
 		if CustomIcons then
 			SetRaidTarget(v, startIcon[icon])--do not use SetIcon function again. It already checked in SetSortedIcon function.
@@ -262,7 +262,7 @@ local function executeMarking(self, scanId, unitId)
 		end
 	end
 	if GetTime() > scanExpires[scanId] then--scan for limited time.
-		DBM:Debug("Stopping ScanForMobs for: "..(optionName or "nil"), 2)
+		DBM:Debug("Stopping ScanForMobs for: "..(scanId or "nil"), 2)
 		--clear variables
 		scanExpires[scanId] = nil
 		addsIcon[scanId] = nil
@@ -327,7 +327,7 @@ local mobUids = {
 	"party1target", "party2target", "party3target", "party4target",
 	"mouseover", "target", "focus", "targettarget", "mouseovertarget"
 }
-function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, allowFriendly, secondScanId, skipMarked, allAllowed)
+function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, maxIcon, _, scanningTime, optionName, allowFriendly, secondScanId, skipMarked, allAllowed)
 	if not optionName then optionName = bossModPrototype.findFastestComputer[1] end
 	if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 		--Declare variables.
@@ -346,7 +346,7 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 		iconVariables[scanId].allowFriendly = allowFriendly and true or false
 		iconVariables[scanId].skipMarked = skipMarked and true or false
 		iconVariables[scanId].secondScanId = secondScanId or 0
---		iconVariables[scanId].scanInterval = scanInterval or 0.2--Deprecated, a full cleanup of all modules is in order to remove arg and shift other args but for now it's literally ignored
+--		TODO: remove scanInterval from 12522362 mods so empty arg can be removed from here
 		if iconSetMethod == 9 then--Force stop scanning
 			--clear variables
 			scanExpires[scanId] = nil
