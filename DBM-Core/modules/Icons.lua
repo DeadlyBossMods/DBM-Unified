@@ -214,7 +214,7 @@ local function executeMarking(self, scanId, unitId)
 	local cid = DBM:GetCIDFromGUID(guid)
 	local isFriend = UnitIsFriend("player", unitId)
 	local isFiltered = false
-	local success = false
+	local success = 0--Success 1, found valid mob, Success 2, succeeded in marking it
 	if (not iconVariables[scanId].allowFriendly and isFriend) or (iconVariables[scanId].skipMarked and GetRaidTargetIndex(unitId)) then
 		isFiltered = true
 		DBM:Debug(unitId.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
@@ -224,17 +224,18 @@ local function executeMarking(self, scanId, unitId)
 		--Can be used in both ascending/descending icon assignment or even specific icons per Id
 		if guid and iconVariables[scanId].scanTable and type(iconVariables[scanId].scanTable) == "table" and iconVariables[scanId].scanTable[cid] and not private.addsGUIDs[guid] then
 			DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitId, 1)
+			success = 1
 			if type(iconVariables[scanId].scanTable[cid]) == "number" then--CID in table is assigned a specific icon number
 				SetRaidTarget(unitId, iconVariables[scanId].scanTable[cid])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..iconVariables[scanId].scanTable[cid], 2)
 				if GetRaidTargetIndex(unitId) then
-					success = true
+					success = 2
 				end
 			else--Incremental Icon method (ie the table value for the cid was true not a number)
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
 				if GetRaidTargetIndex(unitId) then
-					success = true
+					success = 2
 					if iconVariables[scanId].iconSetMethod == 1 then
 						addsIcon[scanId] = addsIcon[scanId] + 1
 					else
@@ -244,17 +245,18 @@ local function executeMarking(self, scanId, unitId)
 			end
 		elseif guid and (guid == scanId or cid == scanId) and not private.addsGUIDs[guid] then
 			DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitId, 1)
+			success = 1
 			if iconVariables[scanId].iconSetMethod == 2 then--Fixed Icon
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
 				if GetRaidTargetIndex(unitId) then
-					success = true
+					success = 2
 				end
 			else--Incremental Icon method
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
 				if GetRaidTargetIndex(unitId) then
-					success = true
+					success = 2
 					if iconVariables[scanId].iconSetMethod == 1 then--Asscending
 						addsIcon[scanId] = addsIcon[scanId] + 1
 					else--Descending
@@ -263,7 +265,7 @@ local function executeMarking(self, scanId, unitId)
 				end
 			end
 		end
-		if success then
+		if success == 2 then
 			DBM:Debug("SetRaidTarget was successful", 2)
 			private.addsGUIDs[guid] = true
 			addsIconSet[scanId] = addsIconSet[scanId] + 1
@@ -276,10 +278,11 @@ local function executeMarking(self, scanId, unitId)
 				if eventsRegistered and #scanExpires == 0 then--No remaining icon scans
 					eventsRegistered = false
 					self:UnregisterShortTermEvents()
+					DBM:Debug("Target events Unregistered", 2)
 				end
 				return
 			end
-		else
+		elseif success == 1 then--Found right mob but never  marked it
 			DBM:Debug("SetRaidTarget failed", 2)
 		end
 	end
@@ -294,6 +297,7 @@ local function executeMarking(self, scanId, unitId)
 		if eventsRegistered and #scanExpires == 0 then--No remaining icon scans
 			eventsRegistered = false
 			self:UnregisterShortTermEvents()
+			DBM:Debug("Target events Unregistered", 2)
 		end
 	end
 end
@@ -302,24 +306,28 @@ function module:UPDATE_MOUSEOVER_UNIT()
 	for _, scanId in ipairs(scanExpires) do
 		executeMarking(self, scanId, "mouseover")
 		--executeMarking(self, scanId, "mouseovertarget")
+		DBM:Debug("executeMarking called by UPDATE_MOUSEOVER_UNIT", 2)
 	end
 end
 
 function module:NAME_PLATE_UNIT_ADDED(unitId)
 	for _, scanId in ipairs(scanExpires) do
 		executeMarking(self, scanId, unitId)
+		DBM:Debug("executeMarking called by NAME_PLATE_UNIT_ADDED", 2)
 	end
 end
 
 function module:FORBIDDEN_NAME_PLATE_UNIT_ADDED(unitId)
 	for _, scanId in ipairs(scanExpires) do
 		executeMarking(self, scanId, unitId)
+		DBM:Debug("executeMarking called by FORBIDDEN_NAME_PLATE_UNIT_ADDED", 2)
 	end
 end
 
 function module:UNIT_TARGET(unitId)
 	for _, scanId in ipairs(scanExpires) do
 		executeMarking(self, scanId, unitId.."target")
+		DBM:Debug("executeMarking called by UNIT_TARGET", 2)
 	end
 end
 
@@ -368,10 +376,12 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 		iconVariables[scanId].maxIcon = maxIcon or 8 --We only have 8 icons.
 		iconVariables[scanId].allowFriendly = allowFriendly and true or false
 		iconVariables[scanId].skipMarked = skipMarked and true or false
-		if type(scanTable) == "table" then
-			iconVariables[scanId].scanTable = scanTable
-		else
-			DBM:Debug("ScanForMobs is using obsolete parameter for scanTable on "..optionName..". This should be a CID definition table or nil")
+		if scanTable then
+			if type(scanTable) == "table" then
+				iconVariables[scanId].scanTable = scanTable
+			else
+				DBM:Debug("ScanForMobs is using obsolete parameter for scanTable on "..optionName..". This should be a CID definition table or nil")
+			end
 		end
 		if iconSetMethod == 9 then--Force stop scanning
 			--clear variables
@@ -391,6 +401,7 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 		if not eventsRegistered and #scanExpires > 0 then
 			eventsRegistered = true
 			self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+			DBM:Debug("Target events Registered", 2)
 		end
 	else
 		DBM:Debug("Not elected to set icons for "..(optionName or "nil"), 2)
