@@ -43,10 +43,10 @@ function private:NewModule(name)
 	}, {
 		__index = modulePrototype
 	})
-	frame:SetScript("OnEvent", function(self, event, ...)
+	frame:SetScript("OnEvent", function(_, event, ...)
 		local handler = obj[event]
 		if handler then
-			handler(self, ...)
+			handler(obj, ...)
 		end
 	end)
 	modules[name] = obj
