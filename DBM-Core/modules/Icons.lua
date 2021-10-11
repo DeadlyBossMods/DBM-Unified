@@ -1,5 +1,6 @@
 local _, private = ...
 
+local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local GetTime = GetTime
 local tinsert, tsort = table.insert, table.sort
 local UnitIsUnit, UnitExists, UnitIsVisible, SetRaidTarget, GetRaidTargetIndex =
@@ -374,12 +375,8 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 			scanExpires[scanId] = GetTime() + (scanningTime or 8)
 			DBM:Schedule((scanningTime or 8)+1, expireScan, scanId)
 		end
-		if scanTable then
-			if type(scanTable) == "table" then
-				iconVariables[scanId].scanTable = scanTable
-			else
-				DBM:Debug("ScanForMobs is using obsolete parameter for scanTable on "..optionName..". This should be a CID definition table or nil")
-			end
+		if scanTable and type(scanTable) == "table" then
+			iconVariables[scanId].scanTable = scanTable
 		end
 		if (iconSetMethod or 0) == 9 then--Force stop scanning
 			DBM:Unschedule(expireScan, scanId)
@@ -395,7 +392,11 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 		--But if not, we Register listeners to watch for the units we seek to appear
 		if not eventsRegistered and scansActive == 1 then
 			eventsRegistered = true
-			self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+			if isRetail then
+				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+			else
+				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED")
+			end
 			DBM:Debug("Target events Registered", 2)
 		end
 	else
