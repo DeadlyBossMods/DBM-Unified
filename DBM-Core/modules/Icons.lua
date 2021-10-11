@@ -231,14 +231,14 @@ local function executeMarking(self, scanId, unitId)
 					success = true
 				end
 			else--Incremental Icon method (ie the table value for the cid was true not a number)
-				SetRaidTarget(unitId, addsIcon[scanID])
-				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanID], 2)
+				SetRaidTarget(unitId, addsIcon[scanId])
+				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
 				if GetRaidTargetIndex(unitId) then
 					success = true
 					if iconVariables[scanId].iconSetMethod == 1 then
-						addsIcon[scanID] = addsIcon[scanID] + 1
+						addsIcon[scanId] = addsIcon[scanId] + 1
 					else
-						addsIcon[scanID] = addsIcon[scanID] - 1
+						addsIcon[scanId] = addsIcon[scanId] - 1
 					end
 				end
 			end
