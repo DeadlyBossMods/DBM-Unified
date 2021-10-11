@@ -227,15 +227,11 @@ local function expireScan(scanId)
 end
 
 local function executeMarking(scanId, unitId)
-	if not scanId or not unitId then
-		DBM:Debug("invalid call on executeMarking. Missing scanId or unitId", 2)
-		return
-	end
 	local guid = UnitGUID(unitId)
 	local cid = DBM:GetCIDFromGUID(guid)
 	local isFriend = UnitIsFriend("player", unitId)
 	local isFiltered = false
-	local success = 0--1 target found, 2 target marked
+	local success = false
 	if iconVariables[scanId] and (not iconVariables[scanId].allowFriendly and isFriend) or (iconVariables[scanId].skipMarked and GetRaidTargetIndex(unitId)) then
 		isFiltered = true
 		DBM:Debug(unitId.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 3)
@@ -244,50 +240,40 @@ local function executeMarking(scanId, unitId)
 		--Table based scanning, used if applying to multiple creature Ids in a single scan
 		--Can be used in both ascending/descending icon assignment or even specific icons per Id
 		if guid and iconVariables[scanId].scanTable and type(iconVariables[scanId].scanTable) == "table" and iconVariables[scanId].scanTable[cid] and not private.addsGUIDs[guid] then
---			success = 1
 			DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitId, 1)
 			if type(iconVariables[scanId].scanTable[cid]) == "number" then--CID in table is assigned a specific icon number
 				SetRaidTarget(unitId, iconVariables[scanId].scanTable[cid])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..iconVariables[scanId].scanTable[cid], 2)
---				if GetRaidTargetIndex(unitId) then
---					success = 2
---				end
+				success = true
 			else--Incremental Icon method (ie the table value for the cid was true not a number)
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
---				if GetRaidTargetIndex(unitId) then
-					success = 2
-					if iconVariables[scanId].iconSetMethod == 1 then
-						addsIcon[scanId] = addsIcon[scanId] + 1
-					else
-						addsIcon[scanId] = addsIcon[scanId] - 1
-					end
---				end
+				success = true
+				if iconVariables[scanId].iconSetMethod == 1 then
+					addsIcon[scanId] = addsIcon[scanId] + 1
+				else
+					addsIcon[scanId] = addsIcon[scanId] - 1
+				end
 			end
 		elseif guid and (guid == scanId or cid == scanId) and not private.addsGUIDs[guid] then
---			success = 1
 			DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitId, 1)
 			if iconVariables[scanId].iconSetMethod == 2 then--Fixed Icon
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
---				if GetRaidTargetIndex(unitId) then
-					success = 2
---				end
+				success = true
 			else--Incremental Icon method
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
---				if GetRaidTargetIndex(unitId) then
-					success = 2
-					if iconVariables[scanId].iconSetMethod == 1 then--Asscending
-						addsIcon[scanId] = addsIcon[scanId] + 1
-					else--Descending
-						addsIcon[scanId] = addsIcon[scanId] - 1
-					end
---				end
+				success = true
+				if iconVariables[scanId].iconSetMethod == 1 then--Asscending
+					addsIcon[scanId] = addsIcon[scanId] + 1
+				else--Descending
+					addsIcon[scanId] = addsIcon[scanId] - 1
+				end
 			end
 		end
 	end
-	if success == 2 then
+	if success then
 		private.addsGUIDs[guid] = true
 		addsIconSet[scanId] = addsIconSet[scanId] + 1
 		DBM:Debug("SetRaidTarget succeeded. Total set "..(addsIconSet[scanId] or "unknown").." of "..(iconVariables[scanId].maxIcon or "unknown"), 2)
@@ -307,8 +293,6 @@ local function executeMarking(scanId, unitId)
 			end
 			return
 		end
---	elseif success == 1 then
---		DBM:Debug("SetRaidTarget failed", 2)
 	end
 	if GetTime() > scanExpires[scanId] then--scan for limited time.
 		DBM:Unschedule(expireScan, scanId)
@@ -388,7 +372,7 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 		iconVariables[scanId].skipMarked = skipMarked and true or false
 		if not scanExpires[scanId] then
 			scanExpires[scanId] = GetTime() + (scanningTime or 8)
-			DBM:Schedule((scanningTime or 8)+1, expireScan, scanId)--Not currently functional, don't know why
+			DBM:Schedule((scanningTime or 8)+1, expireScan, scanId)
 		end
 		if scanTable then
 			if type(scanTable) == "table" then
