@@ -16,7 +16,7 @@ end
 function modulePrototype:RegisterShortTermEvents(...)
 	for _, event in ipairs({...}) do
 		self.frame:RegisterEvent(event)
-		tinsert(self.shortTermEvents)
+		tinsert(self.shortTermEvents, event)
 	end
 end
 
@@ -24,7 +24,7 @@ function modulePrototype:UnregisterShortTermEvents()
 	for _, event in ipairs(self.shortTermEvents) do
 		self.frame:UnregisterEvent(event)
 	end
-	twipe(self.shorttermEvents)
+	twipe(self.shortTermEvents)
 end
 
 -------------
@@ -46,7 +46,7 @@ function private:NewModule(name)
 	frame:SetScript("OnEvent", function(_, event, ...)
 		local handler = obj[event]
 		if handler then
-			handler(...)
+			handler(obj, ...)
 		end
 	end)
 	modules[name] = obj
