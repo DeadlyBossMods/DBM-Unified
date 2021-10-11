@@ -1,8 +1,9 @@
 local _, private = ...
 
+local GetTime = GetTime
 local tinsert, tsort = table.insert, table.sort
-local UnitIsUnit, UnitExists, SetRaidTarget, GetRaidTargetIndex =
-	UnitIsUnit, UnitExists, SetRaidTarget, GetRaidTargetIndex
+local UnitIsUnit, UnitExists, UnitIsVisible, SetRaidTarget, GetRaidTargetIndex =
+	UnitIsUnit, UnitExists, UnitIsVisible, SetRaidTarget, GetRaidTargetIndex
 
 local playerName = UnitName("player")
 
@@ -10,20 +11,25 @@ private.canSetIcons = {}
 private.addsGUIDs = {}
 private.enableIcons = true -- Set to false when a raid leader or a promoted player has a newer version of DBM
 
+--Common variables
+local eventsRegistered = false
+--Mob Scanning Variables
 local scanExpires = {}
 local addsIcon = {}
 local addsIconSet = {}
+local iconVariables = {}
+--Player setting variables
 local iconSortTable = {}
 local iconSet = {}
 
 local module = private:NewModule("Icons")
 
-function module:SetIcon(bossMod, target, icon, timer)
+function module:SetIcon(bossModPrototype, target, icon, timer)
 	if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
 	if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
-	bossMod:UnscheduleMethod("SetIcon", target)
+	bossModPrototype:UnscheduleMethod("SetIcon", target)
 	if type(icon) ~= "number" or type(target) ~= "string" then--icon/target probably backwards.
 		DBM:Debug("|cffff0000SetIcon is being used impropperly. Check icon/target order|r")
 		return--Fail silently instead of spamming icon lua errors if we screw up
@@ -35,16 +41,16 @@ function module:SetIcon(bossMod, target, icon, timer)
 		uId = uId or target
 		--save previous icon into a table.
 		local oldIcon = self:GetIcon(uId) or 0
-		if not bossMod.iconRestore[uId] then
-			bossMod.iconRestore[uId] = oldIcon
+		if not bossModPrototype.iconRestore[uId] then
+			bossModPrototype.iconRestore[uId] = oldIcon
 		end
 		--set icon
 		if oldIcon ~= icon then--Don't set icon if it's already set to what we're setting it to
-			SetRaidTarget(uId, bossMod.iconRestore[uId] and icon == 0 and bossMod.iconRestore[uId] or icon)
+			SetRaidTarget(uId, bossModPrototype.iconRestore[uId] and icon == 0 and bossModPrototype.iconRestore[uId] or icon)
 		end
 		--schedule restoring old icon if timer enabled.
 		if timer then
-			bossMod:ScheduleMethod(timer, "SetIcon", target, 0)
+			bossModPrototype:ScheduleMethod(timer, "SetIcon", target, 0)
 		end
 	end
 end
@@ -53,63 +59,63 @@ local function SortByGroup(v1, v2)
 	return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 end
 
-local function clearSortTable(scanID)
-	iconSortTable[scanID] = nil
-	iconSet[scanID] = nil
+local function clearSortTable(scanId)
+	iconSortTable[scanId] = nil
+	iconSet[scanId] = nil
 end
 
-function module:SetIconByAlphaTable(bossMod, returnFunc, scanID) -- LOCAL
-	tsort(iconSortTable[scanID])--Sorted alphabetically
-	for i = 1, #iconSortTable[scanID] do
-		local target = iconSortTable[scanID][i]
+local function SetIconByAlphaTable(bossModPrototype, returnFunc, scanId)
+	tsort(iconSortTable[scanId])--Sorted alphabetically
+	for i = 1, #iconSortTable[scanId] do
+		local target = iconSortTable[scanId][i]
 		if i > 8 then
 			DBM:Debug("|cffff0000Too many players to set icons, reconsider where using icons|r", 2)
 			return
 		end
-		if not bossMod.iconRestore[target] then
-			bossMod.iconRestore[target] = self:GetIcon(target) or 0
+		if not bossModPrototype.iconRestore[target] then
+			bossModPrototype.iconRestore[target] = bossModPrototype:GetIcon(target) or 0
 		end
 		SetRaidTarget(target, i)--Icons match number in table in alpha sort
 		if returnFunc then
-			bossMod[returnFunc](bossMod, target, i)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+			bossModPrototype[returnFunc](bossModPrototype, target, i)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 		end
 	end
-	DBM:Schedule(1.5, clearSortTable, scanID)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+	DBM:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 end
 
-function module:SetAlphaIcon(bossMod, delay, target, maxIcon, returnFunc, scanID)
+function module:SetAlphaIcon(bossModPrototype, delay, target, maxIcon, returnFunc, scanId)
 	if not target then return end
 	if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
-	scanID = scanID or 1
+	scanId = scanId or 1
 	local uId = DBM:GetRaidUnitId(target)
 	if uId or UnitExists(target) then--target accepts uid, unitname both.
 		uId = uId or target
-		if not iconSortTable[scanID] then iconSortTable[scanID] = {} end
-		if not iconSet[scanID] then iconSet[scanID] = 0 end
+		if not iconSortTable[scanId] then iconSortTable[scanId] = {} end
+		if not iconSet[scanId] then iconSet[scanId] = 0 end
 		local foundDuplicate = false
-		for i = #iconSortTable[scanID], 1, -1 do
-			if iconSortTable[scanID][i] == uId then
+		for i = #iconSortTable[scanId], 1, -1 do
+			if iconSortTable[scanId][i] == uId then
 				foundDuplicate = true
 				break
 			end
 		end
 		if not foundDuplicate then
-			iconSet[scanID] = iconSet[scanID] + 1
-			tinsert(iconSortTable[scanID], uId)
+			iconSet[scanId] = iconSet[scanId] + 1
+			tinsert(iconSortTable[scanId], uId)
 		end
-		bossMod:UnscheduleMethod("SetIconByAlphaTable")
-		if maxIcon and iconSet[scanID] == maxIcon then
-			self:SetIconByAlphaTable(bossMod, returnFunc, scanID)
-		elseif bossMod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-			bossMod:ScheduleMethod(delay or 0.5, "SetIconByAlphaTable", returnFunc, scanID)
+		bossModPrototype:Unschedule(SetIconByAlphaTable)
+		if maxIcon and iconSet[scanId] == maxIcon then
+			SetIconByAlphaTable(bossModPrototype, returnFunc, scanId)
+		elseif bossModPrototype:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+			bossModPrototype:Schedule(delay or 0.5, SetIconByAlphaTable, bossModPrototype, returnFunc, scanId)
 		end
 	end
 end
 
-function module:SetIconBySortedTable(bossMod, startIcon, reverseIcon, returnFunc, scanID) -- LOCAL
-	tsort(iconSortTable[scanID], SortByGroup)
+local function SetIconBySortedTable(bossModPrototype, startIcon, reverseIcon, returnFunc, scanId)
+	tsort(iconSortTable[scanId], SortByGroup)
 	local icon, CustomIcons
 	if startIcon and type(startIcon) == "table" then--Specific gapped icons
 		CustomIcons = true
@@ -117,15 +123,15 @@ function module:SetIconBySortedTable(bossMod, startIcon, reverseIcon, returnFunc
 	else
 		icon = startIcon or 1
 	end
-	for _, v in ipairs(iconSortTable[scanID]) do
-		if not bossMod.iconRestore[v] then
-			bossMod.iconRestore[v] = self:GetIcon(v) or 0
+	for _, v in ipairs(iconSortTable[scanId]) do
+		if not bossModPrototype.iconRestore[v] then
+			bossModPrototype.iconRestore[v] = module:GetIcon(v) or 0
 		end
 		if CustomIcons then
 			SetRaidTarget(v, startIcon[icon])--do not use SetIcon function again. It already checked in SetSortedIcon function.
 			icon = icon + 1
 			if returnFunc then
-				bossMod[returnFunc](bossMod, v, startIcon[icon])--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+				bossModPrototype[returnFunc](bossModPrototype, v, startIcon[icon])--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 			end
 		else
 			SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
@@ -135,41 +141,41 @@ function module:SetIconBySortedTable(bossMod, startIcon, reverseIcon, returnFunc
 				icon = icon + 1
 			end
 			if returnFunc then
-				bossMod[returnFunc](bossMod, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+				bossModPrototype[returnFunc](bossModPrototype, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 			end
 		end
 	end
-	DBM:Schedule(1.5, clearSortTable, scanID)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+	DBM:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 end
 
-function module:SetSortedIcon(bossMod, delay, target, startIcon, maxIcon, reverseIcon, returnFunc, scanID)
+function module:SetSortedIcon(bossModPrototype, delay, target, startIcon, maxIcon, reverseIcon, returnFunc, scanId)
 	if not target then return end
 	if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
-	scanID = scanID or 1
+	scanId = scanId or 1
 	if not startIcon then startIcon = 1 end
 	local uId = DBM:GetRaidUnitId(target)
 	if uId or UnitExists(target) then--target accepts uid, unitname both.
 		uId = uId or target
-		if not iconSortTable[scanID] then iconSortTable[scanID] = {} end
-		if not iconSet[scanID] then iconSet[scanID] = 0 end
+		if not iconSortTable[scanId] then iconSortTable[scanId] = {} end
+		if not iconSet[scanId] then iconSet[scanId] = 0 end
 		local foundDuplicate = false
-		for i = #iconSortTable[scanID], 1, -1 do
-			if iconSortTable[scanID][i] == uId then
+		for i = #iconSortTable[scanId], 1, -1 do
+			if iconSortTable[scanId][i] == uId then
 				foundDuplicate = true
 				break
 			end
 		end
 		if not foundDuplicate then
-			iconSet[scanID] = iconSet[scanID] + 1
-			tinsert(iconSortTable[scanID], uId)
+			iconSet[scanId] = iconSet[scanId] + 1
+			tinsert(iconSortTable[scanId], uId)
 		end
-		bossMod:UnscheduleMethod("SetIconBySortedTable")
-		if maxIcon and iconSet[scanID] == maxIcon then
-			self:SetIconBySortedTable(bossMod, startIcon, reverseIcon, returnFunc, scanID)
-		elseif bossMod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-			bossMod:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, reverseIcon, returnFunc, scanID)
+		bossModPrototype:Unschedule(SetIconBySortedTable)
+		if maxIcon and iconSet[scanId] == maxIcon then
+			SetIconBySortedTable(bossModPrototype, startIcon, reverseIcon, returnFunc, scanId)
+		elseif bossModPrototype:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+			bossModPrototype:Schedule(delay or 0.5, SetIconBySortedTable, bossModPrototype, startIcon, reverseIcon, returnFunc, scanId)
 		end
 	end
 end
@@ -179,8 +185,8 @@ function module:GetIcon(uIdOrTarget)
 	return UnitExists(uId) and GetRaidTargetIndex(uId)
 end
 
-function module:RemoveIcon(bossMod, target)
-	return self:SetIcon(bossMod, target, 0)
+function module:RemoveIcon(bossModPrototype, target)
+	return self:SetIcon(bossModPrototype, target, 0)
 end
 
 function module:ClearIcons()
@@ -203,6 +209,112 @@ function module:CanSetIcon(optionName)
 	return private.canSetIcons[optionName] or false
 end
 
+local function executeMarking(self, scanId, unitId)
+	local guid = UnitGUID(unitId)
+	local cid = DBM:GetCIDFromGUID(guid)
+	local isFriend = UnitIsFriend("player", unitId)
+	local isFiltered = false
+	local success = false
+	if (not iconVariables[scanId].allowFriendly and isFriend) or (iconVariables[scanId].skipMarked and GetRaidTargetIndex(unitId)) then
+		isFiltered = true
+		DBM:Debug(unitId.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
+	end
+	if not isFiltered then
+		if guid and (guid == scanId or cid == scanId or cid == iconVariables[scanId].secondScanId) and not private.addsGUIDs[guid] then
+			DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitId, 1)
+			if iconVariables[scanId].iconSetMethod == 2 then--Fixed Icon
+				SetRaidTarget(unitId, addsIcon[scanId])
+				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
+				if GetRaidTargetIndex(unitId) then
+					success = true
+				end
+			else--Incremental Icon method
+				SetRaidTarget(unitId, addsIcon[scanId])
+				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
+				if GetRaidTargetIndex(unitId) then
+					success = true
+					if iconVariables[scanId].iconSetMethod == 1 then--Asscending
+						addsIcon[scanId] = addsIcon[scanId] + 1
+					else--Descending
+						addsIcon[scanId] = addsIcon[scanId] - 1
+					end
+				end
+			end
+			if success then
+				DBM:Debug("SetRaidTarget was successful", 2)
+				private.addsGUIDs[guid] = true
+				addsIconSet[scanId] = addsIconSet[scanId] + 1
+				if addsIconSet[scanId] >= iconVariables[scanId].maxIcon then--stop scan immediately to save cpu
+					--clear variables
+					scanExpires[scanId] = nil
+					addsIcon[scanId] = nil
+					addsIconSet[scanId] = nil
+					iconVariables[scanId] = nil
+					if eventsRegistered and #scanExpires == 0 then--No remaining icon scans
+						eventsRegistered = false
+						self:UnregisterShortTermEvents()
+					end
+					return
+				end
+			else
+				DBM:Debug("SetRaidTarget failed", 2)
+			end
+		end
+	end
+	if GetTime() > scanExpires[scanId] then--scan for limited time.
+		DBM:Debug("Stopping ScanForMobs for: "..(scanId or "nil"), 2)
+		--clear variables
+		scanExpires[scanId] = nil
+		addsIcon[scanId] = nil
+		addsIconSet[scanId] = nil
+		iconVariables[scanId] = nil
+		--Do not wipe adds GUID table here, it's wiped by :Stop() which is called by EndCombat
+		if eventsRegistered and #scanExpires == 0 then--No remaining icon scans
+			eventsRegistered = false
+			self:UnregisterShortTermEvents()
+		end
+	end
+end
+
+function module:UPDATE_MOUSEOVER_UNIT()
+	for _, scanId in ipairs(scanExpires) do
+		executeMarking(self, scanId, "mouseover")
+		--executeMarking(self, scanId, "mouseovertarget")
+	end
+end
+
+function module:NAME_PLATE_UNIT_ADDED(unitId)
+	for _, scanId in ipairs(scanExpires) do
+		executeMarking(self, scanId, unitId)
+	end
+end
+
+function module:FORBIDDEN_NAME_PLATE_UNIT_ADDED(unitId)
+	for _, scanId in ipairs(scanExpires) do
+		executeMarking(self, scanId, unitId)
+	end
+end
+
+function module:UNIT_TARGET(unitId)
+	for _, scanId in ipairs(scanExpires) do
+		executeMarking(self, scanId, unitId.."target")
+	end
+end
+
+--If this continues to throw errors because SetRaidTarget fails even after IEEU has fired for a unit, then this will be scrapped
+function module:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i = 1, 5 do
+		local unitId = "boss"..i
+		if UnitExists(unitId) and UnitIsVisible(unitId) then--Hopefully enough failsafe against icons failing
+			for _, scanId in ipairs(scanExpires) do
+				executeMarking(self, scanId, unitId)
+			end
+		end
+	end
+end
+
+--Initial scan Ids. These exclude boss unit Ids because them existing doessn't mean they are valid yet. They are not valid until they are added to boss health frame
+--Attempting to SetRaidTarget on a non visible valid boss id actually just silently fails
 local mobUids = {
 	"nameplate1", "nameplate2", "nameplate3", "nameplate4", "nameplate5", "nameplate6", "nameplate7", "nameplate8", "nameplate9", "nameplate10",
 	"nameplate11", "nameplate12", "nameplate13", "nameplate14", "nameplate15", "nameplate16", "nameplate17", "nameplate18", "nameplate19", "nameplate20",
@@ -214,141 +326,45 @@ local mobUids = {
 	"raid31target", "raid32target", "raid33target", "raid34target", "raid35target", "raid36target", "raid37target", "raid38target", "raid39target", "raid40target",
 	"party1target", "party2target", "party3target", "party4target",
 	"mouseover", "target", "focus", "targettarget", "mouseovertarget"
-	--	"boss1", "boss2", "boss3", "boss4", "boss5", "arena1", "arena2", "arena3", "arena4", "arena5"
 }
-
-function module:ScanForMobs(bossMod, creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, allowFriendly, secondCreatureID, skipMarked, allAllowed)
-	if not optionName then optionName = bossMod.findFastestComputer[1] end
+function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, maxIcon, _, scanningTime, optionName, allowFriendly, secondScanId, skipMarked, allAllowed)
+	if not optionName then optionName = bossModPrototype.findFastestComputer[1] end
 	if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 		--Declare variables.
 		DBM:Debug("canSetIcons or allAllowed true for "..(optionName or "nil"), 2)
-		local timeNow = GetTime()
-		if not creatureID then--This function must not be used to boss, so remove self.creatureId. Accepts cid, guid and cid table
-			error("DBM:ScanForMobs calld without creatureID")
+		if not scanId then--Accepts cid and guid
+			error("DBM:ScanForMobs calld without scanId")
 			return
 		end
-		iconSetMethod = iconSetMethod or 0--Set IconSetMethod -- 0: Descending / 1:Ascending / 2: Force Set / 9:Force Stop
-		scanningTime = scanningTime or 8
-		maxIcon = maxIcon or 8 --We only have 8 icons.
-		allowFriendly = allowFriendly or false
-		skipMarked = skipMarked or false
-		secondCreatureID = secondCreatureID or 0
-		scanInterval = scanInterval or 0.2
-		--With different scanID, this function can support multi scanning same time. Required for Nazgrim.
-		local scanID = 0
-		if type(creatureID) == "number" then
-			scanID = creatureID --guid and table no not supports multi scanning. only cid supports multi scanning
-		end
+		--Initialize icon method variables for event handlers
+		if not addsIcon[scanId] then addsIcon[scanId] = mobIcon or 8 end
+		if not addsIconSet[scanId] then addsIconSet[scanId] = 0 end
+		if not scanExpires[scanId] then scanExpires[scanId] = GetTime() + (scanningTime or 8) end
+		if not iconVariables[scanId] then iconVariables[scanId] = {} end
+		iconVariables[scanId].iconSetMethod = iconSetMethod or 0--Set IconSetMethod -- 0: Descending / 1:Ascending / 2: Force Set / 9:Force Stop
+		iconVariables[scanId].maxIcon = maxIcon or 8 --We only have 8 icons.
+		iconVariables[scanId].allowFriendly = allowFriendly and true or false
+		iconVariables[scanId].skipMarked = skipMarked and true or false
+		iconVariables[scanId].secondScanId = secondScanId or 0
+--		TODO: remove scanInterval from 12522362 mods so empty arg can be removed from here
 		if iconSetMethod == 9 then--Force stop scanning
 			--clear variables
-			scanExpires[scanID] = nil
-			addsIcon[scanID] = nil
-			addsIconSet[scanID] = nil
+			scanExpires[scanId] = nil
+			addsIcon[scanId] = nil
+			addsIconSet[scanId] = nil
+			iconVariables[scanId] = nil
 			return
 		end
-		if not addsIcon[scanID] then addsIcon[scanID] = mobIcon or 8 end
-		if not addsIconSet[scanID] then addsIconSet[scanID] = 0 end
-		if not scanExpires[scanID] then scanExpires[scanID] = timeNow + scanningTime end
-		--DO SCAN NOW
-		for _, unitid in ipairs(mobUids) do
-			local guid = UnitGUID(unitid)
-			local cid = bossMod:GetCIDFromGUID(guid)
-			local isFriend = UnitIsFriend("player", unitid)
-			local isFiltered = false
-			local success = false
-			if (not allowFriendly and isFriend) or (skipMarked and GetRaidTargetIndex(unitid)) then
-				isFiltered = true
-				DBM:Debug(unitid.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
-			end
-			if not isFiltered then
-				if guid and type(creatureID) == "table" and creatureID[cid] and not private.addsGUIDs[guid] then
-					DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitid, 1)
-					if type(creatureID[cid]) == "number" then
-						SetRaidTarget(unitid, creatureID[cid])
-						DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..creatureID[cid], 2)
-						if GetRaidTargetIndex(unitid) then
-							success = true
-						end
-					else
-						SetRaidTarget(unitid, addsIcon[scanID])
-						DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..addsIcon[scanID], 2)
-						if GetRaidTargetIndex(unitid) then
-							success = true
-							if iconSetMethod == 1 then
-								addsIcon[scanID] = addsIcon[scanID] + 1
-							else
-								addsIcon[scanID] = addsIcon[scanID] - 1
-							end
-						end
-					end
-					if success then
-						DBM:Debug("SetRaidTarget was successful", 2)
-						private.addsGUIDs[guid] = true
-						addsIconSet[scanID] = addsIconSet[scanID] + 1
-						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-							--clear variables
-							scanExpires[scanID] = nil
-							addsIcon[scanID] = nil
-							addsIconSet[scanID] = nil
-							return
-						end
-					else
-						DBM:Debug("SetRaidTarget failed", 2)
-					end
-				elseif guid and ((guid == creatureID) or (cid == creatureID) or (cid == secondCreatureID)) and not private.addsGUIDs[guid] then
-					DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitid, 1)
-					if iconSetMethod == 2 then
-						SetRaidTarget(unitid, mobIcon)
-						DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..mobIcon, 2)
-						if GetRaidTargetIndex(unitid) then
-							success = true
-						end
-					else
-						SetRaidTarget(unitid, addsIcon[scanID])
-						DBM:Debug("DBM called SetRaidTarget on "..unitid.." with icon value of "..addsIcon[scanID], 2)
-						if GetRaidTargetIndex(unitid) then
-							success = true
-							if iconSetMethod == 1 then
-								addsIcon[scanID] = addsIcon[scanID] + 1
-							else
-								addsIcon[scanID] = addsIcon[scanID] - 1
-							end
-						end
-					end
-					if DBM.Options.DebugMode and unitid:find("boss") then
-						if not UnitExists(unitid) then
-							DBM:Debug("SetRaidTarget may have failed on boss unit ID because unit does not yet exist, consider a delay on this method", 1)
-						end
-						if not UnitIsVisible(unitid) then
-							DBM:Debug("SetRaidTarget may have failed on boss unit ID because unit is not visible yet, consider a delay on this method", 1)
-						end
-					end
-					if success then
-						DBM:Debug("SetRaidTarget was successful", 2)
-						private.addsGUIDs[guid] = true
-						addsIconSet[scanID] = addsIconSet[scanID] + 1
-						if addsIconSet[scanID] >= maxIcon then--stop scan immediately to save cpu
-							--clear variables
-							scanExpires[scanID] = nil
-							addsIcon[scanID] = nil
-							addsIconSet[scanID] = nil
-							return
-						end
-					else
-						DBM:Debug("SetRaidTarget failed", 2)
-					end
-				end
-			end
+		--Do initial scan now to see if unit we're scaning for already exists (ie they wouldn't fire nameplate added or IEEU for example.
+		--Caveat, if all expected units are found before it finishes going over mobUids table, it'll still finish goingg through table
+		for _, unitId in ipairs(mobUids) do
+			executeMarking(self, scanId, unitId)
 		end
-		if timeNow < scanExpires[scanID] then--scan for limited time.
-			bossMod:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName, allowFriendly, secondCreatureID, skipMarked, allAllowed)
-		else
-			DBM:Debug("Stopping ScanForMobs for: "..(optionName or "nil"), 2)
-			--clear variables
-			scanExpires[scanID] = nil
-			addsIcon[scanID] = nil
-			addsIconSet[scanID] = nil
-			--Do not wipe adds GUID table here, it's wiped by :Stop() which is called by EndCombat
+		--Hopefully we found all units with initial scan and scanExpires has already been emptied in the executeMarking calls
+		--But if not, we Register listeners to watch for the units we seek to appear
+		if not eventsRegistered and #scanExpires > 0 then
+			eventsRegistered = true
+			self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 		end
 	else
 		DBM:Debug("Not elected to set icons for "..(optionName or "nil"), 2)
