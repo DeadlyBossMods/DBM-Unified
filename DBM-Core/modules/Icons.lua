@@ -220,7 +220,29 @@ local function executeMarking(self, scanId, unitId)
 		DBM:Debug(unitId.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 2)
 	end
 	if not isFiltered then
-		if guid and (guid == scanId or cid == scanId or cid == iconVariables[scanId].secondScanId) and not private.addsGUIDs[guid] then
+		--Table based scanning, used if applying to multiple creature Ids in a single scan
+		--Can be used in both ascending/descending icon assignment or even specific icons per Id
+		if guid and iconVariables[scanId].scanTable and type(iconVariables[scanId].scanTable) == "table" and iconVariables[scanId].scanTable[cid] and not private.addsGUIDs[guid] then
+			DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitId, 1)
+			if type(iconVariables[scanId].scanTable[cid]) == "number" then--CID in table is assigned a specific icon number
+				SetRaidTarget(unitId, iconVariables[scanId].scanTable[cid])
+				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..iconVariables[scanId].scanTable[cid], 2)
+				if GetRaidTargetIndex(unitId) then
+					success = true
+				end
+			else--Incremental Icon method (ie the table value for the cid was true not a number)
+				SetRaidTarget(unitId, addsIcon[scanID])
+				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanID], 2)
+				if GetRaidTargetIndex(unitId) then
+					success = true
+					if iconVariables[scanId].iconSetMethod == 1 then
+						addsIcon[scanID] = addsIcon[scanID] + 1
+					else
+						addsIcon[scanID] = addsIcon[scanID] - 1
+					end
+				end
+			end
+		elseif guid and (guid == scanId or cid == scanId) and not private.addsGUIDs[guid] then
 			DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitId, 1)
 			if iconVariables[scanId].iconSetMethod == 2 then--Fixed Icon
 				SetRaidTarget(unitId, addsIcon[scanId])
@@ -240,25 +262,25 @@ local function executeMarking(self, scanId, unitId)
 					end
 				end
 			end
-			if success then
-				DBM:Debug("SetRaidTarget was successful", 2)
-				private.addsGUIDs[guid] = true
-				addsIconSet[scanId] = addsIconSet[scanId] + 1
-				if addsIconSet[scanId] >= iconVariables[scanId].maxIcon then--stop scan immediately to save cpu
-					--clear variables
-					scanExpires[scanId] = nil
-					addsIcon[scanId] = nil
-					addsIconSet[scanId] = nil
-					iconVariables[scanId] = nil
-					if eventsRegistered and #scanExpires == 0 then--No remaining icon scans
-						eventsRegistered = false
-						self:UnregisterShortTermEvents()
-					end
-					return
+		end
+		if success then
+			DBM:Debug("SetRaidTarget was successful", 2)
+			private.addsGUIDs[guid] = true
+			addsIconSet[scanId] = addsIconSet[scanId] + 1
+			if addsIconSet[scanId] >= iconVariables[scanId].maxIcon then--stop scan immediately to save cpu
+				--clear variables
+				scanExpires[scanId] = nil
+				addsIcon[scanId] = nil
+				addsIconSet[scanId] = nil
+				iconVariables[scanId] = nil
+				if eventsRegistered and #scanExpires == 0 then--No remaining icon scans
+					eventsRegistered = false
+					self:UnregisterShortTermEvents()
 				end
-			else
-				DBM:Debug("SetRaidTarget failed", 2)
+				return
 			end
+		else
+			DBM:Debug("SetRaidTarget failed", 2)
 		end
 	end
 	if GetTime() > scanExpires[scanId] then--scan for limited time.
@@ -327,7 +349,8 @@ local mobUids = {
 	"party1target", "party2target", "party3target", "party4target",
 	"mouseover", "target", "focus", "targettarget", "mouseovertarget"
 }
-function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, maxIcon, _, scanningTime, optionName, allowFriendly, secondScanId, skipMarked, allAllowed)
+
+function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed)
 	if not optionName then optionName = bossModPrototype.findFastestComputer[1] end
 	if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 		--Declare variables.
@@ -345,8 +368,11 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 		iconVariables[scanId].maxIcon = maxIcon or 8 --We only have 8 icons.
 		iconVariables[scanId].allowFriendly = allowFriendly and true or false
 		iconVariables[scanId].skipMarked = skipMarked and true or false
-		iconVariables[scanId].secondScanId = secondScanId or 0
---		TODO: remove scanInterval from 12522362 mods so empty arg can be removed from here
+		if type(scanTable) == "table" then
+			iconVariables[scanId].scanTable = scanTable
+		else
+			DBM:Debug("ScanForMobs is using obsolete parameter for scanTable on "..optionName..". This should be a CID definition table or nil")
+		end
 		if iconSetMethod == 9 then--Force stop scanning
 			--clear variables
 			scanExpires[scanId] = nil
