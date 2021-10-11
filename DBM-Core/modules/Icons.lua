@@ -81,7 +81,7 @@ local function SetIconByAlphaTable(bossModPrototype, returnFunc, scanId)
 			bossModPrototype[returnFunc](bossModPrototype, target, i)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 		end
 	end
-	DBM:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+	bossModPrototype:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 end
 
 function module:SetAlphaIcon(bossModPrototype, delay, target, maxIcon, returnFunc, scanId)
@@ -146,7 +146,7 @@ local function SetIconBySortedTable(bossModPrototype, startIcon, reverseIcon, re
 			end
 		end
 	end
-	DBM:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+	bossModPrototype:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 end
 
 function module:SetSortedIcon(bossModPrototype, delay, target, startIcon, maxIcon, reverseIcon, returnFunc, scanId)
@@ -211,7 +211,7 @@ function module:CanSetIcon(optionName)
 end
 
 local function expireScan(scanId)
-	DBM:Debug("expireScan Stopping Expired ScanForMobs for: "..(scanId or "nil"), 2)
+	DBM:Debug("Stopping Expired ScanForMobs for: "..(scanId or "nil"), 2)
 	--clear variables
 	scanExpires[scanId] = nil
 	addsIcon[scanId] = nil
@@ -244,46 +244,46 @@ local function executeMarking(scanId, unitId)
 		--Table based scanning, used if applying to multiple creature Ids in a single scan
 		--Can be used in both ascending/descending icon assignment or even specific icons per Id
 		if guid and iconVariables[scanId].scanTable and type(iconVariables[scanId].scanTable) == "table" and iconVariables[scanId].scanTable[cid] and not private.addsGUIDs[guid] then
-			success = 1
+--			success = 1
 			DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitId, 1)
 			if type(iconVariables[scanId].scanTable[cid]) == "number" then--CID in table is assigned a specific icon number
 				SetRaidTarget(unitId, iconVariables[scanId].scanTable[cid])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..iconVariables[scanId].scanTable[cid], 2)
-				if GetRaidTargetIndex(unitId) then
-					success = 2
-				end
+--				if GetRaidTargetIndex(unitId) then
+--					success = 2
+--				end
 			else--Incremental Icon method (ie the table value for the cid was true not a number)
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
-				if GetRaidTargetIndex(unitId) then
+--				if GetRaidTargetIndex(unitId) then
 					success = 2
 					if iconVariables[scanId].iconSetMethod == 1 then
 						addsIcon[scanId] = addsIcon[scanId] + 1
 					else
 						addsIcon[scanId] = addsIcon[scanId] - 1
 					end
-				end
+--				end
 			end
 		elseif guid and (guid == scanId or cid == scanId) and not private.addsGUIDs[guid] then
-			success = 1
+--			success = 1
 			DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitId, 1)
 			if iconVariables[scanId].iconSetMethod == 2 then--Fixed Icon
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
-				if GetRaidTargetIndex(unitId) then
+--				if GetRaidTargetIndex(unitId) then
 					success = 2
-				end
+--				end
 			else--Incremental Icon method
 				SetRaidTarget(unitId, addsIcon[scanId])
 				DBM:Debug("DBM called SetRaidTarget on "..unitId.." with icon value of "..addsIcon[scanId], 2)
-				if GetRaidTargetIndex(unitId) then
+--				if GetRaidTargetIndex(unitId) then
 					success = 2
 					if iconVariables[scanId].iconSetMethod == 1 then--Asscending
 						addsIcon[scanId] = addsIcon[scanId] + 1
 					else--Descending
 						addsIcon[scanId] = addsIcon[scanId] - 1
 					end
-				end
+--				end
 			end
 		end
 	end
@@ -307,24 +307,12 @@ local function executeMarking(scanId, unitId)
 			end
 			return
 		end
-	elseif success == 1 then
-		DBM:Debug("SetRaidTarget failed", 2)
+--	elseif success == 1 then
+--		DBM:Debug("SetRaidTarget failed", 2)
 	end
 	if GetTime() > scanExpires[scanId] then--scan for limited time.
-		DBM:Debug("Stopping Expired ScanForMobs for: "..(scanId or "nil"), 2)
-		--clear variables
-		scanExpires[scanId] = nil
-		addsIcon[scanId] = nil
-		addsIconSet[scanId] = nil
-		iconVariables[scanId] = nil
-		scansActive = scansActive - 1
 		DBM:Unschedule(expireScan, scanId)
-		--Do not wipe adds GUID table here, it's wiped by :Stop() which is called by EndCombat
-		if eventsRegistered and scansActive == 0 then--No remaining icon scans
-			eventsRegistered = false
-			module:UnregisterShortTermEvents()
-			DBM:Debug("Target events Unregistered", 2)
-		end
+		expireScan(scanId)
 	end
 end
 
@@ -400,7 +388,7 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 		iconVariables[scanId].skipMarked = skipMarked and true or false
 		if not scanExpires[scanId] then
 			scanExpires[scanId] = GetTime() + (scanningTime or 8)
-			DBM:Schedule(scanExpires[scanId]+1, expireScan, scanId, "player")--Not currently functional, don't know why
+			DBM:Schedule((scanningTime or 8)+1, expireScan, scanId)--Not currently functional, don't know why
 		end
 		if scanTable then
 			if type(scanTable) == "table" then
@@ -410,13 +398,8 @@ function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, ma
 			end
 		end
 		if (iconSetMethod or 0) == 9 then--Force stop scanning
-			--clear variables
-			scanExpires[scanId] = nil
-			addsIcon[scanId] = nil
-			addsIconSet[scanId] = nil
-			iconVariables[scanId] = nil
-			scansActive = scansActive - 1
 			DBM:Unschedule(expireScan, scanId)
+			expireScan(scanId)
 			return
 		end
 		--Do initial scan now to see if unit we're scaning for already exists (ie they wouldn't fire nameplate added or IEEU for example.
