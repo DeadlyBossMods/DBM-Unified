@@ -212,7 +212,6 @@ function module:CanSetIcon(optionName)
 end
 
 local function expireScan(scanId)
-	DBM:Debug("Stopping Expired ScanForMobs for: "..(scanId or "nil"), 2)
 	--clear variables
 	scanExpires[scanId] = nil
 	addsIcon[scanId] = nil
@@ -279,24 +278,15 @@ local function executeMarking(scanId, unitId)
 		addsIconSet[scanId] = addsIconSet[scanId] + 1
 		DBM:Debug("SetRaidTarget succeeded. Total set "..(addsIconSet[scanId] or "unknown").." of "..(iconVariables[scanId].maxIcon or "unknown"), 2)
 		if addsIconSet[scanId] >= iconVariables[scanId].maxIcon then--stop scan immediately to save cpu
-			--clear variables
-			scanExpires[scanId] = nil
-			addsIcon[scanId] = nil
-			addsIconSet[scanId] = nil
-			iconVariables[scanId] = nil
-			scansActive = scansActive - 1
 			DBM:Unschedule(expireScan, scanId)
 			DBM:Debug("Stopping Successful ScanForMobs for: "..(scanId or "nil"), 2)
-			if eventsRegistered and scansActive == 0 then--No remaining icon scans
-				eventsRegistered = false
-				module:UnregisterShortTermEvents()
-				DBM:Debug("Target events Unregistered", 2)
-			end
+			expireScan(scanId)
 			return
 		end
 	end
 	if GetTime() > scanExpires[scanId] then--scan for limited time.
 		DBM:Unschedule(expireScan, scanId)
+		DBM:Debug("Stopping Expired ScanForMobs for: "..(scanId or "nil"), 2)
 		expireScan(scanId)
 	end
 end
