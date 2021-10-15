@@ -235,12 +235,16 @@ do
 	end
 
 	local function executeMarking(scanId, unitId)
+		if not iconVariables[scanId] then
+			--Scan already expired
+			return
+		end
 		local guid = UnitGUID(unitId)
 		local cid = DBM:GetCIDFromGUID(guid)
 		local isFriend = UnitIsFriend("player", unitId)
 		local isFiltered = false
 		local success = false
-		if iconVariables[scanId] and (not iconVariables[scanId].allowFriendly and isFriend) or (iconVariables[scanId].skipMarked and GetRaidTargetIndex(unitId)) then
+		if (not iconVariables[scanId].allowFriendly and isFriend) or (iconVariables[scanId].skipMarked and GetRaidTargetIndex(unitId)) then
 			isFiltered = true
 			DBM:Debug(unitId.." was skipped because it's a filtered mob. Friend Flag: "..(isFriend and "true" or "false"), 3)
 		end
