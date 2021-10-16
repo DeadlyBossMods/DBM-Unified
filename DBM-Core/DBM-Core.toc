@@ -51,6 +51,7 @@ localization.br.lua
 modules\Modules.lua
 
 modules\Icons.lua
+modules\TargetScanning.lua
 
 # Core
 DBM-Core.lua
