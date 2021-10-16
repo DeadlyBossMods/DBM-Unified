@@ -156,7 +156,7 @@ do
 		--Set default values
 		scanInterval = scanInterval or 0.05
 		scanTimes = scanTimes or 16
-		local targetname, targetuid, bossuid = mod:GetBossTarget(cidOrGuid, scanOnlyBoss)
+		local targetname, targetuid, bossuid = self:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
 		DBM:Debug("Boss target scan "..targetScanCount[cidOrGuid].." of "..scanTimes..", found target "..(targetname or "nil").." using "..(bossuid or "nil"), 3)--Doesn't hurt to keep this, as level 3
 		--Do scan
 		if targetname and targetname ~= L.UNKNOWN and (not targetFilter or (targetFilter and targetFilter ~= targetname)) then
@@ -165,7 +165,7 @@ do
 				if targetScanCount[cidOrGuid] < scanTimes then--Make sure no infinite loop.
 					mod:ScheduleMethod(scanInterval, "BossTargetScanner", cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, nil, targetFilter, tankFilter, onlyPlayers)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan, or npc/pet on only person)
 				else--Go final scan.
-					mod:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, true, targetFilter, tankFilter, onlyPlayers)
+					self:BossTargetScanner(mod, cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, true, targetFilter, tankFilter, onlyPlayers)
 				end
 			else--Scan success. (or failed to detect right target.) But some spells can be used on tanks, anyway warns tank if player scan. (enemy scan block it)
 				targetScanCount[cidOrGuid] = nil--Reset count for later use.
@@ -258,7 +258,7 @@ do
 		if repeatedScanEnabled[returnFunc] then
 			cidOrGuid = cidOrGuid or mod.creatureId
 			scanInterval = scanInterval or 0.1
-			local targetname, targetuid, bossuid = mod:GetBossTarget(cidOrGuid, scanOnlyBoss)
+			local targetname, targetuid, bossuid = module:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
 			if targetname and (includeTank or not mod:IsTanking(targetuid, bossuid)) then
 				mod[returnFunc](mod, targetname, targetuid, bossuid)
 			end
