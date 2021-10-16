@@ -29,7 +29,7 @@ local iconSet = {}
 local module = private:NewModule("Icons")
 
 function module:OnModuleEnd()
-	twipe(addsGUIDs)
+	table.wipe(addsGUIDs)
 end
 
 --Utility functions used by multiple player methods

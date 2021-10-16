@@ -19,6 +19,7 @@ function module:OnModuleEnd()
 end
 
 do
+	local L = DBM_CORE_L
 	local bossTargetuIds = {
 		"boss1", "boss2", "boss3", "boss4", "boss5", "focus", "target"
 	}
