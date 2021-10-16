@@ -56,3 +56,14 @@ end
 function private:GetModule(name)
 	return modules[name]
 end
+
+--As more and more of DBM core gets modulized, it'd be a large waste of memory to store each and every modules tables in private.
+--Therefor, modules tables should be localized and use this method (which is called in EndCombat in DBM Core)
+--This will wipe module tables that can't wipe themselves when their functions get terminated early
+function private:ClearModuleTables()
+	for _, mod in pairs(modules) do
+		if mod.OnModuleEnd then
+			mod:OnModuleEnd()
+		end
+	end
+end

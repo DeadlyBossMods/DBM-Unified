@@ -8,8 +8,9 @@ local UnitIsUnit, UnitExists, UnitIsVisible, SetRaidTarget, GetRaidTargetIndex =
 
 local playerName = UnitName("player")
 
+--These still need to exist in private since they are heavily intertwined with DBM-Core
+--Do not move these to local/OnModuleEnd
 private.canSetIcons = {}
-private.addsGUIDs = {}
 private.enableIcons = true -- Set to false when a raid leader or a promoted player has a newer version of DBM
 
 --Common variables
@@ -19,6 +20,7 @@ local scansActive = 0
 local scanExpires = {}
 local addsIcon = {}
 local addsIconSet = {}
+local addsGUIDs = {}
 local iconVariables = {}
 --Player setting variables
 local iconSortTable = {}
@@ -26,23 +28,23 @@ local iconSet = {}
 
 local module = private:NewModule("Icons")
 
---Utility functions used by multiple player methods
-local function SortByGroup(v1, v2)
-	return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+function module:OnModuleEnd()
+	table.wipe(addsGUIDs)
 end
 
+--Utility functions used by multiple player methods
 local function clearSortTable(scanId)
 	iconSortTable[scanId] = nil
 	iconSet[scanId] = nil
 end
 
 --Primary icon methods
-function module:SetIcon(bossModPrototype, target, icon, timer)
+function module:SetIcon(mod, target, icon, timer)
 	if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
 	if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
-	bossModPrototype:UnscheduleMethod("SetIcon", target)
+	mod:UnscheduleMethod("SetIcon", target)
 	if type(icon) ~= "number" or type(target) ~= "string" then--icon/target probably backwards.
 		DBM:Debug("|cffff0000SetIcon is being used impropperly. Check icon/target order|r")
 		return--Fail silently instead of spamming icon lua errors if we screw up
@@ -54,16 +56,16 @@ function module:SetIcon(bossModPrototype, target, icon, timer)
 		uId = uId or target
 		--save previous icon into a table.
 		local oldIcon = self:GetIcon(uId) or 0
-		if not bossModPrototype.iconRestore[uId] then
-			bossModPrototype.iconRestore[uId] = oldIcon
+		if not mod.iconRestore[uId] then
+			mod.iconRestore[uId] = oldIcon
 		end
 		--set icon
 		if oldIcon ~= icon then--Don't set icon if it's already set to what we're setting it to
-			SetRaidTarget(uId, bossModPrototype.iconRestore[uId] and icon == 0 and bossModPrototype.iconRestore[uId] or icon)
+			SetRaidTarget(uId, mod.iconRestore[uId] and icon == 0 and mod.iconRestore[uId] or icon)
 		end
 		--schedule restoring old icon if timer enabled.
 		if timer then
-			bossModPrototype:ScheduleMethod(timer, "SetIcon", target, 0)
+			mod:ScheduleMethod(timer, "SetIcon", target, 0)
 		end
 	end
 end
@@ -73,8 +75,8 @@ function module:GetIcon(uIdOrTarget)
 	return UnitExists(uId) and GetRaidTargetIndex(uId)
 end
 
-function module:RemoveIcon(bossModPrototype, target)
-	return self:SetIcon(bossModPrototype, target, 0)
+function module:RemoveIcon(mod, target)
+	return self:SetIcon(mod, target, 0)
 end
 
 function module:ClearIcons()
@@ -99,7 +101,7 @@ end
 
 --Special Icon Methods
 do
-	local function SetIconByAlphaTable(bossModPrototype, returnFunc, scanId)
+	local function SetIconByAlphaTable(mod, returnFunc, scanId)
 		tsort(iconSortTable[scanId])--Sorted alphabetically
 		for i = 1, #iconSortTable[scanId] do
 			local target = iconSortTable[scanId][i]
@@ -107,18 +109,18 @@ do
 				DBM:Debug("|cffff0000Too many players to set icons, reconsider where using icons|r", 2)
 				return
 			end
-			if not bossModPrototype.iconRestore[target] then
-				bossModPrototype.iconRestore[target] = bossModPrototype:GetIcon(target) or 0
+			if not mod.iconRestore[target] then
+				mod.iconRestore[target] = mod:GetIcon(target) or 0
 			end
 			SetRaidTarget(target, i)--Icons match number in table in alpha sort
 			if returnFunc then
-				bossModPrototype[returnFunc](bossModPrototype, target, i)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+				mod[returnFunc](mod, target, i)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 			end
 		end
-		bossModPrototype:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+		mod:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 
-	function module:SetAlphaIcon(bossModPrototype, delay, target, maxIcon, returnFunc, scanId)
+	function module:SetAlphaIcon(mod, delay, target, maxIcon, returnFunc, scanId)
 		if not target then return end
 		if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
 			return
@@ -140,18 +142,21 @@ do
 				iconSet[scanId] = iconSet[scanId] + 1
 				tinsert(iconSortTable[scanId], uId)
 			end
-			bossModPrototype:Unschedule(SetIconByAlphaTable)
+			mod:Unschedule(SetIconByAlphaTable)
 			if maxIcon and iconSet[scanId] == maxIcon then
-				SetIconByAlphaTable(bossModPrototype, returnFunc, scanId)
-			elseif bossModPrototype:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				bossModPrototype:Schedule(delay or 0.5, SetIconByAlphaTable, bossModPrototype, returnFunc, scanId)
+				SetIconByAlphaTable(mod, returnFunc, scanId)
+			elseif mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				mod:Schedule(delay or 0.5, SetIconByAlphaTable, mod, returnFunc, scanId)
 			end
 		end
 	end
 end
 
 do
-	local function SetIconBySortedTable(bossModPrototype, startIcon, reverseIcon, returnFunc, scanId)
+	local function SortByGroup(v1, v2)
+		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+	end
+	local function SetIconBySortedTable(mod, startIcon, reverseIcon, returnFunc, scanId)
 		tsort(iconSortTable[scanId], SortByGroup)
 		local icon, CustomIcons
 		if startIcon and type(startIcon) == "table" then--Specific gapped icons
@@ -161,14 +166,14 @@ do
 			icon = startIcon or 1
 		end
 		for _, v in ipairs(iconSortTable[scanId]) do
-			if not bossModPrototype.iconRestore[v] then
-				bossModPrototype.iconRestore[v] = module:GetIcon(v) or 0
+			if not mod.iconRestore[v] then
+				mod.iconRestore[v] = module:GetIcon(v) or 0
 			end
 			if CustomIcons then
 				SetRaidTarget(v, startIcon[icon])--do not use SetIcon function again. It already checked in SetSortedIcon function.
 				icon = icon + 1
 				if returnFunc then
-					bossModPrototype[returnFunc](bossModPrototype, v, startIcon[icon])--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+					mod[returnFunc](mod, v, startIcon[icon])--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 				end
 			else
 				SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
@@ -178,14 +183,14 @@ do
 					icon = icon + 1
 				end
 				if returnFunc then
-					bossModPrototype[returnFunc](bossModPrototype, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+					mod[returnFunc](mod, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
 				end
 			end
 		end
-		bossModPrototype:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+		mod:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 
-	function module:SetSortedIcon(bossModPrototype, delay, target, startIcon, maxIcon, reverseIcon, returnFunc, scanId)
+	function module:SetSortedIcon(mod, delay, target, startIcon, maxIcon, reverseIcon, returnFunc, scanId)
 		if not target then return end
 		if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
 			return
@@ -208,11 +213,11 @@ do
 				iconSet[scanId] = iconSet[scanId] + 1
 				tinsert(iconSortTable[scanId], uId)
 			end
-			bossModPrototype:Unschedule(SetIconBySortedTable)
+			mod:Unschedule(SetIconBySortedTable)
 			if maxIcon and iconSet[scanId] == maxIcon then
-				SetIconBySortedTable(bossModPrototype, startIcon, reverseIcon, returnFunc, scanId)
-			elseif bossModPrototype:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				bossModPrototype:Schedule(delay or 0.5, SetIconBySortedTable, bossModPrototype, startIcon, reverseIcon, returnFunc, scanId)
+				SetIconBySortedTable(mod, startIcon, reverseIcon, returnFunc, scanId)
+			elseif mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				mod:Schedule(delay or 0.5, SetIconBySortedTable, mod, startIcon, reverseIcon, returnFunc, scanId)
 			end
 		end
 	end
@@ -251,7 +256,7 @@ do
 		if not isFiltered then
 			--Table based scanning, used if applying to multiple creature Ids in a single scan
 			--Can be used in both ascending/descending icon assignment or even specific icons per Id
-			if guid and iconVariables[scanId].scanTable and type(iconVariables[scanId].scanTable) == "table" and iconVariables[scanId].scanTable[cid] and not private.addsGUIDs[guid] then
+			if guid and iconVariables[scanId].scanTable and type(iconVariables[scanId].scanTable) == "table" and iconVariables[scanId].scanTable[cid] and not addsGUIDs[guid] then
 				DBM:Debug("Match found in mobUids, SHOULD be setting table icon on "..unitId, 1)
 				if type(iconVariables[scanId].scanTable[cid]) == "number" then--CID in table is assigned a specific icon number
 					SetRaidTarget(unitId, iconVariables[scanId].scanTable[cid])
@@ -267,7 +272,7 @@ do
 						addsIcon[scanId] = addsIcon[scanId] - 1
 					end
 				end
-			elseif guid and (guid == scanId or cid == scanId) and not private.addsGUIDs[guid] then
+			elseif guid and (guid == scanId or cid == scanId) and not addsGUIDs[guid] then
 				DBM:Debug("Match found in mobUids, SHOULD be setting icon on "..unitId, 1)
 				if iconVariables[scanId].iconSetMethod == 2 then--Fixed Icon
 					SetRaidTarget(unitId, addsIcon[scanId])
@@ -286,7 +291,7 @@ do
 			end
 		end
 		if success then
-			private.addsGUIDs[guid] = true
+			addsGUIDs[guid] = true
 			addsIconSet[scanId] = addsIconSet[scanId] + 1
 			DBM:Debug("SetRaidTarget succeeded. Total set "..(addsIconSet[scanId] or "unknown").." of "..(iconVariables[scanId].maxIcon or "unknown"), 2)
 			if addsIconSet[scanId] >= iconVariables[scanId].maxIcon then--stop scan immediately to save cpu
@@ -355,8 +360,8 @@ do
 		"mouseover", "target", "focus", "targettarget", "mouseovertarget"
 	}
 
-	function module:ScanForMobs(bossModPrototype, scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed)
-		if not optionName then optionName = bossModPrototype.findFastestComputer[1] end
+	function module:ScanForMobs(mod, scanId, iconSetMethod, mobIcon, maxIcon, scanTable, scanningTime, optionName, allowFriendly, skipMarked, allAllowed)
+		if not optionName then optionName = mod.findFastestComputer[1] end
 		if private.canSetIcons[optionName] or (allAllowed and not DBM.Options.DontSetIcons) then
 			--Declare variables.
 			DBM:Debug("canSetIcons or allAllowed true for "..(optionName or "nil"), 2)
