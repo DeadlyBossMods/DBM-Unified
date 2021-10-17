@@ -84,6 +84,7 @@ do
 
 	function module:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
 		local name, uid, bossuid
+		DBM:Debug("GetBossTarget firing for :"..tostring(mod).." "..tostring(cidOrGuid).." "..tostring(scanOnlyBoss), 3)
 		if type(cidOrGuid) == "number" then--CID passed, slower and slighty more hacky scan
 			cidOrGuid = cidOrGuid or mod.creatureId
 			local cacheuid = bossuIdCache[cidOrGuid] or "boss1"
@@ -140,19 +141,22 @@ do
 	function module:BossTargetScannerAbort(mod, cidOrGuid, returnFunc)
 		targetScanCount[cidOrGuid] = nil--Reset count for later use.
 		mod:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)
-		DBM:Debug("Boss target scan for "..cidOrGuid.." should be aborting.", 3)
+		DBM:Debug("Boss target scan for "..cidOrGuid.." should be aborting.", 2)
 	end
 
 	function module:BossTargetScanner(mod, cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, isFinalScan, targetFilter, tankFilter, onlyPlayers)
 		--Increase scan count
 		cidOrGuid = cidOrGuid or mod.creatureId
 		if not cidOrGuid then return end
-		if not targetScanCount[cidOrGuid] then targetScanCount[cidOrGuid] = 0 end
+		if not targetScanCount[cidOrGuid] then
+			targetScanCount[cidOrGuid] = 0
+			DBM:Debug("Boss target scan started for "..cidOrGuid, 2)
+		end
 		targetScanCount[cidOrGuid] = targetScanCount[cidOrGuid] + 1
 		--Set default values
 		scanInterval = scanInterval or 0.05
 		scanTimes = scanTimes or 16
-		local targetname, targetuid, bossuid = mod:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
+		local targetname, targetuid, bossuid = self:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
 		DBM:Debug("Boss target scan "..targetScanCount[cidOrGuid].." of "..scanTimes..", found target "..(targetname or "nil").." using "..(bossuid or "nil"), 3)--Doesn't hurt to keep this, as level 3
 		--Do scan
 		if targetname and targetname ~= L.UNKNOWN and (not targetFilter or (targetFilter and targetFilter ~= targetname)) then
@@ -161,7 +165,7 @@ do
 				if targetScanCount[cidOrGuid] < scanTimes then--Make sure no infinite loop.
 					mod:ScheduleMethod(scanInterval, "BossTargetScanner", cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, nil, targetFilter, tankFilter, onlyPlayers)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan, or npc/pet on only person)
 				else--Go final scan.
-					mod:BossTargetScanner(mod, cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, true, targetFilter, tankFilter, onlyPlayers)
+					self:BossTargetScanner(mod, cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, true, targetFilter, tankFilter, onlyPlayers)
 				end
 			else--Scan success. (or failed to detect right target.) But some spells can be used on tanks, anyway warns tank if player scan. (enemy scan block it)
 				targetScanCount[cidOrGuid] = nil--Reset count for later use.
@@ -169,6 +173,7 @@ do
 				if (tankFilter and mod:IsTanking(targetuid, bossuid)) or (isFinalScan and isEnemyScan) or onlyPlayers and not UnitIsPlayer("player", targetuid) then return end--If enemyScan and playerDetected, return nothing
 				local scanningTime = (targetScanCount[cidOrGuid] or 1) * scanInterval
 				mod[returnFunc](mod, targetname, targetuid, bossuid, scanningTime)--Return results to warning function with all variables.
+				DBM:Debug("BossTargetScanner has ended for "..cidOrGuid, 2)
 			end
 		else--target was nil, lets schedule a rescan here too.
 			if targetScanCount[cidOrGuid] < scanTimes then--Make sure not to infinite loop here as well.
@@ -227,7 +232,7 @@ do
 		end
 		unitMonitor[uId] = nil
 		unitScanCount = unitScanCount - 1
-		DBM:Debug("Boss unit target scan should be aborting for "..uId, 3)
+		DBM:Debug("Boss unit target scan should be aborting for "..uId, 2)
 	end
 
 	function module:BossUnitTargetScanner(mod, uId, returnFunc, scanTime, allowTank)
@@ -253,7 +258,7 @@ do
 		if repeatedScanEnabled[returnFunc] then
 			cidOrGuid = cidOrGuid or mod.creatureId
 			scanInterval = scanInterval or 0.1
-			local targetname, targetuid, bossuid = mod:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
+			local targetname, targetuid, bossuid = module:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
 			if targetname and (includeTank or not mod:IsTanking(targetuid, bossuid)) then
 				mod[returnFunc](mod, targetname, targetuid, bossuid)
 			end
