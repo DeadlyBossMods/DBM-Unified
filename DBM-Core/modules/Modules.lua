@@ -63,6 +63,12 @@ function modulePrototype:UnregisterShortTermEvents()
 	for _, event in ipairs(self.shortTermEvents) do
 		if event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" then
 			local eventData = {strsplit(" ", event)}
+			if #eventData < 2 then
+				eventData = {eventData[1], "boss1", "boss2", "boss3", "boss4", "boss5", "target"}
+				if isRetail then
+					tinsert(eventData, "focus")
+				end
+			end
 			local eventName = eventData[1]
 			for i = 2, #eventData do
 				self.unitFrames[eventData[i]]:UnregisterEvent(eventName)
@@ -92,6 +98,10 @@ function private:NewModule(name)
 		__index = modulePrototype
 	})
 	frame:SetScript("OnEvent", function(_, event, ...)
+		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
+			-- UNIT_* events that come from mainFrame are _UNFILTERED variants and need their suffix
+			event = event .. "_UNFILTERED"
+		end
 		local handler = obj[event]
 		if handler then
 			handler(obj, ...)
