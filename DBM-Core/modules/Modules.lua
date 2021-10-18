@@ -73,6 +73,8 @@ function modulePrototype:UnregisterShortTermEvents()
 			for i = 2, #eventData do
 				self.unitFrames[eventData[i]]:UnregisterEvent(eventName)
 			end
+		elseif event:sub(event:len() - 10) == "_UNFILTERED" then
+			self.frame:UnregisterEvent(event:sub(0, -12))
 		else
 			self.frame:UnregisterEvent(event)
 		end
