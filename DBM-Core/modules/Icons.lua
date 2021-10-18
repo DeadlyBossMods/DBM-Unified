@@ -327,7 +327,7 @@ do
 		end
 	end
 
-	function module:UNIT_TARGET(unitId)
+	function module:UNIT_TARGET_UNFILTERED(unitId)
 		for scanId, _ in pairs(scanExpires) do
 			executeMarking(scanId, unitId.."target")
 		end
@@ -400,9 +400,9 @@ do
 			if not eventsRegistered and scansActive == 1 then
 				eventsRegistered = true
 				if isRetail then
-					self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+					self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 				else
-					self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED")
+					self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED", "NAME_PLATE_UNIT_ADDED", "FORBIDDEN_NAME_PLATE_UNIT_ADDED")
 				end
 				DBM:Debug("Target events Registered", 2)
 			end
