@@ -1404,6 +1404,7 @@ do
 			loadOptions(self)
 			DBT:LoadOptions("DBM")
 			self.AddOns = {}
+			private:OnModuleLoad()
 			if GetAddOnEnableState(playerName, "VEM-Core") >= 1 then
 				self:Disable(true)
 				self:Schedule(15, infniteLoopNotice, self, L.VEM)

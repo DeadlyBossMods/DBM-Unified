@@ -4,6 +4,10 @@ local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local module = private:NewModule("DevTools")
 
+function module:OnModuleLoad()
+	self:OnDebugToggle()
+end
+
 do
 	--Debug Mode
 	local eventsRegistered = false
@@ -35,7 +39,6 @@ do
 			self:UnregisterShortTermEvents()
 		end
 	end
-	module:OnDebugToggle()--Trigger initial stage if on when loading
 
 	function module:Debug(text, level)
 		--But we still want to generate callbacks for level 1 and 2 events

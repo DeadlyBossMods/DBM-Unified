@@ -57,6 +57,15 @@ function private:GetModule(name)
 	return modules[name]
 end
 
+--Needed in certain cases where we need to initialize module stuff after DBM Core loads
+function private:OnModuleLoad()
+	for _, mod in pairs(modules) do
+		if mod.OnModuleLoad then
+			mod:OnModuleLoad()
+		end
+	end
+end
+
 --As more and more of DBM core gets modulized, it'd be a large waste of memory to store each and every modules tables in private.
 --Therefor, modules tables should be localized and use this method (which is called in EndCombat in DBM Core)
 --This will wipe module tables that can't wipe themselves when their functions get terminated early
