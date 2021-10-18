@@ -1,5 +1,7 @@
 local _, private = ...
 
+local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+
 local tinsert, twipe = table.insert, table.wipe
 
 ---------------
@@ -8,21 +10,66 @@ local tinsert, twipe = table.insert, table.wipe
 local modulePrototype = {}
 
 function modulePrototype:RegisterEvents(...)
+	local function HandleEvent(_, event, ...)
+		local handler = self[event]
+		if handler then
+			handler(self, ...)
+		end
+	end
+
 	for _, event in ipairs({...}) do
-		self.frame:RegisterEvent(event)
+		if event:sub(0, 5) == "UNIT_" then
+			local eventData = {strsplit(" ", event)}
+			if eventData[1]:sub(eventData[1]:len() - 10) == "_UNFILTERED" then
+				self.frame:RegisterEvent(eventData[1]:sub(0, -12))
+			else
+				if #eventData < 2 then
+					eventData = {eventData[1], "boss1", "boss2", "boss3", "boss4", "boss5", "target"}
+					if isRetail then
+						tinsert(eventData, "focus")
+					end
+				end
+				for i = 2, #eventData do
+					local unitId = eventData[i]
+					local frame = self.unitFrames[unitId]
+					if not frame then
+						frame = CreateFrame("Frame")
+						if unitId == "mouseover" then
+							frame:SetScript("OnEvent", function(_, event, _, ...)
+								HandleEvent(nil, event, "mouseover", ...)
+							end)
+						else
+							frame:SetScript("OnEvent", HandleEvent)
+						end
+						self.unitFrames[unitId] = frame
+					end
+					frame:RegisterUnitEvent(eventData[1], unitId)
+				end
+			end
+		else
+			self.frame:RegisterEvent(event)
+		end
 	end
 end
 
 function modulePrototype:RegisterShortTermEvents(...)
+	self:RegisterEvents(...)
 	for _, event in ipairs({...}) do
-		self.frame:RegisterEvent(event)
 		tinsert(self.shortTermEvents, event)
 	end
 end
 
 function modulePrototype:UnregisterShortTermEvents()
 	for _, event in ipairs(self.shortTermEvents) do
-		self.frame:UnregisterEvent(event)
+		if event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" then
+			local eventData = {strsplit(" ", event)}
+			local eventName = eventData[1]
+			for i = 2, #eventData do
+				self.unitFrames[eventData[i]]:UnregisterEvent(eventName)
+			end
+		else
+			self.frame:UnregisterEvent(event)
+		end
 	end
 	twipe(self.shortTermEvents)
 end
@@ -39,6 +86,7 @@ function private:NewModule(name)
 	local frame = CreateFrame("Frame", "DBM" .. name)
 	local obj = setmetatable({
 		frame = frame,
+		unitFrames = {},
 		shortTermEvents = {}
 	}, {
 		__index = modulePrototype

@@ -29,14 +29,14 @@ do
 	function module:OnDebugToggle()
 		if DBM.Options.DebugMode and not eventsRegistered then
 			eventsRegistered = true
---			if isRetail then
---				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5", "UNIT_TARGETABLE_CHANGED")
---			else--No Boss unit Ids in classic, register backups
---				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED target focus", "UNIT_TARGETABLE_CHANGED")
---			end
+			if isRetail then
+				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5", "UNIT_TARGETABLE_CHANGED")
+			else--No Boss unit Ids in classic, register backups
+				self:RegisterShortTermEvents("UNIT_SPELLCAST_SUCCEEDED target focus", "UNIT_TARGETABLE_CHANGED")
+			end
 		elseif not DBM.Options.DebugMode and eventsRegistered then
 			eventsRegistered = false
---			self:UnregisterShortTermEvents()
+			self:UnregisterShortTermEvents()
 		end
 	end
 
