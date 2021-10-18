@@ -23,7 +23,6 @@ do
 
 	--Spammy events that core doesn't otherwise need are now dynamically registered/unregistered based on whether or not user is actually debugging
 	function module:OnDebugToggle()
-		local transcriptor = _G["Transcriptor"]
 		if DBM.Options.DebugMode and not eventsRegistered then
 			eventsRegistered = true
 			if isRetail then
