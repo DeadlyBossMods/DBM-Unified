@@ -1625,8 +1625,6 @@ do
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-				"UNIT_TARGETABLE_CHANGED",
-				"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 				"ENCOUNTER_START",
 				"ENCOUNTER_END",
 				"BOSS_KILL",
@@ -2441,6 +2439,7 @@ do
 		elseif cmd:sub(1, 5) == "debug" then
 			DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
 			DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
+			private:GetModule("DevTools"):OnDebugToggle()
 		elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 			if DBM:HasMapRestrictions() then
 				local _, _, _, map = UnitPosition("player")
@@ -5521,19 +5520,6 @@ do
 		end
 	end
 
-	function DBM:UNIT_TARGETABLE_CHANGED(uId)
-		local transcriptor = _G["Transcriptor"]
-		if self.Options.DebugLevel > 2 or (transcriptor and transcriptor:IsLogging()) then
-			local active = UnitExists(uId) and "true" or "false"
-			self:Debug("UNIT_TARGETABLE_CHANGED event fired for "..UnitName(uId)..". Active: "..active)
-		end
-	end
-
-	function DBM:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
-		local spellName = self:GetSpellInfo(spellId)
-		self:Debug("UNIT_SPELLCAST_SUCCEEDED fired: "..UnitName(uId).."'s "..spellName.."("..spellId..")", 3)
-	end
-
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
 		self:Debug("ENCOUNTER_START event fired: "..encounterID.." "..name.." "..difficulty.." "..size)
 		if dbmIsEnabled then
@@ -7297,20 +7283,6 @@ function DBM:AddMsg(text, prefix)
 end
 AddMsg = DBM.AddMsg
 
-function DBM:Debug(text, level)
-	--But we still want to generate callbacks for level 1 and 2 events
-	local userLevel = self.Options.DebugLevel
-	if userLevel == 3 or (level or 1) < 3 then--Cap debug level to 2 for trannscriptor unless user specifically specifies 3
-		fireEvent("DBM_Debug", text, level)
-	end
-	if not self.Options or not self.Options.DebugMode then return end
-	if (level or 1) <= self.Options.DebugLevel then
-		local frame = _G[tostring(self.Options.ChatFrame)]
-		frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
-		frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
-	end
-end
-
 do
 	local testMod
 	local testWarning1, testWarning2, testWarning3
@@ -7459,69 +7431,28 @@ do
 	end
 end
 
---To speed up creating new mods.
-function DBM:FindDungeonMapIDs(low, peak, contains)
-	local start = low or 1
-	local range = peak or 4000
-	self:AddMsg("-----------------")
-	for i = start, range do
-		local dungeon = GetRealZoneText(i)
-		if dungeon and dungeon ~= "" then
-			if not contains or contains and dungeon:find(contains) then
-				self:AddMsg(i..": "..dungeon)
-			end
-		end
+do
+	local DevTools = private:GetModule("DevTools")
+	function DBM:Debug(...)
+		return DevTools:Debug(...)
+	end
+
+	function DBM:FindDungeonMapIDs(...)
+		return DevTools:FindDungeonMapIDs(...)
+	end
+
+	function DBM:FindInstanceIDs(...)
+		return DevTools:FindInstanceIDs(...)
+	end
+
+	function DBM:FindScenarioIDs(...)
+		return DevTools:FindScenarioIDs(...)
+	end
+
+	function DBM:FindEncounterIDs(...)
+		return DevTools:FindEncounterIDs(...)
 	end
 end
-
-function DBM:FindInstanceIDs(low, peak, contains)
-	local start = low or 1
-	local range = peak or 3000
-	self:AddMsg("-----------------")
-	for i = start, range do
-		local instance = EJ_GetInstanceInfo(i)
-		if instance then
-			if not contains or contains and instance:find(contains) then
-				self:AddMsg(i..": "..instance)
-			end
-		end
-	end
-end
-
-function DBM:FindScenarioIDs(low, peak, contains)
-	local start = low or 1
-	local range = peak or 3000
-	self:AddMsg("-----------------")
-	for i = start, range do
-		local instance = self:GetDungeonInfo(i)
-		if instance and (not contains or contains and instance:find(contains)) then
-			self:AddMsg(i..": "..instance)
-		end
-	end
-end
-
---/run DBM:FindEncounterIDs(1192)--Shadowlands
---/run DBM:FindEncounterIDs(1178, 23)--Dungeon Template (mythic difficulty)
---/run DBM:FindEncounterIDs(237, 1)--Classic Dungeons need diff 1 specified
---/run DBM:FindDungeonMapIDs(1, 500)--Find Classic Dungeon Map IDs
---/run DBM:FindInstanceIDs(1, 300)--Find Classic Dungeon Journal IDs
-function DBM:FindEncounterIDs(instanceID, diff)
-	if not instanceID then
-		self:AddMsg("Error: Function requires instanceID be provided")
-	end
-	if not diff then diff = 14 end--Default to "normal" in 6.0+ if diff arg not given.
-	EJ_SetDifficulty(diff)--Make sure it's set to right difficulty or it'll ignore mobs (ie ra-den if it's not set to heroic). Use user specified one as primary, with curernt zone difficulty as fallback
-	self:AddMsg("-----------------")
-	for i=1, 25 do
-		local name, _, encounterID = EJ_GetEncounterInfoByIndex(i, instanceID)
-		if name then
-			self:AddMsg(encounterID..": "..name)
-		end
-	end
-end
-
---Taint the script that disables /run /dump, etc
---ScriptsDisallowedForBeta = function() return false end
 
 --------------------
 --  Movie Filter  --
