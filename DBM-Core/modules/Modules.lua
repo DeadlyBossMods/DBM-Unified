@@ -20,7 +20,7 @@ function modulePrototype:RegisterEvents(...)
 	for _, event in ipairs({...}) do
 		if event:sub(0, 5) == "UNIT_" then
 			local eventData = {strsplit(" ", event)}
-			if eventData[1]:sub(eventData[1]:len() - 10) == "_UNFILTERED" then
+			if eventData[1]:sub(-11) == "_UNFILTERED" then
 				self.frame:RegisterEvent(eventData[1]:sub(0, -12))
 			else
 				if #eventData < 2 then
@@ -61,7 +61,7 @@ end
 
 function modulePrototype:UnregisterShortTermEvents()
 	for _, event in ipairs(self.shortTermEvents) do
-		if event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" then
+		if event:sub(0, 5) == "UNIT_" and event:sub(-11) ~= "_UNFILTERED" then
 			local eventData = {strsplit(" ", event)}
 			if #eventData < 2 then
 				eventData = {eventData[1], "boss1", "boss2", "boss3", "boss4", "boss5", "target"}
@@ -71,9 +71,11 @@ function modulePrototype:UnregisterShortTermEvents()
 			end
 			local eventName = eventData[1]
 			for i = 2, #eventData do
-				self.unitFrames[eventData[i]]:UnregisterEvent(eventName)
+				if self.unitFrames[eventData[i]] then
+					self.unitFrames[eventData[i]]:UnregisterEvent(eventName)
+				end
 			end
-		elseif event:sub(event:len() - 10) == "_UNFILTERED" then
+		elseif event:sub(-11) == "_UNFILTERED" then
 			self.frame:UnregisterEvent(event:sub(0, -12))
 		else
 			self.frame:UnregisterEvent(event)
