@@ -4,6 +4,10 @@ local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local module = private:NewModule("DevTools")
 
+function module:OnModuleLoad()
+	self:OnDebugToggle()
+end
+
 do
 	--Debug Mode
 	local eventsRegistered = false
@@ -35,12 +39,11 @@ do
 			self:UnregisterShortTermEvents()
 		end
 	end
-	module:OnDebugToggle()--Trigger initial stage if on when loading
 
 	function module:Debug(text, level)
 		--But we still want to generate callbacks for level 1 and 2 events
 		if DBM.Options.DebugLevel == 3 or (level or 1) < 3 then--Cap debug level to 2 for trannscriptor unless user specifically specifies 3
-			DBM:fireEvent("DBM_Debug", text, level)
+			DBM:FireEvent("DBM_Debug", text, level)
 		end
 		if not DBM.Options or not DBM.Options.DebugMode then return end
 		if (level or 1) <= DBM.Options.DebugLevel then

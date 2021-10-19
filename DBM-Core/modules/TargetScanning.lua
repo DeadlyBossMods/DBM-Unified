@@ -189,7 +189,7 @@ end
 do
 	--UNIT_TARGET Target scanning method
 	local eventsRegistered = false
-	function module:UNIT_TARGET(uId)
+	function module:UNIT_TARGET_UNFILTERED(uId)
 		--Active BossUnitTargetScanner
 		if unitMonitor[uId] and UnitExists(uId.."target") and UnitPlayerOrPetInRaid(uId.."target") then
 			DBM:Debug("unitMonitor for this unit exists, target exists in group", 2)
@@ -245,7 +245,7 @@ do
 		mod:ScheduleMethod(scanTime or 1.5, "BossUnitTargetScannerAbort", uId)--In case of BossUnitTargetScanner firing too late, and boss already having changed target before monitor started, it needs to abort after x seconds
 		if not eventsRegistered then
 			eventsRegistered = true
-			self:RegisterShortTermEvents("UNIT_TARGET")
+			self:RegisterShortTermEvents("UNIT_TARGET_UNFILTERED")
 			DBM:Debug("Registering UNIT_TARGET event for BossUnitTargetScanner", 2)
 		end
 	end
