@@ -352,6 +352,12 @@ DBM_DISABLE_ZONE_DETECTION = newproxy(false)
 DBM_OPTION_SPACER = newproxy(false)
 
 --------------
+--  Privates  --
+--------------
+private.modSyncSpam = {}
+private.updateFunctions = {}
+
+--------------
 --  Locals  --
 --------------
 local bossModPrototype = {}
@@ -361,9 +367,7 @@ local lastCombatStarted = GetTime()
 local loadcIds, inCombat, oocBWComms = {}, {}, {}
 local combatInfo = {}
 local bossIds = {}
-local updateFunctions = {}
 local raid = {}
-local modSyncSpam = {}
 local autoRespondSpam = {}
 local chatPrefix = "<Deadly Boss Mods> "
 local chatPrefixShort = "<DBM> "
@@ -372,14 +376,6 @@ local newerVersionPerson = {}
 local combatInitialized = false
 local healthCombatInitialized = false
 local pformat
-local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
-schedulerFrame:Hide()
-local startScheduler
-local schedule
-local unschedule
-local unscheduleAll
-local scheduleCountdown
-local scheduleRepeat
 local loadOptions
 local checkWipe
 local checkBossHealth
@@ -1742,275 +1738,14 @@ end
 --------------------------
 --  OnUpdate/Scheduler  --
 --------------------------
-do
-	-- stack that stores a few tables (up to 8) which will be recycled
-	local popCachedTable, pushCachedTable
-	local numChachedTables = 0
-	do
-		local tableCache
-
-		-- gets a table from the stack, it will then be recycled.
-		function popCachedTable()
-			local t = tableCache
-			if t then
-				tableCache = t.next
-				numChachedTables = numChachedTables - 1
-			end
-			return t
-		end
-
-		-- tries to push a table on the stack
-		-- only tables with <= 4 array entries are accepted as cached tables are only used for tasks with few arguments as we don't want to have big arrays wasting our precious memory space doing nothing...
-		-- also, the maximum number of cached tables is limited to 8 as DBM rarely has more than eight scheduled tasks with less than 4 arguments at the same time
-		-- this is just to re-use all the tables of the small tasks that are scheduled all the time (like the wipe detection)
-		-- note that the cache does not use weak references anywhere for performance reasons, so a cached table will never be deleted by the garbage collector
-		function pushCachedTable(t)
-			if numChachedTables < 8 and #t <= 4 then
-				twipe(t)
-				t.next = tableCache
-				tableCache = t
-				numChachedTables = numChachedTables + 1
-			end
-		end
-	end
-
-	-- priority queue (min-heap) that stores all scheduled tasks.
-	-- insert: O(log n)
-	-- deleteMin: O(log n)
-	-- getMin: O(1)
-	-- removeAllMatching: O(n)
-	local insert, removeAllMatching, getMin, deleteMin
-	do
-		local heap = {}
-		local firstFree = 1
-
-		-- gets the next task
-		function getMin()
-			return heap[1]
-		end
-
-		-- restores the heap invariant by moving an item up
-		local function siftUp(n)
-			local parent = floor(n / 2)
-			while n > 1 and heap[parent].time > heap[n].time do -- move the element up until the heap invariant is restored, meaning the element is at the top or the element's parent is <= the element
-				heap[n], heap[parent] = heap[parent], heap[n] -- swap the element with its parent
-				n = parent
-				parent = floor(n / 2)
-			end
-		end
-
-		-- restores the heap invariant by moving an item down
-		local function siftDown(n)
-			local m -- position of the smaller child
-			while 2 * n < firstFree do -- #children >= 1
-				-- swap the element with its smaller child
-				if 2 * n + 1 == firstFree then -- n does not have a right child --> it only has a left child as #children >= 1
-					m = 2 * n -- left child
-				elseif heap[2 * n].time < heap[2 * n + 1].time then -- #children = 2 and left child < right child
-					m = 2 * n -- left child
-				else -- #children = 2 and right child is smaller than the left one
-					m = 2 * n + 1 -- right
-				end
-				if heap[n].time <= heap[m].time then -- n is <= its smallest child --> heap invariant restored
-					return
-				end
-				heap[n], heap[m] = heap[m], heap[n]
-				n = m
-			end
-		end
-
-		-- inserts a new element into the heap
-		function insert(ele)
-			heap[firstFree] = ele
-			siftUp(firstFree)
-			firstFree = firstFree + 1
-		end
-
-		-- deletes the min element
-		function deleteMin()
-			local min = heap[1]
-			firstFree = firstFree - 1
-			heap[1] = heap[firstFree]
-			heap[firstFree] = nil
-			siftDown(1)
-			return min
-		end
-
-		-- removes multiple scheduled tasks from the heap
-		-- note that this function is comparatively slow by design as it has to check all tasks and allows partial matches
-		function removeAllMatching(f, mod, ...)
-			-- remove all elements that match the signature, this destroyes the heap and leaves a normal array
-			local v, match
-			local foundMatch = false
-			for i = #heap, 1, -1 do -- iterate backwards over the array to allow usage of table.remove
-				v = heap[i]
-				if (not f or v.func == f) and (not mod or v.mod == mod) then
-					match = true
-					for j = 1, select("#", ...) do
-						if select(j, ...) ~= v[j] then
-							match = false
-							break
-						end
-					end
-					if match then
-						tremove(heap, i)
-						firstFree = firstFree - 1
-						foundMatch = true
-					end
-				end
-			end
-			-- rebuild the heap from the array in O(n)
-			if foundMatch then
-				for i = floor((firstFree - 1) / 2), 1, -1 do
-					siftDown(i)
-				end
-			end
-		end
-	end
-
-	local wrappers = {}
-	local function range(max, cur, ...)
-		cur = cur or 1
-		if cur > max then
-			return ...
-		end
-		return cur, range(max, cur + 1, select(2, ...))
-	end
-	local function getWrapper(n)
-		wrappers[n] = wrappers[n] or loadstring(([[
-			return function(func, tbl)
-				return func(]] .. ("tbl[%s], "):rep(n):sub(0, -3) .. [[)
-			end
-		]]):format(range(n)))()
-		return wrappers[n]
-	end
-
-	local nextModSyncSpamUpdate = 0
-	--mainFrame:SetScript("OnUpdate", function(self, elapsed)
-	local function onUpdate(self, elapsed)
-		local time = GetTime()
-
-		-- execute scheduled tasks
-		local nextTask = getMin()
-		while nextTask and nextTask.func and nextTask.time <= time do
-			deleteMin()
-			local n = nextTask.n
-			if n == #nextTask then
-				nextTask.func(unpack(nextTask))
-			else
-				-- too many nil values (or a trailing nil)
-				-- this is bad because unpack will not work properly
-				-- TODO: is there a better solution?
-				getWrapper(n)(nextTask.func, nextTask)
-			end
-			pushCachedTable(nextTask)
-			nextTask = getMin()
-		end
-
-		-- execute OnUpdate handlers of all modules
-		local foundModFunctions = 0
-		for i, v in pairs(updateFunctions) do
-			foundModFunctions = foundModFunctions + 1
-			if i.Options.Enabled and (not i.zones or i.zones[LastInstanceMapID]) then
-				i.elapsed = (i.elapsed or 0) + elapsed
-				if i.elapsed >= (i.updateInterval or 0) then
-					v(i, i.elapsed)
-					i.elapsed = 0
-				end
-			end
-		end
-
-		-- clean up sync spam timers and auto respond spam blockers
-		if time > nextModSyncSpamUpdate then
-			nextModSyncSpamUpdate = time + 20
-			-- TODO: optimize this; using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than 4 entries...
-			-- we now do this just every 20 seconds since the earlier assumption about modSyncSpam isn't true any longer
-			-- note that not removing entries at all would be just a small memory leak and not a problem (the sync functions themselves check the timestamp)
-			local k, v = next(modSyncSpam, nil)
-			if v and (time - v > 8) then
-				modSyncSpam[k] = nil
-			end
-		end
-		if not nextTask and foundModFunctions == 0 then--Nothing left, stop scheduler
-			schedulerFrame:SetScript("OnUpdate", nil)
-			schedulerFrame:Hide()
-		end
-	end
-
-	function startScheduler()
-		if not schedulerFrame:IsShown() then
-			schedulerFrame:Show()
-			schedulerFrame:SetScript("OnUpdate", onUpdate)
-		end
-	end
-
-	function schedule(t, f, mod, ...)
-		if type(f) ~= "function" then
-			error("usage: schedule(time, func, [mod, args...])", 2)
-		end
-		startScheduler()
-		local v
-		if numChachedTables > 0 and select("#", ...) <= 4 then -- a cached table is available and all arguments fit into an array with four slots
-			v = popCachedTable()
-			v.time = GetTime() + t
-			v.func = f
-			v.mod = mod
-			v.n = select("#", ...)
-			for i = 1, v.n do
-				v[i] = select(i, ...)
-			end
-			-- clear slots if necessary
-			for i = v.n + 1, 4 do
-				v[i] = nil
-			end
-		else -- create a new table
-			v = {time = GetTime() + t, func = f, mod = mod, n = select("#", ...), ...}
-		end
-		insert(v)
-	end
-
-	function scheduleCountdown(time, numAnnounces, func, mod, self, ...)
-		time = time or 5
-		numAnnounces = numAnnounces or 3
-		for i = 1, numAnnounces do
-			--In event time is < numbmer of announces (ie 2 second time, with 3 announces)
-			local validTime = time - i
-			if validTime >= 1 then
-				schedule(validTime, func, mod, self, i, ...)
-			end
-		end
-	end
-
-	function scheduleRepeat(time, spellId, func, mod, self, ...)
-		--Loops until debuff is gone
-		if DBM:UnitAura("player", spellId) then--GetPlayerAuraBySpellID
-			func(...)--Probably not going to work, this is going to need to get a lot more hacky
-			schedule(time or 2, scheduleRepeat, time, spellId, func, mod, self, ...)
-		end
-	end
-
-	function unschedule(f, mod, ...)
-		if not f and not mod then
-			-- you really want to kill the complete scheduler? call unscheduleAll
-			error("cannot unschedule everything, pass a function and/or a mod")
-		end
-		return removeAllMatching(f, mod, ...)
-	end
-
-	function unscheduleAll()
-		return removeAllMatching()
-	end
-end
+local DBMScheduler = private:GetModule("DBMScheduler")
 
 function DBM:Schedule(t, f, ...)
-	if type(f) ~= "function" then
-		error("usage: DBM:Schedule(time, func, [args...])", 2)
-	end
-	return schedule(t, f, nil, ...)
+	return DBMScheduler:Schedule(t, f, nil, ...)
 end
 
 function DBM:Unschedule(f, ...)
-	return unschedule(f, nil, ...)
+	return DBMScheduler:Unschedule(f, nil, ...)
 end
 
 ---------------
@@ -7253,7 +6988,8 @@ end
 do
 	local forceDisabled = false
 	function DBM:Disable(forceDisable)
-		unscheduleAll()
+		DBMScheduler:Unschedule()
+
 		dbmIsEnabled = false
 		forceDisabled = forceDisable
 	end
@@ -7654,17 +7390,17 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:RegisterOnUpdateHandler(func, interval)
-	startScheduler()
 	if type(func) ~= "function" then return end
+	DBMScheduler:StartScheduler()
 	self.elapsed = 0
 	self.updateInterval = interval or 0
-	updateFunctions[self] = func
+	private.updateFunctions[self] = func
 end
 
 function bossModPrototype:UnregisterOnUpdateHandler()
 	self.elapsed = nil
 	self.updateInterval = nil
-	twipe(updateFunctions)
+	twipe(private.updateFunctions)
 end
 
 function bossModPrototype:SetStage(stage)
@@ -8855,20 +8591,20 @@ do
 				end
 			end
 		end
-		unschedule(self.Show, self.mod, self)
-		schedule(delay or 0.5, self.Show, self.mod, self, ...)
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
+		DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Schedule(t, ...)
-		return schedule(t, self.Show, self.mod, self, ...)
+		return DBMScheduler:Schedule(t, self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Countdown(time, numAnnounces, ...)
-		scheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
+		DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Cancel(...)
-		return unschedule(self.Show, self.mod, self, ...)
+		return DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Play(name, customPath)
@@ -8887,19 +8623,19 @@ do
 
 	function announcePrototype:ScheduleVoice(t, ...)
 		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
-		return schedule(t, self.Play, self.mod, self, ...)
+		DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
+		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	--Object Permits scheduling voice multiple times for same object
 	function announcePrototype:ScheduleVoiceOverLap(t, ...)
 		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return schedule(t, self.Play, self.mod, self, ...)
+		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	function announcePrototype:CancelVoice(...)
 		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return unschedule(self.Play, self.mod, self, ...)
+		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
 	-- old constructor (no auto-localize)
@@ -9183,7 +8919,7 @@ do
 	end
 
 	function yellPrototype:Schedule(t, ...)
-		return schedule(t, self.Yell, self.mod, self, ...)
+		return DBMScheduler:Schedule(t, self.Yell, self.mod, self, ...)
 	end
 
 	--Standard schedule object to schedule a say/yell based on what's defined in object
@@ -9192,10 +8928,10 @@ do
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
 			if expireTime then
 				local remaining = expireTime-GetTime()
-				scheduleCountdown(remaining, numAnnounces, self.Yell, self.mod, self, ...)
+				DBMScheduler:ScheduleCountdown(remaining, numAnnounces, self.Yell, self.mod, self, ...)
 			end
 		else
-			scheduleCountdown(time, numAnnounces, self.Yell, self.mod, self, ...)
+			DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Yell, self.mod, self, ...)
 		end
 	end
 
@@ -9205,19 +8941,15 @@ do
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
 			if expireTime then
 				local remaining = expireTime-GetTime()
-				scheduleCountdown(remaining, numAnnounces, self.Yell, self.mod, self, ...)
+				DBMScheduler:ScheduleCountdown(remaining, numAnnounces, self.Yell, self.mod, self, ...)
 			end
 		else
-			scheduleCountdown(time, numAnnounces, self.Say, self.mod, self, ...)
+			DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Say, self.mod, self, ...)
 		end
 	end
 
-	function yellPrototype:Repeat(...)
-		scheduleRepeat(time, self.Yell, self.spellId, self.mod, self, ...)
-	end
-
 	function yellPrototype:Cancel(...)
-		return unschedule(self.Yell, self.mod, self, ...)
+		return DBMScheduler:Unschedule(self.Yell, self.mod, self, ...)
 	end
 
 	function bossModPrototype:NewYell(...)
@@ -9640,25 +9372,25 @@ do
 				end
 			end
 		end
-		unschedule(self.Show, self.mod, self)
-		schedule(delay or 0.5, self.Show, self.mod, self, ...)
+		DBMScheduler:Unschedule(self.Show, self.mod, self)
+		DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:DelayedShow(delay, ...)
-		unschedule(self.Show, self.mod, self, ...)
-		schedule(delay or 0.5, self.Show, self.mod, self, ...)
+		DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
+		DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Schedule(t, ...)
-		return schedule(t, self.Show, self.mod, self, ...)
+		return DBMScheduler:Schedule(t, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Countdown(time, numAnnounces, ...)
-		scheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
+		DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Cancel(_, ...) -- t, ...
-		return unschedule(self.Show, self.mod, self, ...)
+		return DBMScheduler:Unschedule(self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Play(name, customPath)
@@ -9680,19 +9412,19 @@ do
 
 	function specialWarningPrototype:ScheduleVoice(t, ...)
 		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
-		return schedule(t, self.Play, self.mod, self, ...)
+		DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
+		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	--Object Permits scheduling voice multiple times for same object
 	function specialWarningPrototype:ScheduleVoiceOverLap(t, ...)
 		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return schedule(t, self.Play, self.mod, self, ...)
+		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:CancelVoice(...)
 		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
-		return unschedule(self.Play, self.mod, self, ...)
+		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture)
@@ -10406,17 +10138,17 @@ do
 	end
 
 	function timerPrototype:DelayedStart(delay, ...)
-		unschedule(self.Start, self.mod, self, ...)
-		schedule(delay or 0.5, self.Start, self.mod, self, ...)
+		DBMScheduler:Unschedule(self.Start, self.mod, self, ...)
+		DBMScheduler:Schedule(delay or 0.5, self.Start, self.mod, self, ...)
 	end
 	timerPrototype.DelayedShow = timerPrototype.DelayedStart
 
 	function timerPrototype:Schedule(t, ...)
-		return schedule(t, self.Start, self.mod, self, ...)
+		return DBMScheduler:Schedule(t, self.Start, self.mod, self, ...)
 	end
 
 	function timerPrototype:Unschedule(...)
-		return unschedule(self.Start, self.mod, self, ...)
+		return DBMScheduler:Unschedule(self.Start, self.mod, self, ...)
 	end
 
 	--TODO, figure out why this function doesn't properly stop count timers when calling stop without count on count timers
@@ -11490,7 +11222,7 @@ function bossModPrototype:SendSync(event, ...)
 	local time = GetTime()
 	--Mod syncs are more strict and enforce latency threshold always.
 	--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
-	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 8 then
+	if not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > 8 then
 		self:ReceiveSync(event, nil, self.revision or 0, tostringall(...))
 		sendSync("M", str)
 	end
@@ -11509,8 +11241,8 @@ end
 function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	local spamId = self.id .. event .. strjoin("\t", ...)
 	local time = GetTime()
-	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > self.SyncThreshold) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
-		modSyncSpam[spamId] = time
+	if (not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > self.SyncThreshold) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+		private.modSyncSpam[spamId] = time
 		-- we have to use the sender as last argument for compatibility reasons (stupid old API...)
 		-- avoid table allocations for frequently used number of arguments
 		if select("#", ...) <= 1 then
@@ -11548,11 +11280,11 @@ end
 --  Scheduler  --
 -----------------
 function bossModPrototype:Schedule(t, f, ...)
-	return schedule(t, f, self, ...)
+	return DBMScheduler:Schedule(t, f, self, ...)
 end
 
 function bossModPrototype:Unschedule(f, ...)
-	return unschedule(f, self, ...)
+	return DBMScheduler:Unschedule(f, self, ...)
 end
 
 function bossModPrototype:ScheduleMethod(t, method, ...)
