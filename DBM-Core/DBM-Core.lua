@@ -7390,8 +7390,8 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:RegisterOnUpdateHandler(func, interval)
-	DBMScheduler:StartScheduler()
 	if type(func) ~= "function" then return end
+	DBMScheduler:StartScheduler()
 	self.elapsed = 0
 	self.updateInterval = interval or 0
 	private.updateFunctions[self] = func
