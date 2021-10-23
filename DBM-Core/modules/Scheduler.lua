@@ -242,14 +242,14 @@ local function schedule(t, f, mod, ...)
 end
 
 --Boss mod prototype usage methods (for announces countdowns and yell scheduling
-function module:ScheduleCountdown(time, numAnnounces, func, mod, self, ...)
+function module:ScheduleCountdown(time, numAnnounces, func, mod, prototype, ...)
 	time = time or 5
 	numAnnounces = numAnnounces or 3
 	for i = 1, numAnnounces do
 		--In event time is < numbmer of announces (ie 2 second time, with 3 announces)
 		local validTime = time - i
 		if validTime >= 1 then
-			schedule(validTime, func, mod, self, i, ...)
+			schedule(validTime, func, mod, prototype, i, ...)
 		end
 	end
 end
