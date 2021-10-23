@@ -50,6 +50,7 @@ localization.br.lua
 # Pre-core modules
 modules\Modules.lua
 
+modules\Scheduler.lua
 modules\DevTools.lua
 modules\Icons.lua
 modules\TargetScanning.lua
