@@ -4,6 +4,7 @@ local twipe, tremove = table.wipe, table.remove
 local floor = math.floor
 local GetTime = GetTime
 local pairs, next = pairs, next
+local LastInstanceMapID = -1
 
 local schedulerFrame = CreateFrame("Frame", "DBMScheduler")
 schedulerFrame:Hide()
@@ -182,7 +183,6 @@ local function onUpdate(self, elapsed)
 	local foundModFunctions = 0
 	for i, v in pairs(private.updateFunctions) do
 		foundModFunctions = foundModFunctions + 1
-		local LastInstanceMapID = DBM and DBM:GetCurrentArea() or -1
 		if i.Options.Enabled and (not i.zones or i.zones[LastInstanceMapID]) then
 			i.elapsed = (i.elapsed or 0) + elapsed
 			if i.elapsed >= (i.updateInterval or 0) then
@@ -214,6 +214,12 @@ function module:StartScheduler()
 		schedulerFrame:Show()
 		schedulerFrame:SetScript("OnUpdate", onUpdate)
 	end
+end
+
+--For updating zone cache locally
+--without needing to monitor for changes in onupdate functions or registering zone change events
+function module:UpdateZone()
+	LastInstanceMapID = DBM and DBM:GetCurrentArea() or -1
 end
 
 local function schedule(t, f, mod, ...)
