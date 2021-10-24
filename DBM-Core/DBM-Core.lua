@@ -6144,7 +6144,7 @@ do
 				self:TransitionToDungeonBGM(false, true)
 				self:Schedule(22, self.TransitionToDungeonBGM, self)
 				--module cleanup
-				private:ClearModuleTables()
+				private:ClearModuleTasks()
 			end
 		end
 	end
