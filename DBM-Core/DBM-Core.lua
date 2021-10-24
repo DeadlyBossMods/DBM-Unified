@@ -3902,6 +3902,10 @@ do
 			return
 		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
 		LastInstanceMapID = mapID
+		if #private.updateFunctions > 0 then
+			--At least one RegisterOnUpdateHandler exists and is running, update zone cache in scheduler too
+			DBMScheduler:UpdateZone()
+		end
 		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			LastInstanceType = "none"
 			if not targetEventsRegistered then
