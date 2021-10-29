@@ -7504,7 +7504,7 @@ do
 	function bossModPrototype:IsSeasonal()
 		if not isSeasonal then
 			--TODO, use C_Seasons.HasActiveSeason() once it's fixed/working
-			local isSeasonal = select(10, UnitAura("player", 1)) == 362859
+			local IsClassicSeason = select(10, UnitAura("player", 1)) == 362859
 			if IsClassicSeason then
 				isSeasonal = true
 				DBM:Debug("Setting Classic seasonal to true")
