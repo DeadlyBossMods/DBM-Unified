@@ -27,6 +27,7 @@ local _, private = ...
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
+local isSeasonal = false--Cached value since it'll be spam checked by boss mods
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 
 local DBMPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC"
@@ -6809,6 +6810,14 @@ do
 			self.Options.RestoreSettingQuestTooltips = nil
 			self:Debug("Restoring showQuestTrackingTooltips CVAR")
 		end
+		if isClassic then
+			--TODO, use C_Seasons.HasActiveSeason() once it's fixed/working
+			local IsClassicSeason = select(10, UnitAura("player", 1)) == 362859
+			if IsClassicSeason then
+				isSeasonal = true
+				self:Debug("Setting Classic seasonal to true")
+			end
+		end
 		--RestoreSettingMusic doens't need restoring here, since zone change transition will handle it
 	end
 end
@@ -7497,6 +7506,10 @@ function bossModPrototype:IsNormal()
 		return true
 	end
 	return false
+end
+
+function bossModPrototype:IsSeasonal()
+	return isSeasonal
 end
 
 --Pretty much ANYTHING that has a heroic mode
