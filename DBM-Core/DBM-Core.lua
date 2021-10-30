@@ -5624,6 +5624,9 @@ do
 			if isRetail and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() then
 				mod.inScenario = true
 			end
+			mod.engagedDiff = savedDifficulty
+			mod.engagedDiffText = difficultyText
+			mod.engagedDiffIndex = difficultyIndex
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - (delay or 0)
@@ -5914,6 +5917,11 @@ do
 			if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
 				savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = DBM:GetCurrentInstanceDifficulty()
 			end
+			--Fix stupid classic behavior where wipes only happen after release which causes all the instance difficulty info to be wrong
+			--This uses stored values from engage first, and only current values as fallback
+			local usedDifficulty = mod.engagedDiff or savedDifficulty
+			local usedDifficultyText = mod.engagedDiffText or difficultyText
+			local usedDifficultyIndex = mod.engagedDiffIndex or difficultyIndex
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if wipe and mod.stats and not mod.noStatistics then
@@ -5929,30 +5937,30 @@ do
 					local bossesKilled = mod.numBoss - mod.vb.bossLeft
 					wipeHP = wipeHP.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
 				end
-				local totalPulls = mod.stats[statVarTable[savedDifficulty].."Pulls"]
-				local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
+				local totalPulls = mod.stats[statVarTable[usedDifficulty].."Pulls"]
+				local totalKills = mod.stats[statVarTable[usedDifficulty].."Kills"]
 				if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
 					totalPulls = totalPulls - 1
-					mod.stats[statVarTable[savedDifficulty].."Pulls"] = totalPulls
+					mod.stats[statVarTable[usedDifficulty].."Pulls"] = totalPulls
 					if self.Options.ShowDefeatMessage then
 						if scenario then
-							self:AddMsg(L.SCENARIO_ENDED_AT:format(difficultyText..name, strFromTime(thisTime)))
+							self:AddMsg(L.SCENARIO_ENDED_AT:format(usedDifficultyText..name, strFromTime(thisTime)))
 						else
-							self:AddMsg(L.COMBAT_ENDED_AT:format(difficultyText..name, wipeHP, strFromTime(thisTime)))
+							self:AddMsg(L.COMBAT_ENDED_AT:format(usedDifficultyText..name, wipeHP, strFromTime(thisTime)))
 							--No reason to GCE it here, so omited on purpose.
 						end
 					end
 				else
 					if self.Options.ShowDefeatMessage then
 						if scenario then
-							self:AddMsg(L.SCENARIO_ENDED_AT_LONG:format(difficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
+							self:AddMsg(L.SCENARIO_ENDED_AT_LONG:format(usedDifficultyText..name, strFromTime(thisTime), totalPulls - totalKills))
 						else
-							self:AddMsg(L.COMBAT_ENDED_AT_LONG:format(difficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+							self:AddMsg(L.COMBAT_ENDED_AT_LONG:format(usedDifficultyText..name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
 							local check = isRetail and
-								((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or
-								difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10 -- Classic
+								((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or
+								usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10 -- Classic
 							if check and not self.Options.DisableGuildStatus then
-								self:Schedule(1.5, delayedGCSync, modId, difficultyIndex, difficultyModifier, name, strFromTime(thisTime), wipeHP)
+								self:Schedule(1.5, delayedGCSync, modId, usedDifficultyIndex, difficultyModifier, name, strFromTime(thisTime), wipeHP)
 							end
 						end
 					end
@@ -5977,15 +5985,15 @@ do
 				for k, _ in pairs(autoRespondSpam) do
 					if self.Options.WhisperStats then
 						if scenario then
-							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, difficultyText..(name or ""), totalPulls - totalKills)
+							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, usedDifficultyText..(name or ""), totalPulls - totalKills)
 						else
-							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(name or ""), wipeHP, totalPulls - totalKills)
+							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, usedDifficultyText..(name or ""), wipeHP, totalPulls - totalKills)
 						end
 					else
 						if scenario then
-							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(name or ""))
+							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_WIPE:format(playerName, usedDifficultyText..(name or ""))
 						else
-							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(name or ""), wipeHP)
+							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_WIPE_AT:format(playerName, usedDifficultyText..(name or ""), wipeHP)
 						end
 					end
 					sendWhisper(k, msg)
@@ -5994,70 +6002,70 @@ do
 			elseif not wipe and mod.stats and not mod.noStatistics then
 				mod.lastKillTime = GetTime()
 				local thisTime = GetTime() - (mod.combatInfo.pull or 0)
-				local lastTime = mod.stats[statVarTable[savedDifficulty].."LastTime"]
-				local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
-				if not mod.stats[statVarTable[savedDifficulty].."Kills"] or mod.stats[statVarTable[savedDifficulty].."Kills"] < 0 then mod.stats[statVarTable[savedDifficulty].."Kills"] = 0 end
+				local lastTime = mod.stats[statVarTable[usedDifficulty].."LastTime"]
+				local bestTime = mod.stats[statVarTable[usedDifficulty].."BestTime"]
+				if not mod.stats[statVarTable[usedDifficulty].."Kills"] or mod.stats[statVarTable[usedDifficulty].."Kills"] < 0 then mod.stats[statVarTable[usedDifficulty].."Kills"] = 0 end
 				--Fix logical error i've seen where for some reason we have more kills then pulls for boss as seen by - stats for wipe messages.
-				mod.stats[statVarTable[savedDifficulty].."Kills"] = mod.stats[statVarTable[savedDifficulty].."Kills"] + 1
-				if mod.stats[statVarTable[savedDifficulty].."Kills"] > mod.stats[statVarTable[savedDifficulty].."Pulls"] then mod.stats[statVarTable[savedDifficulty].."Kills"] = mod.stats[statVarTable[savedDifficulty].."Pulls"] end
+				mod.stats[statVarTable[usedDifficulty].."Kills"] = mod.stats[statVarTable[usedDifficulty].."Kills"] + 1
+				if mod.stats[statVarTable[usedDifficulty].."Kills"] > mod.stats[statVarTable[usedDifficulty].."Pulls"] then mod.stats[statVarTable[usedDifficulty].."Kills"] = mod.stats[statVarTable[usedDifficulty].."Pulls"] end
 				if not mod.ignoreBestkill and mod.combatInfo.pull then
-					mod.stats[statVarTable[savedDifficulty].."LastTime"] = thisTime
+					mod.stats[statVarTable[usedDifficulty].."LastTime"] = thisTime
 					--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
 					if bestTime and bestTime > 0 and bestTime < 1.5 then
-						mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime
+						mod.stats[statVarTable[usedDifficulty].."BestTime"] = thisTime
 					else
-						if difficultyIndex == 8 then--Mythic+/Challenge Mode
+						if usedDifficultyIndex == 8 then--Mythic+/Challenge Mode
 							if mod.stats.challengeBestRank > difficultyModifier then--Don't save time stats at all
 								--DO nothing
 							elseif mod.stats.challengeBestRank < difficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)
 								mod.stats.challengeBestRank = difficultyModifier--Update best rank
-								mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime--Write this time no matter what.
+								mod.stats[statVarTable[usedDifficulty].."BestTime"] = thisTime--Write this time no matter what.
 							else--Best rank must match current rank, so update time normally
-								mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
+								mod.stats[statVarTable[usedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
 							end
 						else
-							mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
+							mod.stats[statVarTable[usedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
 						end
 					end
 				end
-				local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
+				local totalKills = mod.stats[statVarTable[usedDifficulty].."Kills"]
 				if self.Options.ShowDefeatMessage then
 					local msg
 					local thisTimeString = thisTime and strFromTime(thisTime)
 					if not mod.combatInfo.pull then--was a bad pull so we ignored thisTime, should never happen
 						if scenario then
-							msg = L.SCENARIO_COMPLETE:format(difficultyText..name, L.UNKNOWN)
+							msg = L.SCENARIO_COMPLETE:format(usedDifficultyText..name, L.UNKNOWN)
 						else
-							msg = L.BOSS_DOWN:format(difficultyText..name, L.UNKNOWN)
+							msg = L.BOSS_DOWN:format(usedDifficultyText..name, L.UNKNOWN)
 						end
 					elseif mod.ignoreBestkill then--Should never happen in a scenario so no need for scenario check.
 						if scenario then
-							msg = L.SCENARIO_COMPLETE_I:format(difficultyText..name, totalKills)
+							msg = L.SCENARIO_COMPLETE_I:format(usedDifficultyText..name, totalKills)
 						else
-							msg = L.BOSS_DOWN_I:format(difficultyText..name, totalKills)
+							msg = L.BOSS_DOWN_I:format(usedDifficultyText..name, totalKills)
 						end
 					elseif not lastTime then
 						if scenario then
-							msg = L.SCENARIO_COMPLETE:format(difficultyText..name, thisTimeString)
+							msg = L.SCENARIO_COMPLETE:format(usedDifficultyText..name, thisTimeString)
 						else
-							msg = L.BOSS_DOWN:format(difficultyText..name, thisTimeString)
+							msg = L.BOSS_DOWN:format(usedDifficultyText..name, thisTimeString)
 						end
 					elseif thisTime < (bestTime or mhuge) then
 						if scenario then
-							msg = L.SCENARIO_COMPLETE_NR:format(difficultyText..name, thisTimeString, strFromTime(bestTime), totalKills)
+							msg = L.SCENARIO_COMPLETE_NR:format(usedDifficultyText..name, thisTimeString, strFromTime(bestTime), totalKills)
 						else
-							msg = L.BOSS_DOWN_NR:format(difficultyText..name, thisTimeString, strFromTime(bestTime), totalKills)
+							msg = L.BOSS_DOWN_NR:format(usedDifficultyText..name, thisTimeString, strFromTime(bestTime), totalKills)
 						end
 					else
 						if scenario then
-							msg = L.SCENARIO_COMPLETE_L:format(difficultyText..name, thisTimeString, strFromTime(lastTime), strFromTime(bestTime), totalKills)
+							msg = L.SCENARIO_COMPLETE_L:format(usedDifficultyText..name, thisTimeString, strFromTime(lastTime), strFromTime(bestTime), totalKills)
 						else
-							msg = L.BOSS_DOWN_L:format(difficultyText..name, thisTimeString, strFromTime(lastTime), strFromTime(bestTime), totalKills)
+							msg = L.BOSS_DOWN_L:format(usedDifficultyText..name, thisTimeString, strFromTime(lastTime), strFromTime(bestTime), totalKills)
 						end
 					end
-					local check = not statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
+					local check = not statusGuildDisabled and (isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and updateNotificationDisplayed == 0 then
-						SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t6\t0\t"..thisTimeString.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name, "GUILD")
+						SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t6\t0\t"..thisTimeString.."\t"..usedDifficultyIndex.."\t"..difficultyModifier.."\t"..name, "GUILD")
 					end
 					self:Schedule(1, self.AddMsg, self, msg)
 				end
@@ -6065,21 +6073,21 @@ do
 				for k, _ in pairs(autoRespondSpam) do
 					if self.Options.WhisperStats then
 						if scenario then
-							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_KILL_STATS:format(playerName, difficultyText..(name or ""), totalKills)
+							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_KILL_STATS:format(playerName, usedDifficultyText..(name or ""), totalKills)
 						else
-							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_KILL_STATS:format(playerName, difficultyText..(name or ""), totalKills)
+							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_KILL_STATS:format(playerName, usedDifficultyText..(name or ""), totalKills)
 						end
 					else
 						if scenario then
-							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_KILL:format(playerName, difficultyText..(name or ""))
+							msg = msg or chatPrefixShort..L.WHISPER_SCENARIO_END_KILL:format(playerName, usedDifficultyText..(name or ""))
 						else
-							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_KILL:format(playerName, difficultyText..(name or ""))
+							msg = msg or chatPrefixShort..L.WHISPER_COMBAT_END_KILL:format(playerName, usedDifficultyText..(name or ""))
 						end
 					end
 					sendWhisper(k, msg)
 				end
 				fireEvent("DBM_Kill", mod)
-				if savedDifficulty == "worldboss" and mod.WBEsync then
+				if usedDifficulty == "worldboss" and mod.WBEsync then
 					if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 					lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
 					SendWorldSync(self, "WBD", modId.."\t"..playerRealm.."\t8\t"..name)
@@ -6097,6 +6105,9 @@ do
 			end
 			if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 			if mod.OnLeavingCombat then delayedFunction = mod.OnLeavingCombat end
+			mod.engagedDiff = nil
+			mod.engagedDiffText = nil
+			mod.engagedDiffIndex = nil
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				statusWhisperDisabled = false
 				statusGuildDisabled = false
@@ -7497,6 +7508,24 @@ function bossModPrototype:IsNormal()
 		return true
 	end
 	return false
+end
+
+do
+	local isSeasonal
+	function bossModPrototype:IsSeasonal()
+		if not isSeasonal then
+			--TODO, use C_Seasons.HasActiveSeason() once it's fixed/working
+			local IsClassicSeason = select(10, UnitAura("player", 1)) == 362859
+			if IsClassicSeason then
+				isSeasonal = true
+				DBM:Debug("Setting Classic seasonal to true")
+			else
+				isSeasonal = false
+				DBM:Debug("Setting Classic seasonal to false")
+			end
+		end
+		return isSeasonal
+	end
 end
 
 --Pretty much ANYTHING that has a heroic mode
