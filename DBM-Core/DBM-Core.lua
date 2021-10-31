@@ -3902,10 +3902,7 @@ do
 			return
 		end--ID hasn't changed, don't waste cpu doing anything else (example situation, porting into garrosh stage 4 is a loading screen)
 		LastInstanceMapID = mapID
-		if #private.updateFunctions > 0 then
-			--At least one RegisterOnUpdateHandler exists and is running, update zone cache in scheduler too
-			DBMScheduler:UpdateZone()
-		end
+		DBMScheduler:UpdateZone()--Also update zone in scheduler
 		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			LastInstanceType = "none"
 			if not targetEventsRegistered then
@@ -7406,6 +7403,7 @@ end
 
 function bossModPrototype:RegisterOnUpdateHandler(func, interval)
 	if type(func) ~= "function" then return end
+	DBM:Debug("Registering RegisterOnUpdateHandler")
 	DBMScheduler:StartScheduler()
 	self.elapsed = 0
 	self.updateInterval = interval or 0
