@@ -71,8 +71,8 @@ if isRetail then
 	DBM.DisplayVersion = "9.1.21 alpha"
 	DBM.ReleaseRevision = releaseDate(2021, 11, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.4 alpha"
-	DBM.ReleaseRevision = releaseDate(2021, 11, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.4"
+	DBM.ReleaseRevision = releaseDate(2021, 11, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isBCC then
 	DBM.DisplayVersion = "2.5.20 alpha"
 	DBM.ReleaseRevision = releaseDate(2021, 11, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
