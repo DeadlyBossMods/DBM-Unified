@@ -1,5 +1,5 @@
 ## Interface: 90105
-## Interface-Classic: 11400
+## Interface-Classic: 11401
 ## Interface-BCC: 20502
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOptions GUI|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFGUI für Einstellungen|r
