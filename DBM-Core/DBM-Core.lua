@@ -3621,8 +3621,8 @@ do
 	local gsub = string.gsub
 
 	local function fixElv(optionName)
-		if DBT.Options[optionName]:lower():find("interface\\addons\\elvui\\media\\") then
-			DBT.Options[optionName] = gsub(DBT.Options[optionName], gsub("Interface\\AddOns\\ElvUI\\Media\\", "(%a)", function(v)
+		if DBM.Options[optionName]:lower():find("interface\\addons\\elvui\\media\\") then
+			DBM.Options[optionName] = gsub(DBM.Options[optionName], gsub("Interface\\AddOns\\ElvUI\\Media\\", "(%a)", function(v)
 				return "[" .. v:upper() .. v:lower() .. "]"
 			end), "Interface\\AddOns\\ElvUI\\Core\\Media\\")
 		end
