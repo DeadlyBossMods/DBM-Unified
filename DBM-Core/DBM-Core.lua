@@ -3618,6 +3618,16 @@ function DBM:ClearAllStats(modId)
 end
 
 do
+	local gsub = string.gsub
+
+	local function fixElv(optionName)
+		if DBM.Options[optionName]:lower():find("interface\\addons\\elvui\\media\\") then
+			DBM.Options[optionName] = gsub(DBM.Options[optionName], gsub("Interface\\AddOns\\ElvUI\\Media\\", "(%a)", function(v)
+				return "[" .. v:upper() .. v:lower() .. "]"
+			end), "Interface\\AddOns\\ElvUI\\Core\\Media\\")
+		end
+	end
+
 	function loadOptions(self)
 		--init
 		if not DBM_AllSavedOptions then DBM_AllSavedOptions = {} end
@@ -3650,6 +3660,18 @@ do
 		end
 		if not self.Options.SpecialWarningFont or (self.Options.SpecialWarningFont == "Fonts\\2002.TTF" or self.Options.SpecialWarningFont == "Fonts\\ARKai_T.ttf" or self.Options.SpecialWarningFont == "Fonts\\blei00d.TTF" or self.Options.SpecialWarningFont == "Fonts\\FRIZQT___CYR.TTF" or self.Options.SpecialWarningFont == "Fonts\\FRIZQT__.TTF") then
 			self.Options.SpecialWarningFont = "standardFont"
+		end
+		-- Migrate ElvUI changes
+		for _, setting in ipairs({
+			-- Sounds
+			"RaidWarningSound", "SpecialWarningSound", "SpecialWarningSound2", "SpecialWarningSound3", "SpecialWarningSound4", "SpecialWarningSound5", "EventSoundVictory2",
+			"EventSoundWipe", "EventSoundEngage2", "EventSoundMusic", "EventSoundDungeonBGM", "RangeFrameSound1", "RangeFrameSound2",
+			-- Fonts
+			"InfoFrameFont", "WarningFont", "SpecialWarningFont"
+		}) do
+			if type(self.Options[setting]) == "string" and self.Options[setting]:lower() ~= "none" then
+				fixElv(setting)
+			end
 		end
 	end
 end
