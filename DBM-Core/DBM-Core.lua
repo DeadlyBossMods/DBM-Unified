@@ -2722,7 +2722,7 @@ do
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidGuids[v.guid] = nil
-					tremove(raid, i)
+					raid[i] = nil
 					removeEntry(newerVersionPerson, i)
 					fireEvent("DBM_raidLeave", i)
 				else
