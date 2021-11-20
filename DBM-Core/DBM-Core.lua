@@ -2327,9 +2327,6 @@ do
 		self:AddMsg(L.VERSIONCHECK_OUTDATED:format(OldMod, #OutdatedUsers > 0 and tconcat(OutdatedUsers, ", ") or NONE), false)
 		twipe(OutdatedUsers)
 		twipe(sortMe)
-		for i = #sortMe, 1, -1 do
-			sortMe[i] = nil
-		end
 	end
 end
 
@@ -2360,13 +2357,9 @@ do
 		end
 		if #nolagResponse > 0 then
 			self:AddMsg(L.LAG_FOOTER:format(tconcat(nolagResponse, ", ")), false)
-			for i = #nolagResponse, 1, -1 do
-				nolagResponse[i] = nil
-			end
+			twipe(nolagResponse)
 		end
-		for i = #sortLag, 1, -1 do
-			sortLag[i] = nil
-		end
+		twipe(sortLag)
 	end
 	if LL then
 		LL:Register("DBM", function(homelag, worldlag, sender)
@@ -2406,13 +2399,9 @@ do
 		end
 		if #nodurResponse > 0 then
 			self:AddMsg(L.LAG_FOOTER:format(tconcat(nodurResponse, ", ")), false)
-			for i = #nodurResponse, 1, -1 do
-				nodurResponse[i] = nil
-			end
+			twipe(nodurResponse)
 		end
-		for i = #sortDur, 1, -1 do
-			sortDur[i] = nil
-		end
+		twipe(sortDur)
 	end
 	if LD then
 		LD:Register("DBM", function(percent, broken, sender)
@@ -2733,7 +2722,7 @@ do
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidGuids[v.guid] = nil
-					raid[i] = nil
+					tremove(raid, i)
 					removeEntry(newerVersionPerson, i)
 					fireEvent("DBM_raidLeave", i)
 				else
@@ -2797,12 +2786,12 @@ do
 			end
 			private.enableIcons = false
 			twipe(iconSeter)
-			for i, v in pairs(raid) do
+			for k, v in pairs(raid) do
 				if not v.updated then
 					raidGuids[v.guid] = nil
-					raid[i] = nil
-					removeEntry(newerVersionPerson, i)
-					fireEvent("DBM_partyLeave", i)
+					raid[k] = nil
+					removeEntry(newerVersionPerson, k)
+					fireEvent("DBM_partyLeave", k)
 				else
 					v.updated = nil
 					if v.revision and v.rank > 0 and (v.enabledIcons or "") == "true" then
@@ -3774,7 +3763,7 @@ function DBM:UPDATE_BATTLEFIELD_STATUS(queueID)
 		elseif queuedBattlefield[i] then
 			DBT:CancelBar(queuedBattlefield[i])
 			fireEvent("DBM_TimerStop", "DBMBFSTimer")
-			queuedBattlefield[i] = nil
+			tremove(queuedBattlefield, i)
 		end
 	end
 end
@@ -9969,7 +9958,7 @@ do
 					end
 					DBT:CancelBar(self.startedTimers[i])
 					fireEvent("DBM_TimerStop", self.startedTimers[i])
-					self.startedTimers[i] = nil
+					tremove(self.startedTimers, i)
 				end
 			end
 			timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
@@ -10211,7 +10200,7 @@ do
 				fireEvent("DBM_TimerStop", self.startedTimers[i])
 				DBT:CancelBar(self.startedTimers[i])
 				DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
-				self.startedTimers[i] = nil
+				tremove(self.startedTimers, i)
 			end
 		else
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
@@ -11038,10 +11027,10 @@ end
 
 function bossModPrototype:RemoveOption(name)
 	self.Options[name] = nil
-	for i, options in pairs(self.optionCategories) do
+	for k, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 		if #options == 0 then
-			self.optionCategories[i] = nil
+			self.optionCategories[k] = nil
 		end
 	end
 	if self.optionFuncs then
