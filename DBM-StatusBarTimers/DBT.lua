@@ -1142,7 +1142,7 @@ do
 		end
 		if not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
 			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile].DBM or {}
-			for option, value in pairs(skin.Defaults) do
+			for option, value in pairs(skins[id].Defaults) do
 				DBT_AllPersistentOptions[DBM_UsedProfile][id][option] = value
 			end
 		end
