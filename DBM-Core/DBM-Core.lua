@@ -1884,34 +1884,6 @@ do
 
 	SLASH_DEADLYBOSSMODS1 = "/dbm"
 	SLASH_DEADLYBOSSMODSRPULL1 = "/rpull"
-	SLASH_DEADLYBOSSMODSDWAY1 = "/dway"--/way not used because DBM would load before TomTom and can't check
-	SlashCmdList["DEADLYBOSSMODSDWAY"] = function(msg)
-		if DBM:HasMapRestrictions() then
-			DBM:AddMsg(L.NO_ARROW)
-			return
-		end
-		local x, y = string.split(" ", msg:sub(1):trim())
-		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
-		local success
-		if xNum and yNum then
-			DBM.Arrow:ShowRunTo(xNum, yNum, 1, nil, true)
-			success = true
-		else--Check if they used , instead of space.
-			x, y = string.split(",", msg:sub(1):trim())
-			xNum, yNum = tonumber(x or ""), tonumber(y or "")
-			if xNum and yNum then
-				DBM.Arrow:ShowRunTo(xNum, yNum, 1, nil, true)
-				success = true
-			end
-		end
-		if not success then
-			if DBM.Arrow:IsShown() then
-				DBM.Arrow:Hide()--Hide
-			else--error
-				DBM:AddMsg(L.ARROW_WAY_USAGE)
-			end
-		end
-	end
 	if not _G["BigWigs"] then
 		--Register pull and break slash commands for BW converts, if BW isn't loaded
 		--This shouldn't raise an issue since BW SHOULD load before DBM in any case they are both present.
@@ -2217,37 +2189,6 @@ do
 		else
 			DBM:LoadGUI()
 		end
-	end
-end
-
-do
-	local function updateRangeFrame(r, reverse)
-		if DBM.RangeCheck:IsShown() then
-			DBM.RangeCheck:Hide(true)
-		else
-			if DBM:HasMapRestrictions() then
-				DBM:AddMsg(L.NO_RANGE)
-			end
-			if r and (r < 201) then
-				DBM.RangeCheck:Show(r, nil, true, nil, reverse)
-			else
-				DBM.RangeCheck:Show(10, nil, true, nil, reverse)
-			end
-		end
-	end
-	SLASH_DBMRANGE1 = "/range"
-	SLASH_DBMRANGE2 = "/distance"
-	SLASH_DBMHUDAR1 = "/hudar"
-	SLASH_DBMRRANGE1 = "/rrange"
-	SLASH_DBMRRANGE2 = "/rdistance"
-	SlashCmdList["DBMRANGE"] = function(msg)
-		updateRangeFrame(tonumber(msg) or 10, false)
-	end
-	SlashCmdList["DBMHUDAR"] = function()
-		DBM.HudMap:ToggleHudar()
-	end
-	SlashCmdList["DBMRRANGE"] = function(msg)
-		updateRangeFrame(tonumber(msg) or 10, true)
 	end
 end
 
@@ -7119,19 +7060,6 @@ DBT:SetAnnounceHook(function(bar)
 		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName().."BarName"]:GetText(), floor(bar.timer / 60), bar.timer % 60)
 	end
 end)
-
-function DBM:Capitalize(str)
-	local firstByte = str:byte(1, 1)
-	local numBytes = 1
-	if firstByte >= 0xF0 then -- firstByte & 0b11110000
-		numBytes = 4
-	elseif firstByte >= 0xE0 then -- firstByte & 0b11100000
-		numBytes = 3
-	elseif firstByte >= 0xC0 then -- firstByte & 0b11000000
-		numBytes = 2
-	end
-	return str:sub(1, numBytes):upper()..str:sub(numBytes + 1):lower()
-end
 
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 function DBM:RoleCheck(ignoreLoot)

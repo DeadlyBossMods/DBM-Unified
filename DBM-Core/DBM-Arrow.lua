@@ -269,3 +269,24 @@ end
 function arrowFrame:LoadPosition()
 	frame:SetPoint(DBM.Options.ArrowPoint, DBM.Options.ArrowPosX, DBM.Options.ArrowPosY)
 end
+
+do
+	SLASH_DEADLYBOSSMODSDWAY1 = "/dway"--/way not used because DBM would load before TomTom and can't check
+	SlashCmdList["DEADLYBOSSMODSDWAY"] = function(msg)
+		if DBM:HasMapRestrictions() then
+			DBM:AddMsg(L.NO_ARROW)
+			return
+		end
+		local x, y = strsplit(" ,", msg:sub(1):trim()) -- Split by space and comma
+		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
+		if xNum and yNum then
+			DBM.Arrow:ShowRunTo(xNum, yNum, 1, nil, true)
+			return
+		end
+		if DBM.Arrow:IsShown() then
+			DBM.Arrow:Hide()
+		else
+			DBM:AddMsg(L.ARROW_WAY_USAGE)
+		end
+	end
+end

@@ -6,7 +6,6 @@ local ADDON_NAME = ...
 DBM.HudMap = {
 	Version = 2 -- That way external usage can querie hud api feature level of of users installed mod version
 }
-local mainFrame = CreateFrame("Frame", "DBMHudMapFrame")
 local mod = DBM.HudMap
 
 local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, select, unpack
@@ -35,13 +34,13 @@ local TAXIROUTE_LINEFACTOR_2 = TAXIROUTE_LINEFACTOR_2 or TAXIROUTE_LINEFACTOR / 
 
 -- Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont
-if (LOCALE_koKR) then
+if LOCALE_koKR then
 	standardFont = "Fonts\\2002.TTF"
-elseif (LOCALE_zhCN) then
+elseif LOCALE_zhCN then
 	standardFont = "Fonts\\ARKai_T.ttf"
-elseif (LOCALE_zhTW) then
+elseif LOCALE_zhTW then
 	standardFont = "Fonts\\blei00d.TTF"
-elseif (LOCALE_ruRU) then
+elseif LOCALE_ruRU then
 	standardFont = "Fonts\\FRIZQT___CYR.TTF"
 else
 	standardFont = "Fonts\\FRIZQT__.TTF"
@@ -62,8 +61,8 @@ local textureLookup = {
 	check		= 136814, -- [[Interface\RAIDFRAME\ReadyCheck-Ready.blp]]
 	question	= 136815, -- [[Interface\RAIDFRAME\ReadyCheck-Waiting.blp]]
 	targeting	= 136439, -- [[Interface\Minimap\Ping\ping5.blp]]
-	highlight	= [[Interface\AddOns\DBM-Core\textures\alert_circle]],
-	timer		= [[Interface\AddOns\DBM-Core\textures\timer]],
+	highlight	= "Interface\\AddOns\\DBM-Core\\textures\\alert_circle",
+	timer		= "Interface\\AddOns\\DBM-Core\\textures\\timer",
 	glow		= 132039, -- [[Interface\GLUES\MODELS\UI_Tauren\gradientCircle]]
 	party		= 249183, -- [[Interface\MINIMAP\PartyRaidBlips]]
 	ring		= 165793, -- [[SPELLS\CIRCLE]]
@@ -138,6 +137,13 @@ local frameScalars = {
 	summon	= 0.86,
 }
 
+local HUDEnabled = false
+
+local canvas = CreateFrame("Frame", "DBMHudMapCanvas", WorldFrame)
+canvas:SetSize(WorldFrame:GetWidth(), WorldFrame:GetHeight())
+canvas:SetPoint("CENTER")
+canvas:Hide()
+
 local function UnregisterAllCallbacks(obj)
 	-- Cancel all registered callbacks. CBH doesn't seem to provide a method to do this.
 	if obj.callbacks.insertQueue then
@@ -157,7 +163,7 @@ local function UnregisterAllCallbacks(obj)
 	end
 end
 
-mod.RegisterTexture = function(_, key, tex, blend, cx1, cx2, cy1, cy2, scalar)
+function mod:RegisterTexture(_, key, tex, blend, cx1, cx2, cy1, cy2, scalar)
 	if key then
 		textureLookup[key] = tex
 		if blend then
@@ -181,11 +187,11 @@ mod.RegisterTexture = function(_, key, tex, blend, cx1, cx2, cy1, cy2, scalar)
 end
 mod:RegisterTexture()
 
-mod.UnitIsMappable = function(unit, allowSelf)
+function mod:UnitIsMappable(unit, allowSelf)
 	return (allowSelf and UnitIsUnit("player", unit)) or UnitPosition(unit) or UnitIsConnected(unit)
 end
 
-mod.free = function(e, owner, id, noAnimate)
+function mod:Free(e, owner, id, noAnimate)
 	if e and not e.freed then
 		if owner and id then
 			if e:Owned(owner, id) then
@@ -259,7 +265,7 @@ do
 			local elapsed = fine * steps
 			fineTotal = fineTotal - elapsed
 			targetZoomScale = computeNewScale()
-			local currentAlpha = mod.canvas:GetAlpha()
+			local currentAlpha = canvas:GetAlpha()
 			if not supressCanvas and targetCanvasAlpha and currentAlpha ~= targetCanvasAlpha then
 				local newAlpha
 				if targetCanvasAlpha > currentAlpha then
@@ -268,11 +274,11 @@ do
 					newAlpha = max(targetCanvasAlpha, currentAlpha - 1 * elapsed / fadeOutDelay)
 				end
 				if newAlpha == 0 and targetCanvasAlpha then
-					mod.canvas:Hide()
+					canvas:Hide()
 				end
-				mod.canvas:SetAlpha(newAlpha)
+				canvas:SetAlpha(newAlpha)
 			elseif targetCanvasAlpha == 0 and currentAlpha == 0 then
-				mod.canvas:Hide()
+				canvas:Hide()
 			end
 			if zoomScale < targetZoomScale then
 				zoomScale = min(targetZoomScale, zoomScale + ceil((targetZoomScale - zoomScale) * elapsed / zoomDelay))
@@ -285,31 +291,20 @@ do
 	end
 end
 
-function mod:OnInitialize()
-	self.canvas = CreateFrame("Frame", "DBMHudMapCanvas", WorldFrame)
-	self.canvas:SetSize(WorldFrame:GetWidth(), WorldFrame:GetHeight())
-	self.canvas:SetPoint("CENTER")
-	self.canvas:Hide()
-	self.HUDEnabled = false
-end
-
 function mod:Enable()
-	if DBM.Options.DontShowHudMap2 or self.HUDEnabled or DBM:HasMapRestrictions() then
+	if DBM.Options.DontShowHudMap2 or HUDEnabled or DBM:HasMapRestrictions() then
 		return
 	end
 	DBM:Debug("HudMap Activating", 2)
-	self.currentMap = select(8, GetInstanceInfo())
-	mainFrame:Show()
-	mainFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
 	if not supressCanvas then
-		self.canvas:Show()
+		canvas:Show()
 	end
-	self.canvas:SetAlpha(1)
+	canvas:SetAlpha(1)
 	self:UpdateCanvasPosition()
 	targetZoomScale = 6
 	self.pixelsPerYard = WorldFrame:GetHeight() / self:GetMinimapSize()
 	self:SetZoom()
-	self.HUDEnabled = true
+	HUDEnabled = true
 	updateFrame:Show()
 	if not updateFrame.ticker then
 		updateFrame.ticker = C_Timer.NewTicker(fixedOnUpdateRate, function()
@@ -319,7 +314,7 @@ function mod:Enable()
 end
 
 function mod:Disable()
-	if not self.HUDEnabled then
+	if not HUDEnabled then
 		return
 	end
 	DBM:Debug("HudMap Deactivating", 2)
@@ -328,11 +323,9 @@ function mod:Disable()
 	if hudarActive then -- Don't disable if hudar is open
 		return
 	end
-	mainFrame:UnregisterEvent("LOADING_SCREEN_DISABLED")
-	self.canvas:Hide()
-	mainFrame:Hide()
+	canvas:Hide()
 	updateFrame:Hide()
-	self.HUDEnabled = false
+	HUDEnabled = false
 	if updateFrame.ticker then
 		updateFrame.ticker:Cancel()
 		updateFrame.ticker = nil
@@ -349,21 +342,9 @@ function mod:ToggleHudar(hide)
 	end
 end
 
-do
-	mainFrame:SetScript("OnEvent", function(_, event, addon)
-		if event == "ADDON_LOADED" and addon == ADDON_NAME then
-			mod:OnInitialize()
-			mainFrame:UnregisterEvent("ADDON_LOADED")
-		elseif event == "LOADING_SCREEN_DISABLED" then
-			mod.currentMap = select(8, GetInstanceInfo())
-		end
-	end)
-	mainFrame:RegisterEvent("ADDON_LOADED")
-end
-
 function mod:PointExists(id)
 	for k, _ in pairs(activePointList) do
-		if(k.id == id) then
+		if k.id == id then
 			return true
 		end
 	end
@@ -371,9 +352,9 @@ function mod:PointExists(id)
 end
 
 function mod:UpdateCanvasPosition()
-	self.canvas:ClearAllPoints()
-	self.canvas:SetPoint("CENTER", WorldFrame, "CENTER")
-	self.canvas:SetSize((WorldFrame:GetHeight() * 0.48) * 2, (WorldFrame:GetHeight() * 0.48) * 2)
+	canvas:ClearAllPoints()
+	canvas:SetPoint("CENTER", WorldFrame, "CENTER")
+	canvas:SetSize((WorldFrame:GetHeight() * 0.48) * 2, (WorldFrame:GetHeight() * 0.48) * 2)
 end
 
 -----------------------------------
@@ -565,11 +546,11 @@ Edge = setmetatable({
 			t.points = {}
 			t.serial = self:Serial("Edge")
 			t.callbacks = CallbackHandler:New(t)
-			t.frame = CreateFrame("Frame", nil, mod.canvas)
+			t.frame = CreateFrame("Frame", nil, canvas)
 			t.frame:SetFrameStrata("LOW")
 			t.texture = t.frame:CreateTexture()
 			t.texture:SetAllPoints()
-			t.texture:SetTexture(textureLookup[texfile] or texfile or [[Interface\AddOns\DBM-Core\textures\line]])
+			t.texture:SetTexture(textureLookup[texfile] or texfile or "Interface\\AddOns\\DBM-Core\\textures\\line")
 			t.fadeOutGroup = t.frame:CreateAnimationGroup()
 
 			t.fadeOut = t.fadeOutGroup:CreateAnimation("alpha")
@@ -633,7 +614,7 @@ Edge = setmetatable({
 		end
 	end,
 	UpdateAll = function(self)
-		if(self ~= Edge) then
+		if self ~= Edge then
 			return
 		end
 		for t, _ in pairs(activeEdgeList) do
@@ -679,8 +660,8 @@ Edge = setmetatable({
 			dx, dy = mod:LocationToMinimapOffset(dx, dy, true, self.radiusClipOffset, self.fixedClipOffset)
 		end
 		if visible then
-			local ox = mod.canvas:GetWidth() / 2
-			local oy = mod.canvas:GetHeight() / 2
+			local ox = canvas:GetWidth() / 2
+			local oy = canvas:GetHeight() / 2
 			sx = sx + ox
 			dx = dx + ox
 			sy = sy + oy
@@ -689,7 +670,7 @@ Edge = setmetatable({
 			local ay = dy - sy
 			if pow((ax * ax) + (ay * ay), 0.5) > 15 then
 				self.texture:Show()
-				DrawRouteLineCustom(self.texture, mod.canvas, sx, sy, dx, dy, self.extend)
+				DrawRouteLineCustom(self.texture, canvas, sx, sy, dx, dy, self.extend)
 			else
 				self.texture:Hide()
 			end
@@ -707,7 +688,7 @@ function mod:AddEdge(r, g, b, a, lifetime, srcPlayer, dstPlayer, sx, sy, dx, dy,
 	if DBM.Options.DontShowHudMap2 then
 		return
 	end
-	if not self.HUDEnabled then
+	if not HUDEnabled then
 		self:Enable()
 	end
 	return Edge:New(r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, texfile, w, extend)
@@ -765,7 +746,7 @@ do
 			end
 		end,
 		Update = function(self)
-			if (self.map and mod.currentMap ~= self.map and not self.persist) or (not self.lifetime or self.lifetime > 0 and self.lifetime < GetTime()) then
+			if (self.map and DBM:GetCurrentArea() ~= self.map and not self.persist) or (not self.lifetime or self.lifetime > 0 and self.lifetime < GetTime()) then
 				self:Free()
 				return
 			end
@@ -823,7 +804,7 @@ do
 			end
 		end,
 		UpdateAll = function(self)
-			if(self ~= Point) then
+			if self ~= Point then
 				return
 			end
 			for t, _ in pairs(activePointList) do
@@ -1087,7 +1068,7 @@ do
 				t = setmetatable({}, point_mt)
 				t.serial = self:Serial("Circle")
 				t.callbacks = CallbackHandler:New(t)
-				t.frame = CreateFrame("Frame", nil, mod.canvas)
+				t.frame = CreateFrame("Frame", nil, canvas)
 				t.frame:SetFrameStrata("LOW")
 				t.frame.owner = t
 				t.text = t.frame:CreateFontString()
@@ -1172,7 +1153,7 @@ edge_mt.__index = Edge
 point_mt.__index = Point
 
 function mod:PlaceRangeMarker(texture, x, y, radius, duration, r, g, b, a, blend)
-	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	return Point:New(DBM:GetCurrentArea(), x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
 function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
@@ -1186,7 +1167,7 @@ function mod:PlaceStaticMarkerOnPartyMember(texture, person, radius, duration, r
 		end
 	end
 	local x, y = self:GetUnitPosition(person)
-	return Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	return Point:New(DBM:GetCurrentArea(), x, y, nil, duration, texture, radius, blend, r, g, b, a)
 end
 
 function mod:PlaceRangeMarkerOnPartyMember(texture, person, radius, duration, r, g, b, a, blend)
@@ -1204,7 +1185,7 @@ end
 
 function mod:RegisterEncounterMarker(spellid, name, marker)
 	if DBM.Options.DontShowHudMap2 then return end
-	if not self.HUDEnabled then
+	if not HUDEnabled then
 		self:Enable()
 	end
 	encounterMarkers[spellid .. name] = marker
@@ -1223,7 +1204,7 @@ function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, durati
 	if marker ~= nil then
 		return marker
 	end
-	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	marker = Point:New(DBM:GetCurrentArea(), x, y, nil, duration, texture, radius, blend, r, g, b, a)
 	self:RegisterEncounterMarker(spellid, name, marker)
 	return marker
 end
@@ -1243,7 +1224,7 @@ function mod:RegisterStaticMarkerOnPartyMember(spellid, texture, person, radius,
 		return marker
 	end
 	local x, y = self:GetUnitPosition(person)
-	marker = Point:New(self.currentMap, x, y, nil, duration, texture, radius, blend, r, g, b, a)
+	marker = Point:New(DBM:GetCurrentArea(), x, y, nil, duration, texture, radius, blend, r, g, b, a)
 	self:RegisterEncounterMarker(spellid, person, marker)
 	return marker
 end
@@ -1268,7 +1249,7 @@ function mod:RegisterRangeMarkerOnPartyMember(spellid, texture, person, radius, 
 end
 
 function mod:FreeEncounterMarker(key)
-	if not self.HUDEnabled or not encounterMarkers[key] then
+	if not HUDEnabled or not encounterMarkers[key] then
 		return
 	end
 	encounterMarkers[key] = nil
@@ -1279,14 +1260,14 @@ function mod:FreeEncounterMarker(key)
 end
 
 function mod:FreeEncounterMarkerByTarget(spellid, name)
-	if not self.HUDEnabled or not encounterMarkers[spellid .. name] then
+	if not HUDEnabled or not encounterMarkers[spellid .. name] then
 		return
 	end
-	self.free(encounterMarkers[spellid .. name])
+	self:Free(encounterMarkers[spellid .. name])
 end
 
 function mod:FreeEncounterMarkers()
-	if not self.HUDEnabled then
+	if not HUDEnabled then
 		return
 	end
 	for k, v in pairs(encounterMarkers) do
@@ -1426,10 +1407,10 @@ end
 -- Data --
 ----------
 function mod:ShowCanvas()
-	if not self.canvas:IsVisible() then
+	if not canvas:IsVisible() then
 		zoomScale = targetZoomScale
-		self.canvas:SetAlpha(0)
-		self.canvas:Show()
+		canvas:SetAlpha(0)
+		canvas:Show()
 	end
 	targetCanvasAlpha = 1
 end
@@ -1440,21 +1421,21 @@ end
 
 function mod:SupressCanvas()
 	supressCanvas = true
-	if self.HUDEnabled then
-		self.canvas:Hide()
+	if HUDEnabled then
+		canvas:Hide()
 	end
 end
 
 function mod:UnSupressCanvas()
 	supressCanvas = nil
-	if self.HUDEnabled then
-		self.canvas:Show()
+	if HUDEnabled then
+		canvas:Show()
 	end
 end
 
 function mod:Toggle(flag)
 	if flag == nil then
-		flag = not self.canvas:IsVisible() or targetCanvasAlpha == 0
+		flag = not canvas:IsVisible() or targetCanvasAlpha == 0
 	end
 	if flag then
 		self:ShowCanvas()
@@ -1462,5 +1443,12 @@ function mod:Toggle(flag)
 		self:HideCanvas()
 	else
 		self:HideCanvas()
+	end
+end
+
+do
+	SLASH_DBMHUDAR1 = "/hudar"
+	SlashCmdList["DBMHUDAR"] = function()
+		DBM.HudMap:ToggleHudar()
 	end
 end
