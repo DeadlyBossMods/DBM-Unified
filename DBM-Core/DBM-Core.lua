@@ -2952,7 +2952,7 @@ do
 
 	--Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table
 	function DBM:GetUnitFullName(uId)
-		if not uId then return nil end
+		if not uId then return end
 		return GetUnitName(uId, true)
 	end
 
@@ -3241,7 +3241,7 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			if not inCombat then
 				for option, _ in pairs(savedOptions[id][profileNum]) do
 					if type(option) == "number" then
-						self:Debug("|cffff0000Everybody knows shit's fucked: |r"..option)
+						self:Debug("|cffff0000Option type invalid: |r"..option)
 					end
 					if (mod.DefaultOptions[option] == nil) and not (option:find("talent") or option:find("FastestClear") or option:find("CVAR") or option:find("RestoreSetting")) then
 						savedOptions[id][profileNum][option] = nil
@@ -3805,7 +3805,7 @@ do
 		--[1763]=true,[1754]=true,[1762]=true,[1864]=true,[1822]=true,[1877]=true,[1594]=true,[1841]=true,[1771]=true,[1862]=true,[2097]=true--BfA Dungeons
 	}
 	--This never wants to spam you to use mods for trivial content you don't need mods for.
-	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just shit on)
+	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just roll over)
 	function DBM:CheckAvailableMods()
 		if _G["BigWigs"] or modAdvertisementShown then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature (such as brawlers) and not nag
 		if isRetail then
@@ -6531,7 +6531,7 @@ function DBM:EJ_GetSectionInfo(sectionID)
 		else
 			self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
 		end
-		return nil
+		return
 	end
 	local flag1, flag2, flag3, flag4
 	local flags = GetSectionIconFlags(sectionID)
@@ -6565,7 +6565,7 @@ function DBM:GetSpellInfo(spellId)
 				end
 			end
 		end
-		return nil
+		return
 	else--Good request, return now
 		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 	end
@@ -8184,7 +8184,6 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 			end
 		end
 	end
-	return nil
 end
 
 function DBM:GetBossHPByUnitID(uId)
@@ -8193,7 +8192,6 @@ function DBM:GetBossHPByUnitID(uId)
 		bossHealth[uId] = hp
 		return hp, uId, UnitName(uId)
 	end
-	return nil
 end
 
 function bossModPrototype:SetMainBossID(cid)

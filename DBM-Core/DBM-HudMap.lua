@@ -557,7 +557,6 @@ Edge = setmetatable({
 		if activeMarkers == 0 then
 			mod:Disable()
 		end
-		return nil
 	end,
 	New = function(self, r, g, b, a, srcPlayer, dstPlayer, sx, sy, dx, dy, lifetime, texfile, _, extend)
 		local t = tremove(edgeCache)
@@ -1316,10 +1315,9 @@ function mod:UnitDistance(unitA, unitB)
 end
 
 function mod:GetUnitPosition(unit)
-	if not unit then
-		return nil, nil
+	if unit then
+		return UnitPosition(unit)
 	end
-	return UnitPosition(unit)
 end
 
 function mod:SetZoom(zoom, zoomChange)

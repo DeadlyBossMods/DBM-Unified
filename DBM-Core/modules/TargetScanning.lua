@@ -130,8 +130,8 @@ do
 		end
 		if uid then
 			local cid = mod:GetUnitCreatureId(uid)
-			if cid == 24207 or cid == 80258 or cid == 87519 then--filter shitter units like army of the dead that would otherwise throw off the target scan
-				return nil, nil, nil
+			if cid == 24207 or cid == 80258 or cid == 87519 then--Filter useless units, like "Army of the Dead", that would otherwise throw off the target scan
+				return
 			end
 		end
 		return name, uid, bossuid
