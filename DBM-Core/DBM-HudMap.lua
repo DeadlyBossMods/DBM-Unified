@@ -1,14 +1,12 @@
 -- Original code and concept by Antiarc. Used and modified with his permission.
 -- First adaptation in dbm credits to VEM team. Continued on their behalf do to no time from original author to make it an external mod or DBM plugin.
 
-local ADDON_NAME = ...
-
 DBM.HudMap = {
 	Version = 2 -- That way external usage can querie hud api feature level of of users installed mod version
 }
 local mod = DBM.HudMap
 
-local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, select, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, select, unpack
+local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, unpack
 local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi2 = math.abs, math.pow, math.sqrt, math.sin, math.cos, math.atan2, math.floor, math.ceil, math.min, math.max, math.pi * 2
 local error = error
 
@@ -25,7 +23,6 @@ local encounterMarkers = {}
 local GetNumGroupMembers, IsInRaid = GetNumGroupMembers, IsInRaid
 local GetTime, WorldFrame = GetTime, WorldFrame
 local UnitExists, UnitIsUnit, UnitPosition, UnitIsConnected, GetPlayerFacing = UnitExists, UnitIsUnit, UnitPosition, UnitIsConnected, GetPlayerFacing
-local GetInstanceInfo = GetInstanceInfo
 
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 

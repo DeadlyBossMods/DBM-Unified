@@ -271,6 +271,8 @@ function arrowFrame:LoadPosition()
 end
 
 do
+	local L = DBM_CORE_L
+
 	SLASH_DEADLYBOSSMODSDWAY1 = "/dway"--/way not used because DBM would load before TomTom and can't check
 	SlashCmdList["DEADLYBOSSMODSDWAY"] = function(msg)
 		if DBM:HasMapRestrictions() then
