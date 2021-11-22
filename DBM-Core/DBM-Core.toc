@@ -66,8 +66,11 @@ DBM-Nameplate.lua
 
 # Modules
 modules\Commands.lua
+modules\Hyperlinks.lua
 modules\MinimapButton.lua
+modules\Notes.lua
 modules\Sounds.lua
 modules\SpecRole.lua
+modules\UpdateReminder.lua
 
 modules\objects\Localization.lua

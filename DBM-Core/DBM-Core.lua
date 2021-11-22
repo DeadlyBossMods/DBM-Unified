@@ -30,6 +30,7 @@ local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 
 local DBMPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC"
+private.DBMPrefix = DBMPrefix
 
 local L = DBM_CORE_L
 
@@ -94,10 +95,7 @@ function DBM:ReleaseDate(year, month, day, hour, minute, second)
 end
 
 local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
-local testBuild = false
-if IsTestBuild() then
-	testBuild = true
-end
+local testBuild = IsTestBuild()
 
 function DBM:GetTOC()
 	return wowTOC, testBuild, wowVersionString, wowBuild
@@ -353,61 +351,24 @@ private.updateFunctions = {}
 --  Locals  --
 --------------
 local bossModPrototype = {}
-local usedProfile = "Default"
-local dbmIsEnabled = true
-local lastCombatStarted = GetTime()
-local loadcIds, inCombat, oocBWComms = {}, {}, {}
-local combatInfo = {}
-local bossIds = {}
-local raid = {}
-local autoRespondSpam = {}
-local chatPrefix = "<Deadly Boss Mods> "
-local chatPrefixShort = "<DBM> "
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
-local newerVersionPerson = {}
-local combatInitialized = false
-local healthCombatInitialized = false
-local pformat
-local loadOptions
-local checkWipe
-local checkBossHealth
-local checkCustomBossHealth
-local fireEvent
 local playerName = UnitName("player")
 local playerLevel = UnitLevel("player")
 local playerRealm = GetRealmName()
+local lastCombatStarted = GetTime()
+local chatPrefix, chatPrefixShort = "<" .. L.DEADLY_BOSS_MODS .. "> ", "<" .. L.DBM .. "> "
+local usedProfile = "Default"
+local dbmIsEnabled = true
+-- Table variables
+local newerVersionPerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+-- False variables
+local voiceSessionDisabled, statusGuildDisabled, statusWhisperDisabled, targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false, false, false, false
+-- Nil variables
+local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, savedDifficulty, difficultyText, difficultyIndex
+-- 0 variables
+local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
-local LastGroupSize = 0
-local LastInstanceType
-local queuedBattlefield = {}
-local watchFrameRestore = false
-local questieWatchRestore = false
-local bossHealth = {}
-local bossHealthuIdCache = {}
-local savedDifficulty, difficultyText, difficultyIndex, difficultyModifier = nil, nil, nil, 0
-local lastBossEngage = {}
-local lastBossDefeat = {}
-local bossuIdFound = false
-local timerRequestInProgress = false
-local updateNotificationDisplayed = 0
-local showConstantReminder = 0
 local SWFilterDisabed = 11
-local currentSpecID, currentSpecName, currentSpecGroup
-local cSyncSender = {}
-local cSyncReceived = 0
-local eeSyncSender = {}
-local eeSyncReceived = 0
-local iconSetRevision = {}
-local iconSetPerson = {}
-local targetEventsRegistered = false
-local statusWhisperDisabled = false
-local statusGuildDisabled = false
-local dbmToc = 0
-local breakTimerStart
-local AddMsg
-local delayedFunction
-local voiceSessionDisabled = false
-local handleSync
 
 local fakeBWVersion, fakeBWHash
 if isRetail then
@@ -581,11 +542,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 						--Check if it's a bnet friend sending a non bnet whisper
 						if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
 							if toonName == sender then--Now simply see if this is sender
-								if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
-									return false--just set sender as unsafe
-								else
-									return true
-								end
+								return not (filterRaid and DBM:GetRaidUnitId(toonName)) -- Person is in raid group and filter raid enabled
 							end
 						end
 					end
@@ -602,11 +559,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 						local _, toonName, client = BNGetFriendGameAccountInfo(friendIndex, j)
 						if toonName and client == BNET_CLIENT_WOW then--Check if toon name exists and if client is wow. If yes to both, we found right client
 							if toonName == sender then--Now simply see if this is sender
-								if filterRaid and DBM:GetRaidUnitId(toonName) then--Person is in raid group and filter raid enabled
-									return false--just set sender as unsafe
-								else
-									return true
-								end
+								return not (filterRaid and DBM:GetRaidUnitId(toonName)) -- Person is in raid group and filter raid enabled
 							end
 						else
 							--Check if it's a bnet friend sending a bnet whisper who's not in game
@@ -621,11 +574,7 @@ local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, 
 		--Check if it's a non bnet friend
 		local friendInfo = C_FriendList.GetFriendInfo(sender)
 		if friendInfo then
-			if filterRaid and DBM:GetRaidUnitId(friendInfo.name) then--Person is in raid group and filter raid enabled
-				return false--just set sender as unsafe
-			else
-				return true
-			end
+			return not (filterRaid and DBM:GetRaidUnitId(friendInfo.name)) -- Person is in raid group and filter raid enabled
 		end
 	end
 	--Check Guildies (not used by whisper syncs, but used by status whispers)
@@ -694,7 +643,6 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 		local _, numBNetOnline = BNGetNumFriends()
 		local connectedServers = GetAutoCompleteRealms()
 		for i = 1, numBNetOnline do
-			local sameRealm = false
 			local gameAccountID, isOnline, realmName
 			if isRetail then
 				local accountInfo = C_BattleNet.GetFriendAccountInfo(i)
@@ -707,6 +655,7 @@ local function SendWorldSync(self, prefix, msg, noBNet)
 				gameAccountID, isOnline, realmName = presenceID, isFriendOnline, userRealm
 			end
 			if gameAccountID and isOnline and realmName then
+				local sameRealm = false
 				if connectedServers then
 					for j = 1, #connectedServers do
 						if realmName == connectedServers[j] then
@@ -760,25 +709,19 @@ end
 
 -- sends a whisper to a player by his or her character name or BNet presence id
 -- returns true if the message was sent, nil otherwise
-local sendWhisper
-function sendWhisper(target, msg)
+local function sendWhisper(target, msg)
 	if type(target) == "number" then
-		if not BNIsSelf(target) then -- never send BNet whispers to ourselves
+		if not BNIsSelf(target) then -- Never send BNet whispers to ourselves
 			BNSendWhisper(target, msg)
-			return true
 		end
 	elseif type(target) == "string" then
-		-- whispering to ourselves here is okay and somewhat useful for whisper-warnings
-		SendChatMessage(msg, "WHISPER", nil, target)
-		return true
+		SendChatMessage(msg, "WHISPER", nil, target) -- Whispering to ourselves here is okay and somewhat useful for whisper-warnings
 	end
 end
 
 --Another custom server name strip function that first strips out the "><" DBM wraps around playernames
 local function stripServerName(cap)
-	cap = cap:sub(2, -2)
-	cap = DBM:GetShortServerName(cap)
-	return cap
+	return DBM:GetShortServerName(cap:sub(2, -2))
 end
 
 --------------
@@ -1296,8 +1239,7 @@ end
 --------------
 do
 	local isLoaded = false
-	local onLoadCallbacks = {}
-	local disabledMods = {}
+	local onLoadCallbacks, disabledMods = {}, {}
 
 	local function infniteLoopNotice(self, message)
 		AddMsg(self, message)
@@ -1839,10 +1781,7 @@ end
 ----------------------
 
 do
-	local sortMe = {}
-	local OutdatedUsers = {}
-
-	local function sort(v1, v2)
+	local function Sort(v1, v2)
 		if v1.revision and not v2.revision then
 			return true
 		elseif v2.revision and not v1.revision then
@@ -1855,11 +1794,11 @@ do
 	end
 
 	function DBM:ShowVersions(notify)
+		local sortMe, outdatedUsers = {}, {}
 		for _, v in pairs(raid) do
 			tinsert(sortMe, v)
 		end
-		tsort(sortMe, sort)
-		twipe(OutdatedUsers)
+		tsort(sortMe, Sort)
 		self:AddMsg(L.VERSIONCHECK_HEADER)
 		for _, v in ipairs(sortMe) do
 			local name = v.name
@@ -1884,7 +1823,6 @@ do
 				end
 			end
 		end
-		local TotalUsers = #sortMe
 		local NoDBM = 0
 		local NoBigwigs = 0
 		local OldMod = 0
@@ -1904,16 +1842,13 @@ do
 				if playerColor then
 					name = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, name, 0.41 * 255, 0.8 * 255, 0.94 * 255)
 				end
-				tinsert(OutdatedUsers, name)
+				tinsert(outdatedUsers, name)
 			end
 		end
-		local TotalDBM = TotalUsers - NoDBM
-		local TotalBW = TotalUsers - NoBigwigs
+		local TotalUsers = #sortMe
 		self:AddMsg("---", false)
-		self:AddMsg(L.VERSIONCHECK_FOOTER:format(TotalDBM, TotalBW), false)
-		self:AddMsg(L.VERSIONCHECK_OUTDATED:format(OldMod, #OutdatedUsers > 0 and tconcat(OutdatedUsers, ", ") or NONE), false)
-		twipe(OutdatedUsers)
-		twipe(sortMe)
+		self:AddMsg(L.VERSIONCHECK_FOOTER:format(TotalUsers - NoDBM, TotalUsers - NoBigwigs), false)
+		self:AddMsg(L.VERSIONCHECK_OUTDATED:format(OldMod, #outdatedUsers > 0 and tconcat(outdatedUsers, ", ") or NONE), false)
 	end
 end
 
@@ -1978,102 +1913,6 @@ end
 function DBM:ShowPizzaInfo(id, sender)
 	if self.Options.ShowPizzaMessage then
 		self:AddMsg(L.PIZZA_SYNC_INFO:format(sender, id))
-	end
-end
-
-------------------
---  Hyperlinks  --
-------------------
-do
-	local ignore, cancel
-	local popuplevel = 0
-	local function showPopupConfirmIgnore(ignore, cancel)
-		local popup = CreateFrame("Frame", "DBMHyperLinks", UIParent, "BackdropTemplate")
-		popup.backdropInfo = {
-			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922
-			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
-			tile		= true,
-			tileSize	= 16,
-			edgeSize	= 16,
-			insets		= { left = 1, right = 1, top = 1, bottom = 1 }
-		}
-		popup:ApplyBackdrop()
-		popup:SetSize(500, 80)
-		popup:SetPoint("TOP", UIParent, "TOP", 0, -200)
-		popup:SetFrameStrata("DIALOG")
-		popup:SetFrameLevel(popuplevel)
-		popuplevel = popuplevel + 1
-
-		local text = popup:CreateFontString()
-		text:SetFontObject(ChatFontNormal)
-		text:SetWidth(470)
-		text:SetWordWrap(true)
-		text:SetPoint("TOP", popup, "TOP", 0, -15)
-		text:SetText(L.PIZZA_CONFIRM_IGNORE:format(ignore))
-
-		local accept = CreateFrame("Button", nil, popup)
-		accept:SetNormalTexture(130763)--"Interface\\Buttons\\UI-DialogBox-Button-Up"
-		accept:SetPushedTexture(130761)--"Interface\\Buttons\\UI-DialogBox-Button-Down"
-		accept:SetHighlightTexture(130762, "ADD")--"Interface\\Buttons\\UI-DialogBox-Button-Highlight"
-		accept:SetSize(128, 35)
-		accept:SetPoint("BOTTOM", popup, "BOTTOM", -75, 0)
-		accept:SetScript("OnClick", function(f) DBM:AddToPizzaIgnore(ignore) DBT:CancelBar(cancel) f:GetParent():Hide() end)
-
-		local atext = accept:CreateFontString()
-		atext:SetFontObject(ChatFontNormal)
-		atext:SetPoint("CENTER", accept, "CENTER", 0, 5)
-		atext:SetText(YES)
-
-		local decline = CreateFrame("Button", nil, popup)
-		decline:SetNormalTexture(130763)--"Interface\\Buttons\\UI-DialogBox-Button-Up"
-		decline:SetPushedTexture(130761)--"Interface\\Buttons\\UI-DialogBox-Button-Down"
-		decline:SetHighlightTexture(130762, "ADD")--"Interface\\Buttons\\UI-DialogBox-Button-Highlight"
-		decline:SetSize(128, 35)
-		decline:SetPoint("BOTTOM", popup, "BOTTOM", 75, 0)
-		decline:SetScript("OnClick", function(f) f:GetParent():Hide() end)
-
-		local dtext = decline:CreateFontString()
-		dtext:SetFontObject(ChatFontNormal)
-		dtext:SetPoint("CENTER", decline, "CENTER", 0, 5)
-		dtext:SetText(NO)
-		PlaySound(850)
-	end
-
-	local function linkHook(self, link)
-		local _, linkType, arg1, arg2, arg3, arg4, arg5, arg6 = strsplit(":", link)
-		if linkType ~= "DBM" then
-			return
-		end
-		if arg1 == "cancel" then
-			DBT:CancelBar(link:match("garrmission:DBM:cancel:(.+):nil$"))
-		elseif arg1 == "ignore" then
-			cancel = link:match("garrmission:DBM:ignore:(.+):[^%s:]+$")
-			ignore = link:match(":([^:]+)$")
-			showPopupConfirmIgnore(ignore, cancel)
-		elseif arg1 == "update" then
-			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
-		elseif arg1 == "news" then
-			DBM:ShowUpdateReminder(nil, nil, L.COPY_URL_DIALOG_NEWS, "https://patreon.com/posts/dbm-9-1-9-false-55047651")
---		elseif arg1 == "forums" then
---			DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
-		elseif arg1 == "noteshare" then
-			local mod = DBM:GetModByName(arg2 or "")
-			if mod then
-				DBM:ShowNoteEditor(mod, arg3, arg4, arg5, arg6)--modvar, ability, text, sender
-			else--Should not happen, since mod was verified before getting this far, but just in case
-				DBM:Debug("Bad note share, mod not valid")
-			end
-		end
-	end
---	local frame = _G[tostring(DBM.Options.ChatFrame)]
---	frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
-	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", linkHook) -- handles the weird case that the default chat frame is not one of the normal chat frames (3rd party chat frames or whatever causes this)
-	local i = 1
-	while _G["ChatFrame" .. i] do
-		if _G["ChatFrame" .. i] ~= DEFAULT_CHAT_FRAME then
-			_G["ChatFrame" .. i]:HookScript("OnHyperlinkClick", linkHook)
-		end
-		i = i + 1
 	end
 end
 
@@ -2562,8 +2401,7 @@ function DBM:GetNumRealGroupMembers()
 end
 
 function DBM:GetUnitCreatureId(uId)
-	local guid = UnitGUID(uId)
-	return self:GetCIDFromGUID(guid)
+	return self:GetCIDFromGUID(UnitGUID(uId))
 end
 
 --Creature/Vehicle/Pet
@@ -2583,18 +2421,12 @@ end
 function DBM:IsNonPlayableGUID(guid)
 	if type(guid) == "number" then return false end
 	local guidType = strsplit("-", guid or "")
-	if guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "NPC") then--To determine, add pet or not?
-		return true
-	end
-	return false
+	return guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "NPC")--To determine, add pet or not?
 end
 
 function DBM:IsCreatureGUID(guid)
 	local guidType = strsplit("-", guid or "")
-	if guidType and (guidType == "Creature" or guidType == "Vehicle") then--To determine, add pet or not?
-		return true
-	end
-	return false
+	return guidType and (guidType == "Creature" or guidType == "Vehicle")--To determine, add pet or not?
 end
 
 function DBM:GetBossUnitId(name, bossOnly)--Deprecated, only old mods use this
@@ -3116,7 +2948,7 @@ end
 do
 	local gsub = string.gsub
 
-	local function fixElv(optionName)
+	local function FixElv(optionName)
 		if DBM.Options[optionName]:lower():find("interface\\addons\\elvui\\media\\") then
 			DBM.Options[optionName] = gsub(DBM.Options[optionName], gsub("Interface\\AddOns\\ElvUI\\Media\\", "(%a)", function(v)
 				return "[" .. v:upper() .. v:lower() .. "]"
@@ -3166,7 +2998,7 @@ do
 			"InfoFrameFont", "WarningFont", "SpecialWarningFont"
 		}) do
 			if type(self.Options[setting]) == "string" and self.Options[setting]:lower() ~= "none" then
-				fixElv(setting)
+				FixElv(setting)
 			end
 		end
 	end
@@ -3641,9 +3473,7 @@ do
 		end
 	end
 
-	local syncHandlers = {}
-	local whisperSyncHandlers = {}
-	local guildSyncHandlers = {}
+	local syncHandlers, whisperSyncHandlers, guildSyncHandlers = {}, {}, {}
 
 	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
@@ -4374,270 +4204,6 @@ do
 	end
 end
 
------------------------
---  Update Reminder  --
------------------------
-do
-	local frame, fontstring, fontstringFooter, editBox, urlText
-
-	local function createFrame()
-		frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent, "BackdropTemplate")
-		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
-		frame:SetWidth(430)
-		frame:SetHeight(140)
-		frame:SetPoint("TOP", 0, -230)
-		frame.backdropInfo = {
-			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
-			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
-			tile		= true,
-			tileSize	= 32,
-			edgeSize	= 32,
-			insets		= { left = 11, right = 12, top = 12, bottom = 11 },
-		}
-		frame:ApplyBackdrop()
-		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		fontstring:SetWidth(410)
-		fontstring:SetHeight(0)
-		fontstring:SetPoint("TOP", 0, -16)
-		editBox = CreateFrame("EditBox", nil, frame)
-		do
-			local editBoxLeft = editBox:CreateTexture(nil, "BACKGROUND")
-			local editBoxRight = editBox:CreateTexture(nil, "BACKGROUND")
-			local editBoxMiddle = editBox:CreateTexture(nil, "BACKGROUND")
-			editBoxLeft:SetTexture(130959)--"Interface\\ChatFrame\\UI-ChatInputBorder-Left"
-			editBoxLeft:SetHeight(32)
-			editBoxLeft:SetWidth(32)
-			editBoxLeft:SetPoint("LEFT", -14, 0)
-			editBoxLeft:SetTexCoord(0, 0.125, 0, 1)
-			editBoxRight:SetTexture(130960)--"Interface\\ChatFrame\\UI-ChatInputBorder-Right"
-			editBoxRight:SetHeight(32)
-			editBoxRight:SetWidth(32)
-			editBoxRight:SetPoint("RIGHT", 6, 0)
-			editBoxRight:SetTexCoord(0.875, 1, 0, 1)
-			editBoxMiddle:SetTexture(130960)--"Interface\\ChatFrame\\UI-ChatInputBorder-Right"
-			editBoxMiddle:SetHeight(32)
-			editBoxMiddle:SetWidth(1)
-			editBoxMiddle:SetPoint("LEFT", editBoxLeft, "RIGHT")
-			editBoxMiddle:SetPoint("RIGHT", editBoxRight, "LEFT")
-			editBoxMiddle:SetTexCoord(0, 0.9375, 0, 1)
-		end
-		editBox:SetHeight(32)
-		editBox:SetWidth(250)
-		editBox:SetPoint("TOP", fontstring, "BOTTOM", 0, -4)
-		editBox:SetFontObject("GameFontHighlight")
-		editBox:SetTextInsets(0, 0, 0, 1)
-		editBox:SetFocus()
-		editBox:SetText(urlText)
-		editBox:HighlightText()
-		editBox:SetScript("OnTextChanged", function(self)
-			editBox:SetText(urlText)
-			editBox:HighlightText()
-		end)
-		fontstringFooter = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		fontstringFooter:SetWidth(410)
-		fontstringFooter:SetHeight(0)
-		fontstringFooter:SetPoint("TOP", editBox, "BOTTOM", 0, 0)
-		local button = CreateFrame("Button", nil, frame)
-		button:SetHeight(24)
-		button:SetWidth(75)
-		button:SetPoint("BOTTOM", 0, 13)
-		button:SetNormalFontObject("GameFontNormal")
-		button:SetHighlightFontObject("GameFontHighlight")
-		button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
-		button:SetPushedTexture(button:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
-		button:SetHighlightTexture(button:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
-		button:SetText(OKAY)
-		button:SetScript("OnClick", function(self)
-			frame:Hide()
-		end)
-
-	end
-
-	function DBM:ShowUpdateReminder(newVersion, newRevision, text, url)
-		urlText = url or "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki"
-		if not frame then
-			createFrame()
-		else
-			editBox:SetText(urlText)
-			editBox:HighlightText()
-		end
-		frame:Show()
-		if newVersion then
-			fontstring:SetText(L.UPDATEREMINDER_HEADER:format(newVersion, newRevision))
-			fontstringFooter:SetText(L.UPDATEREMINDER_FOOTER)
-		elseif text then
-			fontstring:SetText(text)
-			fontstringFooter:SetText(L.UPDATEREMINDER_FOOTER_GENERIC)
-		end
-	end
-end
-
---------------------
---  Notes Editor  --
---------------------
-do
-	local frame, fontstring, fontstringFooter, editBox, button3
-
-	local function createFrame()
-		frame = CreateFrame("Frame", "DBMNotesEditor", UIParent, "BackdropTemplate")
-		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
-		frame:SetWidth(430)
-		frame:SetHeight(140)
-		frame:SetPoint("TOP", 0, -230)
-		frame.backdropInfo = {
-			bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
-			edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
-			tile		= true,
-			tileSize	= 32,
-			edgeSize	= 32,
-			insets		= { left = 11, right = 12, top = 12, bottom = 11 }
-		}
-		frame:ApplyBackdrop()
-		fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		fontstring:SetWidth(410)
-		fontstring:SetHeight(0)
-		fontstring:SetPoint("TOP", 0, -16)
-		editBox = CreateFrame("EditBox", nil, frame)
-		do
-			local editBoxLeft = editBox:CreateTexture(nil, "BACKGROUND")
-			local editBoxRight = editBox:CreateTexture(nil, "BACKGROUND")
-			local editBoxMiddle = editBox:CreateTexture(nil, "BACKGROUND")
-			editBoxLeft:SetTexture(130959)--"Interface\\ChatFrame\\UI-ChatInputBorder-Left"
-			editBoxLeft:SetHeight(32)
-			editBoxLeft:SetWidth(32)
-			editBoxLeft:SetPoint("LEFT", -14, 0)
-			editBoxLeft:SetTexCoord(0, 0.125, 0, 1)
-			editBoxRight:SetTexture(130960)--"Interface\\ChatFrame\\UI-ChatInputBorder-Right"
-			editBoxRight:SetHeight(32)
-			editBoxRight:SetWidth(32)
-			editBoxRight:SetPoint("RIGHT", 6, 0)
-			editBoxRight:SetTexCoord(0.875, 1, 0, 1)
-			editBoxMiddle:SetTexture(130960)--"Interface\\ChatFrame\\UI-ChatInputBorder-Right"
-			editBoxMiddle:SetHeight(32)
-			editBoxMiddle:SetWidth(1)
-			editBoxMiddle:SetPoint("LEFT", editBoxLeft, "RIGHT")
-			editBoxMiddle:SetPoint("RIGHT", editBoxRight, "LEFT")
-			editBoxMiddle:SetTexCoord(0, 0.9375, 0, 1)
-		end
-		editBox:SetHeight(32)
-		editBox:SetWidth(250)
-		editBox:SetPoint("TOP", fontstring, "BOTTOM", 0, -4)
-		editBox:SetFontObject("GameFontHighlight")
-		editBox:SetTextInsets(0, 0, 0, 1)
-		editBox:SetFocus()
-		editBox:SetText("")
-		fontstringFooter = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		fontstringFooter:SetWidth(410)
-		fontstringFooter:SetHeight(0)
-		fontstringFooter:SetPoint("TOP", editBox, "BOTTOM", 0, 0)
-		local button = CreateFrame("Button", nil, frame)
-		button:SetHeight(24)
-		button:SetWidth(75)
-		button:SetPoint("BOTTOM", 80, 13)
-		button:SetNormalFontObject("GameFontNormal")
-		button:SetHighlightFontObject("GameFontHighlight")
-		button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
-		button:SetPushedTexture(button:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
-		button:SetHighlightTexture(button:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
-		button:SetText(OKAY)
-		button:SetScript("OnClick", function(self)
-			local mod = DBM.Noteframe.mod
-			local modvar = DBM.Noteframe.modvar
-			mod.Options[modvar .. "SWNote"] = editBox:GetText() or ""
-			DBM.Noteframe.mod = nil
-			DBM.Noteframe.modvar = nil
-			DBM.Noteframe.abilityName = nil
-			frame:Hide()
-		end)
-		local button2 = CreateFrame("Button", nil, frame)
-		button2:SetHeight(24)
-		button2:SetWidth(75)
-		button2:SetPoint("BOTTOM", 0, 13)
-		button2:SetNormalFontObject("GameFontNormal")
-		button2:SetHighlightFontObject("GameFontHighlight")
-		button2:SetNormalTexture(button2:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
-		button2:SetPushedTexture(button2:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
-		button2:SetHighlightTexture(button2:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
-		button2:SetText(CANCEL)
-		button2:SetScript("OnClick", function(self)
-			DBM.Noteframe.mod = nil
-			DBM.Noteframe.modvar = nil
-			DBM.Noteframe.abilityName = nil
-			frame:Hide()
-		end)
-		button3 = CreateFrame("Button", nil, frame)
-		button3:SetHeight(24)
-		button3:SetWidth(75)
-		button3:SetPoint("BOTTOM", -80, 13)
-		button3:SetNormalFontObject("GameFontNormal")
-		button3:SetHighlightFontObject("GameFontHighlight")
-		button3:SetNormalTexture(button3:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
-		button3:SetPushedTexture(button3:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
-		button3:SetHighlightTexture(button3:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
-		button3:SetText(SHARE_QUEST_ABBREV)
-		button3:SetScript("OnClick", function(self)
-			local modid = DBM.Noteframe.mod.id
-			local modvar = DBM.Noteframe.modvar
-			local abilityName = DBM.Noteframe.abilityName
-			local syncText = editBox:GetText() or ""
-			if syncText == "" then
-				DBM:AddMsg(L.NOTESHAREERRORBLANK)
-			elseif IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-				DBM:AddMsg(L.NOTESHAREERRORGROUPFINDER)
-			else
-				local msg = modid.."\t"..modvar.."\t"..syncText.."\t"..abilityName
-				if IsInRaid() then
-					--if DBM:GetRaidRank(playerName) == 0 then
-					--	DBM:AddMsg(L.ERROR_NO_PERMISSION)
-					--else
-						SendAddonMessage(DBMPrefix, "NS\t" .. msg, "RAID")
-						DBM:AddMsg(L.NOTESHARED)
-					--end
-				elseif IsInGroup(1) then
-					--if DBM:GetRaidRank(playerName) == 0 then
-					--	DBM:AddMsg(L.ERROR_NO_PERMISSION)
-					--else
-						SendAddonMessage(DBMPrefix, "NS\t" .. msg, "PARTY")
-						DBM:AddMsg(L.NOTESHARED)
-					--end
-				else--Solo
-					DBM:AddMsg(L.NOTESHAREERRORSOLO)
-				end
-			end
-		end)
-	end
-
-	function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
-		if not frame then
-			createFrame()
-			self.Noteframe = frame
-		else
-			if frame:IsShown() and syncText then
-				self:AddMsg(L.NOTESHAREERRORALREADYOPEN)
-				return
-			end
-		end
-		frame:Show()
-		fontstringFooter:SetText(L.NOTEFOOTER)
-		self.Noteframe.mod = mod
-		self.Noteframe.modvar = modvar
-		self.Noteframe.abilityName = abilityName
-		if syncText then
-			button3:Hide()--Don't show share button in shared notes
-			fontstring:SetText(L.NOTESHAREDHEADER:format(sender, abilityName))
-			editBox:SetText(syncText)
-		else
-			button3:Show()
-			fontstring:SetText(L.NOTEHEADER:format(abilityName))
-			if type(mod.Options[modvar .. "SWNote"]) == "string" then
-				editBox:SetText(mod.Options[modvar .. "SWNote"])
-			else
-				editBox:SetText("")
-			end
-		end
-	end
-end
-
 ----------------------
 --  Pull Detection  --
 ----------------------
@@ -4649,8 +4215,7 @@ do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
 			if guid and DBM:IsCreatureGUID(guid) then
-				local cId = DBM:GetCIDFromGUID(guid)
-				targetList[cId] = id
+				targetList[DBM:GetCIDFromGUID(guid)] = id
 			end
 		end
 	end
@@ -5014,10 +4579,9 @@ function checkWipe(self, confirm)
 			self:Schedule(3, checkWipe, self)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
-				local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found : "..(wipe or "nil"))
 				local mod = inCombat[i]
 				if not mod.noStatistics then
-					self:Debug("You wiped. Reason : "..reason)
+					self:Debug("You wiped. Reason : " .. (wipe == 1 and "No combat unit found in your party." or "No boss found : "..(wipe or "nil")))
 				end
 				self:EndCombat(mod, true)
 			end
@@ -5720,10 +5284,7 @@ do
 	local autoTLog = false
 
 	local function isCurrentContent()
-		if instanceDifficultyBylevel[LastInstanceMapID] and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) or (difficultyIndex or 0) == 8 then--current player level raid or any M+ dungeon
-			return true
-		end
-		return false
+		return instanceDifficultyBylevel[LastInstanceMapID] and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) or (difficultyIndex or 0) == 8--current player level raid or any M+ dungeon
 	end
 
 	function DBM:StartLogging(timer, checkFunc, force)
@@ -5922,10 +5483,7 @@ function DBM:HasMapRestrictions()
 	--Check playerX and playerY. if they are nil restrictions are active
 	--Restrictions active in all party, raid, pvp, arena maps. No restrictions in "none" or "scenario"
 	local playerX, playerY = UnitPosition("player")
-	if not playerX or not playerY then
-		return true
-	end
-	return false
+	return not playerX or not playerY
 end
 
 do
@@ -6054,10 +5612,7 @@ end
 
 function DBM:GetDungeonInfo(id)
 	local temp = GetDungeonInfo(id)
-	if type(temp) == "table" then
-		return temp.name
-	end
-	return temp
+	return type(temp) == "table" and temp.name or temp
 end
 
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
@@ -6077,9 +5632,8 @@ function DBM:GetSpellInfo(spellId)
 			end
 		end
 		return
-	else--Good request, return now
-		return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
-	end
+	end--Good request, return now
+	return name, rank, icon, castingTime, minRange, maxRange, returnedSpellId
 end
 
 function DBM:UnitAura(uId, spellInput, spellInput2, spellInput3, spellInput4, spellInput5)
@@ -6137,8 +5691,6 @@ DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 do
 	local requestedFrom = {}
 	local requestTime = 0
-	local clientUsed = {}
-	local sortMe = {}
 
 	local function sort(v1, v2)
 		if v1.revision and not v2.revision then
@@ -6147,13 +5699,12 @@ do
 			return false
 		elseif v1.revision and v2.revision then
 			return v1.revision > v2.revision
-		else
-			return (v1.bwversion or 0) > (v2.bwversion or 0)
 		end
+		return (v1.bwversion or 0) > (v2.bwversion or 0)
 	end
 
 	function DBM:RequestTimers(requestNum)
-		twipe(sortMe)
+		local sortMe, clientUsed = {}, {}
 		for _, v in pairs(raid) do
 			tinsert(sortMe, v)
 		end
@@ -6330,7 +5881,7 @@ do
 			end
 		end
 		--Check if any previous changed cvars were not restored and restore them
-		if 	self.Options.DisableSFX then
+		if self.Options.DisableSFX then
 			SetCVar("Sound_EnableSFX", 1)
 			self:Debug("Restoring Sound_EnableSFX CVAR")
 		end
@@ -6365,7 +5916,7 @@ do
 	--Cleanup in 8.x with C_Map.GetMapGroupMembersInfo
 	local function getNumRealAlivePlayers()
 		local alive = 0
-		local isInInstance = IsInInstance() or false
+		local isInInstance = IsInInstance()
 		local currentMapId = isInInstance and select(4, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
 		local currentMapName = C_Map.GetMapInfo(currentMapId) or L.UNKNOWN
 		if IsInRaid() then
@@ -6523,7 +6074,6 @@ do
 	local forceDisabled = false
 	function DBM:Disable(forceDisable)
 		DBMScheduler:Unschedule()
-
 		dbmIsEnabled = false
 		forceDisabled = forceDisable
 	end
@@ -6661,16 +6211,12 @@ function DBM:AntiSpam(time, id)
 			self.lastAntiSpam = GetTime()
 		end
 		return true
-	else
-		return false
 	end
+	return false
 end
 
 function DBM:InCombat()
-	if #inCombat > 0 then
-		return true
-	end
-	return false
+	return #inCombat > 0
 end
 
 function DBM:FlashClientIcon()
@@ -6932,13 +6478,7 @@ function bossModPrototype:SetStage(stage)
 		self.vb.phase = stage
 	end
 	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
-		local returnEID
-		if self.multiEncounterPullDetection then
-			returnEID = self.multiEncounterPullDetection[1]
-		else
-			returnEID = self.encounterId
-		end
-		fireEvent("DBM_SetStage", self, self.id, self.vb.phase, returnEID)--Mod, modId, Stage, Encounter Id (if available).
+		fireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId)--Mod, modId, Stage, Encounter Id (if available).
 		--Note, some encounters have more than one encounter Id, for these encounters, the first ID from mod is always returned regardless of actual engage ID triggered fight
 	end
 end
@@ -6975,46 +6515,31 @@ end
 
 function bossModPrototype:IsLFR()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "lfr" or diff == "lfr25" then
-		return true
-	end
-	return false
+	return diff == "lfr" or diff == "lfr25"
 end
 
 --Dungeons: normal, heroic. (Raids excluded)
 function bossModPrototype:IsEasyDungeon()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "heroic5" or diff == "normal5" then
-		return true
-	end
-	return false
+	return diff == "heroic5" or diff == "normal5"
 end
 
 --Dungeons: normal, heroic. Raids: LFR, normal
 function bossModPrototype:IsEasy()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" then
-		return true
-	end
-	return false
+	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5"
 end
 
 --Dungeons: mythic, mythic+. Raids: heroic, mythic
 function bossModPrototype:IsHard()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "mythic" or diff == "challenge5" or diff == "heroic" then
-		return true
-	end
-	return false
+	return diff == "mythic" or diff == "challenge5" or diff == "heroic"
 end
 
 --Pretty much ANYTHING that has a normal mode
 function bossModPrototype:IsNormal()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront" then
-		return true
-	end
-	return false
+	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront"
 end
 
 do
@@ -7038,51 +6563,33 @@ end
 --Pretty much ANYTHING that has a heroic mode
 function bossModPrototype:IsHeroic()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "heroic" or diff == "heroic5" or diff == "heroic10" or diff == "heroic25" or diff == "heroicisland" or diff == "heroicwarfront" then
-		return true
-	end
-	return false
+	return diff == "heroic" or diff == "heroic5" or diff == "heroic10" or diff == "heroic25" or diff == "heroicisland" or diff == "heroicwarfront"
 end
 
 --Pretty much ANYTHING that has mythic mode, with mythic+ included
 function bossModPrototype:IsMythic()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "mythic" or diff == "challenge5" or diff == "mythicisland" then
-		return true
-	end
-	return false
+	return diff == "mythic" or diff == "challenge5" or diff == "mythicisland"
 end
 
 function bossModPrototype:IsEvent()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "event5" or diff == "event20" or diff == "event40" then
-		return true
-	end
-	return false
+	return diff == "event5" or diff == "event20" or diff == "event40"
 end
 
 function bossModPrototype:IsWarfront()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "normalwarfront" or diff == "heroicwarfront" then
-		return true
-	end
-	return false
+	return diff == "normalwarfront" or diff == "heroicwarfront"
 end
 
 function bossModPrototype:IsIsland()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "normalisland" or diff == "heroicisland" or diff == "mythicisland" then
-		return true
-	end
-	return false
+	return diff == "normalisland" or diff == "heroicisland" or diff == "mythicisland"
 end
 
 function bossModPrototype:IsScenario()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	if diff == "normalscenario" or diff == "heroicscenario" then
-		return true
-	end
-	return false
+	return diff == "normalscenario" or diff == "heroicscenario"
 end
 
 function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
@@ -7290,11 +6797,7 @@ do
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		distance = distance or 43
 		if rangeCache[cidOrGuid] and (GetTime() - (rangeUpdated[cidOrGuid] or 0)) < 2 then -- return same range within 2 sec call
-			if rangeCache[cidOrGuid] > distance then
-				return false
-			else
-				return true
-			end
+			return rangeCache[cidOrGuid] < distance
 		else
 			cidOrGuid = cidOrGuid or self.creatureId--GetBossTarget supports GUID or CID and it will automatically return correct values with EITHER ONE
 			local uId
@@ -7319,7 +6822,7 @@ do
 				if not UnitIsPlayer(uId) then
 					local inRange2, checkedRange = UnitInRange(uId)--43
 					if checkedRange then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
-						return inRange2 and true or false
+						return inRange2
 					else--Its probably a totem or just something we can't assess. Fall back to no filtering
 						return true
 					end
@@ -7371,10 +6874,8 @@ do
 				if not private.specRoleTable[currentSpecID][flagText] then
 					return true
 				end
-			else
-				if private.specRoleTable[currentSpecID][flagText] then
-					return true
-				end
+			elseif private.specRoleTable[currentSpecID][flagText] then
+				return true
 			end
 		end
 		return false
