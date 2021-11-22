@@ -1,5 +1,7 @@
 -- This file uses models and textures taken from TomTom. The 3D arrow model was created by Guillotine (curse.guillotine@gmail.com) and 2D minimap textures by Cladhaire.
 
+local L = DBM_CORE_L
+
 ---------------
 --  Globals  --
 ---------------
@@ -261,7 +263,7 @@ function arrowFrame:Move()
 	hideDistance = 0
 	frame:EnableMouse(true)
 	frame:Show()
-	DBT:CreateBar(25, DBM_CORE_L.ARROW_MOVABLE, 237538)
+	DBT:CreateBar(25, L.ARROW_MOVABLE, 237538)
 	DBM:Unschedule(endMove)
 	DBM:Schedule(25, endMove)
 end
@@ -271,8 +273,6 @@ function arrowFrame:LoadPosition()
 end
 
 do
-	local L = DBM_CORE_L
-
 	SLASH_DEADLYBOSSMODSDWAY1 = "/dway"--/way not used because DBM would load before TomTom and can't check
 	SlashCmdList["DEADLYBOSSMODSDWAY"] = function(msg)
 		if DBM:HasMapRestrictions() then
