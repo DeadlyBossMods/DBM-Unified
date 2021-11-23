@@ -1260,7 +1260,7 @@ function mod:FreeEncounterMarkerByTarget(spellid, name)
 	if not HUDEnabled or not encounterMarkers[spellid .. name] then
 		return
 	end
-	self.Free(encounterMarkers[spellid .. name])
+	self:Free(encounterMarkers[spellid .. name])
 end
 
 function mod:FreeEncounterMarkers()
