@@ -6,7 +6,7 @@ local SendAddonMessage = C_ChatInfo.SendAddonMessage
 
 local frame, fontstring, editBox, button3
 
-local function CreateFrame()
+local function createFrame()
 	frame = CreateFrame("Frame", "DBMNotesEditor", UIParent, "BackdropTemplate")
 	frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 	frame:SetWidth(430)
@@ -125,7 +125,7 @@ end
 
 function DBM:ShowNoteEditor(mod, modvar, abilityName, syncText, sender)
 	if not frame then
-		CreateFrame()
+		createFrame()
 	else
 		if frame:IsShown() and syncText then
 			self:AddMsg(L.NOTESHAREERRORALREADYOPEN)
