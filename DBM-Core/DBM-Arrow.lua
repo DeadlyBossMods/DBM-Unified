@@ -279,8 +279,13 @@ do
 			DBM:AddMsg(L.NO_ARROW)
 			return
 		end
-		local x, y = strsplit(" ,", msg:sub(1):trim()) -- Split by space and comma
+		msg = msg:sub(1):trim()
+		local x, y = strsplit(" ", msg) -- Try splitting by space
 		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
+		if not xNum or not yNum then
+			x, y = strsplit(",", msg) -- And then by comma
+			xNum, yNum = tonumber(x or ""), tonumber(y or "")
+		end
 		if xNum and yNum then
 			DBM.Arrow:ShowRunTo(xNum, yNum, 1, nil, true)
 			return
