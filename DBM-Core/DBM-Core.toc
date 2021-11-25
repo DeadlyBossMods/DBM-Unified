@@ -47,6 +47,17 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 
+commonlocal.en.lua
+commonlocal.tw.lua
+commonlocal.br.lua
+commonlocal.cn.lua
+commonlocal.de.lua
+commonlocal.es.lua
+commonlocal.fr.lua
+commonlocal.it.lua
+commonlocal.kr.lua
+commonlocal.ru.lua
+
 # Pre-core modules
 modules\Modules.lua
 

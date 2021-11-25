@@ -279,7 +279,7 @@ L.TIMER_USAGE						= {
 L.ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
 L.TIME_TOO_SHORT					= "Pull timer must be longer than 3 seconds."
 
---Common Locals
+--Common Locals (PURGE AFTER ALL MODS USING COMMON LOCALS UPDATED TO USE DBM_COMMON_L REFERENCE)
 L.NONE								= "None"
 L.RANDOM							= "Random"
 L.NEXT								= "Next %s"
@@ -320,6 +320,7 @@ L.SAFE								= "Safe"
 L.NOTSAFE							= "Not Safe"
 L.SHIELD							= "Shield"
 L.PILLAR							= "Pillar"
+L.SHELTER							= "Shelter"
 L.INCOMING							= "%s Incoming"
 L.BOSSTOGETHER						= "Bosses Together"
 L.BOSSAPART							= "Bosses Apart"
