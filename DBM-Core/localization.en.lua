@@ -646,6 +646,7 @@ L.DUR_HEADER						= L.DEADLY_BOSS_MODS.. " - Durability Results"
 L.DUR_ENTRY							= "%s: Durability [%d percent] / Gear broken [%s]"
 L.LAG_FOOTER						= "No Response: %s"
 
+--TODO, PRUNE journal icons from main locals once all 3 game versions get a new release
 local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
 --Role Icons
 L.TANK_ICON							= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
