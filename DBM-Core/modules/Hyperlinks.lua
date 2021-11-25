@@ -2,7 +2,7 @@ local L = DBM_CORE_L
 
 local frame, text, ignore, cancel
 
-local function CreateFrame()
+local function CreateOurFrame()
 	frame = CreateFrame("Frame", "DBMHyperLinks", UIParent, "BackdropTemplate")
 	frame.backdropInfo = {
 		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922
@@ -66,7 +66,7 @@ local function LinkHook(self, link)
 		cancel = link:match("garrmission:DBM:ignore:(.+):[^%s:]+$")
 		ignore = link:match(":([^:]+)$")
 		if not frame then
-			CreateFrame()
+			CreateOurFrame()
 		end
 		text:SetText(L.PIZZA_CONFIRM_IGNORE:format(ignore))
 		frame:Show()

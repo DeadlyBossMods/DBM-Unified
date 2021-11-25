@@ -2,7 +2,7 @@ local L = DBM_CORE_L
 
 local frame, fontstring, fontstringFooter, editBox, urlText
 
-local function CreateFrame()
+local function CreateOurFrame()
 	frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent, "BackdropTemplate")
 	frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 	frame:SetWidth(430)
@@ -74,7 +74,7 @@ end
 function DBM:ShowUpdateReminder(newVersion, newRevision, text, url)
 	urlText = url or "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki"
 	if not frame then
-		CreateFrame()
+		CreateOurFrame()
 	end
 	editBox:SetText(url or "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki")
 	editBox:HighlightText()
