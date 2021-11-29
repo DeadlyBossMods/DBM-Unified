@@ -6653,7 +6653,6 @@ do
 		--start & duration == 0 if spell not on cd
 		if UnitIsDeadOrGhost("player") then return false end--if dead, can't dispel
 		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckDispelFilter running on multiple raid members getting debuffed at once
-			lastCheck = GetTime()
 			return lastReturn
 		end
 		local check = isRetail and
