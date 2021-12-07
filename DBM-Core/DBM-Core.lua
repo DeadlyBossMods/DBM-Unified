@@ -4701,7 +4701,7 @@ do
 			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
 			local name = mod.combatInfo.name
 			local modId = mod.id
-			if isRetail and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() then
+			if isRetail and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() and not mod.soloChallenge then
 				mod.inScenario = true
 			end
 			mod.engagedDiff = savedDifficulty
