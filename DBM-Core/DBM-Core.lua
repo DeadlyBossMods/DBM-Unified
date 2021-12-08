@@ -70,14 +70,14 @@ DBM = {
 }
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.1.22 alpha"
-	DBM.ReleaseRevision = releaseDate(2021, 11, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.1.23 alpha"
+	DBM.ReleaseRevision = releaseDate(2021, 12, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.6 alpha"
-	DBM.ReleaseRevision = releaseDate(2021, 11, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.7 alpha"
+	DBM.ReleaseRevision = releaseDate(2021, 12, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.21 alpha"
-	DBM.ReleaseRevision = releaseDate(2021, 11, 19) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "2.5.22 alpha"
+	DBM.ReleaseRevision = releaseDate(2021, 12, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -357,7 +357,7 @@ local playerName = UnitName("player")
 local playerLevel = UnitLevel("player")
 local playerRealm = GetRealmName()
 local lastCombatStarted = GetTime()
-local chatPrefix, chatPrefixShort = "<" .. L.DEADLY_BOSS_MODS .. "> ", "<" .. L.DBM .. "> "
+local chatPrefixShort = "<" .. L.DBM .. "> "
 local usedProfile = "Default"
 local dbmIsEnabled = true
 -- Table variables
@@ -4701,7 +4701,7 @@ do
 			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
 			local name = mod.combatInfo.name
 			local modId = mod.id
-			if isRetail and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() then
+			if isRetail and mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() and not mod.soloChallenge then
 				mod.inScenario = true
 			end
 			mod.engagedDiff = savedDifficulty
@@ -5944,7 +5944,7 @@ do
 	local function onWhisper(msg, sender, isRealIdMessage)
 		if statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
 		if not checkForSafeSender(sender, true, true, true, isRealIdMessage) then return end--Automatically reject all whisper functions from non friends, non guildies, or people in group with us
-		if msg:find(chatPrefix) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
+		if msg:find(chatPrefixShort) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
 			--However if I have to add more validation it probably won't work in most languages :\ So lets hope antispam and combat check is enough
 			DBM:PlaySound(41928)--"sound\\creature\\aggron1\\VO_60_HIGHMAUL_AGGRON_1_AGGRO_1.ogg"
@@ -5968,7 +5968,7 @@ do
 				local bossesKilled = mod.numBoss - mod.vb.bossLeft
 				hpText = hpText.." ("..BOSSES_KILLED:format(bossesKilled, mod.numBoss)..")"
 			end
-			sendWhisper(sender, chatPrefix..L.STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
+			sendWhisper(sender, chatPrefixShort..L.STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond then
 			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 				savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = DBM:GetCurrentInstanceDifficulty()
@@ -5990,9 +5990,9 @@ do
 			end
 			if not autoRespondSpam[sender] then
 				if isRetail and not mod.soloChallenge and IsInScenarioGroup() then
-					sendWhisper(sender, chatPrefix..L.AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficultyText..(mod.combatInfo.name or ""), getNumAlivePlayers(), DBM:GetNumGroupMembers()))
+					sendWhisper(sender, chatPrefixShort..L.AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficultyText..(mod.combatInfo.name or ""), getNumAlivePlayers(), DBM:GetNumGroupMembers()))
 				else
-					sendWhisper(sender, chatPrefix..L.AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
+					sendWhisper(sender, chatPrefixShort..L.AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 				end
 				DBM:AddMsg(L.AUTO_RESPONDED)
 			end

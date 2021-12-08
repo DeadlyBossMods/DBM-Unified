@@ -590,7 +590,6 @@ local function updateAllAbsorb()
 	twipe(lines)
 	local spellInput = value[1]
 	local totalAbsorb = value[2]
-	local totalAbsorb2 = value[3]
 	for i = 1, 5 do
 		local uId = "boss" .. i
 		if UnitExists(uId) then
@@ -600,16 +599,24 @@ local function updateAllAbsorb()
 			else -- Get all of them
 				absorbAmount = UnitGetTotalAbsorbs(uId)
 			end
-			if absorbAmount then
-				lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100 or absorbAmount) .. "%"
+			if absorbAmount and absorbAmount > 0 then
+				if totalAbsorb then
+					lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+				else
+					lines[UnitName(uId)] = mfloor(absorbAmount)
+				end
 			end
 		end
 	end
 	if spellInput then
 		for uId in DBM:GetGroupMembers() do
 			local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
-			if absorbAmount then
-				lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb2 * 100 or absorbAmount) .. "%"
+			if absorbAmount and absorbAmount > 0 then
+				if totalAbsorb then
+					lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+				else
+					lines[UnitName(uId)] = mfloor(absorbAmount)
+				end
 			end
 		end
 	end
@@ -622,9 +629,18 @@ local function updatePlayerAbsorb()
 	local spellInput = value[1]
 	local totalAbsorb = value[2]
 	for uId in DBM:GetGroupMembers() do
-		local absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
-		if absorbAmount then
-			lines[DBM:GetUnitFullName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100 or absorbAmount)
+		local absorbAmount
+		if spellInput then -- Get specific spell absorb
+			absorbAmount = select(16, DBM:UnitBuff(uId, spellInput)) or select(16, DBM:UnitDebuff(uId, spellInput))
+		else--Not even spell input given, this is a very generic infoframe
+			absorbAmount = UnitGetTotalAbsorbs(uId)
+		end
+		if absorbAmount and absorbAmount > 0 then
+			if totalAbsorb then
+				lines[UnitName(uId)] = mfloor(totalAbsorb and absorbAmount / totalAbsorb * 100) .. "%"
+			else
+				lines[UnitName(uId)] = mfloor(absorbAmount)
+			end
 		end
 	end
 	updateLines()
