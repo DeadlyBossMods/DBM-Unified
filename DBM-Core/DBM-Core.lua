@@ -10029,6 +10029,14 @@ function bossModPrototype:AddTimerLine(text)
 	return self:AddOptionLine(text, "timer")
 end
 
+function bossModPrototype:AddNamePlateSpacer(text)
+	return self:AddOptionSpacer(text, "nameplate")
+end
+
+function bossModPrototype:AddIconSpacer(text)
+	return self:AddOptionSpacer(text, "icon")
+end
+
 function bossModPrototype:AddMiscLine(text)
 	return self:AddOptionLine(text, "misc")
 end
