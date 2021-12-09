@@ -146,6 +146,7 @@ L.OPTION_CATEGORY_WARNINGS			= "General Announces"
 L.OPTION_CATEGORY_WARNINGS_YOU		= "Personal Announces"
 L.OPTION_CATEGORY_WARNINGS_OTHER	= "Target Announces"
 L.OPTION_CATEGORY_WARNINGS_ROLE		= "Role Announces"
+L.OPTION_CATEGORY_SPECWARNINGS		= "Special Announces"
 
 L.OPTION_CATEGORY_SOUNDS			= "Sounds"
 --Misc object broken down into sub cats
