@@ -139,6 +139,7 @@ L.OPTION_CATEGORY_WARNINGS	= "일반 알림"
 L.OPTION_CATEGORY_WARNINGS_YOU	= "개인 알림"
 L.OPTION_CATEGORY_WARNINGS_OTHER	= "대상 관련 알림"
 L.OPTION_CATEGORY_WARNINGS_ROLE	= "역할 관련 알림"
+L.OPTION_CATEGORY_SPECWARNINGS		= "특수 알림"
 
 L.OPTION_CATEGORY_SOUNDS		= "음성"
 --Sub cats for "announce" object
@@ -358,12 +359,12 @@ L.AUTO_ANNOUNCE_OPTIONS.target		= "$spell:%s 대상 알림"
 L.AUTO_ANNOUNCE_OPTIONS.targetNF		= "$spell:%s 대상 알림 (전역 대상 필터 무시)"
 L.AUTO_ANNOUNCE_OPTIONS.targetsource	= "$spell:%s 대상 알림 (시전자 포함)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount	= "$spell:%s 대상 알림 (횟수 포함)"
-L.AUTO_ANNOUNCE_OPTIONS.spell		= "$spell:%s 경고 보기"
-L.AUTO_ANNOUNCE_OPTIONS.ends			= "$spell:%s 종료시 경고 보기"
-L.AUTO_ANNOUNCE_OPTIONS.endtarget	= "$spell:%s 종료시 경고 보기"
-L.AUTO_ANNOUNCE_OPTIONS.fades		= "$spell:%s|1이;가; 사라졌을 때 경고 보기"
+L.AUTO_ANNOUNCE_OPTIONS.spell		= "$spell:%s 시전 완료 알림 보기"
+L.AUTO_ANNOUNCE_OPTIONS.ends			= "$spell:%s 지속 시간 종료시 알림 보기"
+L.AUTO_ANNOUNCE_OPTIONS.endtarget	= "$spell:%s 지속 시간 종료시 알림 보기 (대상 포함)"
+L.AUTO_ANNOUNCE_OPTIONS.fades		= "$spell:%s|1이;가; 사라졌을 때 알림 보기"
 L.AUTO_ANNOUNCE_OPTIONS.adds			= "$spell:%s의 남은 수 알림 보기"
-L.AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전시 경고 보기"
+L.AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전 시작 알림 보기"
 L.AUTO_ANNOUNCE_OPTIONS.soon		= prewarnOption
 L.AUTO_ANNOUNCE_OPTIONS.sooncount	= prewarnOption
 L.AUTO_ANNOUNCE_OPTIONS.countdown	= "$spell:%s의 초읽기 사전 경고 보기"
@@ -372,9 +373,9 @@ L.AUTO_ANNOUNCE_OPTIONS.bait		= "$spell:%s 사전 경고 보기 (위치 유도)"
 L.AUTO_ANNOUNCE_OPTIONS.stage		= "%s단계 알림"
 L.AUTO_ANNOUNCE_OPTIONS.stagechange	= "단계 전환 알림"
 L.AUTO_ANNOUNCE_OPTIONS.prestage		= "%s단계로 넘어가기 전 경고 보기"
-L.AUTO_ANNOUNCE_OPTIONS.count		= "$spell:%s 경고 보기 (횟수 포함)"
+L.AUTO_ANNOUNCE_OPTIONS.count		= "$spell:%s 시전 완료 알림 보기 (횟수 포함)"
 L.AUTO_ANNOUNCE_OPTIONS.stack		= "$spell:%s 중첩 알림"
-L.AUTO_ANNOUNCE_OPTIONS.moveto		= "$spell:%s에 특정인 또는 특정 위치로 이동 경고 보기"
+L.AUTO_ANNOUNCE_OPTIONS.moveto		= "$spell:%s에 특정인 또는 특정 위치로 이동 알림 보기"
 
 L.AUTO_SPEC_WARN_TEXTS.ends		= "%s 종료!"
 L.AUTO_SPEC_WARN_TEXTS.fades		= "%s 사라짐!"
@@ -420,7 +421,7 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange	= "대상 변경 - %%s 치세요"
 
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell			= "$spell:%s 특수 알림 보기"
-L.AUTO_SPEC_WARN_OPTIONS.ends			= "$spell:%s 종료시 특수 알림 보기"
+L.AUTO_SPEC_WARN_OPTIONS.ends			= "$spell:%s 지속 시간 종료시 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.fades			= "$spell:%s|1이;가; 사라졌을 때 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.soon			= "$spell:%s 이전에 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.sooncount		= "$spell:%s 이전에 특수 알림 보기 (횟수 포함)"
@@ -514,9 +515,9 @@ L.AUTO_ARROW_OPTION_TEXT3		= "$spell:%s 특정 지점을 가리키는 " .. L.DBM
 L.AUTO_YELL_OPTION_TEXT.shortyell	= "$spell:%s 대상일 때 말풍선으로 알리기"
 L.AUTO_YELL_OPTION_TEXT.yell		= "$spell:%s 대상일 때 말풍선으로 알리기 (플레이어 이름 포함)"
 L.AUTO_YELL_OPTION_TEXT.count		= "$spell:%s 대상일 때 말풍선으로 알리기 (횟수 포함)"
-L.AUTO_YELL_OPTION_TEXT.fade		= "$spell:%s 지속시간이 끝나갈 때 말풍선으로 알리기 (주문 이름 및 초읽기 포함)"
-L.AUTO_YELL_OPTION_TEXT.shortfade	= "$spell:%s 지속시간이 끝나갈 때 말풍선으로 알리기 (초읽기 포함)"
-L.AUTO_YELL_OPTION_TEXT.iconfade		= "$spell:%s 지속시간이 끝나갈 때 말풍선으로 알리기 (초읽기 및 공격대 징표 포함)"
+L.AUTO_YELL_OPTION_TEXT.fade		= "$spell:%s 지속 시간이 끝나갈 때 말풍선으로 알리기 (주문 이름 및 초읽기 포함)"
+L.AUTO_YELL_OPTION_TEXT.shortfade	= "$spell:%s 지속 시간이 끝나갈 때 말풍선으로 알리기 (초읽기 포함)"
+L.AUTO_YELL_OPTION_TEXT.iconfade		= "$spell:%s 지속 시간이 끝나갈 때 말풍선으로 알리기 (초읽기 및 공격대 징표 포함)"
 L.AUTO_YELL_OPTION_TEXT.position		= "$spell:%s 대상일 때 말풍선으로 알리기 (위치와 이름 포함)"
 L.AUTO_YELL_OPTION_TEXT.shortposition	= "$spell:%s 대상일 때 말풍선으로 알리기 (위치 포함)"
 L.AUTO_YELL_OPTION_TEXT.combo		= "$spell:%s|1과;와; 다른 디버프가 같이 걸렸을 때 말풍선으로 알리기 (사용자 지정 문자 포함)"
@@ -554,7 +555,7 @@ L.HUD_SUCCESS				= "HUD가 입력한 정보를 표시하기 시작합니다. %s 
 L.HUD_USAGE	= {
 	L.DBM .. " HUD 사용법:",
 	"--------------------",
-	"/dbm hud <형식> <대상> <지속시간>: 지정한 시간 동안 대상을 가리키는 HUD를 생성",
+	"/dbm hud <형식> <대상> <지속 시간>: 지정한 시간 동안 대상을 가리키는 HUD를 생성",
 	"유효한 형식: arrow, red, blue, green, yellow, icon (대상에게 공격대 징표가 설정되어 있어야 함)",
 	"유효한 대상: target, focus, <대상이름>",
 	"유효한 시간: 아무 숫자(초단위). 지정하지 않으면 20분간 적용됩니다.",
