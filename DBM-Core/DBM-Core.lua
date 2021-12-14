@@ -5188,7 +5188,7 @@ do
 			mod.engagedDiff = nil
 			mod.engagedDiffText = nil
 			mod.engagedDiffIndex = nil
-			mod.vb.stageCalled = nil
+			mod.vb.stageTotality = nil
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
 				statusWhisperDisabled = false
 				statusGuildDisabled = false
@@ -6484,12 +6484,12 @@ function bossModPrototype:SetStage(stage)
 		self.vb.phase = stage
 	end
 	--Separate variable to use SetStage totality for very niche weak aura practices
-	if not self.vb.stageCalled then
-		self.vb.stageCalled = 0
+	if not self.vb.stageTotality then
+		self.vb.stageTotality = 0
 	end
-	self.vb.stageCalled = self.vb.stageCalled + 1
+	self.vb.stageTotality = self.vb.stageTotality + 1
 	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
-		fireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, self.vb.stageCalled)--Mod, modId, Stage, Encounter Id (if available), total number of times SetStage has been called since combat start
+		fireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, self.vb.stageTotality)--Mod, modId, Stage, Encounter Id (if available), total number of times SetStage has been called since combat start
 		--Note, some encounters have more than one encounter Id, for these encounters, the first ID from mod is always returned regardless of actual engage ID triggered fight
 		DBM:Debug("DBM_SetStage: " .. self.vb.phase)
 	end
