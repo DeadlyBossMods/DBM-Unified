@@ -5504,7 +5504,7 @@ do
 
 	function DBM:ValidateSound(path, log, ignoreCustom)
 		-- Ignore build in sounds
-		if string.find(path:lower(), "^sound[\\/]+") then
+		if type(path) == "number" or string.find(path:lower(), "^sound[\\/]+") then
 			return true
 		end
 		-- Validate LibSharedMedia
