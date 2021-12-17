@@ -1177,9 +1177,8 @@ function infoFrame:Update(time)
 	end
 	if frame:IsShown() then
 		if time then
-			CAfter(time, function()
-				onUpdate(frame)
-			end)
+			DBM:Unschedule(onUpdate)
+			DBM:Schedule(time, onUpdate, frame)
 		else
 			onUpdate(frame)
 		end
