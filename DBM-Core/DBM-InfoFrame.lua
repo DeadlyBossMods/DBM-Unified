@@ -1185,12 +1185,17 @@ function infoFrame:Update(time)
 	end
 end
 
-function infoFrame:UpdateTable(table)
+function infoFrame:UpdateTable(table, time)
 	if not frame then
 		createFrame()
 	end
 	if frame:IsShown() and table then
-		onUpdate(frame, table)
+		if time then
+			DBM:Unschedule(onUpdate)
+			DBM:Schedule(time, onUpdate, frame, table)
+		else
+			onUpdate(frame, table)
+		end
 	end
 end
 
