@@ -6,6 +6,8 @@ local L = DBM_GUI_L
 L.MainFrame = "Deadly Boss Mods"
 
 -- Missing phrases. Start ..
+L.Core_GUI 					= "Ядро и графический интерфейс"
+L.Button_MoveBars			= "Переместить фреймы / полосы"
 L.Area_BasicSetup           = "Советы по начальной настройке DBM"
 L.Area_ModulesForYou        = "Какие модули DBM подходят именно Вам?"
 L.Area_ProfilesSetup        = "Руководство по использованию профилей DBM"
