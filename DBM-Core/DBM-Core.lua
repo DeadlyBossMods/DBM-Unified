@@ -2235,6 +2235,15 @@ do
 		end
 	end
 
+	--Because GetRaidRank returns 0 as a failsafe, even if they aren't in raid
+	--This needs it's own check that has a hard false fail
+	function DBM:GetRaidPresence(name)
+		if raid[name] then
+			return true
+		end
+		return false
+	end
+
 	function DBM:GetRaidSubgroup(name)
 		return (raid[name] and raid[name].subgroup) or 0
 	end
