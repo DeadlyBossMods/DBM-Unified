@@ -2239,7 +2239,10 @@ do
 		return (raid[name] and raid[name].subgroup) or 0
 	end
 
-	function DBM:GetRaidRoster()
+	function DBM:GetRaidRoster(name)
+		if name then
+			return raid[name] ~= nil
+		end
 		return raid
 	end
 
