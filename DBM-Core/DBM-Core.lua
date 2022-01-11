@@ -2501,7 +2501,8 @@ function DBM:IsTrivial(customLevel)
 		--First, auto bail and return non trivial if it's an instancce not in table to prevent nil error
 		if not instanceDifficultyBylevel[LastInstanceMapID] then return false end
 		--Content is trivial if player level is 10 higher than content involved
-		if playerLevel >= (instanceDifficultyBylevel[LastInstanceMapID][1]+10) then
+		local levelDiff = isRetail and 10 or 15
+		if playerLevel >= (instanceDifficultyBylevel[LastInstanceMapID][1]+levelDiff) then
 			return true
 		end
 	end
