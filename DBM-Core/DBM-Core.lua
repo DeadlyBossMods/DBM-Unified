@@ -9909,7 +9909,7 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default)
 	self.localization.options[name] = L.AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
 end
 
-function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion)
+function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, optionalThreshold)
 	local oVersion = ""
 	if optionVersion then
 		oVersion = tostring(optionVersion)
@@ -9921,7 +9921,11 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion)
 	self.Options["InfoFrame"..oVersion] = (default == nil) or default
 	self:SetOptionCategory("InfoFrame"..oVersion, "misc")
 	if spellId then
-		self.localization.options["InfoFrame"..oVersion] = L.AUTO_INFO_FRAME_OPTION_TEXT:format(spellId)
+		if optionalThreshold then
+			self.localization.options["InfoFrame"..oVersion] = L.AUTO_INFO_FRAME_OPTION_TEXT3:format(spellId, optionalThreshold)
+		else
+			self.localization.options["InfoFrame"..oVersion] = L.AUTO_INFO_FRAME_OPTION_TEXT:format(spellId)
+		end
 	else
 		self.localization.options["InfoFrame"..oVersion] = L.AUTO_INFO_FRAME_OPTION_TEXT2
 	end
