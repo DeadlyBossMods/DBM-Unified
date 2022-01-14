@@ -348,21 +348,22 @@ local function updateLinesCustomSort(sortFunc)
 	end
 end
 
+--TODO, rework this to use UI-RaidTargetingIcons.blp instead, so it supports extended icons
 local function updateIcons()
 	twipe(icons)
 	for uId in DBM:GetGroupMembers() do
 		local icon = GetRaidTargetIndex(uId)
 		local icon2 = GetRaidTargetIndex(uId .. "target")
-		if icon then
+		if icon and icon < 9 then
 			icons[DBM:GetUnitFullName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 		end
-		if icon2 then
+		if icon2 and icon < 9 then
 			icons[DBM:GetUnitFullName(uId .. "target")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon2)
 		end
 	end
 	for i = 1, 5 do
 		local icon = GetRaidTargetIndex("boss" .. i)
-		if icon then
+		if icon and icon < 9 then
 			icons[UnitName("boss" .. i)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 		end
 	end

@@ -7589,7 +7589,7 @@ do
 						end
 						local playerColor = RAID_CLASS_COLORS[playerClass] or color
 						if playerColor then
-							if playerIcon > 0 then
+							if playerIcon > 0 and playerIcon < 9 then--TODO, rework this to use UI-RaidTargetingIcons.blp instead, so it supports extended icons
 								cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
 							else
 								cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
@@ -8229,7 +8229,7 @@ do
 				if DBM.Options.SWarnClassColor then
 					local playerColor = RAID_CLASS_COLORS[playerClass]
 					if playerColor then
-						if playerIcon > 0 then
+						if playerIcon > 0 and playerIcon < 9 then--TODO, rework this to use UI-RaidTargetingIcons.blp instead, so it supports extended icons
 							cap = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(playerIcon) .. ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
 						else
 							cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, DBM.Options.SpecialWarningFontCol[1] * 255, DBM.Options.SpecialWarningFontCol[2] * 255, DBM.Options.SpecialWarningFontCol[3] * 255)
