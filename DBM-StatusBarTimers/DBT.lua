@@ -122,7 +122,6 @@ DBT.DefaultOptions = {
 	ClickThrough = false,
 	KeepBars = true,
 	FadeBars = true,
-	StripCDText = true,
 	Texture = "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp",
 	Font = "standardFont",
 	FontFlag = "None",

@@ -112,6 +112,7 @@ L.AutoAcceptGuildInvite		= "Automatically accept group invites from guild member
 L.Area_Advanced				= "Advanced Options"
 L.FakeBW					= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
 L.AITimer					= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Recommended to always leave this turned ON"
+L.ExtendIcons				= "Extend the raid target icons API to use up to 16 icons (instead of 8). IMPORTANT: These icons will NOT be visible to anyone who hasn't installed custom 'UI-RaidTargetingIcons.blp' texture file that supports 16 icons. Must reload UI after enabling or disabling this feature"
 
 -- Panel: Profiles
 L.Panel_Profile				= "Profiles"
@@ -330,7 +331,6 @@ L.BarColorByType			= "Color by type"
 L.NoBarFade					= "Use Start/End colors as Small/Large colors instead of gradual color change"
 L.BarInlineIcons			= "Show inline icons"
 L.ShortTimerText			= "Use short timer text (when available)"
-L.StripTimerText			= "Strip CD/Next out of timers"
 L.KeepBar					= "Keep timer active until ability cast"
 L.KeepBar2					= "(when supported by mod)"
 L.FadeBar					= "Fade timers for out of range abilities"
