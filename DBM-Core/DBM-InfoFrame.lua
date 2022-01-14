@@ -357,7 +357,7 @@ local function updateIcons()
 		if icon and icon < 9 then
 			icons[DBM:GetUnitFullName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 		end
-		if icon2 and icon < 9 then
+		if icon2 and icon2 < 9 then
 			icons[DBM:GetUnitFullName(uId .. "target")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon2)
 		end
 	end
