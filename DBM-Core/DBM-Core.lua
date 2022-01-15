@@ -9840,7 +9840,7 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile, ic
 	--A table defining used icons by number, insert icon textures to end of option
 	if iconsUsed then
 		local totalIcons = #iconsUsed
-		if not DBM.Options.ExtendIcon and totalIcons > 8 then
+		if not DBM.Options.ExtendIcons and totalIcons > 8 then
 			totalIcons = 8
 		end
 		self.localization.options[name] = self.localization.options[name].." ("
