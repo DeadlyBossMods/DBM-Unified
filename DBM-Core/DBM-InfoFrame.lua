@@ -38,6 +38,7 @@ local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
 local playerName = UnitName("player")
+local maxIcon = 8
 
 ---------------------
 --  Dropdown Menu  --
@@ -348,22 +349,21 @@ local function updateLinesCustomSort(sortFunc)
 	end
 end
 
---TODO, rework this to use UI-RaidTargetingIcons.blp instead, so it supports extended icons
 local function updateIcons()
 	twipe(icons)
 	for uId in DBM:GetGroupMembers() do
 		local icon = GetRaidTargetIndex(uId)
 		local icon2 = GetRaidTargetIndex(uId .. "target")
-		if icon and icon < 9 then
+		if icon and icon <= maxIcon then
 			icons[DBM:GetUnitFullName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 		end
-		if icon2 and icon2 < 9 then
+		if icon2 and icon2 <= maxIcon then
 			icons[DBM:GetUnitFullName(uId .. "target")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon2)
 		end
 	end
 	for i = 1, 5 do
 		local icon = GetRaidTargetIndex("boss" .. i)
-		if icon and icon < 9 then
+		if icon then
 			icons[UnitName("boss" .. i)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 		end
 	end
@@ -1107,6 +1107,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 	else
 		maxLines = modMaxLines or 5
 	end
+	maxIcon = DBM.Options.ExtendIcons and 16 or 8--Updated on show, because we don't want to literally spam DBM.Options table in on update function
 	if DBM.Options.InfoFrameCols and DBM.Options.InfoFrameCols ~= 0 then
 		maxCols = DBM.Options.InfoFrameCols
 	else
