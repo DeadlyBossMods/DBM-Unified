@@ -9839,8 +9839,12 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile, ic
 	end
 	--A table defining used icons by number, insert icon textures to end of option
 	if iconsUsed then
+		local totalIcons = #iconsUsed
+		if not DBM.Options.ExtendIcon and totalIcons > 8 then
+			totalIcons = 8
+		end
 		self.localization.options[name] = self.localization.options[name].." ("
-		for i=1, #iconsUsed do
+		for i=1, totalIcons do
 			--Texture ID 137009 if direct calling RaidTargetingIcons stops working one day
 			if 		iconsUsed[i] == 1 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:0:16:0:16|t"
 			elseif	iconsUsed[i] == 2 then		self.localization.options[name] = self.localization.options[name].."|TInterface\\TargetingFrame\\UI-RaidTargetingIcons.blp:13:13:0:0:64:64:16:32:0:16|t"
