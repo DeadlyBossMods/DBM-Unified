@@ -9,12 +9,12 @@ L.TranslationBy 			= "三皈依@暗影之月 & Imbav@聖光之願"
 L.Website					= "拜訪討論/支援論壇:|cFF73C2Fhttps://discord.gg/deadlybossmods|r. 請在推特上關注@deadlybossmods或@MysticalOS"
 L.WebsiteButton				= "論壇"
 
-L.OTabBosses	            = "模組"
-L.OTabRaids		            = "團隊"
-L.OTabDungeons	            = "隊伍/單獨"
-L.OTabPlugins	            = "核心插件"
-L.OTabOptions	            = "選項"
-L.OTabAbout		            = "關於"
+L.OTabBosses				= "模組"
+L.OTabRaids					= "團隊"
+L.OTabDungeons				= "隊伍/單獨"
+L.OTabPlugins				= "核心插件"
+L.OTabOptions				= "選項"
+L.OTabAbout					= "關於"
 
 L.TabCategory_OTHER			= "其它模組"
 
@@ -35,7 +35,7 @@ L.Mod_Reset					= "讀取預設值"
 L.Reset 					= "重置"
 L.Import					= "匯入"
 
-L.Enable  					= "啟用"
+L.Enable					= "啟用"
 L.Disable					= "停用"
 
 L.NoSound					= "靜音"
@@ -116,7 +116,7 @@ L.ExtendIcons				= "將團隊標記圖示API擴展到最多16個圖示(而非8�
 
 -- Panel: Profiles
 L.Panel_Profile				= "配置檔"
-L.Area_CreateProfile        = "建立核心選項配置檔"
+L.Area_CreateProfile		= "建立核心選項配置檔"
 L.EnterProfileName			= "輸入配置檔名稱"
 L.CreateProfile				= "建立預設設定值的新配置檔"
 L.Area_ApplyProfile			= "套用DBM核心選項配置檔"

@@ -345,7 +345,7 @@ L.LAG_FOOTER						= "Sem resposta: %s"
 --LDB
 L.LDB_TOOLTIP_HELP1					= "Clique para abrir " .. L.DBM
 L.LDB_TOOLTIP_HELP2					= "Alt-clique para alternar o modo silencioso"
-L.SILENTMODE_IS                     = "Modo silencioso é "
+L.SILENTMODE_IS						= "Modo silencioso é "
 
 L.WORLD_BUFFS.hordeOny		= "Povo da Horda, cidadãos de Orgrimmar, venham! Vamos homenagear uma heroína da Horda"
 L.WORLD_BUFFS.allianceOny	= "Cidadãos e aliados de Ventobravo, no dia de hoje, fez-se história."

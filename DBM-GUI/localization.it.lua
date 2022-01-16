@@ -13,7 +13,7 @@ L.OTabBosses	= "Boss"
 L.OTabOptions	= "Opzioni"
 
 L.TabCategory_Options	 	= "Opzioni Generali"
-L.TabCategory_OTHER    		= "Altre Mod"
+L.TabCategory_OTHER			= "Altre Mod"
 
 L.BossModLoaded 			= "%s statistiche"
 L.BossModLoad_now 			= [[Boss Mod non caricata.
@@ -31,7 +31,7 @@ L.Mod_Enabled				= "Abilita boss mod"
 L.Mod_Reset					= "Ripristina predefiniti"
 L.Reset 					= "Resetta"
 
-L.Enable  					= "Abilita"
+L.Enable					= "Abilita"
 L.Disable					= "Disabilita"
 
 L.NoSound					= "Nessun Suono"

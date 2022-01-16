@@ -13,7 +13,7 @@ L.OTabBosses	= "Bosse"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "Allgemeine Einstellungen"
-L.TabCategory_OTHER    		= "Sonstige Boss Mods"
+L.TabCategory_OTHER			= "Sonstige Boss Mods"
 
 L.BossModLoaded 			= "Statistiken von %s"
 L.BossModLoad_now 			= [[Dieses Boss Mod ist nicht geladen. Es wird automatisch geladen, wenn du die Instanz betrittst. Du kannst auch auf den Button klicken um das Boss Mod manuell zu laden.]]
@@ -31,7 +31,7 @@ L.Mod_Enabled				= "Aktiviere Boss Mod"
 L.Mod_Reset					= "Lade Standardeinstellungen"
 L.Reset 					= "Zurücksetzen"
 
-L.Enable  					= "Aktiviert"
+L.Enable					= "Aktiviert"
 L.Disable					= "Deaktiviert"
 
 L.NoSound					= "Kein Sound"

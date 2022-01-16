@@ -16,7 +16,7 @@ L.OTabPlugins	= "Core Plugins"
 L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "About"
 
-L.TabCategory_OTHER    		= "Other Mods"
+L.TabCategory_OTHER			= "Other Mods"
 
 L.BossModLoaded 			= "%s statistics"
 L.BossModLoad_now 			= [[This boss mod is not loaded.
@@ -35,7 +35,7 @@ L.Mod_Reset					= "Load default options"
 L.Reset 					= "Reset"
 L.Import					= "Import"
 
-L.Enable  					= ENABLE
+L.Enable					= ENABLE
 L.Disable					= DISABLE
 
 L.NoSound					= "No sound"
