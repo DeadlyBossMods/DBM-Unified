@@ -207,13 +207,6 @@ L.ERROR_NO_PERMISSION				= "Você não tem as permissões necessárias para faze
 L.ALLIANCE							= "Aliança"
 L.HORDE								= "Horda"
 
-L.UNKNOWN							= "desconhecido"
-L.LEFT								= "Esquerda"
-L.RIGHT								= "Direita"
-L.BACK								= "Atrás"
-L.FRONT								= "A frente"
-L.INTERMISSION						= "Intermissão"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
-
 L.BREAK_START						= "Intervalo começando agora -- você tem %s!"
 L.BREAK_MIN							= "Intervalo encerra-se em %s minuto(s)!"
 L.BREAK_SEC							= "Intervalo encerra-se em %s segundos!"
