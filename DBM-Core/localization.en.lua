@@ -280,53 +280,6 @@ L.TIMER_USAGE						= {
 L.ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
 L.TIME_TOO_SHORT					= "Pull timer must be longer than 3 seconds."
 
---Common Locals (PURGE AFTER ALL MODS USING COMMON LOCALS UPDATED TO USE DBM_COMMON_L REFERENCE)
-L.NONE								= "None"
-L.RANDOM							= "Random"
-L.NEXT								= "Next %s"
-L.COOLDOWN							= "%s CD"
-L.UNKNOWN							= "Unknown"--UNKNOWN which is "Unknown" (does u vs U matter?)
-L.LEFT								= "Left"
-L.RIGHT								= "Right"
-L.BOTH								= "Both"
-L.BEHIND							= "Behind"
-L.BACK								= "Back"--BACK
-L.SIDE								= "Side"
-L.TOP								= "Top"
-L.BOTTOM							= "Bottom"
-L.MIDDLE							= "Middle"
-L.FRONT								= "Front"
-L.EAST								= "East"
-L.WEST								= "West"
-L.NORTH								= "North"
-L.SOUTH								= "South"
-L.INTERMISSION						= "Intermission"--No blizz global for this, and will probably be used in most end tier fights with intermission phases
-L.ORB								= "Orb"
-L.ORBS								= "Orbs"
-L.RING								= "Ring"
-L.RINGS								= "Rings"
-L.CHEST								= "Chest"--As in Treasure 'Chest'. Not Chest as in body part.
-L.NO_DEBUFF							= "Not %s"--For use in places like info frame where you put "Not Spellname"
-L.ALLY								= "Ally"--Such as "Move to Ally"
-L.ALLIES							= "Allies"--Such as "Move to Allies"
-L.ADD								= "Add"--A fight Add as in "boss spawned extra adds"
-L.ADDS								= "Adds"
-L.BIG_ADD							= "Big Add"
-L.BOSS								= "Boss"
-L.EDGE								= "Room Edge"
-L.FAR_AWAY							= "Far Away"
-L.BREAK_LOS							= "Break LOS"
-L.RESTORE_LOS						= "Restore/Maintain LOS"
-L.SAFE								= "Safe"
-L.NOTSAFE							= "Not Safe"
-L.SHIELD							= "Shield"
-L.PILLAR							= "Pillar"
-L.SHELTER							= "Shelter"
-L.INCOMING							= "%s Incoming"
-L.BOSSTOGETHER						= "Bosses Together"
-L.BOSSAPART							= "Bosses Apart"
---Common Locals end
-
 L.BREAK_USAGE						= "Break timer cannot be longer than 60 minutes. Make sure you're inputting time in minutes and not seconds."
 L.BREAK_START						= "Break starting now -- you have %s! (Sent by %s)"
 L.BREAK_MIN							= "Break ends in %s minute(s)!"
@@ -540,6 +493,7 @@ L.AUTO_TIMER_OPTIONS = {
 
 L.AUTO_ICONS_OPTION_TEXT			= "Set icons on $spell:%s targets"
 L.AUTO_ICONS_OPTION_TEXT2			= "Set icons on $spell:%s"
+L.AUTO_ICONS_OPTION_CONFLICT		= " (May conflict with other options)"
 L.AUTO_ARROW_OPTION_TEXT			= "Show " .. L.DBM .. " Arrow to move toward target affected by $spell:%s"
 L.AUTO_ARROW_OPTION_TEXT2			= "Show " .. L.DBM .. " Arrow to move away from target affected by $spell:%s"
 L.AUTO_ARROW_OPTION_TEXT3			= "Show " .. L.DBM .. " Arrow to move toward specific location for $spell:%s"
@@ -633,34 +587,6 @@ L.DUR_CHECKING						= "Checking raid Durability... "
 L.DUR_HEADER						= L.DEADLY_BOSS_MODS.. " - Durability Results"
 L.DUR_ENTRY							= "%s: Durability [%d percent] / Gear broken [%s]"
 L.LAG_FOOTER						= "No Response: %s"
-
---TODO, PRUNE journal icons from main locals once all 3 game versions get a new release
-local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
---Role Icons
-L.TANK_ICON							= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
-L.DAMAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
-L.HEALER_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
-
-L.TANK_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:6:21:7:27|t" -- NO TRANSLATE
-L.DAMAGE_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:39:55:7:27|t" -- NO TRANSLATE
-L.HEALER_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:70:86:7:27|t" -- NO TRANSLATE
---Importance Icons
-L.HEROIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
-L.DEADLY_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
-L.IMPORTANT_ICON					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
-L.MYTHIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:22:22:0:0:255:66:133:153:40:58|t" -- NO TRANSLATE
-
-L.HEROIC_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:14:14:0:0:255:66:102:118:7:27|t" -- NO TRANSLATE
-L.DEADLY_ICON_SMALL					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:14:14:0:0:255:66:133:153:7:27|t" -- NO TRANSLATE
-L.IMPORTANT_ICON_SMALL				= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:12:12:0:0:255:66:168:182:7:27|t" -- NO TRANSLATE
---Type Icons
-L.INTERRUPT_ICON					= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:198:214:7:27|t" -- NO TRANSLATE
-L.MAGIC_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:229:247:7:27|t" -- NO TRANSLATE
-L.CURSE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:6:21:40:58|t" -- NO TRANSLATE
-L.POISON_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:39:55:40:58|t" -- NO TRANSLATE
-L.DISEASE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:70:86:40:58|t" -- NO TRANSLATE
-L.ENRAGE_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:102:118:40:58|t" -- NO TRANSLATE
-L.BLEED_ICON						= "|TInterface\\" .. EJIconPath .. "\\UI-EJ-Icons.blp:20:20:0:0:255:66:168:182:40:58|t" -- NO TRANSLATE
 
 --LDB
 L.LDB_TOOLTIP_HELP1					= "Click to open " .. L.DBM

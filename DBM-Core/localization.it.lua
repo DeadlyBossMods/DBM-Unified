@@ -258,44 +258,6 @@ L.TIMER_USAGE	= {
 
 L.ERROR_NO_PERMISSION				= "Non hai i permessi per eseguire questo comando."
 
---Common Locals
-L.NEXT							= "Avanti %s"
-L.COOLDOWN						= "%s CD"
-L.UNKNOWN					= "sconosciuto" -- UNKNOWN which is "Unknown" (does u vs U matter?)
-L.LEFT						= "Sinistra"
-L.RIGHT						= "Destra"
-L.BOTH						= "Entrambi"
-L.BACK						= "Indietro"--BACK
-L.SIDE						= "Lato"
-L.TOP						= "Cima"
-L.BOTTOM						= "Fondo"
-L.MIDDLE						= "Mezzo"
-L.FRONT						= "Fronte"
-L.EAST						= "Est"
-L.WEST						= "Ovest"
-L.NORTH						= "Nord"
-L.SOUTH						= "Sud"
-L.INTERMISSION				= "Interfase" -- No blizz global for this, and will probably be used in most end tier fights with intermission phases
-L.ORB						= "Sfera"
-L.CHEST							= "Cassa" -- As in Treasure 'Chest'. Not Chest as in body part.
-L.NO_DEBUFF						= "No %s"--For use in places like info frame where you put "Not Spellname"
-L.ALLY							= "Alleato" -- Such as "Move to Ally"
-L.ADD								= "Add" -- A fight Add as in "boss spawned extra adds"
-L.ADDS							= "Adds"
-L.BIG_ADD							= "Add Grande"
-L.BOSS							= "Boss"
-L.ROOM_EDGE					= "Bordo Stanza"
-L.FAR_AWAY					= "Lontano"
-L.BREAK_LOS					= "Interrompi LOS"
-L.RESTORE_LOS				= "Ripristina/Mantieni LOS"
-L.SAFE						= "Sicuro"
-L.NOTSAFE					= "Non Sicuro"
-L.SHIELD					= "Scudo"
-L.INCOMING					= "%s in Arrivo"
-L.BOSSTOGETHER				= "Bosses Together"
-L.BOSSAPART					= "Bosses Apart"
---Common Locals end
-
 L.BREAK_USAGE				= "Il temporizzatore della pausa non può durare più di 60 minuti. Assicurati di aver inserito il tempo in minuti e non in secondi."
 L.BREAK_START				= "Inizia la pausa -- hai %s! (Iniziata da %s)"
 L.BREAK_MIN					= "La pausa termina tra %s minuto/i!"
