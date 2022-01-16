@@ -92,7 +92,7 @@ L.Mod_Enabled				= "Включить модуль"
 L.Mod_Reset					= "Сброс настроек"
 L.Reset 					= "Сброс"
 
-L.Enable 					= "Вкл."
+L.Enable					= "Вкл."
 L.Disable					= "Откл."
 
 L.NoSound					= "Без звука"
