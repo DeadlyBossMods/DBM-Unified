@@ -16,7 +16,7 @@ L.OTabPlugins	= "Core Plugins"
 L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "About"
 
-L.TabCategory_OTHER    		= "Other Mods"
+L.TabCategory_OTHER			= "Other Mods"
 
 L.BossModLoaded 			= "%s statistics"
 L.BossModLoad_now 			= [[This boss mod is not loaded.
@@ -35,7 +35,7 @@ L.Mod_Reset					= "Load default options"
 L.Reset 					= "Reset"
 L.Import					= "Import"
 
-L.Enable  					= ENABLE
+L.Enable					= ENABLE
 L.Disable					= DISABLE
 
 L.NoSound					= "No sound"
@@ -228,6 +228,7 @@ L.CountdownVoice			= "Set primary voice for count sounds"
 L.CountdownVoice2			= "Set secondary voice for count sounds"
 L.CountdownVoice3			= "Set tertiary voice for count sounds"
 L.VoicePackChoice			= "Set voice pack for spoken alerts"
+L.MissingVoicePack			= "Missing Voice Pack (%s)"
 L.Area_CountdownOptions		= "Countdown Options"
 L.Area_VoicePackOptions		= "Voice Pack Options (3rd party voice packs)"
 L.SpecWarn_NoSoundsWVoice	= "Filter special announce sounds for announcements that also have spoken alerts..."

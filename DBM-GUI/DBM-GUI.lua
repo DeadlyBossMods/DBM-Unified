@@ -314,8 +314,8 @@ function DBM_GUI:CreateBossModPanel(mod)
 	for i = 1, totalIcons do
 		local icon = panel.frame:CreateTexture()
 		icon:SetTexture(137009) -- "Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp"
-        icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26)
-        icon:SetSize(16, 16)
+		icon:SetPoint("TOP", panel.frame, 81 - (i * 18), -26)
+		icon:SetSize(16, 16)
 		if not mod.usedIcons or not mod.usedIcons[i] then
 			icon:SetAlpha(0.25)
 		end
