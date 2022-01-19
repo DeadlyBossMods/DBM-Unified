@@ -2489,8 +2489,8 @@ function DBM:CheckNearby(range, targetname)
 end
 
 function DBM:IsTrivial(customLevel)
-	--if timewalking or chromie time, it's always non trivial content
-	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33 then
+	--if timewalking or chromie time or challenge modes. it's always non trivial content
+	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33 or difficultyIndex == 8 then
 		return false
 	end
 	--if custom level passed, we always hard check that level for trivial vs non trivial
