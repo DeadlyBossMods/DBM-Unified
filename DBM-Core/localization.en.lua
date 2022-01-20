@@ -273,7 +273,7 @@ L.TIMER_USAGE						= {
 	"-----------------",
 	"/dbm timer <sec> <text>: Starts a <sec> second timer with your <text>.",
 	"/dbm ltimer <sec> <text>: Starts a timer that also automatically loops until canceled.",
-	"('Broadcast' in front of any timer also shares it with raid if leader/promoted)",
+	"('Broadcast' in front of the 'timer' or 'ltimer' also shares it with raid if leader/promoted)",
 	"/dbm timer endloop: Stops any looping ltimer."
 }
 
