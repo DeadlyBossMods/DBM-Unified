@@ -6555,9 +6555,10 @@ end
 do
 	local isSeasonal
 	function bossModPrototype:IsSeasonal()
+		--Once set to true, we stop checking api an return cache
+		--But if not set true we keep checking api because the api (or buff) will return false if called too early and we don't want to cache that
 		if not isSeasonal then
-			--TODO, use C_Seasons.HasActiveSeason() once it's fixed/working
-			local IsClassicSeason = select(10, UnitAura("player", 1)) == 362859
+			local IsClassicSeason = C_Seasons and C_Seasons.HasActiveSeason()
 			if IsClassicSeason then
 				isSeasonal = true
 				DBM:Debug("Setting Classic seasonal to true")
