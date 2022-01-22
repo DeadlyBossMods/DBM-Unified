@@ -193,6 +193,8 @@ globals = {
 	"C_Scenario.GetInfo",
 	"C_Scenario.GetStepInfo",
 	"C_Scenario.IsInScenario",
+	"C_Seasons",
+	"C_Seasons.HasActiveSeason",
 	"C_Timer.After",
 	"C_Timer.NewTicker",
 	"C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo",
