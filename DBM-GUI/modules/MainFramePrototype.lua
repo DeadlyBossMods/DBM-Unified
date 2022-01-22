@@ -1,3 +1,5 @@
+local L = DBM_GUI_L
+
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
