@@ -389,8 +389,8 @@ L.AUTO_SPEC_WARN_TEXTS = {
 	switch							= "%s - switch targets",
 	switchcount						= "%s - switch targets (%%s)",
 	gtfo							= "%%s damage - move away",
-	adds							= "Incoming Adds - switch targets",
-	addscustom						= "Incoming Adds - %%s",
+	adds							= "Incoming Adds - switch targets",--Basically a generic of switch
+	addscustom						= "Incoming Adds - %%s",--Same as above, but more info, pretty much made for like 3 boss mods, such as akama
 	targetchange					= "Target Change - switch to %%s"
 }
 
