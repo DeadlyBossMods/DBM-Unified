@@ -27,7 +27,7 @@ end, 180)
 CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -45)
 
 local voices = DBM.Voices
-if not DBM.VoiceVersions[DBM.Options.ChosenVoicePack] then -- Sound pack is missing, add a custom entry of "missing"
+if DBM.Options.ChosenVoicePack ~= "None" and not DBM.VoiceVersions[DBM.Options.ChosenVoicePack] then -- Sound pack is missing, add a custom entry of "missing"
 	table.insert(voices, { text = L.MissingVoicePack:format(DBM.Options.ChosenVoicePack), value = DBM.Options.ChosenVoicePack })
 end
 local VoiceDropDown = spokenGeneralArea:CreateDropdown(L.VoicePackChoice, voices, "DBM", "ChosenVoicePack", function(value)
@@ -59,19 +59,19 @@ end, 420)
 SWFilterDropDown:SetPoint("TOPLEFT", _G[VPF1:GetName() .. "Text"], "BOTTOMLEFT", -26, -5)
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_GetVEM)
-VPUrlArea1:CreateText(L.VEMDownload, nil, true, nil, "LEFT")
+VPUrlArea1:CreateText(L.VEMDownload, nil, true, nil, "LEFT", 0)
 VPUrlArea1.frame:SetScript("OnMouseUp", function()
 	DBM:ShowUpdateReminder(nil, nil, L.Area_GetVEM, "https://www.curseforge.com/wow/addons/dbm-voicepack-vem")
 end)
 
 local VPUrlArea2		= spokenAlertsPanel:CreateArea(L.Area_BrowseOtherVP)
-VPUrlArea2:CreateText(L.BrowseOtherVPs, nil, true, nil, "LEFT")
+VPUrlArea2:CreateText(L.BrowseOtherVPs, nil, true, nil, "LEFT", 0)
 VPUrlArea2.frame:SetScript("OnMouseUp", function()
 	DBM:ShowUpdateReminder(nil, nil, L.Area_BrowseOtherVP, "https://www.curseforge.com/wow/addons/search?search=dbm+voice")
 end)
 
 local VPUrlArea3		= spokenAlertsPanel:CreateArea(L.Area_BrowseOtherCT)
-VPUrlArea3:CreateText(L.BrowseOtherCTs, nil, true, nil, "LEFT")
+VPUrlArea3:CreateText(L.BrowseOtherCTs, nil, true, nil, "LEFT", 0)
 VPUrlArea3.frame:SetScript("OnMouseUp", function()
 	DBM:ShowUpdateReminder(nil, nil, L.Area_BrowseOtherCT, "https://www.curseforge.com/wow/addons/search?search=dbm+count+pack")
 end)

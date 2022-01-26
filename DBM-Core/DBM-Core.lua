@@ -10076,15 +10076,29 @@ function bossModPrototype:RemoveOption(name)
 	end
 end
 
+function bossModPrototype:GroupOptions(spellID, amount)
+	if not self.groupOptions then
+		self.groupOptions = {}
+	end
+	self.groupSpell = spellID
+	self.groupCount = amount
+	self.groupOptions[tostring(spellID)] = {}
+end
+
 function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if not self.optionCategories[cat] then
-		self.optionCategories[cat] = {}
+	if self.groupCount and self.groupCount > 0 then
+		tinsert(self.groupOptions[tostring(self.groupSpell)], name)
+		self.groupCount = self.groupCount - 1
+	else
+		if not self.optionCategories[cat] then
+			self.optionCategories[cat] = {}
+		end
+		tinsert(self.optionCategories[cat], name)
+		tinsert(self.categorySort, cat)
 	end
-	tinsert(self.optionCategories[cat], name)
-	tinsert(self.categorySort, cat)
 end
 
 --------------

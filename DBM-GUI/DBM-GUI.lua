@@ -298,6 +298,56 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
+local catbutton, lastButton, addSpacer
+local function addOptions(mod, catpanel, v)
+	if v == DBM_OPTION_SPACER then
+		addSpacer = true
+	else
+		lastButton = catbutton
+		if v.line then
+			catbutton = catpanel:CreateLine(v.text)
+		elseif type(mod.Options[v]) == "boolean" then
+			if mod.Options[v .. "TColor"] then
+				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
+			elseif mod.Options[v .. "SWSound"] then
+				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
+			else
+				catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true)
+			end
+			catbutton:SetScript("OnShow", function(self)
+				self:SetChecked(mod.Options[v])
+			end)
+			catbutton:SetScript("OnClick", function(self)
+				mod.Options[v] = not mod.Options[v]
+				if mod.optionFuncs and mod.optionFuncs[v] then
+					mod.optionFuncs[v]()
+				end
+			end)
+		elseif mod.dropdowns and mod.dropdowns[v] then
+			local dropdownOptions = {}
+			for _, val in ipairs(mod.dropdowns[v]) do
+				tinsert(dropdownOptions, {
+					text	= mod.localization.options[val],
+					value	= val
+				})
+			end
+			catbutton = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value)
+				mod.Options[v] = value
+				if mod.optionFuncs and mod.optionFuncs[v] then
+					mod.optionFuncs[v]()
+				end
+			end, nil, 32)
+			if not addSpacer then
+				catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
+			end
+		end
+		if addSpacer then
+			catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
+			addSpacer = false
+		end
+	end
+end
+
 function DBM_GUI:CreateBossModPanel(mod)
 	if not mod.panel then
 		DBM:AddMsg("Couldn't create boss mod panel for " .. mod.localization.general.name)
@@ -351,60 +401,26 @@ function DBM_GUI:CreateBossModPanel(mod)
 		mod:Toggle()
 	end)
 
+	if mod.groupOptions then
+		for spellID, options in pairs(mod.groupOptions) do
+			local catpanel = panel:CreateAbility(spellID)
+			catpanel:CreateSpellDesc(tonumber(spellID) and GetSpellDescription(spellID) or DBM:EJ_GetSectionInfo(spellID:gsub("ej", "")))
+			catbutton, lastButton, addSpacer = nil, nil, nil
+			for _, v in ipairs(options) do
+				addOptions(mod, catpanel, v)
+			end
+		end
+	end
+
 	local scannedCategories = {}
 	for _, catident in pairs(mod.categorySort) do
 		category = mod.optionCategories[catident]
 		if not scannedCategories[catident] and category then
 			scannedCategories[catident] = true
 			local catpanel = panel:CreateArea(mod.localization.cats[catident])
-			local catbutton, lastButton, addSpacer
+			catbutton, lastButton, addSpacer = nil, nil, nil
 			for _, v in ipairs(category) do
-				if v == DBM_OPTION_SPACER then
-					addSpacer = true
-				else
-					lastButton = catbutton
-					if v.line then
-						catbutton = catpanel:CreateLine(v.text)
-					elseif type(mod.Options[v]) == "boolean" then
-						if mod.Options[v .. "TColor"] then
-							catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v, nil, true)
-						elseif mod.Options[v .. "SWSound"] then
-							catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod, v)
-						else
-							catbutton = catpanel:CreateCheckButton(mod.localization.options[v], true)
-						end
-						catbutton:SetScript("OnShow", function(self)
-							self:SetChecked(mod.Options[v])
-						end)
-						catbutton:SetScript("OnClick", function(self)
-							mod.Options[v] = not mod.Options[v]
-							if mod.optionFuncs and mod.optionFuncs[v] then
-								mod.optionFuncs[v]()
-							end
-						end)
-					elseif mod.dropdowns and mod.dropdowns[v] then
-						local dropdownOptions = {}
-						for _, val in ipairs(mod.dropdowns[v]) do
-							tinsert(dropdownOptions, {
-								text	= mod.localization.options[val],
-								value	= val
-							})
-						end
-						catbutton = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod, v, function(value)
-							mod.Options[v] = value
-							if mod.optionFuncs and mod.optionFuncs[v] then
-								mod.optionFuncs[v]()
-							end
-						end, nil, 32)
-						if not addSpacer then
-							catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
-						end
-					end
-					if addSpacer then
-						catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
-						addSpacer = false
-					end
-				end
+				addOptions(mod, catpanel, v)
 			end
 		end
 	end

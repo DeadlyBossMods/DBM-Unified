@@ -69,7 +69,7 @@ end
 local function resize(frame, first)
 	local frameHeight = 20
 	for _, child in ipairs({ frame:GetChildren() }) do
-		if child.mytype == "area" then
+		if child.mytype == "area" or child.mytype == "ability" then
 			if first then
 				child:SetPoint("TOPRIGHT", "DBM_GUI_OptionsFramePanelContainerFOVScrollBar", "TOPLEFT", -5, 0)
 			else
@@ -79,12 +79,28 @@ local function resize(frame, first)
 			if not child.isStats then
 				local neededHeight, lastObject = 25, nil
 				for _, child2 in ipairs({ child:GetChildren() }) do
-					if child2.mytype then
-						if child2.mytype == "textblock" then
-							if child2.autowidth then
-								child2:SetWidth(width)
+					if child.mytype == "ability" and child2.mytype then
+						child2:SetShown(not child.hidden)
+						if child2.mytype == "spelldesc" then
+							_G[child2:GetName() .. "Text"]:SetShown(child.hidden)
+							child2:SetShown(child.hidden)
+							if child2:IsVisible() then
+								neededHeight = 0
 							end
-							neededHeight = neededHeight + (child2.myheight or child2:GetStringHeight())
+						end
+					end
+					if child2.mytype and child2:IsVisible() then
+						if child2.mytype == "textblock" or child2.mytype == "spelldesc" then
+							local text = _G[child2:GetName() .. "Text"]
+							if child2.autowidth then
+								_G[child2:GetName() .. "Text"]:SetWidth(width - 30)
+								child2:SetSize(width, text:GetStringHeight())
+							end
+							local height = text:GetStringHeight()
+							if child.mytype == "ability" and height == 12 then
+								height = height + 6
+							end
+							neededHeight = neededHeight + (child2.myheight or height)
 						elseif child2.mytype == "checkbutton" then
 							local buttonText = _G[child2:GetName() .. "Text"]
 							buttonText:SetWidth(width - buttonText.widthPad - 57)
