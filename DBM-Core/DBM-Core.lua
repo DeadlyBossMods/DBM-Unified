@@ -8297,7 +8297,7 @@ do
 			--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 			if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 			--We also check if person has the role filter turned on (typical for highest end raiders who don't want as much handholding from DBM)
-			if specTypeTable[self.announceType] and DBM.Options["SpamSpecRole"..[specTypeTable[self.announceType]] then return end
+			if specTypeTable[self.announceType] and DBM.Options["SpamSpecRole"..[specTypeTable[self.announceType]]] then return end
 			--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
 			local argTable = {...}
