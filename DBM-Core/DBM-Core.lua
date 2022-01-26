@@ -283,6 +283,14 @@ DBM.DefaultOptions = {
 	DontDoSpecialWarningVibrate = false,
 	DontPlaySpecialWarningSound = false,
 	DontPlayTrivialSpecialWarningSound = true,
+	SpamSpecRoledispel = false,
+	SpamSpecRoleinterrupt = false,
+	SpamSpecRoledefensive = false,
+	SpamSpecRoletaunt = false,
+	SpamSpecRolesoak = false,
+	SpamSpecRolestack = false,
+	SpamSpecRoleswitch = false,
+	SpamSpecRolegtfo = false,
 	DontShowBossTimers = false,
 	DontShowUserTimers = false,
 	DontShowFarWarnings = true,
@@ -6233,6 +6241,15 @@ function DBM:FlashClientIcon()
 	end
 end
 
+function DBM:VibrateController()
+	if self:AntiSpam(2, "VIBRATE") then
+		if C_GamePad and C_GamePad.SetVibration then
+			C_GamePad.SetVibration("High", 1)
+		end
+	end
+end
+
+
 do
 	--Search Tags: iconto, toicon, raid icon, diamond, star, triangle
 	local iconStrings = {[1] = RAID_TARGET_1, [2] = RAID_TARGET_2, [3] = RAID_TARGET_3, [4] = RAID_TARGET_4, [5] = RAID_TARGET_5, [6] = RAID_TARGET_6, [7] = RAID_TARGET_7, [8] = RAID_TARGET_8,}
@@ -8298,8 +8315,7 @@ do
 			if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 			--We also check if person has the role filter turned on (typical for highest end raiders who don't want as much handholding from DBM)
 			if specTypeTable[self.announceType] then
-				local luaIsFuckingDumb = specTypeTable[self.announceType]
-				if DBM.Options["SpamSpecRole"..luaIsFuckingDumb] then return end
+				if DBM.Options["SpamSpecRole"..specTypeTable[self.announceType]] then return end
 			end
 			--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
@@ -8398,9 +8414,7 @@ do
 						DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol5[1],DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3], DBM.Options.SpecialWarningFlashDura5, DBM.Options.SpecialWarningFlashAlph5, repeatCount-1)
 					end
 					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options.SpecialWarningVibrate5 then
-						if C_GamePad and C_GamePad.SetVibration then
-							C_GamePad.SetVibration("High", 1)
-						end
+						DBM:VibrateController()
 					end
 				else
 					local number = self.flash
@@ -8410,9 +8424,7 @@ do
 						DBM.Flash:Show(flashcolor[1], flashcolor[2], flashcolor[3], DBM.Options["SpecialWarningFlashDura"..number], DBM.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
 					end
 					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options["SpecialWarningVibrate"..number] then
-						if C_GamePad and C_GamePad.SetVibration then
-							C_GamePad.SetVibration("High", 1)
-						end
+						DBM:VibrateController()
 					end
 				end
 			end
@@ -8897,9 +8909,7 @@ do
 				self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura"..number], self.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
 			end
 			if not self.Options.DontDoSpecialWarningVibrate and self.Options["SpecialWarningVibrate"..number] then
-				if C_GamePad and C_GamePad.SetVibration then
-					C_GamePad.SetVibration("High", 1)
-				end
+				self:VibrateController()
 			end
 		end
 	end
