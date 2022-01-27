@@ -146,6 +146,7 @@ DBM.DefaultOptions = {
 	AlwaysPlayVoice = false,
 	EventSoundVictory2 = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",
 	EventSoundWipe = "None",
+	EventSoundPullTimer = "None",
 	EventSoundEngage2 = "None",
 	EventSoundMusic = "None",
 	EventSoundDungeonBGM = "None",
@@ -3698,6 +3699,9 @@ do
 				dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
 				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
 			end
+		end
+		if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
+			self:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
 		end
 		if DBM.Options.RecordOnlyBosses then
 			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
