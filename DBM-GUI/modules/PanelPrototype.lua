@@ -204,7 +204,11 @@ end
 function PanelPrototype:CreateLine(text)
 	local line = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	line:SetSize(self.frame:GetWidth() - 20, 20)
-	line:SetPoint("TOPLEFT", 10, -12)
+	if select("#", self.frame:GetChildren()) == 2 then
+		line:SetPoint("TOPLEFT", self.frame, 10, -12)
+	else
+		line:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -12)
+	end
 	line.myheight = 20
 	line.mytype = "line"
 	local linetext = line:CreateFontString(line:GetName() .. "Text", "ARTWORK", "GameFontNormal")
@@ -217,11 +221,6 @@ function PanelPrototype:CreateLine(text)
 	linebg:SetTexture(137056) -- "Interface\\Tooltips\\UI-Tooltip-Background"
 	linebg:SetSize(self.frame:GetWidth() - linetext:GetWidth() - 25, 2)
 	linebg:SetPoint("RIGHT", line, "RIGHT", 0, 0)
-	local x = self:GetLastObj()
-	if x.mytype == "checkbutton" or x.mytype == "line" then
-		line:ClearAllPoints()
-		line:SetPoint("TOPLEFT", x, "TOPLEFT", 0, -x.myheight)
-	end
 	self:SetLastObj(line)
 	return line
 end
@@ -472,7 +471,7 @@ function PanelPrototype:CreateArea(name)
 	})
 end
 
-function PanelPrototype:CreateAbility(spellID)
+function PanelPrototype:CreateAbility(titleText)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,OptionsBoxTemplate")
 	area.mytype = "ability"
 	area.hidden = true
@@ -484,7 +483,7 @@ function PanelPrototype:CreateAbility(spellID)
 		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 	end
 	local title = _G[area:GetName() .. "Title"]
-	title:SetText(("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellID, DBM:GetSpellInfo(spellID)))
+	title:SetText(titleText)
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
 	-- Button

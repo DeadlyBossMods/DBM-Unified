@@ -401,13 +401,28 @@ function DBM_GUI:CreateBossModPanel(mod)
 		mod:Toggle()
 	end)
 
-	if mod.groupOptions then
-		for spellID, options in pairs(mod.groupOptions) do
-			local catpanel = panel:CreateAbility(spellID)
-			catpanel:CreateSpellDesc(tonumber(spellID) and GetSpellDescription(spellID) or DBM:EJ_GetSectionInfo(spellID:gsub("ej", "")))
-			catbutton, lastButton, addSpacer = nil, nil, nil
-			for _, v in ipairs(options) do
-				addOptions(mod, catpanel, v)
+	if mod.addon.newOptions then
+		for spellID, options in getmetatable(mod.groupOptions).__pairs(mod.groupOptions) do
+			if spellID:find("^line") then
+				panel:CreateLine(options)
+			else
+				local title, desc
+				if tonumber(spellID) then
+					local _title = DBM:GetSpellInfo(spellID)
+					title, desc = _title, GetSpellDescription(spellID)
+				elseif spellID:find("^ej") then
+					title, desc = DBM:EJ_GetSectionInfo(spellID:gsub("ej", ""))
+				else
+					title = spellID
+				end
+				local catpanel = panel:CreateAbility(title)
+				if desc then
+					catpanel:CreateSpellDesc(desc)
+				end
+				catbutton, lastButton, addSpacer = nil, nil, nil
+				for _, v in ipairs(options) do
+					addOptions(mod, catpanel, v)
+				end
 			end
 		end
 	end

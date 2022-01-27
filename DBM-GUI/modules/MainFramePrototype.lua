@@ -82,8 +82,9 @@ local function resize(frame, first)
 					if child.mytype == "ability" and child2.mytype then
 						child2:SetShown(not child.hidden)
 						if child2.mytype == "spelldesc" then
-							_G[child2:GetName() .. "Text"]:SetShown(child.hidden)
 							child2:SetShown(child.hidden)
+							_G[child:GetName() .. "Title"]:Show()
+							_G[child2:GetName() .. "Text"]:SetShown(child.hidden)
 							if child2:IsVisible() then
 								neededHeight = 0
 							end
@@ -96,11 +97,7 @@ local function resize(frame, first)
 								_G[child2:GetName() .. "Text"]:SetWidth(width - 30)
 								child2:SetSize(width, text:GetStringHeight())
 							end
-							local height = text:GetStringHeight()
-							if child.mytype == "ability" and height == 12 then
-								height = height + 6
-							end
-							neededHeight = neededHeight + (child2.myheight or height)
+							child2.myheight = text:GetStringHeight() + 20 -- + padding
 						elseif child2.mytype == "checkbutton" then
 							local buttonText = _G[child2:GetName() .. "Text"]
 							buttonText:SetWidth(width - buttonText.widthPad - 57)
@@ -127,10 +124,10 @@ local function resize(frame, first)
 							lastObject = child2
 						elseif child2.mytype == "line" then
 							child2:SetWidth(width - 20)
+							_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
 							if lastObject and lastObject.myheight then
 								child2:ClearAllPoints()
 								child2:SetPoint("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
-								_G[child2:GetName() .. "BG"]:SetWidth(width - _G[child2:GetName() .. "Text"]:GetWidth() - 25)
 							end
 							lastObject = child2
 						elseif child2.mytype == "dropdown" then
@@ -153,6 +150,11 @@ local function resize(frame, first)
 				child:SetHeight(neededHeight)
 			end
 			frameHeight = frameHeight + child:GetHeight() + 20
+		elseif child.mytype == "line" then
+			local width = frame:GetWidth() - 30
+			child:SetWidth(width - 20)
+			_G[child:GetName() .. "BG"]:SetWidth(width - _G[child:GetName() .. "Text"]:GetWidth() - 25)
+			frameHeight = frameHeight + 32
 		elseif child.myheight then
 			frameHeight = frameHeight + child.myheight
 		end
