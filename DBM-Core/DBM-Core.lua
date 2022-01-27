@@ -10090,7 +10090,7 @@ function bossModPrototype:RemoveOption(name)
 	end
 end
 
-function bossModPrototype:GroupSpells() do end -- NOOP placeholder
+function bossModPrototype:GroupSpells() end -- NOOP placeholder
 
 function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
