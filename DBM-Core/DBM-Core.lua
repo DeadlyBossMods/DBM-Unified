@@ -3701,7 +3701,7 @@ do
 			end
 		end
 		if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
-			self:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
+			DBM:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
 		end
 		if DBM.Options.RecordOnlyBosses then
 			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
