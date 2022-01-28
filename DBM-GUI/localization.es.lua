@@ -218,8 +218,6 @@ L.SWFDefaultOnly			= "Cuando los avisos especiales usen sonidos por defecto"
 L.SWFAll					= "Cuando los avisos especiales usen cualquier sonido"
 L.SpecWarn_AlwaysVoice		= "Reproducir siempre todas las alertas de voz (ignora las opciones de jefe; útil para líderes de banda)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
-L.Area_GetVEM				= "Descargar VEM Voice Pack"
-L.VEMDownload				= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/dbm-voicepack-vem|r"
 L.Area_BrowseOtherVP		= "Explorar otros paquetes de voz en Curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Explorar otros paquetes de voz de cuenta atrás en Curse"
