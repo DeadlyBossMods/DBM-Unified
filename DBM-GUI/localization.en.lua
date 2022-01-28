@@ -230,11 +230,22 @@ L.CountdownVoice3			= "Set tertiary voice for count sounds"
 L.VoicePackChoice			= "Set voice pack for spoken alerts"
 L.MissingVoicePack			= "Missing Voice Pack (%s)"
 L.Area_CountdownOptions		= "Countdown Options"
-L.Area_VoicePackOptions		= "Voice Pack Options (3rd party voice packs)"
+L.Area_VoicePackOptions		= "Voice Pack Options"
+--Dropdown being deprecated and replaced with clearer to understand options
 L.SpecWarn_NoSoundsWVoice	= "Filter special announce sounds for announcements that also have spoken alerts..."
 L.SWFNever					= "Never"
 L.SWFDefaultOnly			= "when special announcements use default sounds. (Allows custom sounds to still play)"
 L.SWFAll					= "when special announcements use any sound"
+--NEW OPTIONS INCOMING USING THESE
+L.Area_VoicePackReplace		= "Voice Pack Replacement Options (which sounds voice packs, when enabled, mute and replace)"
+L.VPReplaceNote				= "Note: Voice packs never change or remove your warning sounds.\nThey are simply muted when voice pack replaces them.
+L.ReplacesAnnounce			= "Replace Announce sounds (Note: Very few use voice packs except for phase changes and adds"
+L.ReplacesSA1				= "Replace Special Announce 1 (personal) sounds"
+L.ReplacesSA2				= "Replace Special Announce 2 (everyone) sounds"
+L.ReplacesSA3				= "Replace Special Announce 3 (high priority) sounds"
+L.ReplacesSA4				= "Replace Special Announce 4 (high priority run away) sounds"
+L.ReplacesCustom			= "Replace Special Announce Custom (user set) sounds (not recommended)"
+L.Area_VoicePackAdvOptions	= "Voice Pack Advanced Options"
 L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Even if Special Announce disabled. Useful for Raid Leader, not recommended otherwise)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_BrowseOtherVP		= "Browse other voice packs on curse"
