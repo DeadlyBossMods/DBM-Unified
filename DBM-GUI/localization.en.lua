@@ -238,7 +238,7 @@ L.SWFDefaultOnly			= "when special announcements use default sounds. (Allows cus
 L.SWFAll					= "when special announcements use any sound"
 --NEW OPTIONS INCOMING USING THESE
 L.Area_VoicePackReplace		= "Voice Pack Replacement Options (which sounds voice packs, when enabled, mute and replace)"
-L.VPReplaceNote				= "Note: Voice packs never change or remove your warning sounds.\nThey are simply muted when voice pack replaces them.
+L.VPReplaceNote				= "Note: Voice packs never change or remove your warning sounds.\nThey are simply muted when voice pack replaces them."
 L.ReplacesAnnounce			= "Replace Announce sounds (Note: Very few use voice packs except for phase changes and adds"
 L.ReplacesSA1				= "Replace Special Announce 1 (personal) sounds"
 L.ReplacesSA2				= "Replace Special Announce 2 (everyone) sounds"
