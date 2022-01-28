@@ -240,7 +240,6 @@ L.SWFDefaultOnly			= "특수 알림이 기본 효과음만 재생할 때 (사용
 L.SWFAll					= "특수 알림이 모든 효과음을 사용할 때"
 L.SpecWarn_AlwaysVoice		= "모든 음성 경고 재생 (특수 알림을 꺼놔도 재생됩니다. 공대장에게 유용하며 다른 사람에게는 권장하지 않습니다)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
-L.Area_GetVEM				= "VEM 음성팩 받기"
 L.Area_BrowseOtherVP		= "Curse에 올라와있는 다른 음성팩 보기"
 L.Area_BrowseOtherCT		= "Curse에 올라와있는 카운트다운 팩 보기"
 
@@ -249,6 +248,7 @@ L.Panel_EventSounds			= "이벤트 효과음"
 L.Area_SoundSelection		= "효과음 선택 (마우스 휠로 스크롤)"
 L.EventVictorySound			= "보스를 잡았을 때 재생할 효과음 설정"
 L.EventWipeSound			= "전멸했을 때 재생할 효과음 설정"
+L.EventEngagePT				= "풀링 타이머 시작시 재생할 효과음 설정"
 L.EventEngageSound			= "보스 전투 시작시 재생할 효과음 설정"
 L.EventDungeonMusic			= "던전/레이드에서 재생할 배경음 설정"
 L.EventEngageMusic			= "보스 전투 도중 재생할 배경음 설정"
