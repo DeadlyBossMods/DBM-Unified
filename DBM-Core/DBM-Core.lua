@@ -379,7 +379,7 @@ local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, ch
 -- 0 variables
 local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
-local SWFilterDisabed = 12
+local SWFilterDisabled = 12
 
 local fakeBWVersion, fakeBWHash
 if isRetail then
@@ -7642,7 +7642,7 @@ do
 				self.mod:AddMsg(text, nil)
 			end
 			if self.sound > 0 then
-				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and not voiceSessionDisabled and self.sound <= SWFilterDisabed then return end
+				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and not voiceSessionDisabled and self.sound <= SWFilterDisabled then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
 					DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
 				end
@@ -7702,7 +7702,7 @@ do
 		if voiceSessionDisabled or voice == "None" then return end
 		local always = DBM.Options.AlwaysPlayVoice
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter and not always then return end--don't show announces that are generic target announces
-		if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option]) or always) and self.sound <= SWFilterDisabed then
+		if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option]) or always) and self.sound <= SWFilterDisabled then
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
 			--But still allow AlwaysPlayVoice to play as well.
 			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
@@ -8452,7 +8452,7 @@ do
 			if self.sound and not DBM.Options.DontPlaySpecialWarningSound then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-				if self.hasVoice and DBM.Options.ChosenVoicePack2 ~= "None" and not voiceSessionDisabled and self.hasVoice <= SWFilterDisabed and (type(soundId) == "number" and soundId < 5 and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") then return end
+				if self.hasVoice and DBM.Options.ChosenVoicePack2 ~= "None" and not voiceSessionDisabled and self.hasVoice <= SWFilterDisabled and (type(soundId) == "number" and soundId < 5 and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
 					DBM:PlaySpecialWarningSound(soundId or 1)
 				end
@@ -8508,7 +8508,7 @@ do
 		local voice = DBM.Options.ChosenVoicePack2
 		if voiceSessionDisabled or voice == "None" then return end
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
-		if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabed then
+		if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabled then
 			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
 			--But still allow AlwaysPlayVoice to play as well.
@@ -8866,7 +8866,7 @@ do
 	end
 
 	do
-		local minVoicePackVersion = isRetail and 11 or 10
+		local minVoicePackVersion = isRetail and 12 or 10
 
 		function DBM:CheckVoicePackVersion(value)
 			local activeVP = self.Options.ChosenVoicePack2
@@ -8876,9 +8876,9 @@ do
 					if self.Options.ShowReminders then
 						self:AddMsg(L.VOICE_PACK_OUTDATED)
 					end
-					SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
+					SWFilterDisabled = self.VoiceVersions[value]--Set disable to version on current voice pack
 				else
-					SWFilterDisabed = minVoicePackVersion
+					SWFilterDisabled = minVoicePackVersion
 				end
 			end
 		end
