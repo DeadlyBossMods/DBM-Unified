@@ -37,26 +37,18 @@ end, 180)
 VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown2, "TOPLEFT", 0, -45)
 VoiceDropDown.myheight = 20 -- TODO: +10 padding per dropdown text
 
-local voiceFilterArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackOptions)
-local VPF1					= voiceFilterArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
-local voiceSWOptions = {
-	{
-		text	= L.SWFNever,
-		value	= "None"
-	},
-	{
-		text	= L.SWFDefaultOnly,
-		value	= "DefaultOnly"
-	},
-	{
-		text	= L.SWFAll,
-		value	= "All"
-	},
-}
-local SWFilterDropDown		= voiceFilterArea:CreateDropdown(L.SpecWarn_NoSoundsWVoice, voiceSWOptions, "DBM", "VoiceOverSpecW2", function(value)
-	DBM.Options.VoiceOverSpecW2 = value
-end, 420)
-SWFilterDropDown:SetPoint("TOPLEFT", _G[VPF1:GetName() .. "Text"], "BOTTOMLEFT", -26, -5)
+local voiceReplaceArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackReplace)
+local VPReplaceAnnounce		= voiceReplaceArea:CreateCheckButton(L.ReplacesAnnounce, true, nil, "VPReplacesAnnounce")
+local VPReplaceSA1			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA1, true, nil, "VPReplacesSA1")
+local VPReplaceSA2			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA2, true, nil, "VPReplacesSA2")
+local VPReplaceSA3			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA3, true, nil, "VPReplacesSA3")
+local VPReplaceSA4			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA4, true, nil, "VPReplacesSA4")
+local VPReplaceCustom		= voiceReplaceArea:CreateCheckButton(L.ReplacesCustom, true, nil, "VPReplacesCustom")
+
+--TODO, add note (L.VPReplaceNote) either above or below the replace checkboxes and within voiceReplaceArea
+
+local voiceAdvancedArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackAdvOptions)
+local VPF1					= voiceAdvancedArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_BrowseOtherVP)
 VPUrlArea1:CreateText(L.BrowseOtherVPs, nil, true, nil, "LEFT")
