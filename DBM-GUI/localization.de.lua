@@ -190,8 +190,6 @@ L.SWFDefaultOnly			= "Spezialwarnungen eingestellt auf den Standardsound (spielt
 L.SWFAll					= "Spezialwarnungen eingestellt auf irgendeinen Sound"
 L.SpecWarn_AlwaysVoice		= "Spiele immer alle gesprochenen Warnungen (ignoriert Boss-spezifische Einstellung, nützlich für Schlachtzugsleiter)"
 
-L.Area_GetVEM				= "Hole VEM Sprachpack"
---L.VEMDownload
 L.Area_BrowseOtherVP		= "Suche andere Sprachpacks auf Curse"
 --L.BrowseOtherVPs
 L.Area_BrowseOtherCT		= "Suche Countdownpacks auf Curse"

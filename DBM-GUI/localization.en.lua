@@ -237,8 +237,6 @@ L.SWFDefaultOnly			= "when special announcements use default sounds. (Allows cus
 L.SWFAll					= "when special announcements use any sound"
 L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Even if Special Announce disabled. Useful for Raid Leader, not recommended otherwise)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
-L.Area_GetVEM				= "Get VEM Voice Pack"
-L.VEMDownload				= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/dbm-voicepack-vem|r"
 L.Area_BrowseOtherVP		= "Browse other voice packs on curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Browse countdown packs on curse"
