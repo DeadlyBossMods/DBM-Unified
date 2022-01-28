@@ -379,7 +379,7 @@ local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, ch
 -- 0 variables
 local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
-local SWFilterDisabed = 11
+local SWFilterDisabed = 12
 
 local fakeBWVersion, fakeBWHash
 if isRetail then
