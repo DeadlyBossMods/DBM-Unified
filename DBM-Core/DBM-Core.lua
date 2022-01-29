@@ -9055,9 +9055,9 @@ do
 			--Starting AI timer with anything above 3 indicarets it's a regular timer and to use shortest time in between two regular casts
 			if self.type == "ai" then--A learning timer
 				if not DBM.Options.AITimer then return end
-				if timer > 4 then--Normal behavior.
+				if timer > 5 then--Normal behavior.
 					local newPhase = false
-					for i = 1, 4 do
+					for i = 1, 5 do
 						--Check for any phase timers that are strings, if a string it means last cast of this ability was first case of a given stage
 						if self["phase"..i.."CastTimer"] and type(self["phase"..i.."CastTimer"]) == "string" then--This is first cast of spell, we need to generate self.firstPullTimer
 							self["phase"..i.."CastTimer"] = tonumber(self["phase"..i.."CastTimer"])
@@ -9068,7 +9068,7 @@ do
 					end
 					if self.lastCast and not newPhase then--We have a GetTime() on last cast and it's not affected by a phase change
 						local timeLastCast = GetTime() - self.lastCast--Get time between current cast and last cast
-						if timeLastCast > 4 then--Prevent infinite loop cpu hang. Plus anything shorter than 5 seconds doesn't need a timer
+						if timeLastCast > 5 then--Prevent infinite loop cpu hang. Plus anything shorter than 5 seconds doesn't need a timer
 							if not self.lowestSeenCast or (self.lowestSeenCast and self.lowestSeenCast > timeLastCast) then--Always use lowest seen cast for a timer
 								self.lowestSeenCast = timeLastCast
 								DBM:Debug("AI timer learned a new lowest timer of "..self.lowestSeenCast, 2)
