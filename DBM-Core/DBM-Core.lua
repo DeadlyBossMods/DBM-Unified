@@ -141,7 +141,7 @@ DBM.DefaultOptions = {
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
 	CountdownVoice3 = "Smooth",
-	ChosenVoicePack2 = "VEM",
+	ChosenVoicePack2 = (GetLocale() == "enUS" or GetLocale() == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSA1 = true,
 	VPReplacesSA2 = true,
