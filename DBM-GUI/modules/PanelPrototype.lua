@@ -7,7 +7,8 @@ local setmetatable, select, type, tonumber, strsplit, mmax, tinsert = setmetatab
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
-local function parseDescription(name)
+--TODO, not 100% sure which ones use html and which don't so some might need true added or removed for 2nd arg
+local function parseDescription(name, usesHTML)
 	if not name then
 		return
 	end
@@ -24,7 +25,7 @@ local function parseDescription(name)
 				DBM:Debug("Spell ID does not exist: " .. spellId)
 			end
 			--The HTML parser breaks if spell name has & in it if it's not encoded to html formating
-			if spellName:find("&") then
+			if usesHTML and spellName:find("&") then
 				spellName = spellName:gsub("&", "&amp;")
 			end
 			return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
@@ -73,7 +74,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myhe
 	textblock.mytype = "textblock"
 	textblock.myheight = myheight
 	textblock:SetFontObject(style or GameFontNormal)
-	textblock:SetText(parseDescription(text))
+	textblock:SetText(parseDescription(text, true))
 	textblock:SetJustifyH(justify or "CENTER")
 	textblock.autowidth = not width
 	textblock:SetWidth(width or self.frame:GetWidth())
@@ -88,7 +89,7 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font)
 	local button = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
 	button.mytype = "button"
 	button:SetSize(width or 100, height or 20)
-	button:SetText(parseDescription(title))
+	button:SetText(parseDescription(title, true))
 	if onclick then
 		button:SetScript("OnClick", onclick)
 	end
@@ -140,7 +141,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 	slider:SetValueStep(step)
 	slider:SetWidth(width or 180)
 	local sliderText = _G[slider:GetName() .. "Text"]
-	sliderText:SetText(parseDescription(text))
+	sliderText:SetText(parseDescription(text, true))
 	slider:SetScript("OnValueChanged", function(_, value)
 		sliderText:SetFormattedText(text, value)
 	end)
@@ -299,7 +300,7 @@ do
 			button.myheight = 0
 			button.SetPointOld(...)
 		end
-		local desc, noteSpellName = parseDescription(name)
+		local desc, noteSpellName = parseDescription(name, true)
 		local frame, frame2, textPad
 		if modvar then -- Special warning, has modvar for sound and note
 			if isTimer then
