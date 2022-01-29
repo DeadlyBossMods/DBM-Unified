@@ -141,7 +141,7 @@ DBM.DefaultOptions = {
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
 	CountdownVoice3 = "Smooth",
-	ChosenVoicePack2 = "VEM",
+	ChosenVoicePack2 = (GetLocale() == "enUS" or GetLocale() == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSA1 = true,
 	VPReplacesSA2 = true,
@@ -438,7 +438,7 @@ if isRetail then
 		[1205]={40, 3},[1448]={40, 3},[1228]={40, 3},--WoD Raids (yes, only 3 kekw)
 		[1712]={50, 3},[1520]={50, 3},[1530]={50, 3},[1676]={50, 3},[1648]={50, 3},--Legion Raids (Set to 50 because 45 tuning makes them difficult even at 50)
 		[1861]={50, 3},[2070]={50, 3},[2096]={50, 3},[2164]={50, 3},[2217]={50, 3},--BfA Raids
-		[2296]={60, 3},[2450]={60, 3},[2481]={60, 3},--Shadowlands Raids
+		[2296]={60, 3},[2450]={60, 3},[2481]={60, 3},--Shadowlands Raids (yes, only 3 kekw, seconded)
 		--Dungeons
 		[48]={30, 2},[230]={30, 2},[429]={30, 2},[389]={30, 2},[34]={30, 2},--Classic Dungeons
 		[540]={30, 2},[558]={30, 2},[556]={30, 2},[555]={30, 2},[542]={30, 2},[546]={30, 2},[545]={30, 2},[547]={30, 2},[553]={30, 2},[554]={30, 2},[552]={30, 2},[557]={30, 2},[269]={30, 2},[560]={30, 2},[543]={30, 2},[585]={30, 2},--BC Dungeons
@@ -9081,7 +9081,7 @@ do
 					else
 						return--Don't start the bogus timer shoved into timer field in the mod
 					end
-				else--AI timer passed with 4 or less is indicating phase change, with timer as phase number
+				else--AI timer passed with 5 or less is indicating phase change, with timer as phase number
 					if not isRetail then
 						timer = floor(timer)--Floor inprecise timers in classic because combat is mostly caused by PLAYER_REGEN in dungeons
 					end
