@@ -9081,7 +9081,7 @@ do
 					else
 						return--Don't start the bogus timer shoved into timer field in the mod
 					end
-				else--AI timer passed with 4 or less is indicating phase change, with timer as phase number
+				else--AI timer passed with 5 or less is indicating phase change, with timer as phase number
 					if not isRetail then
 						timer = floor(timer)--Floor inprecise timers in classic because combat is mostly caused by PLAYER_REGEN in dungeons
 					end
