@@ -23,6 +23,10 @@ local function parseDescription(name)
 				spellName = CL.UNKNOWN
 				DBM:Debug("Spell ID does not exist: " .. spellId)
 			end
+			--The HTML parser breaks if spell name has & in it if it's not encoded to html formating
+			if spellName:find("&") then
+				spellName = spellName:gsub("&", "&amp;")
+			end
 			return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
 		end)
 	end
