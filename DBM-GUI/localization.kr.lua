@@ -234,11 +234,6 @@ L.CountdownVoice3			= "3순위 초읽기 음성 설정"
 L.VoicePackChoice			= "음성 경고에 쓸 음성팩 설정"
 L.Area_CountdownOptions		= "초읽기 설정"
 L.Area_VoicePackOptions		= "음성팩 설정"
---Dropdown being deprecated and replaced with clearer to understand options
-L.SpecWarn_NoSoundsWVoice	= "음성 경고가 있는 특수 알림의 효과음 재생"
-L.SWFNever					= "하지 않음"
-L.SWFDefaultOnly			= "특수 알림이 기본 효과음만 재생할 때 (사용자 지정 효과음은 계속 재생 허용)"
-L.SWFAll					= "특수 알림이 모든 효과음을 사용할 때"
 --NEW OPTIONS INCOMING USING THESE
 L.Area_VoicePackReplace		= "기본 효과음 음성팩 대체 설정 (음성팩이 대체하는 경고의 기본 효과음이 재생되지 않습니다)"
 L.VPReplaceNote				= "알림: 음성팩은 절대 경고음을 변경하거나 삭제하지 않습니다.\n음성팩이 대체하는 효과음만 재생되지 않을 뿐입니다."
