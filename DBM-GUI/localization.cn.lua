@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20211214
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20220129
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -16,7 +16,7 @@ L.Website					= "拜访我们的Discord |cFF73C2FBhttps://discord.gg/deadlybossm
 L.WebsiteButton				= "网页"
 
 L.OTabBosses	= "模块"
-L.OTabRaids		= "副本" 
+L.OTabRaids		= "副本"
 L.OTabDungeons	= "地下城"
 L.OTabPlugins	= "核心插件"
 L.OTabOptions	= "选项"
@@ -237,12 +237,12 @@ L.VoicePackChoice			= "设置语音报警的语音包(快躲开！)"
 L.MissingVoicePack			= "缺少语音包 (%s)"
 L.Area_CountdownOptions		= "倒计时选项"
 --NEW OPTIONS INCOMING USING THESE
-L.Area_VoicePackReplace		= "语音包替换选项 (选择那些语音包启用、静音以及需要替换)"
+L.Area_VoicePackReplace		= "语音包替换选项 (当语音包启用、静音以及需要替换)"
 L.VPReplaceNote				= "注意: 语音包永远不会更改或删除您的警报声音\n当替换语音包时，它们只是在静音状态。"
 L.ReplacesAnnounce			= "替换提示声音 (注意: 语音包除了阶段转换及小怪外很少使用)"
 L.ReplacesSA1				= "替换特殊警报提示声音 1 (个人的 'pvp拔旗') "
 L.ReplacesSA2				= "替换特殊警报提示声音 2 (每个人 '当心')"
-L.ReplacesSA3				= "替换特殊警报提示声音 3 (高优先级的 'airhorn')"
+L.ReplacesSA3				= "替换特殊警报提示声音 3 (高优先级的 '汽笛')"
 L.ReplacesSA4				= "替换特殊警报提示声音 4 (高优先级的 '快跑')"
 L.ReplacesCustom			= "替换特殊警报提示声音 自定义使用设置(每个警报) 声音 (不建议)"
 L.Area_VoicePackAdvOptions	= "语音包选项（第三方语音包）"
@@ -364,9 +364,9 @@ L.SpamSpecRoleInterrupt				= "过滤 '打断' 警报"
 L.SpamSpecRoleDefensive				= "过滤 '自保' 警报"
 L.SpamSpecRoleTaunt					= "过滤 '嘲讽' 警报"
 L.SpamSpecRoleSoak					= "过滤 '吸收' 警报"
-L.SpamSpecRoleStack					= "过滤 '叠加层数' 警报"
-L.SpamSpecRoleSwitch				= "过滤 '切换目标''小怪' 警报"
-L.SpamSpecRoleGTFO					= "过滤 '地面有害技能' 警报"
+L.SpamSpecRoleStack					= "过滤 '叠加层数/层数过高' 警报"
+L.SpamSpecRoleSwitch				= "过滤 '转火' 警报"
+L.SpamSpecRoleGTFO					= "过滤 '快躲开' 警报"
 
 L.Area_SpamFilter_SpecFeatures		= "设置特殊警报功能选项"
 L.SpamBlockNoSpecWarnText			= "不显示特殊警报提示文字"
