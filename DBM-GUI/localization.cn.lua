@@ -247,6 +247,7 @@ L.ReplacesSA4				= "替换特殊警报提示声音 4 (高优先级的 '快跑')"
 L.ReplacesCustom			= "替换特殊警报提示声音 自定义使用设置(每个警报) 声音 (不建议)"
 L.Area_VoicePackAdvOptions	= "语音包选项（第三方语音包）"
 L.SpecWarn_AlwaysVoice		= "总是播放所有语音警报(即使已禁用特殊警报，对团队领队是有用的，除此以外不建议使用)"
+L.VPDontMuteSounds			= "当使用语音包时禁用常规警报的静音(只有当您希望在警报期间同时听到两者时才使用此选项)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_BrowseOtherVP		= "获取其他语音包"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://curseforge.com/wow/addons/search?search=dbm+voice|r"
