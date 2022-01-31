@@ -5648,16 +5648,21 @@ end
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
 --Keep an eye on C_SpellBook.GetSpellInfo, but don't use it YET as direction of existing GetSpellInfo isn't finalized yet
 function DBM:GetSpellInfo(spellId)
+	--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
+	if not spellId or spellId == "" then
+		error("|cffff0000Invalid call to GetSpellInfo for spellId. spellId is missing! |r")
+	end
 	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
+	--I want this for debug purposes to catch spellids that are removed from game/changed, but quietly to end user
 	if not returnedSpellId then--Bad request all together
 		if type(spellId) == "string" then
-			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId.." as a string!")
+			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId.." as a string!")
 		else
 			if spellId > 4 then
 				if self.Options.BadIDAlert then
-					self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId..". Please report this bug")
+					self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId..". Please report this bug")
 				else
-					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
+					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId)
 				end
 			end
 		end
