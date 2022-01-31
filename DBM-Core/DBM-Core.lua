@@ -149,6 +149,7 @@ DBM.DefaultOptions = {
 	VPReplacesSA4 = true,
 	VPReplacesCustom = false,
 	AlwaysPlayVoice = false,
+	VPDontMuteSounds = false,
 	EventSoundVictory2 = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",
 	EventSoundWipe = "None",
 	EventSoundPullTimer = "None",
@@ -6124,7 +6125,9 @@ end
 function DBM:AddMsg(text, prefix)
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
-	frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
+	if not frame or not frame:IsShown() then
+		frame = DEFAULT_CHAT_FRAME
+	end
 	if prefix ~= false then
 		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), 0.41, 0.8, 0.94)
 	else
@@ -7647,7 +7650,7 @@ do
 				self.mod:AddMsg(text, nil)
 			end
 			if self.sound > 0 then
-				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and self.sound <= SWFilterDisabled then return end
+				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
 					DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
 				end
@@ -8465,13 +8468,11 @@ do
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
 			--boolean: Whether or not this warning is a special warning (higher priority).
 			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true)
-			if self.sound and not DBM.Options.DontPlaySpecialWarningSound then
+			if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or self.mod.Options[self.option.."SWSound"] ~= "None") then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-				if self.hasVoice and DBM.Options.ChosenVoicePack2 ~= "None" and not voiceSessionDisabled and canVoiceReplace(self, soundId) and self.hasVoice <= SWFilterDisabled then return end
-				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
-					DBM:PlaySpecialWarningSound(soundId or 1)
-				end
+				if self.hasVoice and DBM.Options.ChosenVoicePack2 ~= "None" and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and canVoiceReplace(self, soundId) and self.hasVoice <= SWFilterDisabled then return end
+				DBM:PlaySpecialWarningSound(soundId or 1)
 			end
 		else
 			self.combinedcount = 0

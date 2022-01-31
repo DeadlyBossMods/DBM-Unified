@@ -70,6 +70,7 @@ end)
 
 local voiceAdvancedArea		= spokenAlertsPanel:CreateArea(L.Area_VoicePackAdvOptions)
 voiceAdvancedArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPlayVoice")
+voiceAdvancedArea:CreateCheckButton(L.VPDontMuteSounds, true, nil, "VPDontMuteSounds")
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_BrowseOtherVP)
 VPUrlArea1:CreateText(L.BrowseOtherVPs, nil, true, nil, "LEFT")
