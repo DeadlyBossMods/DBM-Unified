@@ -239,7 +239,7 @@ L.ReplacesSA3				= "Replace Special Announce 3 (high priority aka 'airhorn') sou
 L.ReplacesSA4				= "Replace Special Announce 4 (high priority run away) sounds"
 L.ReplacesCustom			= "Replace Special Announce Custom user set (per warning) sounds (not recommended)"
 L.Area_VoicePackAdvOptions	= "Voice Pack Advanced Options"
-L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Even if Special Announce disabled. Useful for Raid Leader, not recommended otherwise)"
+L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Even if Special Announce disabled. Useful for some Raid Leaders in niche situations, not recommended otherwise)"
 L.VPDontMuteSounds			= "Disable muting of regular alert sounds when using voice pack (use this only if you desire to hear BOTH during alerts)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_BrowseOtherVP		= "Browse other voice packs on curse"
