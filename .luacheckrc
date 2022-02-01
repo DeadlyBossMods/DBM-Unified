@@ -143,6 +143,7 @@ globals = {
 	"GameFontHighlightSmall",
 	"GameFontNormal",
 	"GameFontNormalSmall",
+	"GameFontWhite",
 	"MovieFrame",
 	"ObjectiveTrackerFrame",
 	"QuestWatchFrame", -- Classic
@@ -270,6 +271,7 @@ globals = {
 	"GetSpecializationInfoByID",
 	"GetSpecializationRole",
 	"GetSpellCooldown",
+	"GetSpellDescription",
 	"GetSpellInfo",
 	"GetSpellTexture",
 	"GetSubZoneText",

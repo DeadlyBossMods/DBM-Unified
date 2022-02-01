@@ -507,7 +507,7 @@ function PanelPrototype:CreateAbility(titleText)
 		area.hidden = not area.hidden
 		button.toggle:SetNormalTexture(area.hidden and 130838 or 130821) -- "Interface\\Buttons\\UI-PlusButton-UP", "Interface\\Buttons\\UI-MinusButton-UP"
 		button.toggle:SetPushedTexture(area.hidden and 130836 or 130820) -- "Interface\\Buttons\\UI-PlusButton-DOWN", "Interface\\Buttons\\UI-MinusButton-DOWN"
-		DBM_GUI_OptionsFrame:DisplayFrame(DBM_GUI.currentViewing)
+		_G["DBM_GUI_OptionsFrame"]:DisplayFrame(DBM_GUI.currentViewing)
 	end
 	--
 	self:SetLastObj(area)
