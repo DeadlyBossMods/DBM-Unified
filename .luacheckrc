@@ -167,6 +167,8 @@ globals = {
 	"UIDropDownMenu_Initialize",
 	"UIDropDownMenu_SetWidth",
 
+	"Spell.CreateFromSpellID",
+
 	"C_BattleNet.GetAccountInfoByID",
 	"C_BattleNet.GetFriendAccountInfo",
 	"C_BattleNet.GetGameAccountInfoByID",
