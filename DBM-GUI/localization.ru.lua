@@ -269,6 +269,8 @@ L.SWFAll					= "Когда спецпредупреждения использу
 L.SpecWarn_AlwaysVoice		= "Всегда воспроизводить все голосовые предупреждения (даже если спецпредупреждения отключены).<br/>Полезно для некоторых рейд-лидеров в нишевых ситуациях, в противном случае не рекомендуется."
 L.VPDontMuteSounds			= "Отключить приглушение обычных звуков предупреждений при использовании голосового пакета (используйте это, только если Вы хотите слышать ОБА во время предупреждений)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
+L.Area_VPLearnMore			= "Узнайте больше о голосовых пакетах и о том, как использовать эти опции"
+L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "Посмотреть другие голосовые пакеты на Curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Посмотреть пакеты обратного отсчета на Curse"
