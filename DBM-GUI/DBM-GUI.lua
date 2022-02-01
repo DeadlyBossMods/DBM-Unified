@@ -409,7 +409,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 				local title, desc
 				if tonumber(spellID) then
 					local _title = DBM:GetSpellInfo(spellID)
-					title, desc = _title, GetSpellDescription(spellID)
+					title, desc = _title, tonumber(spellID)
 				elseif spellID:find("^ej") then
 					title, desc = DBM:EJ_GetSectionInfo(spellID:gsub("ej", ""))
 				else

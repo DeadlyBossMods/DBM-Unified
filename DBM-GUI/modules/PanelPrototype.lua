@@ -73,13 +73,22 @@ function PanelPrototype:CreateSpellDesc(text)
 	local test = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	local textblock = self.frame:CreateFontString(test:GetName() .. "Text", "ARTWORK")
 	textblock:SetFontObject(GameFontWhite)
-	textblock:SetText(text)
 	textblock:SetJustifyH("LEFT")
 	textblock:SetPoint("TOPLEFT", test)
 	test:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 15, -10)
 	test:SetSize(self.frame:GetWidth(), textblock:GetStringHeight())
 	test.mytype = "spelldesc"
 	test.autowidth = true
+	-- Description logic
+	if type(text) == "number" then
+		local spell = Spell:CreateFromSpellID(text)
+		spell:ContinueOnSpellLoad(function()
+			textblock:SetText(GetSpellDescription(spell:GetSpellID()))
+		end)
+	else
+		textblock:SetText(text)
+	end
+    --
 	self:SetLastObj(test)
 	return test
 end
