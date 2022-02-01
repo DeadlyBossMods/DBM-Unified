@@ -250,7 +250,7 @@ L.SpecWarn_AlwaysVoice		= "总是播放所有语音警报(即使已禁用特殊�
 L.VPDontMuteSounds			= "当使用语音包时禁用常规警报的静音(只有当您希望在警报期间同时听到两者时才使用此选项)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
 L.Area_VPLearnMore          = "了解更多关于语音包以及如何使用这些选项的信息"
-L.VPLearnMore               = "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r" 
+L.VPLearnMore               = "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "获取其他语音包"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "获取其他倒计时语音包"
