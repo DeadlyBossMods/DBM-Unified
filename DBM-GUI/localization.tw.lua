@@ -242,7 +242,8 @@ L.ReplacesCustom			= "替換特別提示 自定義使用者設置 (每個警告)
 L.Area_VoicePackAdvOptions	= "語音包進階選項"
 L.SpecWarn_AlwaysVoice		= "總是播放所有語音警告 (即使已禁用特別警告，對團隊領隊是有用的，除此之外不建議使用)"
 L.VPDontMuteSounds			= "當使用語音包時禁用常規警報的靜音 (只有當您希望在警報期間同時聽到兩者時才使用)"
---TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
+L.Area_VPLearnMore          = "了解更多關於語音包以及如何使用這些選項的訊息"
+L.VPLearnMore               = "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "在Curse上瀏覽其他語言包"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "在Curse上瀏覽倒數包"
