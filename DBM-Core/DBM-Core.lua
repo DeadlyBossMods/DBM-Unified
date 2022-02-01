@@ -70,14 +70,14 @@ DBM = {
 }
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.1.26 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 1, 18) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.1.27 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 1, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.11 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 1, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.12 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 1, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.25 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 1, 18) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "2.5.26 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 1, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -141,11 +141,18 @@ DBM.DefaultOptions = {
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
 	CountdownVoice3 = "Smooth",
-	ChosenVoicePack = "None",
-	VoiceOverSpecW2 = "DefaultOnly",
+	ChosenVoicePack2 = (GetLocale() == "enUS" or GetLocale() == "enGB") and "VEM" or "None",
+	VPReplacesAnnounce = true,
+	VPReplacesSA1 = true,
+	VPReplacesSA2 = true,
+	VPReplacesSA3 = true,
+	VPReplacesSA4 = true,
+	VPReplacesCustom = false,
 	AlwaysPlayVoice = false,
+	VPDontMuteSounds = false,
 	EventSoundVictory2 = "Interface\\AddOns\\DBM-Core\\sounds\\Victory\\SmoothMcGroove_Fanfare.ogg",
 	EventSoundWipe = "None",
+	EventSoundPullTimer = "None",
 	EventSoundEngage2 = "None",
 	EventSoundMusic = "None",
 	EventSoundDungeonBGM = "None",
@@ -283,6 +290,14 @@ DBM.DefaultOptions = {
 	DontDoSpecialWarningVibrate = false,
 	DontPlaySpecialWarningSound = false,
 	DontPlayTrivialSpecialWarningSound = true,
+	SpamSpecRoledispel = false,
+	SpamSpecRoleinterrupt = false,
+	SpamSpecRoledefensive = false,
+	SpamSpecRoletaunt = false,
+	SpamSpecRolesoak = false,
+	SpamSpecRolestack = false,
+	SpamSpecRoleswitch = false,
+	SpamSpecRolegtfo = false,
 	DontShowBossTimers = false,
 	DontShowUserTimers = false,
 	DontShowFarWarnings = true,
@@ -370,7 +385,7 @@ local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, ch
 -- 0 variables
 local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
-local SWFilterDisabed = 11
+local SWFilterDisabled = 12
 
 local fakeBWVersion, fakeBWHash
 if isRetail then
@@ -424,7 +439,7 @@ if isRetail then
 		[1205]={40, 3},[1448]={40, 3},[1228]={40, 3},--WoD Raids (yes, only 3 kekw)
 		[1712]={50, 3},[1520]={50, 3},[1530]={50, 3},[1676]={50, 3},[1648]={50, 3},--Legion Raids (Set to 50 because 45 tuning makes them difficult even at 50)
 		[1861]={50, 3},[2070]={50, 3},[2096]={50, 3},[2164]={50, 3},[2217]={50, 3},--BfA Raids
-		[2296]={60, 3},[2450]={60, 3},[2481]={60, 3},--Shadowlands Raids
+		[2296]={60, 3},[2450]={60, 3},[2481]={60, 3},--Shadowlands Raids (yes, only 3 kekw, seconded)
 		--Dungeons
 		[48]={30, 2},[230]={30, 2},[429]={30, 2},[389]={30, 2},[34]={30, 2},--Classic Dungeons
 		[540]={30, 2},[558]={30, 2},[556]={30, 2},[555]={30, 2},[542]={30, 2},[546]={30, 2},[545]={30, 2},[547]={30, 2},[553]={30, 2},[554]={30, 2},[552]={30, 2},[557]={30, 2},[269]={30, 2},[560]={30, 2},[543]={30, 2},[585]={30, 2},--BC Dungeons
@@ -1283,16 +1298,15 @@ do
 
 	local function runDelayedFunctions(self)
 		--Check if voice pack missing
-		local activeVP = self.Options.ChosenVoicePack
+		local activeVP = self.Options.ChosenVoicePack2
 		if activeVP ~= "None" then
 			if not self.VoiceVersions[activeVP] or (self.VoiceVersions[activeVP] and self.VoiceVersions[activeVP] == 0) then--A voice pack is selected that does not belong
 				voiceSessionDisabled = true
-				AddMsg(self, L.VOICE_MISSING)
-			end
-		else
-			if self.Options.ShowReminders and #self.Voices > 1 then
-				--At least one voice pack installed but activeVP set to "None"
-				AddMsg(self, L.VOICE_DISABLED)
+				--Since VEM is now bundled, users may elect to disable it by simiply disabling the module
+				--let's not nag them, only remind for 3rd party because then we know user installed it themselves
+				if activeVP ~= "VEM" then
+					AddMsg(self, L.VOICE_MISSING)
+				end
 			end
 		end
 		--Check if any of countdown sounds are using missing voice pack
@@ -3025,6 +3039,11 @@ do
 			self.Options.FilterInterrupt2 = "TandFandBossCooldown"
 			self.Options.SpamSpecRoleinterrupt = true
 		end
+		--If users previous voice pack was not set to none, don't force change it to VEM, honor whatever it was set to before
+		if self.Options.ChosenVoicePack and self.Options.ChosenVoicePack ~= "None" then
+			self.Options.ChosenVoicePack2 = self.Options.ChosenVoicePack
+			self.Options.ChosenVoicePack = nil
+		end
 		-- Migrate ElvUI changes
 		for _, setting in ipairs({
 			-- Sounds
@@ -3724,6 +3743,9 @@ do
 				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
 			end
 		end
+		if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
+			DBM:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
+		end
 		if DBM.Options.RecordOnlyBosses then
 			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
 		end
@@ -3822,7 +3844,7 @@ do
 		end
 		--(Note, faker isn't to screw with bigwigs nor is theirs to screw with dbm, but rathor raid leaders who don't let people run WTF they want to run)
 		local VPVersion
-		local VoicePack = DBM.Options.ChosenVoicePack
+		local VoicePack = DBM.Options.ChosenVoicePack2
 		if not voiceSessionDisabled and VoicePack ~= "None" and DBM.VoiceVersions[VoicePack] then
 			VPVersion = "/ VP"..VoicePack..": v"..DBM.VoiceVersions[VoicePack]
 		end
@@ -4312,7 +4334,7 @@ do
 		end
 		if self.Options.AFKHealthWarning and not IsEncounterInProgress() and UnitIsAFK("player") and self:AntiSpam(5, "AFK") then--You are afk and losing health, some griever is trying to kill you while you are afk/tabbed out.
 			self:FlashClientIcon()
-			local voice = DBM.Options.ChosenVoicePack
+			local voice = DBM.Options.ChosenVoicePack2
 			local path = 8585--"Sound\\Creature\\CThun\\CThunYouWillDIe.ogg"
 			if not voiceSessionDisabled and voice ~= "None" then
 				path = "Interface\\AddOns\\DBM-VP"..voice.."\\checkhp.ogg"
@@ -5659,16 +5681,21 @@ end
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
 --Keep an eye on C_SpellBook.GetSpellInfo, but don't use it YET as direction of existing GetSpellInfo isn't finalized yet
 function DBM:GetSpellInfo(spellId)
+	--I want this to fail, and fail loudly (ie get reported when mods are completely missing the spellId)
+	if not spellId or spellId == "" then
+		error("|cffff0000Invalid call to GetSpellInfo for spellId. spellId is missing! |r")
+	end
 	local name, rank, icon, castingTime, minRange, maxRange, returnedSpellId = GetSpellInfo(spellId)
+	--I want this for debug purposes to catch spellids that are removed from game/changed, but quietly to end user
 	if not returnedSpellId then--Bad request all together
 		if type(spellId) == "string" then
-			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId.." as a string!")
+			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId.." as a string!")
 		else
 			if spellId > 4 then
 				if self.Options.BadIDAlert then
-					self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId..". Please report this bug")
+					self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId..". Please report this bug")
 				else
-					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellID: |r"..spellId)
+					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId)
 				end
 			end
 		end
@@ -6136,7 +6163,9 @@ end
 function DBM:AddMsg(text, prefix)
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
-	frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
+	if not frame or not frame:IsShown() then
+		frame = DEFAULT_CHAT_FRAME
+	end
 	if prefix ~= false then
 		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), 0.41, 0.8, 0.94)
 	else
@@ -6265,6 +6294,15 @@ function DBM:FlashClientIcon()
 		FlashClientIcon()
 	end
 end
+
+function DBM:VibrateController()
+	if self:AntiSpam(2, "VIBRATE") then
+		if C_GamePad and C_GamePad.SetVibration then
+			C_GamePad.SetVibration("High", 1)
+		end
+	end
+end
+
 
 do
 	--Search Tags: iconto, toicon, raid icon, diamond, star, triangle
@@ -7652,7 +7690,7 @@ do
 				self.mod:AddMsg(text, nil)
 			end
 			if self.sound > 0 then
-				if self.sound > 1 and DBM.Options.ChosenVoicePack ~= "None" and not voiceSessionDisabled and self.sound <= SWFilterDisabed then return end
+				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
 					DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
 				end
@@ -7708,11 +7746,11 @@ do
 	end
 
 	function announcePrototype:Play(name, customPath)
-		local voice = DBM.Options.ChosenVoicePack
-		if voiceSessionDisabled or voice == "None" then return end
+		local voice = DBM.Options.ChosenVoicePack2
+		if voiceSessionDisabled or voice == "None" or not DBM.Options.VPReplacesAnnounce then return end
 		local always = DBM.Options.AlwaysPlayVoice
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter and not always then return end--don't show announces that are generic target announces
-		if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option]) or always) and self.sound <= SWFilterDisabed then
+		if (not DBM.Options.DontShowBossAnnounces and (not self.option or self.mod.Options[self.option]) or always) and self.sound <= SWFilterDisabled then
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
 			--But still allow AlwaysPlayVoice to play as well.
 			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
@@ -7722,19 +7760,19 @@ do
 	end
 
 	function announcePrototype:ScheduleVoice(t, ...)
-		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
+		if voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
 		DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
 		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	--Object Permits scheduling voice multiple times for same object
 	function announcePrototype:ScheduleVoiceOverLap(t, ...)
-		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
+		if voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
 		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	function announcePrototype:CancelVoice(...)
-		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
+		if voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not DBM.Options.VPReplacesAnnounce then return end
 		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
@@ -8307,6 +8345,17 @@ do
 		return text, spellName
 	end
 
+	local function canVoiceReplace(self, soundId)
+		soundId = soundId or self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+		local isVoicePackUsed
+		if type(soundId) == "number" then
+			isVoicePackUsed = DBM.Options["VPReplacesSA"..soundId]
+		else
+			isVoicePackUsed = DBM.Options.VPReplacesCustom
+		end
+		return isVoicePackUsed
+	end
+
 	local specTypeTable = {
 		["dispel"] = "dispel",
 		["interrupt"] = "interrupt",
@@ -8333,8 +8382,7 @@ do
 			if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
 			--We also check if person has the role filter turned on (typical for highest end raiders who don't want as much handholding from DBM)
 			if specTypeTable[self.announceType] then
-				local luaIsFuckingDumb = specTypeTable[self.announceType]
-				if DBM.Options["SpamSpecRole"..luaIsFuckingDumb] then return end
+				if DBM.Options["SpamSpecRole"..specTypeTable[self.announceType]] then return end
 			end
 			--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
@@ -8433,9 +8481,7 @@ do
 						DBM.Flash:Show(DBM.Options.SpecialWarningFlashCol5[1],DBM.Options.SpecialWarningFlashCol5[2], DBM.Options.SpecialWarningFlashCol5[3], DBM.Options.SpecialWarningFlashDura5, DBM.Options.SpecialWarningFlashAlph5, repeatCount-1)
 					end
 					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options.SpecialWarningVibrate5 then
-						if C_GamePad and C_GamePad.SetVibration then
-							C_GamePad.SetVibration("High", 1)
-						end
+						DBM:VibrateController()
 					end
 				else
 					local number = self.flash
@@ -8445,9 +8491,7 @@ do
 						DBM.Flash:Show(flashcolor[1], flashcolor[2], flashcolor[3], DBM.Options["SpecialWarningFlashDura"..number], DBM.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
 					end
 					if not DBM.Options.DontDoSpecialWarningVibrate and DBM.Options["SpecialWarningVibrate"..number] then
-						if C_GamePad and C_GamePad.SetVibration then
-							C_GamePad.SetVibration("High", 1)
-						end
+						DBM:VibrateController()
 					end
 				end
 			end
@@ -8464,13 +8508,11 @@ do
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
 			--boolean: Whether or not this warning is a special warning (higher priority).
 			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true)
-			if self.sound and not DBM.Options.DontPlaySpecialWarningSound then
+			if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or self.mod.Options[self.option.."SWSound"] ~= "None") then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
-				if self.hasVoice and DBM.Options.ChosenVoicePack ~= "None" and not voiceSessionDisabled and self.hasVoice <= SWFilterDisabed and (type(soundId) == "number" and soundId < 5 and DBM.Options.VoiceOverSpecW2 == "DefaultOnly" or DBM.Options.VoiceOverSpecW2 == "All") then return end
-				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
-					DBM:PlaySpecialWarningSound(soundId or 1)
-				end
+				if self.hasVoice and DBM.Options.ChosenVoicePack2 ~= "None" and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and canVoiceReplace(self, soundId) and self.hasVoice <= SWFilterDisabled then return end
+				DBM:PlaySpecialWarningSound(soundId or 1)
 			end
 		else
 			self.combinedcount = 0
@@ -8520,11 +8562,11 @@ do
 
 	function specialWarningPrototype:Play(name, customPath)
 		local always = DBM.Options.AlwaysPlayVoice
-		local voice = DBM.Options.ChosenVoicePack
-		if voiceSessionDisabled or voice == "None" then return end
+		local voice = DBM.Options.ChosenVoicePack2
+		local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+		if voiceSessionDisabled or voice == "None" or not canVoiceReplace(self, soundId) then return end
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
-		if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabed then
-			local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
+		if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabled then
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
 			--But still allow AlwaysPlayVoice to play as well.
 			if (name == "changemt" or name == "tauntboss") and DBM.Options.FilterTankSpec and not self.mod:IsTank() and not always then return end
@@ -8536,19 +8578,19 @@ do
 	end
 
 	function specialWarningPrototype:ScheduleVoice(t, ...)
-		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
+		if voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not canVoiceReplace(self) then return end
 		DBMScheduler:Unschedule(self.Play, self.mod, self)--Allow ScheduleVoice to be used in same way as CombinedShow
 		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	--Object Permits scheduling voice multiple times for same object
 	function specialWarningPrototype:ScheduleVoiceOverLap(t, ...)
-		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
+		if voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not canVoiceReplace(self) then return end
 		return DBMScheduler:Schedule(t, self.Play, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:CancelVoice(...)
-		if voiceSessionDisabled or DBM.Options.ChosenVoicePack == "None" then return end
+		if voiceSessionDisabled or DBM.Options.ChosenVoicePack2 == "None" or not canVoiceReplace(self) then return end
 		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
@@ -8881,19 +8923,19 @@ do
 	end
 
 	do
-		local minVoicePackVersion = isRetail and 11 or 10
+		local minVoicePackVersion = isRetail and 12 or 10
 
 		function DBM:CheckVoicePackVersion(value)
-			local activeVP = self.Options.ChosenVoicePack
+			local activeVP = self.Options.ChosenVoicePack2
 			--Check if voice pack out of date
 			if activeVP ~= "None" and activeVP == value then
 				if self.VoiceVersions[value] < minVoicePackVersion then--Version will be bumped when new voice packs released that contain new voices.
 					if self.Options.ShowReminders then
 						self:AddMsg(L.VOICE_PACK_OUTDATED)
 					end
-					SWFilterDisabed = self.VoiceVersions[value]--Set disable to version on current voice pack
+					SWFilterDisabled = self.VoiceVersions[value]--Set disable to version on current voice pack
 				else
-					SWFilterDisabed = minVoicePackVersion
+					SWFilterDisabled = minVoicePackVersion
 				end
 			end
 		end
@@ -8932,9 +8974,7 @@ do
 				self.Flash:Show(flashColor[1], flashColor[2], flashColor[3], self.Options["SpecialWarningFlashDura"..number], self.Options["SpecialWarningFlashAlph"..number], repeatCount-1)
 			end
 			if not self.Options.DontDoSpecialWarningVibrate and self.Options["SpecialWarningVibrate"..number] then
-				if C_GamePad and C_GamePad.SetVibration then
-					C_GamePad.SetVibration("High", 1)
-				end
+				self:VibrateController()
 			end
 		end
 	end
@@ -9056,9 +9096,9 @@ do
 			--Starting AI timer with anything above 3 indicarets it's a regular timer and to use shortest time in between two regular casts
 			if self.type == "ai" then--A learning timer
 				if not DBM.Options.AITimer then return end
-				if timer > 4 then--Normal behavior.
+				if timer > 5 then--Normal behavior.
 					local newPhase = false
-					for i = 1, 4 do
+					for i = 1, 5 do
 						--Check for any phase timers that are strings, if a string it means last cast of this ability was first case of a given stage
 						if self["phase"..i.."CastTimer"] and type(self["phase"..i.."CastTimer"]) == "string" then--This is first cast of spell, we need to generate self.firstPullTimer
 							self["phase"..i.."CastTimer"] = tonumber(self["phase"..i.."CastTimer"])
@@ -9069,7 +9109,7 @@ do
 					end
 					if self.lastCast and not newPhase then--We have a GetTime() on last cast and it's not affected by a phase change
 						local timeLastCast = GetTime() - self.lastCast--Get time between current cast and last cast
-						if timeLastCast > 4 then--Prevent infinite loop cpu hang. Plus anything shorter than 5 seconds doesn't need a timer
+						if timeLastCast > 5 then--Prevent infinite loop cpu hang. Plus anything shorter than 5 seconds doesn't need a timer
 							if not self.lowestSeenCast or (self.lowestSeenCast and self.lowestSeenCast > timeLastCast) then--Always use lowest seen cast for a timer
 								self.lowestSeenCast = timeLastCast
 								DBM:Debug("AI timer learned a new lowest timer of "..self.lowestSeenCast, 2)
@@ -9082,7 +9122,7 @@ do
 					else
 						return--Don't start the bogus timer shoved into timer field in the mod
 					end
-				else--AI timer passed with 4 or less is indicating phase change, with timer as phase number
+				else--AI timer passed with 5 or less is indicating phase change, with timer as phase number
 					if not isRetail then
 						timer = floor(timer)--Floor inprecise timers in classic because combat is mostly caused by PLAYER_REGEN in dungeons
 					end

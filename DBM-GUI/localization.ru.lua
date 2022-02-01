@@ -64,6 +64,18 @@ L.NPAuraSize				= "Размер пикселя ауры (в квадрате): %
 L.MissingVoicePack			= "Отсутствующий голосовой пакет (%s)"
 L.ExtendIcons				= "Расширьте API значков целей рейда, чтобы использовать до 16 значков (вместо 8).<br/>ВАЖНО: эти значки НЕ будут видны тем, у кого не установлен пользовательский файл текстуры «UI-RaidTargetingIcons.blp», который поддерживает 16 значков.<br />Необходимо перезагрузить пользовательский интерфейс после включения или отключения этой функции."
 L.RecordOnlyBosses			= "Записывать только боссов. Исключить весь трэш.<br/>Используйте '/dbm pull' перед боссами, чтобы до пулла выпить поты и начать схватку!"
+L.EventEngagePT				= "Установить звук для запуска таймера пулла"
+L.Area_ColorBytype			= "Цветные полосы по типу (руководство)"
+L.Area_SpamFilter_SpecFeatures		= "Переключить определенные функции специальных объявлений"
+L.Area_SpamFilter_SpecRoleFilters	= "Специальные фильтры типов объявлений (контролируют, сколько ручных операций делает DBM)"
+L.SpamSpecRoleDispel				= "Фильтр 'рассеивающих' оповещений"
+L.SpamSpecRoleInterrupt				= "Фильтр 'прерываемых' оповещений"
+L.SpamSpecRoleDefensive				= "Фильтр 'защитных' оповещений"
+L.SpamSpecRoleTaunt					= "Фильтр 'провокационных' оповещений (для танков 'таунт')"
+L.SpamSpecRoleSoak					= "Фильтр 'поглощающих' оповещений"
+L.SpamSpecRoleStack					= "Фильтр 'high stack' оповещений"
+L.SpamSpecRoleSwitch				= "Фильтр оповещений о 'смене цели' &amp; 'аддов'"
+L.SpamSpecRoleGTFO					= "Фильтр 'GTFO' оповещений"
 -- Missing phrases. End ..
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
@@ -254,10 +266,11 @@ L.SpecWarn_NoSoundsWVoice	= "Не проигрывать звуки спецпр
 L.SWFNever					= "Никогда"
 L.SWFDefaultOnly			= "Когда спецпредупреждения используют звуки по умолчанию (позволяет проигрывать пользовательские звуки)"
 L.SWFAll					= "Когда спецпредупреждения используют любые звуки"
-L.SpecWarn_AlwaysVoice		= "Всегда воспроизводить все голосовые предупреждения (даже если спецпредупреждения отключены).<br/>Полезно для рейд лидера, иначе не рекомендуется."
+L.SpecWarn_AlwaysVoice		= "Всегда воспроизводить все голосовые предупреждения (даже если спецпредупреждения отключены).<br/>Полезно для некоторых рейд-лидеров в нишевых ситуациях, в противном случае не рекомендуется."
+L.VPDontMuteSounds			= "Отключить приглушение обычных звуков предупреждений при использовании голосового пакета (используйте это, только если Вы хотите слышать ОБА во время предупреждений)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
-L.Area_GetVEM				= "Получить голосовой пакет VEM"
-L.VEMDownload				= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/dbm-voicepack-vem|r"
+L.Area_VPLearnMore			= "Узнайте больше о голосовых пакетах и о том, как использовать эти опции"
+L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "Посмотреть другие голосовые пакеты на Curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Посмотреть пакеты обратного отсчета на Curse"
@@ -279,14 +292,14 @@ L.EventFilterMythicMusic	= "Не проигрывать музыку боя на
 
 -- Tab: Global Filter
 L.Panel_SpamFilter			= "Глобальные отключения и фильтры"
-L.Area_SpamFilter_Anounces	= "Объявить о глобальном отключении и параметрах фильтрации"
+L.Area_SpamFilter_Anounces	= "Глобальное отключение и параметры фильтрации"
 L.SpamBlockNoShowAnnounce	= "Не показывать текст или проигрывать звук для ЛЮБЫХ общих объявлений"
 L.SpamBlockNoShowTgtAnnounce= "Не показывать текст или проигрывать звук для общих объявлений ЦЕЛИ (фильтр выше переопределяет этот)"
 L.SpamBlockNoSpecWarnText	= "Не показывать текст спецпредупреждений, но разрешить голосовые пакеты (фильтр выше переопределяет этот)"
 
 L.Area_SpamFilter_Timers	= "Глобальное отключение таймера и параметры фильтра"
 L.SpamBlockNoShowTimers		= "Не показывать таймеры (отсчет времени)"
-L.SpamBlockNoShowUTimers	= "Не показывать таймеры, отправленные пользователями (пользов./пул/отдых)"
+L.SpamBlockNoShowUTimers	= "Не показывать таймеры, отправленные пользователями (пользов./пулл/отдых)"
 L.SpamBlockNoCountdowns		= "Не воспроизводить звуки обратного отсчета"
 
 L.Area_SpamFilter_Misc		= "Разное глобальное отключение и параметры фильтра"
