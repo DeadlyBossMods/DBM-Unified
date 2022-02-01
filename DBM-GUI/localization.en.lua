@@ -241,7 +241,8 @@ L.ReplacesCustom			= "Replace Special Announce Custom user set (per warning) sou
 L.Area_VoicePackAdvOptions	= "Voice Pack Advanced Options"
 L.SpecWarn_AlwaysVoice		= "Always play all spoken alerts (Even if Special Announce disabled. Useful for some Raid Leaders in niche situations, not recommended otherwise)"
 L.VPDontMuteSounds			= "Disable muting of regular alert sounds when using voice pack (use this only if you desire to hear BOTH during alerts)"
---TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
+L.Area_VPLearnMore			= "Learn more about voice packs and how to use these options"
+L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "Browse other voice packs on curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Browse countdown packs on curse"
