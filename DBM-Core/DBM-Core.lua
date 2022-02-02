@@ -533,6 +533,38 @@ local function removeEntry(t, val)
 	return existed
 end
 
+local function OrderedTable()
+	local nextkey, firstkey = {}, {}
+	nextkey[nextkey] = firstkey
+
+	local function onext(self, key)
+		while key ~= nil do
+			key = nextkey[key]
+			local val = self[key]
+			if val ~= nil then
+				return key, val
+			end
+		end
+	end
+
+	local selfmeta = firstkey
+	selfmeta.__nextkey = nextkey
+
+	function selfmeta:__newindex(key, val)
+		rawset(self, key, val)
+		if nextkey[key] == nil then
+			nextkey[nextkey[nextkey]] = key
+			nextkey[nextkey] = key
+		end
+	end
+
+	function selfmeta:__pairs() return
+		onext, self, firstkey
+	end
+
+	return setmetatable({}, selfmeta)
+end
+
 --Whisper/Whisper Sync filter function
 local function checkForSafeSender(sender, checkFriends, checkGuild, filterRaid, isRealIdMessage)
 	if checkFriends then
@@ -1409,6 +1441,7 @@ do
 								type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 								category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 								statTypes		= GetAddOnMetadata(i, "X-DBM-StatTypes") or "",
+								newOptions		= tonumber(GetAddOnMetadata(i, "X-DBM-NewOptions") or 0) == 1,
 								name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or CL.UNKNOWN,
 								mapId			= mapIdTable,
 								subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
@@ -6386,7 +6419,9 @@ do
 				instanceId = instanceId,
 				revision = 0,
 				SyncThreshold = 8,
-				localization = self:GetModLocalization(name)
+				localization = self:GetModLocalization(name),
+				groupSpells = {},
+				groupOptions = OrderedTable(),
 			},
 			mt
 		)
@@ -7834,10 +7869,10 @@ do
 		end
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, catType)
+			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId)
 		elseif not (optionName == false) then
 			obj.option = catType..spellId..announceType..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, catType)
+			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId)
 			if noFilter and announceType == "target" then
 				self.localization.options[obj.option] = L.AUTO_ANNOUNCE_OPTIONS["targetNF"]:format(spellId)
 			else
@@ -7984,10 +8019,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "yell")
+			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId)
 		elseif not (optionName == false) then
 			obj.option = "Yell"..(spellId or yellText)..(yellType ~= "yell" and yellType or "")..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "yell")
+			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId)
 			self.localization.options[obj.option] = L.AUTO_YELL_OPTION_TEXT[yellType]:format(spellId)
 		end
 		return obj
@@ -8683,7 +8718,7 @@ do
 					catType = "announcerole"
 				end
 			end
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId)
 		end
 		obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
 		tinsert(self.specwarns, obj)
@@ -9499,10 +9534,10 @@ do
 		end
 	end
 
-	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown)
+	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId)
 		if optionName ~= false then
 			self.option = optionName or self.id
-			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown)
+			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId)
 		end
 	end
 
@@ -9627,7 +9662,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName, colorType, countdown)
+		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId)
 		tinsert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
@@ -9847,7 +9882,7 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo)
+function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
 	if cat == "timer" then
@@ -9862,6 +9897,9 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		self.Options[name.."TColor"] = extraOption or 0
 		self.Options[name.."CVoice"] = extraOptionTwo or 0
 	end
+	if spellId then
+		self:GroupSpells(spellId, name)
+	end
 	self:SetOptionCategory(name, cat)
 	if func then
 		self.optionFuncs = self.optionFuncs or {}
@@ -9869,7 +9907,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 	end
 end
 
-function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat)
+function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
 	self.DefaultOptions[name.."SWSound"] = defaultSound or 1
@@ -9880,6 +9918,9 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.Options[name] = (default == nil) or default
 	self.Options[name.."SWSound"] = defaultSound or 1
 	self.Options[name.."SWNote"] = true
+	if spellId then
+		self:GroupSpells(spellId, name)
+	end
 	self:SetOptionCategory(name, cat)
 end
 
@@ -9897,6 +9938,7 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile, ic
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
+	self:GroupSpells(spellId, name)
 	self:SetOptionCategory(name, "icon")
 	if isHostile then
 		if not self.findFastestComputer then
@@ -10065,13 +10107,22 @@ function bossModPrototype:AddOptionSpacer(cat)
 	end
 end
 
-function bossModPrototype:AddOptionLine(text, cat)
-	cat = cat or "misc"
-	if not self.optionCategories[cat] then
-		self.optionCategories[cat] = {}
-	end
-	if self.optionCategories[cat] then
-		tinsert(self.optionCategories[cat], {line = true, text = text})
+do
+	local lineCount = 1
+
+	function bossModPrototype:AddOptionLine(text, cat)
+		if self.addon.newOptions then
+			self.groupOptions["line" .. lineCount] = text
+			lineCount = lineCount + 1
+		else
+			cat = cat or "misc"
+			if not self.optionCategories[cat] then
+				self.optionCategories[cat] = {}
+			end
+			if self.optionCategories[cat] then
+				tinsert(self.optionCategories[cat], {line = true, text = text})
+			end
+		end
 	end
 end
 
@@ -10116,17 +10167,34 @@ function bossModPrototype:RemoveOption(name)
 	end
 end
 
-function bossModPrototype:GroupSpells() end -- NOOP placeholder
+function bossModPrototype:GroupSpells(...)
+	local spells = {...}
+	local catSpell = tostring(tremove(spells, 1))
+	if not self.groupSpells[catSpell] then
+		self.groupSpells[catSpell] = {}
+	end
+	for _, spell in ipairs(spells) do
+		self.groupSpells[tostring(spell)] = catSpell
+	end
+end
 
 function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if not self.optionCategories[cat] then
-		self.optionCategories[cat] = {}
+	if self.addon and self.addon.newOptions and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage")) then
+		local sSpell = self.groupSpells[name]
+		if not self.groupOptions[sSpell] then
+			self.groupOptions[sSpell] = {}
+		end
+		tinsert(self.groupOptions[sSpell], name)
+	else
+		if not self.optionCategories[cat] then
+			self.optionCategories[cat] = {}
+		end
+		tinsert(self.optionCategories[cat], name)
+		tinsert(self.categorySort, cat)
 	end
-	tinsert(self.optionCategories[cat], name)
-	tinsert(self.categorySort, cat)
 end
 
 --------------

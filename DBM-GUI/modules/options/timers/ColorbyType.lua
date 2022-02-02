@@ -25,7 +25,7 @@ local color1Type1 = BarColors:CreateColorSelect(64)
 local color2Type1 = BarColors:CreateColorSelect(64)
 color1Type1:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 30, -65)
 color2Type1:SetPoint("TOPLEFT", color1Type1, "TOPRIGHT", 20, 0)
-color1Type1.myheight = 84
+color1Type1.myheight = 0
 color2Type1.myheight = 0
 
 local color1Type1reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -261,7 +261,7 @@ local color1Type5 = BarColors:CreateColorSelect(64)
 local color2Type5 = BarColors:CreateColorSelect(64)
 color1Type5:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 30, -375)
 color2Type5:SetPoint("TOPLEFT", color1Type5, "TOPRIGHT", 20, 0)
-color1Type5.myheight = 74
+color1Type5.myheight = 0
 color2Type5.myheight = 0
 
 local color1Type5reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -379,7 +379,7 @@ local color1Type7 = BarColors:CreateColorSelect(64)
 local color2Type7 = BarColors:CreateColorSelect(64)
 color1Type7:SetPoint("TOPLEFT", BarColors.frame, "TOPLEFT", 30, -530)
 color2Type7:SetPoint("TOPLEFT", color1Type7, "TOPRIGHT", 20, 0)
-color1Type7.myheight = 74
+color1Type7.myheight = 0
 color2Type7.myheight = 0
 
 local color1Type7reset = BarColors:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)

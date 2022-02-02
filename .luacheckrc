@@ -143,6 +143,7 @@ globals = {
 	"GameFontHighlightSmall",
 	"GameFontNormal",
 	"GameFontNormalSmall",
+	"GameFontWhite",
 	"MovieFrame",
 	"ObjectiveTrackerFrame",
 	"QuestWatchFrame", -- Classic
@@ -165,6 +166,8 @@ globals = {
 	"UIDropDownMenu_CreateInfo",
 	"UIDropDownMenu_Initialize",
 	"UIDropDownMenu_SetWidth",
+
+	"Spell.CreateFromSpellID",
 
 	"C_BattleNet.GetAccountInfoByID",
 	"C_BattleNet.GetFriendAccountInfo",
@@ -270,6 +273,7 @@ globals = {
 	"GetSpecializationInfoByID",
 	"GetSpecializationRole",
 	"GetSpellCooldown",
+	"GetSpellDescription",
 	"GetSpellInfo",
 	"GetSpellTexture",
 	"GetSubZoneText",
