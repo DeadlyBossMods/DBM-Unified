@@ -10182,7 +10182,7 @@ function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if self.addon.newOptions and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage")) then
+	if self.addon and self.addon.newOptions and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage")) then
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
