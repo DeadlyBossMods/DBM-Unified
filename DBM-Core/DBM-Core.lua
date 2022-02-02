@@ -10174,7 +10174,17 @@ function bossModPrototype:GroupSpells(...)
 		self.groupSpells[catSpell] = {}
 	end
 	for _, spell in ipairs(spells) do
-		self.groupSpells[tostring(spell)] = catSpell
+		local sSpell = tostring(spell)
+		self.groupSpells[sSpell] = catSpell
+		if sSpell ~= catSpell and self.groupOptions[sSpell] then
+			if not self.groupOptions[catSpell] then
+				self.groupOptions[catSpell] = {}
+			end
+			for _, spell2 in ipairs(self.groupOptions[sSpell]) do
+				tinsert(self.groupOptions[catSpell], spell2)
+			end
+			self.groupOptions[sSpell] = nil
+		end
 	end
 end
 
