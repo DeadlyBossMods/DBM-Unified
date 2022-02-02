@@ -500,6 +500,7 @@ function PanelPrototype:CreateAbility(titleText)
 	title:SetText(titleText)
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
+	title:SetFontObject("GameFontNormalMed1")
 	-- Button
 	local button = CreateFrame("Button", area:GetName() .. "Button", area, "OptionsListButtonTemplate")
 	button:ClearAllPoints()
@@ -518,6 +519,7 @@ function PanelPrototype:CreateAbility(titleText)
 		button.toggle:SetPushedTexture(area.hidden and 130836 or 130820) -- "Interface\\Buttons\\UI-PlusButton-DOWN", "Interface\\Buttons\\UI-MinusButton-DOWN"
 		_G["DBM_GUI_OptionsFrame"]:DisplayFrame(DBM_GUI.currentViewing)
 	end
+	button:RegisterForClicks(false)
 	--
 	self:SetLastObj(area)
 	return setmetatable({
