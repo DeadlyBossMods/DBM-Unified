@@ -10007,13 +10007,13 @@ function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["RangeFrame"] = (default == nil) or default
-	self:GroupSpells(spellId, name)
-	self:SetOptionCategory("RangeFrame", "misc")
 	if spellId then
+		self:GroupSpells(spellId, name)
 		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT:format(range, spellId)
 	else
 		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT_SHORT:format(range)
 	end
+	self:SetOptionCategory("RangeFrame", "misc")
 end
 
 function bossModPrototype:AddHudMapOption(name, spellId, default)
@@ -10022,13 +10022,13 @@ function bossModPrototype:AddHudMapOption(name, spellId, default)
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
-	self:GroupSpells(spellId, name)
-	self:SetOptionCategory(name, "misc")
 	if spellId then
+		self:GroupSpells(spellId, name)
 		self.localization.options[name] = L.AUTO_HUD_OPTION_TEXT:format(spellId)
 	else
 		self.localization.options[name] = L.AUTO_HUD_OPTION_TEXT_MULTI
 	end
+	self:SetOptionCategory(name, "misc")
 end
 
 function bossModPrototype:AddNamePlateOption(name, spellId, default)
@@ -10055,8 +10055,8 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options["InfoFrame"..oVersion] = (default == nil) or default
-	self:SetOptionCategory("InfoFrame"..oVersion, "misc")
 	if spellId then
+		self:GroupSpells(spellId, name)
 		if optionalThreshold then
 			self.localization.options["InfoFrame"..oVersion] = L.AUTO_INFO_FRAME_OPTION_TEXT3:format(spellId, optionalThreshold)
 		else
@@ -10065,6 +10065,7 @@ function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, op
 	else
 		self.localization.options["InfoFrame"..oVersion] = L.AUTO_INFO_FRAME_OPTION_TEXT2
 	end
+	self:SetOptionCategory("InfoFrame"..oVersion, "misc")
 end
 
 function bossModPrototype:AddReadyCheckOption(questId, default, maxLevel)
