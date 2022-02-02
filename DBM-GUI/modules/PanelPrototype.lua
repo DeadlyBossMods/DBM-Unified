@@ -500,6 +500,7 @@ function PanelPrototype:CreateAbility(titleText)
 	title:SetText(titleText)
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
+	title:SetFontObject("GameFontNormalMed1")
 	-- Button
 	local button = CreateFrame("Button", area:GetName() .. "Button", area, "OptionsListButtonTemplate")
 	button:ClearAllPoints()
