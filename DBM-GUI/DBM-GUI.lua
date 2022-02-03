@@ -551,7 +551,8 @@ do
 			end
 
 			local importExportProfilesArea = panel:CreateArea(L.Area_ImportExportProfile)
-			importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
+			local test = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
+			test:SetPoint("TOPLEFT", 15, -10)
 			local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 				local exportProfile = {}
 				local profileID = playerLevel > 9 and DBM_UseDualProfile and (GetSpecialization() or 1) or 0
@@ -560,7 +561,8 @@ do
 				end
 				DBM_GUI:CreateExportProfile(exportProfile)
 			end)
-			exportProfile:SetPoint("TOPLEFT", 12, -20)
+			exportProfile.myheight = 0
+			exportProfile:SetPoint("TOPLEFT", 12, -25)
 			local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 				DBM_GUI:CreateImportProfile(function(importTable)
 					local errors = {}
@@ -605,12 +607,12 @@ do
 		end
 
 		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, GameFontNormal)
-		ptext:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 10, modProfileArea and -235 or -10)
+		ptext:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 10, modProfileArea and -245 or -10)
 
 		local singleLine, doubleLine, noHeaderLine = 0, 0, 0
 		local area = panel:CreateArea()
 		area.frame.isStats = true
-		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -250 or -25)
+		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -260 or -25)
 
 		local statOrder = {
 			"lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
