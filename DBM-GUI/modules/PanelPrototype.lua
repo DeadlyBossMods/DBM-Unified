@@ -100,6 +100,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myhe
 	textblock:SetText(parseDescription(text))
 	textblock:SetJustifyH(justify or "LEFT")
 	textblock:SetPoint("TOPLEFT", test)
+	textblock:SetWidth(width or self.frame:GetWidth())
 	if autoplaced then
 		test:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 15, -5)
 	end

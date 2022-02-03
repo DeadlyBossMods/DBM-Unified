@@ -97,7 +97,9 @@ local function resize(frame, first)
 								_G[child2:GetName() .. "Text"]:SetWidth(width - 30)
 								child2:SetSize(width, text:GetStringHeight())
 							end
-							child2.myheight = text:GetStringHeight() + 20 -- + padding
+							if not child2.myheight then
+								child2.myheight = text:GetStringHeight() + 20 -- + padding
+							end
 						elseif child2.mytype == "checkbutton" then
 							local buttonText = _G[child2:GetName() .. "Text"]
 							buttonText:SetWidth(width - buttonText.widthPad - 57)
