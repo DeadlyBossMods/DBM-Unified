@@ -209,6 +209,10 @@ DBM.DefaultOptions = {
 	EnableModels = true,
 	GUIWidth = 800,
 	GUIHeight = 600,
+	GroupOptionsBySpell = true,
+	GroupOptionsExcludeIcon = false,
+	AutoExpandGrouppedSpells = false,
+	--ShowSpellDescWhenExpanded = false,
 	RangeFrameFrames = "radar",
 	RangeFrameUpdates = "Average",
 	RangeFramePoint = "CENTER",
@@ -9938,7 +9942,9 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile, ic
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
-	self:GroupSpells(spellId, name)
+	if not DBM.Options.GroupOptionsExcludeIcon then
+		self:GroupSpells(spellId, name)
+	end
 	self:SetOptionCategory(name, "icon")
 	if isHostile then
 		if not self.findFastestComputer then
@@ -10116,7 +10122,7 @@ do
 	local lineCount = 1
 
 	function bossModPrototype:AddOptionLine(text, cat)
-		if self.addon.newOptions then
+		if self.addon.newOptions and DBM.Options.GroupOptionsBySpell then
 			self.groupOptions["line" .. lineCount] = text
 			lineCount = lineCount + 1
 		else
@@ -10197,7 +10203,7 @@ function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if self.addon and self.addon.newOptions and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage")) then
+	if self.addon and self.addon.newOptions and DBM.Options.GroupOptionsBySpell and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
