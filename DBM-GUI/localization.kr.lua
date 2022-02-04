@@ -81,6 +81,12 @@ L.Button_ResetWindowSize	= "설정 창 크기 초기화"
 L.Editbox_WindowWidth		= "설정 창 너비"
 L.Editbox_WindowHeight		= "설정 창 높이"
 
+L.UIGroupingOptions			= "UI 그룹 설정 (이미 로딩이 된 모드는 UI 재시작을 해야 변경됩니다)"
+L.GroupOptionsBySpell		= "모드 설정 주문별 그룹화 (지원하는 모드만)"
+L.GroupOptionsExcludeIcon	= "주문별 그룹화에서 '공격대 징표 설정' 제외 (이전처럼 관련 설정은 '공격대 징표' 카테고리에 배치됩니다)"
+L.AutoExpandGrouppedSpells	= "주문별로 그룹화된 설정들 자동으로 펼치기"
+--L.ShowSpellDescWhenExpanded	= "그룹화된 설정이 펼쳐진 상태에서도 주문 설명 계속 표시"--Might not be used
+
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "기타 기능"
 
@@ -245,7 +251,7 @@ L.ReplacesCustom			= "특수 알림 사용자 정의 (알림별로 설정된) �
 L.Area_VoicePackAdvOptions	= "음성팩 고급 설정"
 L.SpecWarn_AlwaysVoice		= "모든 음성 경고 재생 (특수 알림을 꺼놔도 재생됩니다. 일부 특수한 상황에 처한 공대장에게 유용하며 그 외에는 권장하지 않습니다)"
 L.VPDontMuteSounds			= "음성팩 사용시 DBM 경고음을 끄지 않음 (두가지 경고음 모두 듣고싶을때만 사용)"
---TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
+L.Area_VPLearnMore			= "음성팩에 대한 정보 및 관련 설정 사용법 알아보기"
 L.Area_BrowseOtherVP		= "Curse에 올라와있는 다른 음성팩 보기"
 L.Area_BrowseOtherCT		= "Curse에 올라와있는 카운트다운 팩 보기"
 
