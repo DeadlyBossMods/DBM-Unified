@@ -92,7 +92,7 @@ L.Editbox_WindowHeight		= "GUI窗口高度"
 L.UIGroupingOptions			= "界面分组选项 (更改这些需要输入 /reload 来重载界面)"
 L.GroupOptionsBySpell		= "按照技能分组 (只支持有效的模块)"
 L.GroupOptionsExcludeIcon	= "按照技能分组排除“设置标记图标”选项 (它们将像以前一样在“图标”类中显示)"
-L.AutoExpandGrouppedSpells	= "按照技能分组自动扩展选项"
+L.AutoExpandGroupedSpells	= "按照技能分组自动扩展选项"
 --L.ShowSpellDescWhenExpanded	= "分组扩展时继续显示技能描述"
 
 -- Panel: Extra Features
