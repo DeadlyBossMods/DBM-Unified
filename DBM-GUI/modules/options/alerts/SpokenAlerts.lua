@@ -73,7 +73,7 @@ voiceAdvancedArea:CreateCheckButton(L.SpecWarn_AlwaysVoice, true, nil, "AlwaysPl
 voiceAdvancedArea:CreateCheckButton(L.VPDontMuteSounds, true, nil, "VPDontMuteSounds")
 
 local VPUrlArea1		= spokenAlertsPanel:CreateArea(L.Area_VPLearnMore)
-VPUrlArea1:CreateText(L.VPLearnMore, nil, true, nil, "LEFT")
+VPUrlArea1:CreateText(L.VPLearnMore, nil, true, nil, "LEFT", 0)
 VPUrlArea1.frame:SetScript("OnMouseUp", function()
 	DBM:ShowUpdateReminder(nil, nil, L.Area_VPLearnMore, "https://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update")
 end)

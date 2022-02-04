@@ -100,6 +100,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myhe
 	textblock:SetText(parseDescription(text))
 	textblock:SetJustifyH(justify or "LEFT")
 	textblock:SetPoint("TOPLEFT", test)
+	textblock:SetWidth(width or self.frame:GetWidth())
 	if autoplaced then
 		test:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 15, -5)
 	end
@@ -488,7 +489,7 @@ end
 function PanelPrototype:CreateAbility(titleText)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,OptionsBoxTemplate")
 	area.mytype = "ability"
-	area.hidden = true
+	area.hidden = not DBM.Options.AutoExpandGrouppedSpells
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	if select("#", self.frame:GetChildren()) == 1 then
