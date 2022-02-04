@@ -83,6 +83,12 @@ L.Button_ResetWindowSize	= "重設GUI視窗大小"
 L.Editbox_WindowWidth		= "GUI視窗寬度"
 L.Editbox_WindowHeight		= "GUI視窗高度"
 
+L.UIGroupingOptions			= "界面分組選項 (更改這些需要輸入 /reload 來重載界面)"
+L.GroupOptionsBySpell		= "按照技能分組 (只支持有效的模組)"
+L.GroupOptionsExcludeIcon	= "按照技能分組排除“設置標記圖示”選項 (它們將像以前一樣在“圖示”類中顯示)"
+L.AutoExpandGrouppedSpells	= "按照技能分組自動擴展選項"
+--L.ShowSpellDescWhenExpanded	= "分組擴展時繼續顯示技能描述"
+
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "額外功能"
 
