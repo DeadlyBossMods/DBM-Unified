@@ -84,7 +84,7 @@ L.Editbox_WindowHeight		= "설정 창 높이"
 L.UIGroupingOptions			= "UI 그룹 설정 (이미 로딩이 된 모드는 UI 재시작을 해야 변경됩니다)"
 L.GroupOptionsBySpell		= "모드 설정 주문별 그룹화 (지원하는 모드만)"
 L.GroupOptionsExcludeIcon	= "주문별 그룹화에서 '공격대 징표 설정' 제외 (이전처럼 관련 설정은 '공격대 징표' 카테고리에 배치됩니다)"
-L.AutoExpandGrouppedSpells	= "주문별로 그룹화된 설정들 자동으로 펼치기"
+L.AutoExpandGroupedSpells	= "주문별로 그룹화된 설정들 자동으로 펼치기"
 --L.ShowSpellDescWhenExpanded	= "그룹화된 설정이 펼쳐진 상태에서도 주문 설명 계속 표시"--Might not be used
 
 -- Panel: Extra Features
