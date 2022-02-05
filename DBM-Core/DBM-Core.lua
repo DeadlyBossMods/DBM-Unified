@@ -10121,8 +10121,8 @@ end
 do
 	local lineCount = 1
 
-	function bossModPrototype:AddOptionLine(text, cat)
-		if self.addon.newOptions and DBM.Options.GroupOptionsBySpell then
+	function bossModPrototype:AddOptionLine(text, cat, forceIgnore)
+		if self.addon.newOptions and DBM.Options.GroupOptionsBySpell and not forceIgnore then
 			self.groupOptions["line" .. lineCount] = text
 			lineCount = lineCount + 1
 		else
@@ -10162,7 +10162,7 @@ function bossModPrototype:AddIconLine(text)
 end
 
 function bossModPrototype:AddMiscLine(text)
-	return self:AddOptionLine(text, "misc")
+	return self:AddOptionLine(text, "misc", true)
 end
 
 function bossModPrototype:RemoveOption(name)
