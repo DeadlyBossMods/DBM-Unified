@@ -606,7 +606,7 @@ do
 			return
 		end
 
-		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, GameFontNormal)
+		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, nil, "CENTER")
 		ptext:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 10, modProfileArea and -245 or -10)
 
 		local singleLine, doubleLine, noHeaderLine = 0, 0, 0
@@ -762,7 +762,7 @@ do
 				if not IsAddOnLoaded(addon.modId) then
 					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
 					button.modid = addon
-					button.headline = addon.panel:CreateText(L.BossModLoad_now, 350)
+					button.headline = addon.panel:CreateText(L.BossModLoad_now, 350, nil, nil, "CENTER")
 					button.headline:SetHeight(50)
 					button.headline:SetPoint("CENTER", button, "CENTER", 0, 80)
 
