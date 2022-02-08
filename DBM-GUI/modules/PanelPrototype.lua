@@ -83,9 +83,16 @@ function PanelPrototype:CreateSpellDesc(text)
 	if type(text) == "number" then
 		local spell = Spell:CreateFromSpellID(text)
 		spell:ContinueOnSpellLoad(function()
-			textblock:SetText(GetSpellDescription(spell:GetSpellID()))
+			text = GetSpellDescription(spell:GetSpellID())
+			if text == "" then
+				text = L.NoDescription
+			end
+			textblock:SetText(text)
 		end)
 	else
+		if text == "" then
+			text = L.NoDescription
+		end
 		textblock:SetText(text)
 	end
     --
@@ -489,7 +496,7 @@ end
 function PanelPrototype:CreateAbility(titleText)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,OptionsBoxTemplate")
 	area.mytype = "ability"
-	area.hidden = not DBM.Options.AutoExpandGroupedSpells
+	area.hidden = not DBM.Options.AutoExpandSpellGroups
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	if select("#", self.frame:GetChildren()) == 1 then

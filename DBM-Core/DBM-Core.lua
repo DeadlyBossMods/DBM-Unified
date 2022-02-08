@@ -211,7 +211,7 @@ DBM.DefaultOptions = {
 	GUIHeight = 600,
 	GroupOptionsBySpell = true,
 	GroupOptionsExcludeIcon = false,
-	AutoExpandGroupedSpells = false,
+	AutoExpandSpellGroups = not isRetail,
 	--ShowSpellDescWhenExpanded = false,
 	RangeFrameFrames = "radar",
 	RangeFrameUpdates = "Average",
@@ -1445,7 +1445,7 @@ do
 								type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 								category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 								statTypes		= GetAddOnMetadata(i, "X-DBM-StatTypes") or "",
-								newOptions		= tonumber(GetAddOnMetadata(i, "X-DBM-NewOptions") or 0) == 1,
+								oldOptions		= tonumber(GetAddOnMetadata(i, "X-DBM-OldOptions") or 0) == 1,
 								name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or CL.UNKNOWN,
 								mapId			= mapIdTable,
 								subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
@@ -6636,7 +6636,7 @@ end
 
 do
 	local isSeasonal
-	function bossModPrototype:IsSeasonal()
+	function DBM:IsSeasonal()
 		--Once set to true, we stop checking api an return cache
 		--But if not set true we keep checking api because the api (or buff) will return false if called too early and we don't want to cache that
 		if not isSeasonal then
@@ -6651,6 +6651,7 @@ do
 		end
 		return isSeasonal
 	end
+	bossModPrototype.IsSeasonal = DBM.IsSeasonal
 end
 
 --Pretty much ANYTHING that has a heroic mode
@@ -10122,7 +10123,7 @@ do
 	local lineCount = 1
 
 	function bossModPrototype:AddOptionLine(text, cat, forceIgnore)
-		if self.addon.newOptions and DBM.Options.GroupOptionsBySpell and not forceIgnore then
+		if self.addon and not self.addon.oldOptions and DBM.Options.GroupOptionsBySpell and not forceIgnore then
 			self.groupOptions["line" .. lineCount] = text
 			lineCount = lineCount + 1
 		else
@@ -10203,7 +10204,7 @@ function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if self.addon and self.addon.newOptions and DBM.Options.GroupOptionsBySpell and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
+	if self.addon and not self.addon.oldOptions and DBM.Options.GroupOptionsBySpell and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
