@@ -80,12 +80,19 @@ function PanelPrototype:CreateSpellDesc(text)
 	test.mytype = "spelldesc"
 	test.autowidth = true
 	-- Description logic
-	if type(text) == "number" and DBM:GetSpellInfo(text) then
+	if type(text) == "number" then
 		local spell = Spell:CreateFromSpellID(text)
 		spell:ContinueOnSpellLoad(function()
-			textblock:SetText(GetSpellDescription(spell:GetSpellID()))
+			text = GetSpellDescription(spell:GetSpellID())
+			if text == "" then
+				text = L.NoDescription
+			end
+			textblock:SetText(text)
 		end)
 	else
+		if text == "" then
+			text = L.NoDescription
+		end
 		textblock:SetText(text)
 	end
     --

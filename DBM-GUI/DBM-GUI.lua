@@ -409,7 +409,11 @@ function DBM_GUI:CreateBossModPanel(mod)
 				local title, desc
 				if tonumber(spellID) then
 					local _title = DBM:GetSpellInfo(spellID)
-					title, desc = _title, tonumber(spellID)
+					if _title then
+						title, desc = _title, tonumber(spellID)
+					else--Not a valid spellid (Such as a ptr/beta mod loaded on live
+						title, desc = spellID, L.NoDescription
+					end
 				elseif spellID:find("^ej") then
 					title, desc = DBM:EJ_GetSectionInfo(spellID:gsub("ej", ""))
 				else
