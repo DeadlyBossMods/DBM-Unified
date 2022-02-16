@@ -4083,7 +4083,7 @@ do
 		lastBossEngage[bossName..faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
 			DBM:Debug("WBA sync processing")
-			local factionText = faction == "Alliance" and FACTION_ALLIANCE or faction == "Horde" and FACTION_HORDE or L.BOTH
+			local factionText = faction == "Alliance" and FACTION_ALLIANCE or faction == "Horde" and FACTION_HORDE or CL.BOTH
 			local buffName, _, buffIcon = DBM:GetSpellInfo(tonumber(spellId) or 0)
 			DBM:AddMsg(L.WORLDBUFF_STARTED:format(buffName or CL.UNKNOWN, factionText, sender))
 			DBM:PlaySound(DBM.Options.RaidWarningSound, true)
