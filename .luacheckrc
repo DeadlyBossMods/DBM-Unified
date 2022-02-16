@@ -216,6 +216,7 @@ globals = {
 	"CheckInteractDistance",
 	"CombatLogGetCurrentEventInfo",
 	"CreateFrame",
+	"CreateTextureMarkup",
 	"CreateVector2D",
 	"EnableAddOn",
 	"EJ_GetEncounterInfo",
