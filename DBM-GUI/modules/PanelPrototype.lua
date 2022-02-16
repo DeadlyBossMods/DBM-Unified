@@ -6,6 +6,7 @@ local CL	= DBM_COMMON_L
 local setmetatable, select, type, tonumber, strsplit, mmax, tinsert = setmetatable, select, type, tonumber, strsplit, math.max, table.insert
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
+local CreateTextureMarkup = CreateTextureMarkup
 
 --TODO, not 100% sure which ones use html and which don't so some might need true added or removed for 2nd arg
 local function parseDescription(name, usesHTML)
@@ -493,7 +494,7 @@ function PanelPrototype:CreateArea(name)
 	})
 end
 
-function PanelPrototype:CreateAbility(titleText)
+function PanelPrototype:CreateAbility(titleText, icon)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,OptionsBoxTemplate")
 	area.mytype = "ability"
 	area.hidden = not DBM.Options.AutoExpandSpellGroups
@@ -505,7 +506,12 @@ function PanelPrototype:CreateAbility(titleText)
 		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 	end
 	local title = _G[area:GetName() .. "Title"]
-	title:SetText(titleText)
+	if icon then
+		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
+		title:SetText(markup .. titleText)
+	else
+		title:SetText(titleText)
+	end
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
 	title:SetFontObject("GameFontWhite")
