@@ -73,7 +73,7 @@ if isRetail then
 	DBM.DisplayVersion = "9.2.0 alpha"
 	DBM.ReleaseRevision = releaseDate(2022, 2, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.15 alpha"
+	DBM.DisplayVersion = "1.14.16 alpha"
 	DBM.ReleaseRevision = releaseDate(2022, 2, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isBCC then
 	DBM.DisplayVersion = "2.5.29 alpha"
@@ -9539,10 +9539,10 @@ do
 		end
 	end
 
-	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId)
+	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId, optionType)
 		if optionName ~= false then
 			self.option = optionName or self.id
-			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId)
+			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId, optionType)
 		end
 	end
 
@@ -9667,7 +9667,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId)
+		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId, timerType)
 		tinsert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
@@ -9887,7 +9887,7 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId)
+function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionType)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
 	if cat == "timer" then
@@ -9903,6 +9903,9 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		self.Options[name.."CVoice"] = extraOptionTwo or 0
 	end
 	if spellId then
+		if optionType and optionType == "achievement" then
+			spellId = "at"..spellId--"at" for achievement timer
+		end
 		self:GroupSpells(spellId, name)
 	end
 	self:SetOptionCategory(name, cat)
