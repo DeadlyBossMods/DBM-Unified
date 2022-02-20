@@ -7782,7 +7782,7 @@ do
 	end
 
 	-- old constructor (no auto-localize)
-	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption)
+	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption, spellID)
 		if not text then
 			error("NewAnnounce: you must provide announce text", 2)
 			return
@@ -7811,10 +7811,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "announce")
+			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
 		elseif not (optionName == false) then
 			obj.option = text
-			self:AddBoolOption(obj.option, optionDefault, "announce")
+			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
 		end
 		tinsert(self.announces, obj)
 		return obj
@@ -7874,10 +7874,10 @@ do
 		end
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId)
+			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
 		elseif not (optionName == false) then
 			obj.option = catType..spellId..announceType..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId)
+			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
 			if noFilter and announceType == "target" then
 				self.localization.options[obj.option] = L.AUTO_ANNOUNCE_OPTIONS["targetNF"]:format(spellId)
 			else
@@ -8024,10 +8024,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId)
+			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
 		elseif not (optionName == false) then
 			obj.option = "Yell"..(spellId or yellText)..(yellType ~= "yell" and yellType or "")..(optionVersion or "")
-			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId)
+			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
 			self.localization.options[obj.option] = L.AUTO_YELL_OPTION_TEXT[yellType]:format(spellId)
 		end
 		return obj
@@ -8599,7 +8599,7 @@ do
 		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture, spellID)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -8638,7 +8638,7 @@ do
 		if optionId then
 			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
 			obj.option = optionId..(optionVersion or "")
-			self:AddSpecialWarningOption(optionId, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce")
+			self:AddSpecialWarningOption(optionId, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID)
 		end
 		tinsert(self.specwarns, obj)
 		return obj
@@ -8723,7 +8723,7 @@ do
 					catType = "announcerole"
 				end
 			end
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId, announceType)
 		end
 		obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
 		tinsert(self.specwarns, obj)
@@ -9908,14 +9908,14 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		end
 		self:GroupSpells(spellId, name)
 	end
-	self:SetOptionCategory(name, cat)
+	self:SetOptionCategory(name, cat, optionType)
 	if func then
 		self.optionFuncs = self.optionFuncs or {}
 		self.optionFuncs[name] = func
 	end
 end
 
-function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId)
+function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId, optionType)
 	cat = cat or "misc"
 	self.DefaultOptions[name] = (default == nil) or default
 	self.DefaultOptions[name.."SWSound"] = defaultSound or 1
@@ -9929,7 +9929,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	if spellId then
 		self:GroupSpells(spellId, name)
 	end
-	self:SetOptionCategory(name, cat)
+	self:SetOptionCategory(name, cat, optionType)
 end
 
 --Extended Icon Usage Notes
@@ -10203,11 +10203,12 @@ function bossModPrototype:GroupSpells(...)
 	end
 end
 
-function bossModPrototype:SetOptionCategory(name, cat)
+function bossModPrototype:SetOptionCategory(name, cat, optionType)
+	optionType = optionType or ""
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if self.addon and not self.addon.oldOptions and DBM.Options.GroupOptionsBySpell and self.groupSpells[name] and not (name:find("gtfo") or name:find("adds") or name:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
+	if self.addon and not self.addon.oldOptions and DBM.Options.GroupOptionsBySpell and self.groupSpells[name] and not (optionType == "gtfo" or optionType == "adds" or optionType == "stage" or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
