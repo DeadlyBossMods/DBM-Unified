@@ -10106,7 +10106,7 @@ function bossModPrototype:AddDropdownOption(name, options, default, cat, func, s
 	cat = cat or "misc"
 	self.DefaultOptions[name] = {type = "dropdown", value = default}
 	self.Options[name] = default
-	if spellId then
+	if spellID then
 		self:GroupSpells(spellId, name)
 	end
 	self:SetOptionCategory(name, cat)
