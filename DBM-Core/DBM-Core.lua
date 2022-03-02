@@ -70,8 +70,8 @@ DBM = {
 }
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.2.1 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.2.1"
+	DBM.ReleaseRevision = releaseDate(2022, 3, 2) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.17 alpha"
 	DBM.ReleaseRevision = releaseDate(2022, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -433,6 +433,7 @@ if isRetail then
 		[1116]={40, 1},[1159]={40, 1},[1331]={40, 1},[1158]={40, 1},[1153]={40, 1},[1152]={40, 1},[1330]={40, 1},[1160]={40, 1},[1154]={40, 1},[1464]={40, 1},--Wod World and Garrison Bosses
 		[1220]={45, 1},[1779]={45, 1},--Legion World bosses
 		[1643]={50, 1},[1642]={50, 1},[1718]={50, 1},[1943]={50, 1},[1876]={50, 1},[2105]={50, 1},[2111]={50, 1},[2275]={50, 1},--Bfa World bosses and warfronts
+		[2222]={60, 1},[2374]={60, 1}--Shadowlands World Bosses
 		--Raids
 		[509]={30, 3},[531]={30, 3},[469]={30, 3},[409]={30, 3},--Classic Raids
 		[564]={30, 3},[534]={30, 3},[532]={30, 3},[565]={30, 3},[544]={30, 3},[548]={30, 3},[580]={30, 3},[550]={30, 3},--BC Raids
