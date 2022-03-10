@@ -141,6 +141,7 @@ DBM.DefaultOptions = {
 	CountdownVoice = "Corsica",
 	CountdownVoice2 = "Kolt",
 	CountdownVoice3 = "Smooth",
+	PullVoice = "Corsica",
 	ChosenVoicePack2 = (GetLocale() == "enUS" or GetLocale() == "enGB") and "VEM" or "None",
 	VPReplacesAnnounce = true,
 	VPReplacesSA1 = true,
@@ -1314,7 +1315,7 @@ do
 			end
 		end
 		--Check if any of countdown sounds are using missing voice pack
-		local found1, found2, found3 = false, false, false
+		local found1, found2, found3, found4 = false, false, false, false
 		for _, count in pairs(DBM:GetCountSounds()) do
 			local voice = count.value
 			if voice == self.Options.CountdownVoice then
@@ -1325,6 +1326,9 @@ do
 			end
 			if voice == self.Options.CountdownVoice3 then
 				found3 = true
+			end
+			if voice == self.Options.PullVoice then
+				found4 = true
 			end
 		end
 		if not found1 then
@@ -1338,6 +1342,10 @@ do
 		if not found3 then
 			AddMsg(self, L.VOICE_COUNT_MISSING:format(3, self.DefaultOptions.CountdownVoice3))
 			self.Options.CountdownVoice3 = self.DefaultOptions.CountdownVoice3
+		end
+		if not found4 then
+			AddMsg(self, L.VOICE_COUNT_MISSING:format(4, self.DefaultOptions.PullVoice))
+			self.Options.PullVoice = self.DefaultOptions.PullVoice
 		end
 		self:BuildVoiceCountdownCache()
 		--Break timer recovery
@@ -3697,7 +3705,7 @@ do
 			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = L.MINIMAP_TOOLTIP_HEADER }
 			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
 			dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
-			dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 1, threshold)
+			dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 4, threshold)
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 		if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
@@ -8989,15 +8997,16 @@ end
 do
 	local timerPrototype = {}
 	local mt = {__index = timerPrototype}
-	local countvoice1, countvoice2, countvoice3
-	local countvoice1max, countvoice2max, countvoice3max = 5, 5, 5
-	local countpath1, countpath2, countpath3
+	local countvoice1, countvoice2, countvoice3, countvoice4
+	local countvoice1max, countvoice2max, countvoice3max, countvoice4max = 5, 5, 5, 5
+	local countpath1, countpath2, countpath3, countpath4
 
 	--Merged countdown object for timers with build-in countdown
 	function DBM:BuildVoiceCountdownCache()
 		countvoice1 = self.Options.CountdownVoice
 		countvoice2 = self.Options.CountdownVoice2
 		countvoice3 = self.Options.CountdownVoice3
+		countvoice4 = self.Options.PullVoice
 		for _, count in pairs(DBM:GetCountSounds()) do
 			if count.value == countvoice1 then
 				countpath1 = count.path
@@ -9010,6 +9019,10 @@ do
 			if count.value == countvoice3 then
 				countpath3 = count.path
 				countvoice3max = count.max
+			end
+			if count.value == countvoice4 then
+				countpath4 = count.path
+				countvoice4max = count.max
 			end
 		end
 	end
@@ -9038,6 +9051,9 @@ do
 		elseif voice == 3 then
 			maxCount = countvoice3max or 5
 			path = countpath3 or "Interface\\AddOns\\DBM-Core\\Sounds\\Smooth\\"
+		elseif voice == 4 then
+			maxCount = countvoice4max or 10
+			path = countpath4 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
 		else
 			maxCount = countvoice1max or 10
 			path = countpath1 or "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\"
