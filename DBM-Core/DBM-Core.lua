@@ -8782,6 +8782,10 @@ do
 		return newSpecialWarning(self, "youpos", text, nil, optionDefault, ...)
 	end
 
+	function bossModPrototype:NewSpecialWarningYouPosCount(text, optionDefault, ...)
+		return newSpecialWarning(self, "youposcount", text, nil, optionDefault, ...)
+	end
+
 	function bossModPrototype:NewSpecialWarningSoakPos(text, optionDefault, ...)
 		return newSpecialWarning(self, "soakpos", text, nil, optionDefault, ...)
 	end
