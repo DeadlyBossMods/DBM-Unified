@@ -2316,7 +2316,7 @@ do
 	end
 
 	function DBM:GetRaidUnitId(name)
-		for i = 1, 8 do
+		for i = 1, 10 do
 			local unitId = "boss"..i
 			local bossName = UnitName(unitId)
 			if bossName and bossName == name then
@@ -2327,7 +2327,7 @@ do
 	end
 
 	function DBM:GetEnemyUnitIdByGUID(guid)
-		for i = 1, 8 do
+		for i = 1, 10 do
 			local unitId = "boss"..i
 			local guid2 = UnitGUID(unitId)
 			if guid == guid2 then
@@ -2488,7 +2488,7 @@ end
 
 function DBM:GetBossUnitId(name, bossOnly)--Deprecated, only old mods use this
 	local returnUnitID
-	for i = 1, 8 do
+	for i = 1, 10 do
 		if UnitName("boss" .. i) == name then
 			returnUnitID = "boss"..i
 		end
@@ -2505,7 +2505,7 @@ end
 
 function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
 	local returnUnitID
-	for i = 1, 8 do
+	for i = 1, 10 do
 		local unitId = "boss"..i
 		local bossGUID = UnitGUID(unitId)
 		if type(cidOrGuid) == "number" then--CID passed
@@ -4614,7 +4614,7 @@ function checkWipe(self, confirm)
 		end
 		--hack for no iEEU information is provided.
 		if not bossuIdFound then
-			for i = 1, 8 do
+			for i = 1, 10 do
 				if UnitExists("boss"..i) then
 					bossuIdFound = true
 					break
@@ -7174,7 +7174,7 @@ function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID,
 			end
 		end
 	else--Check all of them if one isn't defined
-		for i = 1, 8 do
+		for i = 1, 10 do
 			local unitID = "boss"..i
 			local guid = UnitGUID(unitID)
 			--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
@@ -7266,7 +7266,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 	else
 		--Boss UnitIds
 		if isRetail then
-			for i = 1, 8 do
+			for i = 1, 10 do
 				local unitID = "boss"..i
 				local bossguid = UnitGUID(unitID)
 				if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitID) ~= 0 then
