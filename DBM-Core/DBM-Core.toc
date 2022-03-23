@@ -1,6 +1,6 @@
 ## Interface: 90200
 ## Interface-Classic: 11402
-## Interface-BCC: 20503
+## Interface-BCC: 20504
 ## X-Min-Interface: 90200
 ## X-Min-Interface-Classic: 11402
 ## X-Min-Interface-BCC: 20503
