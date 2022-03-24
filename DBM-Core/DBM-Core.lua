@@ -28,6 +28,7 @@ local _, private = ...
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
+--local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 9000)
 
 local DBMPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC"
 private.DBMPrefix = DBMPrefix
