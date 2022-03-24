@@ -4011,7 +4011,7 @@ do
 
 	guildSyncHandlers["GCB"] = function(_, modId, ver, difficulty, difficultyModifier, name)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
-		if not ver or not (ver == "3") then return end--Ignore old versions
+		if not ver or ver ~= "3" then return end--Ignore old versions
 		if DBM:AntiSpam(10, "GCB") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
@@ -4042,7 +4042,7 @@ do
 
 	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
-		if not ver or not (ver == "6") then return end--Ignore old versions
+		if not ver or ver ~= "6" then return end--Ignore old versions
 		if DBM:AntiSpam(5, "GCE") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
@@ -4080,7 +4080,7 @@ do
 	end
 
 	guildSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
 		lastBossEngage[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
@@ -4091,7 +4091,7 @@ do
 	end
 
 	guildSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 		lastBossDefeat[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
@@ -4103,7 +4103,7 @@ do
 
 	guildSyncHandlers["WBA"] = function(sender, bossName, faction, spellId, time, ver) -- Classic only
 		DBM:Debug("WBA sync recieved")
-		if not ver or not (ver == "4") or isRetail then return end--Ignore old versions
+		if not ver or ver ~= "4" or isRetail then return end--Ignore old versions
 		if lastBossEngage[bossName..faction] and (GetTime() - lastBossEngage[bossName..faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
 		lastBossEngage[bossName..faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
@@ -4120,7 +4120,7 @@ do
 	end
 
 	whisperSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
 		lastBossEngage[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and (isRetail and not IsEncounterInProgress() or #inCombat == 0) then
@@ -4139,7 +4139,7 @@ do
 	end
 
 	whisperSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 		lastBossDefeat[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
@@ -4159,7 +4159,7 @@ do
 
 	whisperSyncHandlers["WBA"] = function(sender, bossName, faction, spellId, time, ver) -- Classic only
 		DBM:Debug("WBA sync recieved")
-		if not ver or not (ver == "4") or isRetail then return end--Ignore old versions
+		if not ver or ver ~= "4" or isRetail then return end--Ignore old versions
 		if lastBossEngage[bossName..faction] and (GetTime() - lastBossEngage[bossName..faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
 		lastBossEngage[bossName..faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
@@ -7836,7 +7836,7 @@ do
 		if optionName then
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
-		elseif not (optionName == false) then
+		elseif optionName ~= false then
 			obj.option = text
 			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
 		end
@@ -7899,7 +7899,7 @@ do
 		if optionName then
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
-		elseif not (optionName == false) then
+		elseif optionName ~= false then
 			obj.option = catType..spellId..announceType..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
 			if noFilter and announceType == "target" then
@@ -8049,7 +8049,7 @@ do
 		if optionName then
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
-		elseif not (optionName == false) then
+		elseif optionName ~= false then
 			obj.option = "Yell"..(spellId or yellText)..(yellType ~= "yell" and yellType or "")..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
 			self.localization.options[obj.option] = L.AUTO_YELL_OPTION_TEXT[yellType]:format(spellId)
@@ -8709,7 +8709,7 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-		elseif not (optionName == false) then
+		elseif optionName ~= false then
 			local difficultyIcon = ""
 			if difficulty then
 				--1 LFR, 2 Normal, 3 Heroic, 4 Mythic
