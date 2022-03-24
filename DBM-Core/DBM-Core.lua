@@ -70,8 +70,8 @@ DBM = {
 }
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.2.9 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 3, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.2.10 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 3, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.17 alpha"
 	DBM.ReleaseRevision = releaseDate(2022, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -394,7 +394,7 @@ local SWFilterDisabled = 12
 
 local fakeBWVersion, fakeBWHash
 if isRetail then
-	fakeBWVersion, fakeBWHash = 235, "0ee9581"
+	fakeBWVersion, fakeBWHash = 239, "65aeaa7"
 else
 	fakeBWVersion, fakeBWHash = 34, "c88d415"
 end
