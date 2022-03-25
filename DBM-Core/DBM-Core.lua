@@ -8693,8 +8693,8 @@ do
 		--		customSpellName = announceText
 		--	end
 		--else--Move args over for legacy compat or just supporting one less nil in the prototype if announceText isn't needed
-		--	stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty =
-		--	announceText, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice
+			stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty =
+			announceText, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice
 		--end
 		--Check for alternate spellid usage in optionname field since no announceText
 		--This check can run here since special warning has it's own optionVersion arg
