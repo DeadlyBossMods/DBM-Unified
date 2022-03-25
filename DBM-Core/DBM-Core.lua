@@ -8684,21 +8684,21 @@ do
 			return
 		end
 		local alternateSpellId, customSpellName
-		if type(announceText) == "string" then--stacks will never be a string string, it's a number or nil. it means announceText is used
-			if DBM.Options.WarningShortText then
-				customSpellName = announceText
+		--if type(announceText) == "string" then--stacks will never be a string string, it's a number or nil. it means announceText is used
+		--	if DBM.Options.WarningShortText then
+		--		customSpellName = announceText
+		--	end
+		--else--Move args over for legacy compat or just supporting one less nil in the prototype if announceText isn't needed
+		--	stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty =
+		--	announceText, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice
+		--end
+		--Check for alternate spellid usage in optionname field since no announceText
+		--This check can run here since special warning has it's own optionVersion arg
+		if type(optionName) == "number" then
+			if DBM.Options.SpecialWarningShortText then
+				alternateSpellId = optionName
 			end
-		else--Move args over for legacy compat or just supporting one less nil in the prototype if announceText isn't needed
-			stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty =
-			announceText, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice
-			--Check for alternate spellid usage in optionname field since no announceText
-			--This check can run here since special warning has it's own optionVersion arg
-			if type(optionName) == "number" then
-				if DBM.Options.SpecialWarningShortText then
-					alternateSpellId = optionName
-				end
-				optionName = nil
-			end
+			optionName = nil
 		end
 		if runSound == true then
 			runSound = 2
