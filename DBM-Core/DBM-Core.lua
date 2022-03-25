@@ -28,6 +28,7 @@ local _, private = ...
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
+--local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 9000)
 
 local DBMPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC"
 private.DBMPrefix = DBMPrefix
@@ -4010,7 +4011,7 @@ do
 
 	guildSyncHandlers["GCB"] = function(_, modId, ver, difficulty, difficultyModifier, name)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
-		if not ver or not (ver == "3") then return end--Ignore old versions
+		if not ver or ver ~= "3" then return end--Ignore old versions
 		if DBM:AntiSpam(10, "GCB") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
@@ -4041,7 +4042,7 @@ do
 
 	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
-		if not ver or not (ver == "6") then return end--Ignore old versions
+		if not ver or ver ~= "6" then return end--Ignore old versions
 		if DBM:AntiSpam(5, "GCE") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
@@ -4079,7 +4080,7 @@ do
 	end
 
 	guildSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
 		lastBossEngage[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
@@ -4090,7 +4091,7 @@ do
 	end
 
 	guildSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 		lastBossDefeat[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
@@ -4102,7 +4103,7 @@ do
 
 	guildSyncHandlers["WBA"] = function(sender, bossName, faction, spellId, time, ver) -- Classic only
 		DBM:Debug("WBA sync recieved")
-		if not ver or not (ver == "4") or isRetail then return end--Ignore old versions
+		if not ver or ver ~= "4" or isRetail then return end--Ignore old versions
 		if lastBossEngage[bossName..faction] and (GetTime() - lastBossEngage[bossName..faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
 		lastBossEngage[bossName..faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
@@ -4119,7 +4120,7 @@ do
 	end
 
 	whisperSyncHandlers["WBE"] = function(sender, modId, realm, health, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
 		lastBossEngage[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and (isRetail and not IsEncounterInProgress() or #inCombat == 0) then
@@ -4138,7 +4139,7 @@ do
 	end
 
 	whisperSyncHandlers["WBD"] = function(sender, modId, realm, ver, name)
-		if not ver or not (ver == "8") then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 		lastBossDefeat[modId..realm] = GetTime()
 		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
@@ -4158,7 +4159,7 @@ do
 
 	whisperSyncHandlers["WBA"] = function(sender, bossName, faction, spellId, time, ver) -- Classic only
 		DBM:Debug("WBA sync recieved")
-		if not ver or not (ver == "4") or isRetail then return end--Ignore old versions
+		if not ver or ver ~= "4" or isRetail then return end--Ignore old versions
 		if lastBossEngage[bossName..faction] and (GetTime() - lastBossEngage[bossName..faction] < 30) then return end--We recently got a sync about this buff on this realm, so do nothing.
 		lastBossEngage[bossName..faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
@@ -7621,13 +7622,17 @@ do
 	-- TODO: is there a good reason that this is a weak table?
 	local cachedColorFunctions = setmetatable({}, {__mode = "kv"})
 
-	local function setText(announceType, spellId, castTime, preWarnTime)
+	local function setText(announceType, spellId, castTime, preWarnTime, customName)
 		local spellName
-		if type(spellId) == "string" and spellId:match("ej%d+") then
-			spellId = string.sub(spellId, 3)
-			spellName = DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN
+		if customName then
+			spellName = customName
 		else
-			spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			if type(spellId) == "string" and spellId:match("ej%d+") then
+				spellId = string.sub(spellId, 3)
+				spellName = DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN
+			else
+				spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			end
 		end
 		local text
 		if announceType == "cast" then
@@ -7718,7 +7723,7 @@ do
 				self.mod:AddMsg(text, nil)
 			end
 			if self.sound > 0 then
-				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
+				if DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
 					DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
 				end
@@ -7835,7 +7840,7 @@ do
 		if optionName then
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
-		elseif not (optionName == false) then
+		elseif optionName ~= false then--It's not false or it's nil, add it to GUI using auto locals
 			obj.option = text
 			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
 		end
@@ -7844,14 +7849,25 @@ do
 	end
 
 	-- new constructor (partially auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter)
+	local function newAnnounce(self, announceType, spellId, announceText, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter)
 		if not spellId then
 			error("newAnnounce: you must provide spellId", 2)
 			return
 		end
-		local optionVersion, alternateSpellId
+		local optionVersion, alternateSpellId, customSpellName
+		--Backwards compat with objects not using announceText arg
+		--Also allows it to be optional for shorthanding mods without doing an extra nil
+		if type(announceText) == "string" then--color will never be a string. Only number or nil
+			if DBM.Options.WarningShortText then
+				customSpellName = announceText
+			end
+		else--If announceText isn't a string, it's not used and always assume it's color arg and move args over by 1
+			color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter =
+			announceText, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption
+		end
+		--This check has to continue running outside of announceText because optionName is also option version
 		if type(optionName) == "number" then
-			if optionName > 1000 then--Being used as spell name shortening
+			if optionName > 10 then--Being used as spell name shortening
 				if DBM.Options.WarningShortText then
 					alternateSpellId = optionName
 				end
@@ -7863,11 +7879,7 @@ do
 		if soundOption and type(soundOption) == "boolean" then
 			soundOption = 0--No Sound
 		end
-		if type(spellId) == "string" and spellId:match("OptionVersion") then
-			print("newAnnounce for "..color.." is using OptionVersion hack. this is depricated")
-			return
-		end
-		local text, spellName = setText(announceType, alternateSpellId or spellId, castTime, preWarnTime)
+		local text, spellName = setText(announceType, alternateSpellId or spellId, castTime, preWarnTime, customSpellName)
 		icon = icon or spellId
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
@@ -7895,10 +7907,10 @@ do
 				catType = "announceother"
 			end
 		end
-		if optionName then
+		if optionName then--Being used for custom description
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
-		elseif not (optionName == false) then
+		elseif optionName ~= false then--It's not false or it's nil, add it to GUI using auto locals
 			obj.option = catType..spellId..announceType..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, catType, nil, nil, nil, spellId, announceType)
 			if noFilter and announceType == "target" then
@@ -7911,93 +7923,93 @@ do
 		return obj
 	end
 
-	function bossModPrototype:NewYouAnnounce(spellId, color, ...)
-		return newAnnounce(self, "you", spellId, color or 1, ...)
+	function bossModPrototype:NewYouAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "you", spellId, announceText, color or 1, ...)
 	end
 
-	function bossModPrototype:NewTargetNoFilterAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
-		return newAnnounce(self, "target", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
+	function bossModPrototype:NewTargetNoFilterAnnounce(spellId, announceText, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
+		return newAnnounce(self, "target", spellId, announceText, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
 	end
 
-	function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
-		return newAnnounce(self, "target", spellId, color or 3, ...)
+	function bossModPrototype:NewTargetAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "target", spellId, announceText, color or 3, ...)
 	end
 
-	function bossModPrototype:NewTargetSourceAnnounce(spellId, color, ...)
-		return newAnnounce(self, "targetsource", spellId, color or 3, ...)
+	function bossModPrototype:NewTargetSourceAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "targetsource", spellId, announceText, color or 3, ...)
 	end
 
-	function bossModPrototype:NewTargetCountAnnounce(spellId, color, ...)
-		return newAnnounce(self, "targetcount", spellId, color or 3, ...)
+	function bossModPrototype:NewTargetCountAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "targetcount", spellId, announceText, color or 3, ...)
 	end
 
-	function bossModPrototype:NewSpellAnnounce(spellId, color, ...)
-		return newAnnounce(self, "spell", spellId, color or 2, ...)
+	function bossModPrototype:NewSpellAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "spell", spellId, announceText, color or 2, ...)
 	end
 
-	function bossModPrototype:NewEndAnnounce(spellId, color, ...)
-		return newAnnounce(self, "ends", spellId, color or 2, ...)
+	function bossModPrototype:NewEndAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "ends", spellId, announceText, color or 2, ...)
 	end
 
-	function bossModPrototype:NewEndTargetAnnounce(spellId, color, ...)
-		return newAnnounce(self, "endtarget", spellId, color or 2, ...)
+	function bossModPrototype:NewEndTargetAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "endtarget", spellId, announceText, color or 2, ...)
 	end
 
-	function bossModPrototype:NewFadesAnnounce(spellId, color, ...)
-		return newAnnounce(self, "fades", spellId, color or 2, ...)
+	function bossModPrototype:NewFadesAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "fades", spellId, announceText, color or 2, ...)
 	end
 
-	function bossModPrototype:NewAddsLeftAnnounce(spellId, color, ...)
-		return newAnnounce(self, "addsleft", spellId, color or 3, ...)
+	function bossModPrototype:NewAddsLeftAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "addsleft", spellId, announceText, color or 3, ...)
 	end
 
-	function bossModPrototype:NewCountAnnounce(spellId, color, ...)
-		return newAnnounce(self, "count", spellId, color or 2, ...)
+	function bossModPrototype:NewCountAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "count", spellId, announceText, color or 2, ...)
 	end
 
-	function bossModPrototype:NewStackAnnounce(spellId, color, ...)
-		return newAnnounce(self, "stack", spellId, color or 2, ...)
+	function bossModPrototype:NewStackAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "stack", spellId, announceText, color or 2, ...)
 	end
 
-	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, _, soundOption) -- spellId, color, castTime, icon, optionDefault, optionName, noArg, soundOption
-		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, soundOption)
+	function bossModPrototype:NewCastAnnounce(spellId, announceText, color, castTime, icon, optionDefault, optionName, _, soundOption) -- spellId, color, castTime, icon, optionDefault, optionName, noArg, soundOption
+		return newAnnounce(self, "cast", spellId, announceText, color or 3, icon, optionDefault, optionName, castTime, nil, soundOption)
 	end
 
-	function bossModPrototype:NewSoonAnnounce(spellId, color, ...)
-		return newAnnounce(self, "soon", spellId, color or 2, ...)
+	function bossModPrototype:NewSoonAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "soon", spellId, announceText, color or 2, ...)
 	end
 
-	function bossModPrototype:NewSoonCountAnnounce(spellId, color, ...)
-		return newAnnounce(self, "sooncount", spellId, color or 2, ...)
+	function bossModPrototype:NewSoonCountAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "sooncount", spellId, announceText, color or 2, ...)
 	end
 
 	--This object disables sounds, it's almost always used in combation with a countdown timer. Even if not a countdown, its a text only spam not a sound spam
-	function bossModPrototype:NewCountdownAnnounce(spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, _, noFilter) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
-		return newAnnounce(self, "countdown", spellId, color or 4, icon, optionDefault, optionName, castTime, preWarnTime, 0, noFilter)
+	function bossModPrototype:NewCountdownAnnounce(spellId, announceText, color, icon, optionDefault, optionName, castTime, preWarnTime, _, noFilter) -- spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter
+		return newAnnounce(self, "countdown", spellId, announceText, color or 4, icon, optionDefault, optionName, castTime, preWarnTime, 0, noFilter)
 	end
 
-	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, _, soundOption) -- spellId, time, color, icon, optionDefault, optionName, noArg, soundOption
-		return newAnnounce(self, "prewarn", spellId, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
+	function bossModPrototype:NewPreWarnAnnounce(spellId, announceText, time, color, icon, optionDefault, optionName, _, soundOption) -- spellId, time, color, icon, optionDefault, optionName, noArg, soundOption
+		return newAnnounce(self, "prewarn", spellId, announceText, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
 	end
 
-	function bossModPrototype:NewBaitAnnounce(spellId, color, ...)
-		return newAnnounce(self, "bait", spellId, color or 3, ...)
+	function bossModPrototype:NewBaitAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "bait", spellId, announceText, color or 3, ...)
 	end
 
-	function bossModPrototype:NewPhaseAnnounce(stage, color, icon, ...)
-		return newAnnounce(self, "stage", stage, color or 2, icon or "136116", ...)
+	function bossModPrototype:NewPhaseAnnounce(stage, announceText, color, icon, ...)
+		return newAnnounce(self, "stage", stage, announceText, color or 2, icon or "136116", ...)
 	end
 
 	function bossModPrototype:NewPhaseChangeAnnounce(color, icon, ...)
-		return newAnnounce(self, "stagechange", 0, color or 2, icon or "136116", ...)
+		return newAnnounce(self, "stagechange", 0, nil, color or 2, icon or "136116", ...)
 	end
 
 	function bossModPrototype:NewPrePhaseAnnounce(stage, color, icon, ...)
-		return newAnnounce(self, "prestage", stage, color or 2, icon or "136116", ...)
+		return newAnnounce(self, "prestage", stage, nil, color or 2, icon or "136116", ...)
 	end
 
-	function bossModPrototype:NewMoveToAnnounce(spellId, color, ...)
-		return newAnnounce(self, "moveto", spellId, color or 3, ...)
+	function bossModPrototype:NewMoveToAnnounce(spellId, announceText, color, ...)
+		return newAnnounce(self, "moveto", spellId, announceText, color or 3, ...)
 	end
 end
 
@@ -8011,10 +8023,6 @@ do
 	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
 		if not spellId and not yellText then
 			error("NewYell: you must provide either spellId or yellText", 2)
-			return
-		end
-		if type(spellId) == "string" and spellId:match("OptionVersion") then
-			print("newYell for: "..yellText.." is using OptionVersion hack. This is depricated")
 			return
 		end
 		local optionVersion
@@ -8048,7 +8056,7 @@ do
 		if optionName then
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
-		elseif not (optionName == false) then
+		elseif optionName ~= false then--It's not false or it's nil, add it to GUI using auto locals
 			obj.option = "Yell"..(spellId or yellText)..(yellType ~= "yell" and yellType or "")..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, "yell", nil, nil, nil, spellId, yellType)
 			self.localization.options[obj.option] = L.AUTO_YELL_OPTION_TEXT[yellType]:format(spellId)
@@ -8353,12 +8361,16 @@ do
 
 	local textureCode = " |T%s:12:12|t "
 
-	local function setText(announceType, spellId, stacks)
+	local function setText(announceType, spellId, stacks, customSpellName)
 		local text, spellName
-		if type(spellId) == "string" and spellId:match("ej%d+") then
-			spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN
+		if customSpellName then
+			spellName = customSpellName
 		else
-			spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			if type(spellId) == "string" and spellId:match("ej%d+") then
+				spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN
+			else
+				spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			end
 		end
 		if announceType == "prewarn" then
 			if type(stacks) == "string" then
@@ -8666,10 +8678,27 @@ do
 		return obj
 	end
 
-	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty)
+	local function newSpecialWarning(self, announceType, spellId, announceText, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty)
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
+		end
+		local alternateSpellId, customSpellName
+		if type(announceText) == "string" then--stacks will never be a string string, it's a number or nil. it means announceText is used
+			if DBM.Options.WarningShortText then
+				customSpellName = announceText
+			end
+		else--Move args over for legacy compat or just supporting one less nil in the prototype if announceText isn't needed
+			stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty =
+			announceText, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice
+			--Check for alternate spellid usage in optionname field since no announceText
+			--This check can run here since special warning has it's own optionVersion arg
+			if type(optionName) == "number" then
+				if DBM.Options.SpecialWarningShortText then
+					alternateSpellId = optionName
+				end
+				optionName = nil
+			end
 		end
 		if runSound == true then
 			runSound = 2
@@ -8679,14 +8708,7 @@ do
 		if hasVoice == true then--if not a number, set it to 2, old mods that don't use new numbered system
 			hasVoice = 2
 		end
-		local alternateSpellId
-		if type(optionName) == "number" then
-			if DBM.Options.SpecialWarningShortText then
-				alternateSpellId = optionName
-			end
-			optionName = nil
-		end
-		local text, spellName = setText(announceType, alternateSpellId or spellId, stacks)
+		local text, spellName = setText(announceType, alternateSpellId or spellId, stacks, customSpellName)
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
 				text = text,
@@ -8706,9 +8728,9 @@ do
 			},
 			mt
 		)
-		if optionName then
+		if optionName then--Used for custom option text
 			obj.option = optionName
-		elseif not (optionName == false) then
+		elseif optionName ~= false then--It's not false or it's nil, add it to GUI using auto locals
 			local difficultyIcon = ""
 			if difficulty then
 				--1 LFR, 2 Normal, 3 Heroic, 4 Mythic
@@ -8752,180 +8774,180 @@ do
 		return obj
 	end
 
-	function bossModPrototype:NewSpecialWarningSpell(text, optionDefault, ...)
-		return newSpecialWarning(self, "spell", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSpell(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "spell", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningEnd(text, optionDefault, ...)
-		return newSpecialWarning(self, "ends", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningEnd(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "ends", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningFades(text, optionDefault, ...)
-		return newSpecialWarning(self, "fades", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningFades(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "fades", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoon(text, optionDefault, ...)
-		return newSpecialWarning(self, "soon", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoon(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "soon", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningBait(text, optionDefault, ...)
-		return newSpecialWarning(self, "bait", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningBait(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "bait", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDispel(text, optionDefault, ...)
-		return newSpecialWarning(self, "dispel", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDispel(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "dispel", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningInterrupt(text, optionDefault, ...)
-		return newSpecialWarning(self, "interrupt", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningInterrupt(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "interrupt", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningInterruptCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "interruptcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningInterruptCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "interruptcount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYou(text, optionDefault, ...)
-		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYou(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "you", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYouCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "youcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYouCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "youcount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYouPos(text, optionDefault, ...)
-		return newSpecialWarning(self, "youpos", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYouPos(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "youpos", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYouPosCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "youposcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYouPosCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "youposcount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoakPos(text, optionDefault, ...)
-		return newSpecialWarning(self, "soakpos", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoakPos(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "soakpos", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTarget(text, optionDefault, ...)
-		return newSpecialWarning(self, "target", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTarget(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "target", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTargetCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "targetcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTargetCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "targetcount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDefensive(text, optionDefault, ...)
-		return newSpecialWarning(self, "defensive", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDefensive(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "defensive", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTaunt(text, optionDefault, ...)
-		return newSpecialWarning(self, "taunt", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTaunt(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "taunt", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningClose(text, optionDefault, ...)
-		return newSpecialWarning(self, "close", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningClose(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "close", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMove(text, optionDefault, ...)
-		return newSpecialWarning(self, "move", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMove(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "move", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningKeepMove(text, optionDefault, ...)
-		return newSpecialWarning(self, "keepmove", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningKeepMove(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "keepmove", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStopMove(text, optionDefault, ...)
-		return newSpecialWarning(self, "stopmove", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningStopMove(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "stopmove", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningGTFO(text, optionDefault, ...)
-		return newSpecialWarning(self, "gtfo", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningGTFO(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "gtfo", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDodge(text, optionDefault, ...)
-		return newSpecialWarning(self, "dodge", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDodge(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "dodge", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDodgeCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "dodgecount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDodgeCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "dodgecount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDodgeLoc(text, optionDefault, ...)
-		return newSpecialWarning(self, "dodgeloc", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDodgeLoc(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "dodgeloc", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMoveAway(text, optionDefault, ...)
-		return newSpecialWarning(self, "moveaway", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMoveAway(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "moveaway", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMoveAwayCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "moveawaycount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMoveAwayCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "moveawaycount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMoveTo(text, optionDefault, ...)
-		return newSpecialWarning(self, "moveto", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMoveTo(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "moveto", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoak(text, optionDefault, ...)
-		return newSpecialWarning(self, "soak", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoak(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "soak", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoakCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "soakcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoakCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "soakcount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningJump(text, optionDefault, ...)
-		return newSpecialWarning(self, "jump", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningJump(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "jump", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningRun(text, optionDefault, optionName, optionVersion, runSound, ...)
-		return newSpecialWarning(self, "run", text, nil, optionDefault, optionName, optionVersion, runSound or 4, ...)
+	function bossModPrototype:NewSpecialWarningRun(text, announceText, optionDefault, optionName, optionVersion, runSound, ...)
+		return newSpecialWarning(self, "run", text, announceText, nil, optionDefault, optionName, optionVersion, runSound or 4, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningCast(text, optionDefault, ...)
-		return newSpecialWarning(self, "cast", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningCast(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "cast", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningLookAway(text, optionDefault, ...)
-		return newSpecialWarning(self, "lookaway", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningLookAway(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "lookaway", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningReflect(text, optionDefault, ...)
-		return newSpecialWarning(self, "reflect", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningReflect(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "reflect", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "count", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoonCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "sooncount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoonCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "sooncount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, ...)
-		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningStack(text, announceText, optionDefault, stacks, ...)
+		return newSpecialWarning(self, "stack", text, announceText, stacks, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSwitch(text, optionDefault, ...)
-		return newSpecialWarning(self, "switch", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSwitch(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "switch", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSwitchCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "switchcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSwitchCount(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "switchcount", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningAdds(text, optionDefault, ...)
-		return newSpecialWarning(self, "adds", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningAdds(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "adds", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningAddsCustom(text, optionDefault, ...)
-		return newSpecialWarning(self, "addscustom", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningAddsCustom(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "addscustom", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTargetChange(text, optionDefault, ...)
-		return newSpecialWarning(self, "targetchange", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTargetChange(text, announceText, optionDefault, ...)
+		return newSpecialWarning(self, "targetchange", text, announceText, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
-		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningPreWarn(text, announceText, optionDefault, time, ...)
+		return newSpecialWarning(self, "prewarn", text, announceText, time, optionDefault, ...)
 	end
 
 	function DBM:PlayCountSound(number, forceVoice, forcePath)
@@ -9574,7 +9596,7 @@ do
 	end
 
 	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId, optionType)
-		if optionName ~= false then
+		if optionName ~= false then--It's not false or it's nil, add it to GUI using auto locals
 			self.option = optionName or self.id
 			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId, optionType)
 		end
@@ -9619,10 +9641,6 @@ do
 	-- note that the function might look unclear because it needs to handle different timer types, especially achievement timers need special treatment
 	-- If a new countdown is added to an existing timer that didn't have one before, use optionName (number) to force timer to reset defaults by assigning it a new variable
 	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, inlineIcon, keep, countdown, countdownMax, r, g, b)
-		if type(timer) == "string" and timer:match("OptionVersion") then
-			DBM:Debug("|cffff0000OptionVersion hack depricated, remove it from: |r"..spellId)
-			return
-		end
 		if type(colorType) == "number" and colorType > 7 then
 			DBM:Debug("|cffff0000texture is in the colorType arg for: |r"..spellId)
 		end
