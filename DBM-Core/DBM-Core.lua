@@ -8683,7 +8683,11 @@ do
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
 		end
-		local alternateSpellId, customSpellName
+		local alternateSpellId--, customSpellName
+		if announceText then
+			--waste cpu so luacheck is happy variable is used for something
+			DBM:Debug(announceText, 3)
+		end
 		--if type(announceText) == "string" then--stacks will never be a string string, it's a number or nil. it means announceText is used
 		--	if DBM.Options.WarningShortText then
 		--		customSpellName = announceText
@@ -8708,7 +8712,7 @@ do
 		if hasVoice == true then--if not a number, set it to 2, old mods that don't use new numbered system
 			hasVoice = 2
 		end
-		local text, spellName = setText(announceType, alternateSpellId or spellId, stacks, customSpellName)
+		local text, spellName = setText(announceType, alternateSpellId or spellId, stacks)--customSpellName
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
 				text = text,
