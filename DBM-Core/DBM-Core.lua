@@ -7622,13 +7622,17 @@ do
 	-- TODO: is there a good reason that this is a weak table?
 	local cachedColorFunctions = setmetatable({}, {__mode = "kv"})
 
-	local function setText(announceType, spellId, castTime, preWarnTime)
+	local function setText(announceType, spellId, castTime, preWarnTime, customName)
 		local spellName
-		if type(spellId) == "string" and spellId:match("ej%d+") then
-			spellId = string.sub(spellId, 3)
-			spellName = DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN
+		if customName then
+			spellName = customName
 		else
-			spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			if type(spellId) == "string" and spellId:match("ej%d+") then
+				spellId = string.sub(spellId, 3)
+				spellName = DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN
+			else
+				spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			end
 		end
 		local text
 		if announceType == "cast" then
@@ -7649,6 +7653,12 @@ do
 			text = L.AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName)
 		end
 		return text, spellName
+	end
+
+	function announcePrototype:SetText(customName)
+		local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime, customName)
+		self.text = text
+		self.spellName = spellName
 	end
 
 	-- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
