@@ -2652,6 +2652,9 @@ function DBM:LoadModOptions(modId, inCombat, first)
 			--Why are saved options cleaned twice?
 			if not inCombat then
 				for option, _ in pairs(savedOptions[id][profileNum]) do
+		 			if type(option) == "number" then
+ 						self:Debug("|cffff0000Option type invalid: |r"..option)
+ 					end
 					if (mod.DefaultOptions[option] == nil) and (type(option) == "number" or not (option:find("talent") or option:find("FastestClear") or option:find("CVAR") or option:find("RestoreSetting"))) then
 						savedOptions[id][profileNum][option] = nil
 					elseif mod.DefaultOptions[option] and (type(mod.DefaultOptions[option]) == "table") then--recover broken dropdown option
@@ -7859,7 +7862,7 @@ do
 		end
 		local optionVersion, alternateSpellId
 		if type(optionName) == "number" then
-			if optionName > 1000 then--Being used as spell name shortening
+			if optionName > 10 then--Being used as spell name shortening
 				if DBM.Options.WarningShortText then
 					alternateSpellId = optionName
 				end
@@ -7870,10 +7873,6 @@ do
 		end
 		if soundOption and type(soundOption) == "boolean" then
 			soundOption = 0--No Sound
-		end
-		if type(spellId) == "string" and spellId:match("OptionVersion") then
-			print("newAnnounce for "..color.." is using OptionVersion hack. this is depricated")
-			return
 		end
 		local text, spellName = setText(announceType, alternateSpellId or spellId, castTime, preWarnTime)
 		icon = icon or spellId
@@ -8019,10 +8018,6 @@ do
 	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
 		if not spellId and not yellText then
 			error("NewYell: you must provide either spellId or yellText", 2)
-			return
-		end
-		if type(spellId) == "string" and spellId:match("OptionVersion") then
-			print("newYell for: "..yellText.." is using OptionVersion hack. This is depricated")
 			return
 		end
 		local optionVersion
@@ -8361,12 +8356,16 @@ do
 
 	local textureCode = " |T%s:12:12|t "
 
-	local function setText(announceType, spellId, stacks)
+	local function setText(announceType, spellId, stacks, customName)
 		local text, spellName
-		if type(spellId) == "string" and spellId:match("ej%d+") then
-			spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN
+		if customName then
+			spellName = customName
 		else
-			spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			if type(spellId) == "string" and spellId:match("ej%d+") then
+				spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN
+			else
+				spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
+			end
 		end
 		if announceType == "prewarn" then
 			if type(stacks) == "string" then
@@ -8378,6 +8377,12 @@ do
 			text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
 		end
 		return text, spellName
+	end
+
+	function specialWarningPrototype:SetText(customName)
+		local text, spellName = setText(self.announceType, self.spellId, self.stacks, customName)
+		self.text = text
+		self.spellName = spellName
 	end
 
 	local function canVoiceReplace(self, soundId)
@@ -8760,180 +8765,180 @@ do
 		return obj
 	end
 
-	function bossModPrototype:NewSpecialWarningSpell(text, optionDefault, ...)
-		return newSpecialWarning(self, "spell", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSpell(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "spell", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningEnd(text, optionDefault, ...)
-		return newSpecialWarning(self, "ends", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningEnd(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "ends", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningFades(text, optionDefault, ...)
-		return newSpecialWarning(self, "fades", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningFades(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "fades", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoon(text, optionDefault, ...)
-		return newSpecialWarning(self, "soon", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoon(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "soon", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningBait(text, optionDefault, ...)
-		return newSpecialWarning(self, "bait", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningBait(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "bait", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDispel(text, optionDefault, ...)
-		return newSpecialWarning(self, "dispel", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDispel(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "dispel", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningInterrupt(text, optionDefault, ...)
-		return newSpecialWarning(self, "interrupt", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningInterrupt(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "interrupt", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningInterruptCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "interruptcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningInterruptCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "interruptcount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYou(text, optionDefault, ...)
-		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYou(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "you", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYouCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "youcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYouCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "youcount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYouPos(text, optionDefault, ...)
-		return newSpecialWarning(self, "youpos", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYouPos(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "youpos", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningYouPosCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "youposcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningYouPosCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "youposcount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoakPos(text, optionDefault, ...)
-		return newSpecialWarning(self, "soakpos", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoakPos(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "soakpos", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTarget(text, optionDefault, ...)
-		return newSpecialWarning(self, "target", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTarget(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "target", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTargetCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "targetcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTargetCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "targetcount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDefensive(text, optionDefault, ...)
-		return newSpecialWarning(self, "defensive", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDefensive(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "defensive", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTaunt(text, optionDefault, ...)
-		return newSpecialWarning(self, "taunt", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTaunt(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "taunt", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningClose(text, optionDefault, ...)
-		return newSpecialWarning(self, "close", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningClose(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "close", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMove(text, optionDefault, ...)
-		return newSpecialWarning(self, "move", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMove(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "move", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningKeepMove(text, optionDefault, ...)
-		return newSpecialWarning(self, "keepmove", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningKeepMove(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "keepmove", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStopMove(text, optionDefault, ...)
-		return newSpecialWarning(self, "stopmove", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningStopMove(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "stopmove", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningGTFO(text, optionDefault, ...)
-		return newSpecialWarning(self, "gtfo", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningGTFO(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "gtfo", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDodge(text, optionDefault, ...)
-		return newSpecialWarning(self, "dodge", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDodge(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "dodge", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDodgeCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "dodgecount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDodgeCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "dodgecount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningDodgeLoc(text, optionDefault, ...)
-		return newSpecialWarning(self, "dodgeloc", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningDodgeLoc(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "dodgeloc", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMoveAway(text, optionDefault, ...)
-		return newSpecialWarning(self, "moveaway", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMoveAway(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "moveaway", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMoveAwayCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "moveawaycount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMoveAwayCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "moveawaycount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningMoveTo(text, optionDefault, ...)
-		return newSpecialWarning(self, "moveto", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningMoveTo(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "moveto", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoak(text, optionDefault, ...)
-		return newSpecialWarning(self, "soak", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoak(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "soak", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoakCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "soakcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoakCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "soakcount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningJump(text, optionDefault, ...)
-		return newSpecialWarning(self, "jump", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningJump(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "jump", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningRun(text, optionDefault, optionName, optionVersion, runSound, ...)
-		return newSpecialWarning(self, "run", text, nil, optionDefault, optionName, optionVersion, runSound or 4, ...)
+	function bossModPrototype:NewSpecialWarningRun(spellId, optionDefault, optionName, optionVersion, runSound, ...)
+		return newSpecialWarning(self, "run", spellId, nil, optionDefault, optionName, optionVersion, runSound or 4, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningCast(text, optionDefault, ...)
-		return newSpecialWarning(self, "cast", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningCast(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "cast", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningLookAway(text, optionDefault, ...)
-		return newSpecialWarning(self, "lookaway", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningLookAway(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "lookaway", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningReflect(text, optionDefault, ...)
-		return newSpecialWarning(self, "reflect", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningReflect(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "reflect", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "count", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSoonCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "sooncount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSoonCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "sooncount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, ...)
-		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningStack(spellId, optionDefault, stacks, ...)
+		return newSpecialWarning(self, "stack", spellId, stacks, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSwitch(text, optionDefault, ...)
-		return newSpecialWarning(self, "switch", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSwitch(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "switch", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningSwitchCount(text, optionDefault, ...)
-		return newSpecialWarning(self, "switchcount", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningSwitchCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "switchcount", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningAdds(text, optionDefault, ...)
-		return newSpecialWarning(self, "adds", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningAdds(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "adds", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningAddsCustom(text, optionDefault, ...)
-		return newSpecialWarning(self, "addscustom", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningAddsCustom(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "addscustom", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningTargetChange(text, optionDefault, ...)
-		return newSpecialWarning(self, "targetchange", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTargetChange(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "targetchange", spellId, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
-		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningPreWarn(spellId, optionDefault, time, ...)
+		return newSpecialWarning(self, "prewarn", spellId, time, optionDefault, ...)
 	end
 
 	function DBM:PlayCountSound(number, forceVoice, forcePath)
