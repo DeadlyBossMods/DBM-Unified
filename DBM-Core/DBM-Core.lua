@@ -1723,12 +1723,14 @@ do
 		if not event or not callbacks[event] then return end
 		if f then
 			if type(f) ~= "function" then
-				error("Usage: UnregisterCallback(event, callbackFunc)", 2)
+				error("Usage: DBM:UnregisterCallback(event, callbackFunc)", 2)
 			end
 			--> checking from the end to start and not stoping after found one result in case of a func being twice registered.
 			for i = #callbacks[event], 1, -1 do
 				if callbacks[event][i] == f then tremove (callbacks[event], i) end
 			end
+		else
+			error("Usage: DBM:UnregisterCallback(event, callbackFunc)", 2)
 		end
 	end
 end
