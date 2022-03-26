@@ -1729,8 +1729,6 @@ do
 			for i = #callbacks[event], 1, -1 do
 				if callbacks[event][i] == f then tremove (callbacks[event], i) end
 			end
-		else
-			callbacks[event] = nil
 		end
 	end
 end
