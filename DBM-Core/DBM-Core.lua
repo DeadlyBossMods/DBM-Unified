@@ -69,16 +69,22 @@ end
 DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
 }
+
+local fakeBWVersion, fakeBWHash
+local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.2.10 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 3, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.2.11 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 240, "b563b0b"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.17 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.18 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 36, "cf2511c"
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.31 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 3, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "2.5.32 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 36, "cf2511c"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -392,14 +398,6 @@ local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, ch
 local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
 local SWFilterDisabled = 12
-
-local fakeBWVersion, fakeBWHash
-if isRetail then
-	fakeBWVersion, fakeBWHash = 239, "65aeaa7"
-else
-	fakeBWVersion, fakeBWHash = 34, "c88d415"
-end
-local bwVersionResponseString = "V^%d^%s"
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
