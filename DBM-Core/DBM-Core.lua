@@ -7367,6 +7367,41 @@ end
 
 bossModPrototype.GetBossHP = DBM.GetBossHP
 
+-------------------------
+--  Timers Table Util  --
+-------------------------
+function bossModPrototype:GetFromTimersTable(table, difficultyName, phase, spellId, count)
+    local prev = table
+
+    if difficultyName ~= false then
+        if not difficultyName or not prev[difficultyName] then
+            DBM:Debug("difficultyName is missing from table")
+            return
+        end
+        prev = prev[difficultyName]
+    end
+
+    if phase ~= false then
+        if not phase or not prev[phase] then
+            DBM:Debug("phase is missing from table")
+            return
+        end
+        prev = prev[phase]
+    end
+
+    if not prev[spellId] then
+        DBM:Debug("spellId is missing from table")
+        return
+    end
+    prev = prev[spellId]
+
+    if count then
+        prev = prev[count]
+    end
+
+    return prev
+end
+
 -----------------------
 --  Announce Object  --
 -----------------------
