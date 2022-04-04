@@ -74,16 +74,16 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.2.11 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.2.12 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 4, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 240, "b563b0b"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.18 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.19 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 4, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 36, "cf2511c"
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.32 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 3, 30) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "2.5.33 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 4, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 36, "cf2511c"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -7762,12 +7762,6 @@ do
 				end
 				self.mod:AddMsg(text, nil)
 			end
-			if self.sound > 0 then
-				if DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
-				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
-					DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
-				end
-			end
 			--Message: Full message text
 			--Icon: Texture path/id for icon
 			--Type: Announce type
@@ -7780,6 +7774,12 @@ do
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
 			--boolean: Whether or not this warning is a special warning (higher priority).
 			fireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false)
+			if self.sound > 0 then
+				if DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
+				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
+					DBM:PlaySoundFile(DBM.Options.RaidWarningSound, nil, true)--Validate true
+				end
+			end
 		else
 			self.combinedcount = 0
 			self.combinedtext = {}
