@@ -4748,7 +4748,7 @@ do
 		["heroicscenario"] = "heroic",
 	}
 
-	function DBM:StartCombat(mod, delay, event, synced, syncedStartHp, syncedEvent, forceStats)
+	function DBM:StartCombat(mod, delay, event, synced, syncedStartHp, syncedEvent)
 		cSyncSender = {}
 		cSyncReceived = 0
 		if not checkEntry(inCombat, mod) then
