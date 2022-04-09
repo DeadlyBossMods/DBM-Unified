@@ -1174,7 +1174,6 @@ do
 				_shortTermRegisterEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus"
 			end
 		end
-		self.shortTermEventsRegistered = 1
 		self:RegisterEvents(unpack(_shortTermRegisterEvents))
 		-- Fix so we can register multiple short term events. Use at your own risk, as unsucribing will cause
 		-- all short term events to unregister.
@@ -1222,7 +1221,6 @@ do
 					end
 				end
 			end
-			self.shortTermEventsRegistered = nil
 			self.shortTermRegisterEvents = nil
 		end
 	end
