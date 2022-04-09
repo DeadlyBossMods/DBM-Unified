@@ -1213,11 +1213,11 @@ do
 					end
 					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(-11) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
 						unregisterUEvent(self, event)
-						DBM:Debug("unregisterUEvent for unit event "..event.." unregistered", 2)
+						DBM:Debug("unregisterUEvent for unit event "..event.." unregistered", 3)
 					end
 					if #mods == 0 then
 						registeredEvents[event] = nil
-						DBM:Debug("registeredEvents for event "..event.." nilled", 2)
+						DBM:Debug("registeredEvents for event "..event.." nilled", 3)
 					end
 				end
 			end
@@ -3342,14 +3342,12 @@ do
 		if instanceType == "none" or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			LastInstanceType = "none"
 			if not targetEventsRegistered then
-				DBM:Debug("Firing RegisterShortTermEvents to Add targetEventsRegistered", 2)
 				self:RegisterShortTermEvents("UPDATE_MOUSEOVER_UNIT", "NAME_PLATE_UNIT_ADDED", "UNIT_TARGET_UNFILTERED")
 				targetEventsRegistered = true
 			end
 		else
 			LastInstanceType = instanceType
 			if targetEventsRegistered then
-				DBM:Debug("Firing UnregisterShortTermEvents to clear targetEventsRegistered", 2)
 				self:UnregisterShortTermEvents()
 				targetEventsRegistered = false
 			end
