@@ -83,7 +83,7 @@ L.SpamSpecRoleGTFO					= "Фильтр 'GTFO' оповещений"
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
 L.TranslationBy 			= "Swix, TOM_RUS"
-L.Website					= "Посетите наш дискорд |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на твиттер @deadlybossmods or @MysticalOS"
+L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на твиттер: |cFF73C2FB@deadlybossmods или @MysticalOS|r"
 L.WebsiteButton				= "Форумы"
 
 L.OTabBosses				= "Боссы"
