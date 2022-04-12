@@ -79,6 +79,8 @@ L.SpamSpecRoleSoak					= "Фильтр 'поглощающих' оповещен
 L.SpamSpecRoleStack					= "Фильтр 'high stack' оповещений"
 L.SpamSpecRoleSwitch				= "Фильтр оповещений о 'смене цели' &amp; 'аддов'"
 L.SpamSpecRoleGTFO					= "Фильтр 'GTFO' оповещений"
+L.Highest							= "Наибольший таймер наверху"
+L.Lowest							= "Наименьший таймер наверху"
 -- Missing phrases. End ..
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
