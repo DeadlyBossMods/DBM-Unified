@@ -1,8 +1,8 @@
 ## Interface: 90200
-## Interface-Classic: 11402
+## Interface-Classic: 11403
 ## Interface-BCC: 20504
 ## X-Min-Interface: 90200
-## X-Min-Interface-Classic: 11402
+## X-Min-Interface-Classic: 11403
 ## X-Min-Interface-BCC: 20504
 
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
