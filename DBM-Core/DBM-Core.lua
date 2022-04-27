@@ -202,7 +202,14 @@ DBM.DefaultOptions = {
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	RecordOnlyBosses = false,
-	LogOnlyNonTrivial = true,
+	DoNotLogLFG = true,
+	LogCurrentRaids = true,
+	LogCurrentMPlus = true,
+	LogCurrentHeroic = false,
+	LogTrivialRaids = false,
+	LogTWRaids = false,
+	LogTrivialDungeons = false,
+	LogTWDungeons = false,
 	UseSoundChannel = "Master",
 	LFDEnhance = true,
 	WorldBossNearAlert = false,
@@ -5388,13 +5395,49 @@ do
 	local autoLog = false
 	local autoTLog = false
 
-	local function isCurrentContent()
-		return instanceDifficultyBylevel[LastInstanceMapID] and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) or (difficultyIndex or 0) == 8--current player level raid or any M+ dungeon
+	local function isLogableContent(self)
+		--1: Check for any broad global filters like LFG/LFR filter
+		--2: Check for what content specifically selected for logging
+		--3: Boss Only filter is handled somewhere else (where StartLogging is called)
+
+		if self.Options.DoNotLogLFG and isRetail and IsPartyLFG() then
+			return false
+		end
+
+		--First checks are manual index checks versus table because even old content can be scaled up using M+ or TW scaling tech
+		--Current player level Mythic+
+		if self.Options.LogCurrentMPlus and (difficultyIndex or 0) == 8 then
+			return true
+		end
+		--Timewalking or Chromie Time Raid
+		if self.Options.LogTWRaids and (C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) then
+			return true
+		end
+		--Timewalking or Chromie Time Dungeon
+		if self.Options.LogTWDungeons and (C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or difficultyIndex == 24 or difficultyIndex == 33) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 2) then
+			return true
+		end
+
+		--Now we do checks relying on pre coded trivial check table
+		--Current player level raid
+		if self.Options.LogCurrentRaids and instanceDifficultyBylevel[LastInstanceMapID] and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) then
+			return true
+		end
+		--Trivial raid (ie one below players level)
+		if self.Options.LogTrivialRaids and (instanceDifficultyBylevel[LastInstanceMapID][1] < playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) then
+			return true
+		end
+		--Current level heroic dungeon
+		if self.Options.LogCurrentHeroic and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and (difficultyIndex == 2 or difficultyIndex == 174) then
+			return true
+		end
+
+		return false
 	end
 
 	function DBM:StartLogging(timer, checkFunc, force)
 		self:Unschedule(DBM.StopLogging)
-		if not force and self.Options.LogOnlyNonTrivial and ((LastInstanceType ~= "raid" and difficultyIndex ~= 8) or (isRetail and IsPartyLFG()) or not isCurrentContent()) then return end
+		if not force and not isLogableContent(self) then return end
 		if self.Options.AutologBosses then
 			if not LoggingCombat() then
 				autoLog = true
