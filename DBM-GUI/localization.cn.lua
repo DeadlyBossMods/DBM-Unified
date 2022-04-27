@@ -117,10 +117,11 @@ L.AutologBosses				= "自动采用官方格式记录日志。"
 L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters	= "自动记录选项"
-L.RecordOnlyBosses			= "只记录团队BOSS数据 (不记录其他数据，使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
-L.LogOnlyNonTrivial			= "只记录团队Boss，而不记录随机团队/5人本/场景战役"
-L.Area_AutoLoggingContent	= "自动记录等级"
-L.LogCurrentRaids			= "当前等级团队副本Current level raids"
+L.RecordOnlyBosses			= "不记录小怪数据 (只记录团队BOSS数据，使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
+L.DoNotLogLFG				= "不记录随机5人本/团队副本"
+--Auto Logging: Recorded Content types
+L.Area_AutoLoggingContent	= "自动记录内容"
+L.LogCurrentRaids			= "当前等级团队副本"
 L.LogTWRaids				= "时光团队副本或通过克罗米进入的团队副本"--Retail Only
 L.LogTrivialRaids			= "低等级团队"
 L.LogCurrentMPlus			= "当前等级的M+5人本"--Retail Only
