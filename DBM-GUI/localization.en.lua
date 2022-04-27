@@ -106,13 +106,15 @@ L.ShowRespawn				= "Show boss respawn timer after a wipe"
 L.ShowQueuePop				= "Show time remaining to accept a queue pop (LFG,BG,etc)"
 --
 --Auto Logging: Logging toggles/types
-L.Area_AutoLogging			= "Auto Logging Options"
+L.Area_AutoLogging			= "Auto Logging Toggles"
 L.AutologBosses				= "Automatically record selected content using blizzard combat log"
 L.AdvancedAutologBosses		= "Automatically record selected content with Transcriptor"
 --Auto Logging: Global filter Options
+L.Area_AutoLoggingFilters	= "Auto Logging Filters"
 L.RecordOnlyBosses			= "Do not record trash (Only records Bosses. Use '/dbm pull' before bosses to capture pre pull pots &amp; ENCOUNTER_START)"
 L.DoNotLogLFG				= "Do not record LFG or LFR (queued content)"
 --Auto Logging: Recorded Content types
+L.Area_AutoLoggingContent	= "Auto Logging Content"
 L.LogCurrentRaids			= "Current level raids"
 L.LogTWRaids				= "Timewalking or Chromie Time raids"--Retail Only
 L.LogTrivialRaids			= "Trivial (below character level) raids"

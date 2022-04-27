@@ -20,19 +20,22 @@ bossLoggingArea:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")
 if _G["Transcriptor"] then
 	bossLoggingArea:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
 end
-bossLoggingArea:CreateCheckButton(L.RecordOnlyBosses, true, nil, "RecordOnlyBosses")
-bossLoggingArea:CreateCheckButton(L.DoNotLogLFG, true, nil, "DoNotLogLFG")
 
-bossLoggingArea:CreateCheckButton(L.LogCurrentRaids, true, nil, "LogCurrentRaids")
+local bossLoggingFilters		= extraFeaturesPanel:CreateArea(L.Area_AutoLoggingFilters)
+bossLoggingFilters:CreateCheckButton(L.RecordOnlyBosses, true, nil, "RecordOnlyBosses")
+bossLoggingFilters:CreateCheckButton(L.DoNotLogLFG, true, nil, "DoNotLogLFG")
+
+local bossLoggingContent		= extraFeaturesPanel:CreateArea(L.Area_AutoLoggingContent)
+bossLoggingContent:CreateCheckButton(L.LogCurrentRaids, true, nil, "LogCurrentRaids")
 if isRetail then
-	bossLoggingArea:CreateCheckButton(L.LogTWRaids, true, nil, "LogTWRaids")
+	bossLoggingContent:CreateCheckButton(L.LogTWRaids, true, nil, "LogTWRaids")
 end
-bossLoggingArea:CreateCheckButton(L.LogTrivialRaids, true, nil, "LogTrivialRaids")
+bossLoggingContent:CreateCheckButton(L.LogTrivialRaids, true, nil, "LogTrivialRaids")
 if isRetail then
-	bossLoggingArea:CreateCheckButton(L.LogCurrentMPlus, true, nil, "LogCurrentMPlus")
-	bossLoggingArea:CreateCheckButton(L.LogTWDungeons, true, nil, "LogTWDungeons")
+	bossLoggingContent:CreateCheckButton(L.LogCurrentMPlus, true, nil, "LogCurrentMPlus")
+	bossLoggingContent:CreateCheckButton(L.LogTWDungeons, true, nil, "LogTWDungeons")
 end
-bossLoggingArea:CreateCheckButton(L.LogCurrentHeroic, true, nil, "LogCurrentHeroic")
+bossLoggingContent:CreateCheckButton(L.LogCurrentHeroic, true, nil, "LogCurrentHeroic")
 
 if _G["oRA3Frame"] then
 	local thirdPartyArea = extraFeaturesPanel:CreateArea(L.Area_3rdParty)
