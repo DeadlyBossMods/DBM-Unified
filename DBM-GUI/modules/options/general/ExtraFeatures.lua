@@ -1,4 +1,5 @@
 local L = DBM_GUI_L
+local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local extraFeaturesPanel	= DBM_GUI.Cat_General:CreateNewPanel(L.Panel_ExtraFeatures, "option")
 
@@ -20,7 +21,18 @@ if _G["Transcriptor"] then
 	bossLoggingArea:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
 end
 bossLoggingArea:CreateCheckButton(L.RecordOnlyBosses, true, nil, "RecordOnlyBosses")
-bossLoggingArea:CreateCheckButton(L.LogOnlyNonTrivial, true, nil, "LogOnlyNonTrivial")
+bossLoggingArea:CreateCheckButton(L.DoNotLogLFG, true, nil, "DoNotLogLFG")
+
+bossLoggingArea:CreateCheckButton(L.LogCurrentRaids, true, nil, "LogCurrentRaids")
+if isRetail then
+	bossLoggingArea:CreateCheckButton(L.LogTWRaids, true, nil, "LogTWRaids")
+end
+bossLoggingArea:CreateCheckButton(L.LogTrivialRaids, true, nil, "LogTrivialRaids")
+if isRetail then
+	bossLoggingArea:CreateCheckButton(L.LogCurrentMPlus, true, nil, "LogCurrentMPlus")
+	bossLoggingArea:CreateCheckButton(L.LogTWDungeons, true, nil, "LogTWDungeons")
+end
+bossLoggingArea:CreateCheckButton(L.LogCurrentHeroic, true, nil, "LogCurrentHeroic")
 
 if _G["oRA3Frame"] then
 	local thirdPartyArea = extraFeaturesPanel:CreateArea(L.Area_3rdParty)
