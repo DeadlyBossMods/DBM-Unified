@@ -106,19 +106,21 @@ L.ShowQueuePop				= "입장 수락 남은 시간 타이머 표시 (공격대 찾
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging			= "자동 전투 기록 켜기/끄기"
 L.AutologBosses				= "블리자드 전투 로그를 사용해 선택한 콘텐트를 자동으로 기록"
-L.AdvancedAutologBosses		= "Transcriptor로 선택한 콘텐트를 자동으로 기록"
+L.AdvancedAutologBosses		= "Transcriptor를 사용해 선택한 콘텐트를 자동으로 기록"
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters	= "자동 기록 필터"
 L.RecordOnlyBosses			= "일반몹 기록 안함 (보스만 기록합니다. 보스전 시작 물약과 ENCOUNTER_START 이벤트를 기록하고 싶으면 '/dbm pull' 명령어를 사용하세요)"
-L.DoNotLogLFG				= "던전 찾기와 공격대 찾기 기록 안함 (대기열 있는 콘텐트)"
+L.DoNotLogLFG				= "던전 찾기와 공격대 찾기 기록 안함 (대기열 등록 콘텐트)"
 --Auto Logging: Recorded Content types
-L.Area_AutoLoggingContent	= "자동 기록 콘텐트"
-L.LogCurrentRaids			= "최고 레벨 레이드"
+L.Area_AutoLoggingContent	= "자동으로 기록할 콘텐트"
+L.LogCurrentMythicRaids		= "현재 확장팩 신화 레이드"--Retail Only
+L.LogCurrentRaids			= "현재 확장팩 비 신화 레이드 (영웅, 일반 그리고 던전 찾기와 공찾 기록 안함 옵션이 꺼져있을 경우엔 공찾까지)"
 L.LogTWRaids				= "시간여행 또는 크로미의 시간 레이드"--Retail Only
-L.LogTrivialRaids			= "구 레이드 (최고 레벨 이하)"
-L.LogCurrentMPlus			= "최고 레벨 신화+ 던전"--Retail Only
+L.LogTrivialRaids			= "구 레이드 (이전 확장팩)"
+L.LogCurrentMPlus			= "현재 확장팩 신화+ 던전"--Retail Only
+L.LogCurrentMythicZero		= "현재 확장팩 신화 0단 던전"--Retail Only
 L.LogTWDungeons				= "시간여행 또는 크로미의 시간 레이드"--Retail Only
-L.LogCurrentHeroic			= "최고 레벨 영웅 던전"
+L.LogCurrentHeroic			= "현재 확장팩 영웅 던전 (알림: 던전 찾기를 통해 영던을 돌면서 로그를 기록하고 싶다면 던전 찾기 기록 안함 옵션을 끄세요)"
 --
 L.Area_3rdParty				= "써드파티 애드온 설정"
 L.oRA3AnnounceConsumables	= "전투 시작시 oRA3 버프 검사 알림"
