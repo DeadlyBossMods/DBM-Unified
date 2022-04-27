@@ -115,12 +115,14 @@ L.RecordOnlyBosses			= "Do not record trash (Only records Bosses. Use '/dbm pull
 L.DoNotLogLFG				= "Do not record LFG or LFR (queued content)"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent	= "Auto Logging Content"
-L.LogCurrentRaids			= "Current level raids"
+L.LogCurrentMythicRaids		= "Current level Mythic raids"--Retail Only
+L.LogCurrentRaids			= "Current level non Mythic raids (Heroic, Normal, and LFR if LGF/LFR filter is disabled)"
 L.LogTWRaids				= "Timewalking or Chromie Time raids"--Retail Only
 L.LogTrivialRaids			= "Trivial (below character level) raids"
 L.LogCurrentMPlus			= "Current level M+ dungeons"--Retail Only
+L.LogCurrentMythicZero		= "Current level Mythic 0 dungeons"--Retail Only
 L.LogTWDungeons				= "Timewalking or Chromie Time dungeons"--Retail Only
-L.LogCurrentHeroic			= "Current level Heroic dungeons"
+L.LogCurrentHeroic			= "Current level Heroic dungeons (Note: if you are doing heroic via queuing and want it logged, turn off LFG filter)"
 --
 L.Area_3rdParty				= "3rd Party Addon Options"
 L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"

@@ -203,8 +203,10 @@ DBM.DefaultOptions = {
 	AdvancedAutologBosses = false,
 	RecordOnlyBosses = false,
 	DoNotLogLFG = true,
+	LogCurrentMythicRaids = true,
 	LogCurrentRaids = true,
 	LogCurrentMPlus = true,
+	LogCurrentMythicZero = false,
 	LogCurrentHeroic = false,
 	LogTrivialRaids = false,
 	LogTWRaids = false,
@@ -5419,12 +5421,19 @@ do
 		end
 
 		--Now we do checks relying on pre coded trivial check table
-		--Current player level raid
-		if self.Options.LogCurrentRaids and instanceDifficultyBylevel[LastInstanceMapID] and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) then
+		if self.Options.LogCurrentMythicRaids and instanceDifficultyBylevel[LastInstanceMapID] and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) and difficultyIndex == 16 then
+			return true
+		end
+		--Current player level non mythic raid
+		if self.Options.LogCurrentRaids and instanceDifficultyBylevel[LastInstanceMapID] and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) and difficultyIndex ~= 16 then
 			return true
 		end
 		--Trivial raid (ie one below players level)
 		if self.Options.LogTrivialRaids and (instanceDifficultyBylevel[LastInstanceMapID][1] < playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 3) then
+			return true
+		end
+		--Current level mythic dungeon
+		if self.Options.LogCurrentMythicZero and (instanceDifficultyBylevel[LastInstanceMapID][1] >= playerLevel) and (instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and difficultyIndex == 23 then
 			return true
 		end
 		--Current level heroic dungeon
