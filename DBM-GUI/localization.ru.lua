@@ -25,7 +25,7 @@ L.GroupOptionsBySpell		= "Группировать опции мода по за
 L.GroupOptionsExcludeIcon	= "Исключить опции 'Set Icon on' (он же 'установить значок на') из группировки по заклинаниям (они будут сгруппированы в категории 'icons', как и раньше)."
 L.AutoExpandSpellGroups		= "Автоматическое расширение опций, сгруппированных по заклинаниям"
 L.TabCategory_Alerts	 	= "Оповещения"
-L.Area_SpecAnnounceConfig	= "Специальное объявление: визуальные эффекты и звуковое руководство"
+L.Area_SpecAnnounceConfig	= "Руководство по специальным объявлениям визуальных эффектов и звука"
 L.Area_SpecAnnounceNotes	= "Руководство по специальным объявлениям"
 L.Area_VoicePackInfo		= "Информация о голосовых пакетах DBM"
 L.ShortTextSpellname		= "Используйте более короткий текст названия (если доступно)"
@@ -253,7 +253,7 @@ L.KeepBar2					= "(когда поддерживается модулем)"
 L.FadeBar					= "Таймеры исчезновения для способностей вне диапазона"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Специальные предупреждения для рейда"
+L.Panel_SpecWarnFrame		= "Спецпредупреждения для рейда"
 L.Area_SpecWarn				= "Настройка специальных предупреждений"
 L.SpecWarn_ClassColor		= "Использовать цвета классов для спецпредупреждений"
 L.ShowSWarningsInChat 		= "Показывать спецпредупреждения в окне чата"
@@ -293,7 +293,7 @@ L.SWFAll					= "Когда спецпредупреждения использу
 L.SpecWarn_AlwaysVoice		= "Всегда воспроизводить все голосовые предупреждения (даже если спецпредупреждения отключены).<br/>Полезно для некоторых рейд-лидеров в нишевых ситуациях, в противном случае не рекомендуется."
 L.VPDontMuteSounds			= "Отключить приглушение обычных звуков предупреждений при использовании голосового пакета (используйте это, только если Вы хотите слышать ОБА во время предупреждений)"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
-L.Area_VPLearnMore			= "Узнайте больше о голосовых пакетах и о том, как использовать эти опции"
+L.Area_VPLearnMore			= "Узнать больше о голосовых пакетах и о том, как использовать эти опции"
 L.VPLearnMore				= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "Посмотреть другие голосовые пакеты на Curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
