@@ -455,7 +455,6 @@ local function GetSpecializationGroup()
 	else
 		local numTabs = GetNumTalentTabs()
 		local highestPointsSpent, currentSpecGroup = 0, 1
-		local currentSpecGroup
 		if MAX_TALENT_TABS then
 			for i=1, MAX_TALENT_TABS do
 				if ( i <= numTabs ) then
