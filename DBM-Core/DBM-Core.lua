@@ -7124,7 +7124,7 @@ do
 		return private.specRoleTable[currentSpecID]["MeleeDps"]
 	end
 
-	function bossModPrototype:IsMelee(uId, mechanical)--mechanical arg means the check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
+	function DBM:IsMelee(uId, mechanical)--mechanical arg means the check is asking if boss mechanics consider them melee (even if they aren't, such as holy paladin/mistweaver monks)
 		if uId then--This version includes monk healers as melee and tanks as melee
 			--Class checks performed first due to mechanical check needing to be broader than a specID check
 			local _, class = UnitClass(uId)
@@ -7163,6 +7163,7 @@ do
 		end
 		return private.specRoleTable[currentSpecID]["Melee"]
 	end
+	bossModPrototype.IsMelee = DBM.IsMelee
 
 	function bossModPrototype:IsRanged(uId)
 		if uId then
