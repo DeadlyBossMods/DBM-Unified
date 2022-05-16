@@ -159,8 +159,38 @@ do
 	local function SortByGroup(v1, v2)
 		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
-	local function SetIconBySortedTable(mod, startIcon, reverseIcon, returnFunc, scanId)
-		tsort(iconSortTable[scanId], SortByGroup)
+	local function SortByMeleeAlpha(v1, v2)
+		--Both are melee, Sort by raid subgroup
+		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
+			return nil
+		--Prioritize melee over non melee
+		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
+			return true
+		elseif not DBM:IsMelee(v2) and DBM:IsMelee(v1) then
+			return false
+		end
+	end
+	local function SortByMeleeSub(v1, v2)
+		--Both are melee, Sort by raid subgroup
+		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
+			return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+		--Prioritize melee over non melee
+		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
+			return true
+		elseif not DBM:IsMelee(v2) and DBM:IsMelee(v1) then
+			return false
+		end
+	end
+	local function SetIconBySortedTable(mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
+		if sortType == "alphamelee" then
+			tsort(iconSortTable[scanId], SortByMeleeAlpha)
+		elseif sortType == "rostermelee" then
+			tsort(iconSortTable[scanId], SortByMeleeSub)
+		elseif sortType == "roster" then
+			tsort(iconSortTable[scanId], SortByGroup)
+		else--Just generic "alpha" sort
+			tsort(iconSortTable[scanId])
+		end
 		local icon, CustomIcons
 		if startIcon and type(startIcon) == "table" then--Specific gapped icons
 			CustomIcons = true
@@ -180,7 +210,7 @@ do
 				end
 			else
 				SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
-				if reverseIcon then
+				if descendingIcon then
 					icon = icon - 1
 				else
 					icon = icon + 1
@@ -193,7 +223,11 @@ do
 		mod:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 
-	function module:SetSortedIcon(mod, delay, target, startIcon, maxIcon, reverseIcon, returnFunc, scanId)
+	function module:SetSortedIcon(mod, sortType, delay, target, startIcon, maxIcon, descendingIcon, returnFunc, scanId)
+		if type(sortType) ~= "string" then
+			DBM:AddMsg("SetSortedIcon tried to call invalid type, please update your encounter modules for this zone. If error persists, report this issue")
+			return
+		end
 		if not target then return end
 		if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
 			return
@@ -218,9 +252,9 @@ do
 			end
 			mod:Unschedule(SetIconBySortedTable)
 			if maxIcon and iconSet[scanId] == maxIcon then
-				SetIconBySortedTable(mod, startIcon, reverseIcon, returnFunc, scanId)
+				SetIconBySortedTable(mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
 			elseif mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				mod:Schedule(delay or 0.5, SetIconBySortedTable, mod, startIcon, reverseIcon, returnFunc, scanId)
+				mod:Schedule(delay or 0.5, SetIconBySortedTable, mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
 			end
 		end
 	end
