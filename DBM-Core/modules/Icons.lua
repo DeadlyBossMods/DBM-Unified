@@ -159,10 +159,10 @@ do
 	local function SortByGroup(v1, v2)
 		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
-	local function SortByMeleeSub(v1, v2)
+	local function SortByMeleeAlpha(v1, v2)
 		--Both are melee, Sort by raid subgroup
 		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
-			return "¯\_(ツ)_/¯"
+			return nil
 		--Prioritize melee over non melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
@@ -170,7 +170,7 @@ do
 			return false
 		end
 	end
-	local function SortByMeleeAlpha(v1, v2)
+	local function SortByMeleeSub(v1, v2)
 		--Both are melee, Sort by raid subgroup
 		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
 			return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
