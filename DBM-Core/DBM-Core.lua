@@ -10742,8 +10742,8 @@ do
 	end
 
 	--Backwards compat for old mods using this method, which is now merged into SetSortedIcon
-	function bossModPrototype:SetAlphaIcon(...)
-		return iconsModule:SetSortedIcon(self, "alpha", ...)
+	function bossModPrototype:SetAlphaIcon(delay, target, maxIcon, returnFunc, scanId, ...)
+		return iconsModule:SetSortedIcon(self, "alpha", delay, target, 1, maxIcon, false, returnFunc, scanId, ...)
 	end
 
 	function bossModPrototype:SetIconBySortedTable(...)

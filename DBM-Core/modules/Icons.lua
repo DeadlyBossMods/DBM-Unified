@@ -127,7 +127,7 @@ do
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
-		elseif not DBM:IsMelee(v2) and DBM:IsMelee(v1) then
+		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
 		end
 	end
@@ -151,7 +151,7 @@ do
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
 			return true
-		elseif not DBM:IsRanged(v2) and DBM:IsRanged(v1) then
+		elseif DBM:IsRanged(v2) and not DBM:IsRanged(v1) then
 			return false
 		end
 	end
