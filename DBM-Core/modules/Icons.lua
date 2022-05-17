@@ -156,13 +156,19 @@ do
 end
 
 do
+	local stringToNumber = {
+	 ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4, ["e"] = 5, ["f"] = 6, ["g"] = 7, ["h"] = 8, ["i"] = 9, ["j"] = 10, ["k"] = 11, ["l"] = 12, ["m"] = 13, ["n"] = 14, ["o"] = 15, ["p"] = 16, ["q"] = 17, ["r"] = 18, ["s"] = 19, ["t"] = 20, ["u"] = 21, ["v"] = 22, ["w"] = 23, ["x"] = 24, ["y"] = 25, ["z"] = 26,
+	}
 	local function SortByGroup(v1, v2)
 		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
 	local function SortByMeleeAlpha(v1, v2)
-		--Both are melee, Sort by raid subgroup
+		--Both are melee, Sort alphabetically
 		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
-			return nil
+			--Hacky shit, better way?
+			--Currently strips player name string down to first letter, then runs it through letter to number table so we can perform less than check
+			--Flawed in that it'll lua error with literally any non english character, so even this is placeholder
+			return stringToNumber[string.sub(DBM:GetUnitFullName(v1), 1, 1)] < stringToNumber[string.sub(DBM:GetUnitFullName(v2), 1, 1) or "a"]
 		--Prioritize melee over non melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
@@ -174,11 +180,11 @@ do
 		--Both are melee, Sort by raid subgroup
 		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
 			return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-		--Prioritize melee over non melee
+		--Sort melee before non melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
-			return true
+			return true--Might be backwards? Theh logic is confusing in my head
 		elseif not DBM:IsMelee(v2) and DBM:IsMelee(v1) then
-			return false
+			return false--Might be backwards? Theh logic is confusing in my head
 		end
 	end
 	local function SetIconBySortedTable(mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
