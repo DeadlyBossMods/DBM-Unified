@@ -104,88 +104,66 @@ end
 
 --Special Icon Methods
 do
-	local function SetIconByAlphaTable(mod, returnFunc, scanId)
-		tsort(iconSortTable[scanId])--Sorted alphabetically
-		for i = 1, #iconSortTable[scanId] do
-			local target = iconSortTable[scanId][i]
-			if i > 8 then
-				DBM:Debug("|cffff0000Too many players to set icons, reconsider where using icons|r", 2)
-				return
-			end
-			if not mod.iconRestore[target] then
-				mod.iconRestore[target] = mod:GetIcon(target) or 0
-			end
-			SetRaidTarget(target, i)--Icons match number in table in alpha sort
-			if returnFunc then
-				mod[returnFunc](mod, target, i)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
-			end
-		end
-		mod:Schedule(1.5, clearSortTable, scanId)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
-	end
-
-	function module:SetAlphaIcon(mod, delay, target, maxIcon, returnFunc, scanId)
-		if not target then return end
-		if DBM.Options.DontSetIcons or not private.enableIcons or DBM:GetRaidRank(playerName) == 0 then
-			return
-		end
-		scanId = scanId or 1
-		local uId = DBM:GetRaidUnitId(target)
-		if uId or UnitExists(target) then--target accepts uid, unitname both.
-			uId = uId or target
-			if not iconSortTable[scanId] then iconSortTable[scanId] = {} end
-			if not iconSet[scanId] then iconSet[scanId] = 0 end
-			local foundDuplicate = false
-			for i = #iconSortTable[scanId], 1, -1 do
-				if iconSortTable[scanId][i] == uId then
-					foundDuplicate = true
-					break
-				end
-			end
-			if not foundDuplicate then
-				iconSet[scanId] = iconSet[scanId] + 1
-				tinsert(iconSortTable[scanId], uId)
-			end
-			mod:Unschedule(SetIconByAlphaTable)
-			if maxIcon and iconSet[scanId] == maxIcon then
-				SetIconByAlphaTable(mod, returnFunc, scanId)
-			elseif mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				mod:Schedule(delay or 0.5, SetIconByAlphaTable, mod, returnFunc, scanId)
-			end
-		end
-	end
-end
-
-do
 	local function SortByGroup(v1, v2)
 		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
 	local function SortByMeleeAlpha(v1, v2)
-		--Both are melee, Sort by raid subgroup
-		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
-			return nil
-		--Prioritize melee over non melee
+		--if both are melee, the return values are equal and we use alpha sort
+		--if both are ranged, the return values are equal and we use alpha sort
+		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then
+			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
+		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
-		elseif not DBM:IsMelee(v2) and DBM:IsMelee(v1) then
+		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
 			return false
 		end
 	end
-	local function SortByMeleeSub(v1, v2)
-		--Both are melee, Sort by raid subgroup
-		if DBM:IsMelee(v1) and DBM:IsMelee(v2) then
+	local function SortByMeleeRoster(v1, v2)
+		--if both are melee, the return values are equal and we use raid roster index sort
+		--if both are ranged, the return values are equal and we use raid roster index sort
+		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then
 			return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-		--Prioritize melee over non melee
+		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
-		elseif not DBM:IsMelee(v2) and DBM:IsMelee(v1) then
+		elseif DBM:IsMelee(v2) and not DBM:IsMelee(v1) then
+			return false
+		end
+	end
+	local function SortByRangedAlpha(v1, v2)
+		--if both are melee, the return values are equal and we use alpha sort
+		--if both are ranged, the return values are equal and we use alpha sort
+		if DBM:IsRanged(v1) == DBM:IsRanged(v2) then
+			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
+		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
+		elseif DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
+			return true
+		elseif DBM:IsRanged(v2) and not DBM:IsRanged(v1) then
+			return false
+		end
+	end
+	local function SortByRangedRoster(v1, v2)
+		--if both are melee, the return values are equal and we use raid roster index sort
+		--if both are ranged, the return values are equal and we use raid roster index sort
+		if DBM:IsRanged(v1) == DBM:IsRanged(v2) then
+			return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
+		elseif DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
+			return true
+		elseif DBM:IsRanged(v2) and not DBM:IsRanged(v1) then
 			return false
 		end
 	end
 	local function SetIconBySortedTable(mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
-		if sortType == "alphamelee" then
+		if sortType == "meleealpha" then
 			tsort(iconSortTable[scanId], SortByMeleeAlpha)
-		elseif sortType == "rostermelee" then
-			tsort(iconSortTable[scanId], SortByMeleeSub)
+		elseif sortType == "meleeroster" then
+			tsort(iconSortTable[scanId], SortByMeleeRoster)
+		elseif sortType == "rangedalpha" then
+			tsort(iconSortTable[scanId], SortByRangedAlpha)
+		elseif sortType == "rangedroster" then
+			tsort(iconSortTable[scanId], SortByRangedRoster)
 		elseif sortType == "roster" then
 			tsort(iconSortTable[scanId], SortByGroup)
 		else--Just generic "alpha" sort
@@ -216,7 +194,7 @@ do
 					icon = icon + 1
 				end
 				if returnFunc then
-					mod[returnFunc](mod, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+					mod[returnFunc](mod, v, icon)--Send unitId and icon to returnFunc. (Generally used by announce icon targets to raid chat feature)
 				end
 			end
 		end
