@@ -10741,12 +10741,9 @@ do
 		return iconsModule:SetIcon(self, ...)
 	end
 
-	function bossModPrototype:SetIconByAlphaTable(...)
-		return iconsModule:SetIconByAlphaTable(self, ...)
-	end
-
+	--Backwards compat for old mods using this method, which is now merged into SetSortedIcon
 	function bossModPrototype:SetAlphaIcon(...)
-		return iconsModule:SetAlphaIcon(self, ...)
+		return iconsModule:SetSortedIcon(self, "alpha", ...)
 	end
 
 	function bossModPrototype:SetIconBySortedTable(...)
