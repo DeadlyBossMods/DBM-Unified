@@ -10153,7 +10153,7 @@ end
 --Any time extended icons is used, option must be OFF by default
 --Option must be hidden from GUI if extended icoins not enabled
 --If extended icons are disabled, then on mod load, users option is reset to default (off) to prevent their mod from still executing SetIcon functions (this is because even if it's hidden from GUI, if option was created and enabled, it'd still run)
-function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile, iconsUsed, conflictWarning)
+function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning)
 	self.DefaultOptions[name] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
@@ -10163,14 +10163,31 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile, ic
 		self:GroupSpells(spellId, name)
 	end
 	self:SetOptionCategory(name, "icon")
-	if isHostile then
+	--Legacy bool and nil support
+	if type(iconType) ~= "number" then
+		if iconType then--true
+			iconType = 5
+		else --false/nil
+	        iconType = 0
+		end
+	end
+	if iconType == 1 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_MELEE_A:format(spellId)
+	elseif iconType == 2 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_MELEE_R:format(spellId)
+	elseif iconType == 3 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_RANGED_A:format(spellId)
+	elseif iconType == 4 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_RANGED_R:format(spellId)
+	elseif iconType == 5 then
+		--NPC/Mob setting uses icon elect feature and needs to establish latency check table
 		if not self.findFastestComputer then
 			self.findFastestComputer = {}
 		end
 		self.findFastestComputer[#self.findFastestComputer + 1] = name
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TEXT2:format(spellId)
-	else
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TEXT:format(spellId)
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_NPCS:format(spellId)
+	else--Type 0 (Generic for targets)
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS:format(spellId)
 	end
 	--A table defining used icons by number, insert icon textures to end of option
 	if iconsUsed then
