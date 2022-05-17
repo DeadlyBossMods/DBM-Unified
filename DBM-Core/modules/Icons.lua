@@ -194,7 +194,7 @@ do
 					icon = icon + 1
 				end
 				if returnFunc then
-					mod[returnFunc](mod, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+					mod[returnFunc](mod, v, icon)--Send unitId and icon to returnFunc. (Generally used by announce icon targets to raid chat feature)
 				end
 			end
 		end
