@@ -105,7 +105,7 @@ end
 --Special Icon Methods
 do
 	local function SortByGroup(v1, v2)
-		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 	end
 	local function SortByMeleeAlpha(v1, v2)
 		--if both are melee, the return values are equal and we use alpha sort
@@ -123,7 +123,7 @@ do
 		--if both are melee, the return values are equal and we use raid roster index sort
 		--if both are ranged, the return values are equal and we use raid roster index sort
 		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then
-			return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsMelee(v1) and not DBM:IsMelee(v2) then
 			return true
@@ -147,7 +147,7 @@ do
 		--if both are melee, the return values are equal and we use raid roster index sort
 		--if both are ranged, the return values are equal and we use raid roster index sort
 		if DBM:IsRanged(v1) == DBM:IsRanged(v2) then
-			return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 		--if one is melee and one is ranged, they are not equal so it goes to the below elseifs that prio melee
 		elseif DBM:IsRanged(v1) and not DBM:IsRanged(v2) then
 			return true

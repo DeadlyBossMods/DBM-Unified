@@ -331,6 +331,7 @@ globals = {
 	"UnitHealthMax",
 	"UnitInBattleground",
 	"UnitInRange",
+	"UnitInRaid",
 	"UnitInPhase", -- Classic only
 	"UnitInVehicle",
 	"UnitIsAFK",
