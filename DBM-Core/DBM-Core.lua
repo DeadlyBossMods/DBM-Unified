@@ -8817,7 +8817,7 @@ do
 --		["targetchange"] = "target",
 --		["gtfo"] = "spell",
 --		["bait"] = "soon",
-		["you"] = "targetyou",,--Remaps personal alert to just say "target you", without instruction
+		["you"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
 		["youpos"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
 		["youposcount"] = "targetyou",--Remaps personal alert to just say "target you", without instruction
 --		["move"] = "spell",
