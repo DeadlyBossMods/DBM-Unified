@@ -201,7 +201,7 @@ L.PIZZA_CONFIRM_IGNORE				= "Игнорировать таймеры " .. L.DBM 
 L.PIZZA_ERROR_USAGE					= "Использование: /dbm [broadcast] timer <time> <text>. <time> должно быть больше 3."
 
 --L.MINIMAP_TOOLTIP_HEADER (Same as English locales)
-L.MINIMAP_TOOLTIP_FOOTER			= "[Shift+ЛКМ], чтобы переместить"
+L.MINIMAP_TOOLTIP_FOOTER			= "[Shift+ЛКМ] - переместить значок " .. L.DBM
 
 L.RANGECHECK_HEADER					= "Проверка дистанции (%dм)"
 L.RANGECHECK_HEADERT				= "Проверка дистанции (%dм-%dP)"
@@ -569,8 +569,8 @@ L.DUR_ENTRY							= "%s: прочность [%d процентов] / экипи
 L.LAG_FOOTER						= "Нет ответа: %s"
 
 --LDB
-L.LDB_TOOLTIP_HELP1					= "[ЛКМ], чтобы открыть " .. L.DBM
-L.LDB_TOOLTIP_HELP2					= "Alt+ПКМ для переключения в беззвучный режим"
+L.LDB_TOOLTIP_HELP1					= "[ЛКМ] - открыть " .. L.DBM
+L.LDB_TOOLTIP_HELP2					= "[Alt+ПКМ] - переключить в беззвучный режим"
 L.SILENTMODE_IS						= "Тихий режим "
 
 L.WORLD_BUFFS.hordeOny			= "Народы Орды, жители Оргриммара! Приходите, собирайтесь и поздравляйте героя Орды"
