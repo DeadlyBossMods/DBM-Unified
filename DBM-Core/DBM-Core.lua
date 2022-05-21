@@ -8812,8 +8812,8 @@ do
 --		["soakpos"] = "spell",
 --		["switch"] = "spell",
 --		["switchcount"] = "count",
---		["adds"] = "spell",
---		["addscustom"] = "spell",
+		["adds"] = "mobsoon",--Remaps sound to say mobs incoming only, not to kill them or cc them or anything else.
+		["addscustom"] = "mobsoon",--Remaps sound to say mobs incoming only, not to kill them or cc them or anything else.
 --		["targetchange"] = "target",
 --		["gtfo"] = "spell",
 --		["bait"] = "soon",
