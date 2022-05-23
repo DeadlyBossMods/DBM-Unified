@@ -8845,7 +8845,7 @@ do
 		if specTypeFilterTable[self.announceType] then
 			--Filtered warning, filtered voice
 			if DBM.Options["SpamSpecRole"..specTypeFilterTable[self.announceType]] then return end
-		elseif specInstructionalRemapVoiceTable[self.announceType] then
+		elseif DBM.Options.SpamSpecInformationalOnly and specInstructionalRemapVoiceTable[self.announceType] then
 			--Instructional disabled, remap to a less instructional voice line
 			name = specInstructionalRemapVoiceTable[self.announceType]
 		end
