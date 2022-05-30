@@ -4760,6 +4760,11 @@ do
 		["heroicisland"] = "heroic",
 		["mythicisland"] = "mythic",
 		["teamingisland"] = "mythic",--Blizz uses mythic as fallback, so I will too
+		--Shadowlands
+		["couragescenario"] = "normal",--Map PoA scenaris to different stats for each difficulty
+		["loyaltyscenario"] = "heroic",
+		["wisdomscenario"] = "mythic",
+		["humilityscenario"] = "challenge",
 		--Legacy
 		["lfr25"] = "lfr25",
 		["normal10"] = "normal",
@@ -5598,6 +5603,14 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "progressivechallenges", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	elseif difficulty == 153 then---Teaming BfA? Island expedition
 		return "teamingisland", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 168 then--Path of Ascention (Shadowlands)
+		return "couragescenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 169 then--Path of Ascention (Shadowlands)
+		return "loyaltyscenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 170 then--Path of Ascention (Shadowlands)
+		return "wisdomscenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 171 then--Path of Ascention (Shadowlands)
+		return "humilityscenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
@@ -6722,7 +6735,7 @@ end
 --Dungeons: mythic, mythic+. Raids: heroic, mythic
 function bossModPrototype:IsHard()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "mythic" or diff == "challenge5" or diff == "heroic"
+	return diff == "mythic" or diff == "challenge5" or diff == "heroic" or diff == "humilityscenario"
 end
 
 --Pretty much ANYTHING that has a normal mode
@@ -6780,7 +6793,7 @@ end
 
 function bossModPrototype:IsScenario()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normalscenario" or diff == "heroicscenario"
+	return diff == "normalscenario" or diff == "heroicscenario" or diff == "couragescenario" or diff == "loyaltyscenario" or diff == "wisdomscenario" or diff == "humilityscenario"
 end
 
 function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
