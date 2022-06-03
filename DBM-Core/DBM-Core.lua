@@ -8583,7 +8583,8 @@ do
 			end
 		else
 			if DBM.Options.SpamSpecInformationalOnly and specInstructionalRemapTable[announceType] then
-				text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
+				local newType = specInstructionalRemapTable[announceType]
+				text = L.AUTO_SPEC_WARN_TEXTS[newType]:format(spellName)
 			else
 				text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
 			end
