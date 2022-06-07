@@ -82,7 +82,7 @@ elseif isClassic then
 	DBM.ReleaseRevision = releaseDate(2022, 5, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 38, "5e831f6"
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.37"
+	DBM.DisplayVersion = "2.5.38 alpha"
 	DBM.ReleaseRevision = releaseDate(2022, 6, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 38, "5e831f6"
 end
