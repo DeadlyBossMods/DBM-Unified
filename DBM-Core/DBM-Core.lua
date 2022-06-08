@@ -10291,6 +10291,10 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 		end
 		self.findFastestComputer[#self.findFastestComputer + 1] = name
 		self.localization.options[name] = L.AUTO_ICONS_OPTION_NPCS:format(spellId)
+	elseif iconType == 6 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_ALPHA:format(spellId)
+	elseif iconType == 7 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_ROSTER:format(spellId)
 	else--Type 0 (Generic for targets)
 		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS:format(spellId)
 	end
