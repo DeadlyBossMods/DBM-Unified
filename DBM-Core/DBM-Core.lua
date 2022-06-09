@@ -82,8 +82,8 @@ elseif isClassic then
 	DBM.ReleaseRevision = releaseDate(2022, 5, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 38, "5e831f6"
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.37 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 5, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "2.5.38 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 6, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 38, "5e831f6"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -5553,7 +5553,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, _, instanceGroupSize = GetInstanceInfo()
 	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug.
 		return "worldboss", RAID_INFO_WORLD_BOSS.." - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 then--5 man Normal Dungeon
+	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 then--5 man Normal Dungeon
 		return "normal5", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 2 or difficulty == 174 then--5 man Heroic Dungeon
 		return "heroic5", difficultyName.." - ", difficulty, instanceGroupSize, 0
@@ -5574,7 +5574,7 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "normal40", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	elseif difficulty == 11 then--Heroic Scenario (mostly Mists of pandaria)
 		return "heroicscenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
-	elseif difficulty == 12 then--Normal Scenario (mostly Mists of pandaria)
+	elseif difficulty == 12 or difficulty == 152 then--Normal Scenario (mostly Mists of pandaria and Visions of Nzoth scenarios)
 		return "normalscenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	elseif difficulty == 14 then--Flexible Normal Raid
 		return "normal", difficultyName.." - ", difficulty, instanceGroupSize, 0
@@ -10291,6 +10291,10 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 		end
 		self.findFastestComputer[#self.findFastestComputer + 1] = name
 		self.localization.options[name] = L.AUTO_ICONS_OPTION_NPCS:format(spellId)
+	elseif iconType == 6 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_ALPHA:format(spellId)
+	elseif iconType == 7 then
+		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_ROSTER:format(spellId)
 	else--Type 0 (Generic for targets)
 		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS:format(spellId)
 	end
