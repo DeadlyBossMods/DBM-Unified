@@ -194,9 +194,7 @@ do
 	--For now, I'll have check be smart and switch between raid and party and just disable when solo
 	local function validateGroupTarget(unit)
 		if IsInGroup() then
-			if IsInRaid() and UnitPlayerOrPetInRaid(unit) then
-				return true
-			elseif UnitPlayerOrPetInParty(unit) then
+			if UnitPlayerOrPetInRaid(unit) or UnitPlayerOrPetInParty(unit) then
 				return true
 			end
 		else--Solo
