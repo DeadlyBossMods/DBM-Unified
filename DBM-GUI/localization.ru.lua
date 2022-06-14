@@ -91,6 +91,14 @@ L.SpamSpecRoleSwitch				= "Фильтровать оповещения о 'см�
 L.SpamSpecRoleGTFO					= "Фильтровать 'GTFO' оповещения"
 L.Highest							= "Наибольший таймер наверху"
 L.Lowest							= "Наименьший таймер наверху"
+L.CBTGeneric						= "Общий"
+L.CBTAdd							= "Моб"
+L.CBTAOE							= "АоЕ"
+L.CBTTargeted						= "Цель"
+L.CBTInterrupt						= "Прерывание"
+L.CBTRole							= "Роль"
+L.CBTPhase							= "Фаза"
+L.CBTImportant						= "Важно"
 -- Missing phrases. End ..
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
