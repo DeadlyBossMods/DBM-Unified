@@ -74,17 +74,17 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.2.20 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 5, 31) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	fakeBWVersion, fakeBWHash = 241, "710129e"
+	DBM.DisplayVersion = "9.2.20"
+	DBM.ReleaseRevision = releaseDate(2022, 6, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 243, "d58ab26"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.22 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 5, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	fakeBWVersion, fakeBWHash = 38, "5e831f6"
+	DBM.DisplayVersion = "1.14.22"
+	DBM.ReleaseRevision = releaseDate(2022, 6, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.38 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 6, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	fakeBWVersion, fakeBWHash = 38, "5e831f6"
+	DBM.DisplayVersion = "2.5.38"
+	DBM.ReleaseRevision = releaseDate(2022, 6, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
