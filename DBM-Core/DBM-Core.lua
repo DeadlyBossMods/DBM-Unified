@@ -10267,7 +10267,7 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
-	if not DBM.Options.GroupOptionsExcludeIcon then
+	if spellId and not DBM.Options.GroupOptionsExcludeIcon then
 		self:GroupSpells(spellId, name)
 	end
 	self:SetOptionCategory(name, "icon")
@@ -10280,26 +10280,26 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, ico
 		end
 	end
 	if iconType == 1 then
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_MELEE_A:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_MELEE_A:format(spellId) or self.localization.options[name]
 	elseif iconType == 2 then
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_MELEE_R:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_MELEE_R:format(spellId) or self.localization.options[name]
 	elseif iconType == 3 then
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_RANGED_A:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_RANGED_A:format(spellId) or self.localization.options[name]
 	elseif iconType == 4 then
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_RANGED_R:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_RANGED_R:format(spellId) or self.localization.options[name]
 	elseif iconType == 5 then
 		--NPC/Mob setting uses icon elect feature and needs to establish latency check table
 		if not self.findFastestComputer then
 			self.findFastestComputer = {}
 		end
 		self.findFastestComputer[#self.findFastestComputer + 1] = name
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_NPCS:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_NPCS:format(spellId) or self.localization.options[name]
 	elseif iconType == 6 then
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_ALPHA:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_ALPHA:format(spellId) or self.localization.options[name]
 	elseif iconType == 7 then
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS_ROSTER:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS_ROSTER:format(spellId) or self.localization.options[name]
 	else--Type 0 (Generic for targets)
-		self.localization.options[name] = L.AUTO_ICONS_OPTION_TARGETS:format(spellId)
+		self.localization.options[name] = spellId and L.AUTO_ICONS_OPTION_TARGETS:format(spellId) or self.localization.options[name]
 	end
 	--A table defining used icons by number, insert icon textures to end of option
 	if iconsUsed then
