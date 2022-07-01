@@ -6776,6 +6776,11 @@ do
 	bossModPrototype.IsSeasonal = DBM.IsSeasonal
 end
 
+--Catch all to basically allow encounter mods to use pre retail changes within mods
+function bossModPrototype:IsClassic()
+	return not isRetail
+end
+
 --Pretty much ANYTHING that has a heroic mode
 function bossModPrototype:IsHeroic()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
