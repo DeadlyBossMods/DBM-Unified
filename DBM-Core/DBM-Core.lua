@@ -475,7 +475,7 @@ elseif isWrath then--Since naxx is moved to northrend, wrath can't use tbc/class
 		[0]={60,1},[1]={60, 1},--Eastern Kingdoms and Kalimdor world bosses.
 		[530]={70, 1},--Outlands World Bosses
 		--Raids
-		[509]={60, 3},[531]={60, 3},[469]={60, 3},[409]={60, 3},[309]={60, 3},[249]={60, 3},--Classic Raids (309 is legacy ZG)
+		[509]={60, 3},[531]={60, 3},[469]={60, 3},[409]={60, 3},[309]={60, 3},--Classic Raids (309 is legacy ZG)
 		[564]={70, 3},[534]={70, 3},[532]={70, 3},[565]={70, 3},[544]={70, 3},[548]={70, 3},[580]={70, 3},[550]={70, 3},[568]={70, 3},--BC Raids (568 is legacy ZA)
 		[615]={30, 3},[724]={30, 3},[649]={30, 3},[616]={30, 3},[631]={30, 3},[533]={30, 3},[249]={30, 3},[603]={30, 3},[624]={30, 3},--Wrath Raids
 		--Dungeons
