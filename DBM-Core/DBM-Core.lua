@@ -25,12 +25,14 @@
 --
 local _, private = ...
 
+local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
+local testBuild = IsTestBuild()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
-local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
---local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 9000)
+local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5) and wowTOC < 30000
+local isWrath = WOW_PROJECT_ID == 5 and wowTOC >= 30000
 
-local DBMPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC"
+local DBMPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC" or isWrath and "D4WC"
 private.DBMPrefix = DBMPrefix
 
 local L = DBM_CORE_L
@@ -85,6 +87,10 @@ elseif isBCC then
 	DBM.DisplayVersion = "2.5.39 alpha"
 	DBM.ReleaseRevision = releaseDate(2022, 6, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
+elseif isWrath then
+	DBM.DisplayVersion = "3.4.0 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 6, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -101,9 +107,6 @@ end
 function DBM:ReleaseDate(year, month, day, hour, minute, second)
 	return releaseDate(year, month, day, hour, minute, second)
 end
-
-local wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
-local testBuild = IsTestBuild()
 
 function DBM:GetTOC()
 	return wowTOC, testBuild, wowVersionString, wowBuild
@@ -466,20 +469,20 @@ if isRetail then
 		[1763]={50, 2},[1754]={50, 2},[1762]={50, 2},[1864]={50, 2},[1822]={50, 2},[1877]={50, 2},[1594]={50, 2},[1841]={50, 2},[1771]={50, 2},[1862]={50, 2},[2097]={50, 2},--Bfa Dungeons
 		[2286]={60, 2},[2289]={60, 2},[2290]={60, 2},[2287]={60, 2},[2285]={60, 2},[2293]={60, 2},[2291]={60, 2},[2284]={60, 2},[2441]={60, 2},--Shadowlands Dungeons
 	}
---elseif isWrath then--Since naxx is moved to northrend, wrath can't use tbc/classics table
---	instanceDifficultyBylevel = {
---		--World
---		[0]={60,1},[1]={60, 1},--Eastern Kingdoms and Kalimdor world bosses.
---		[530]={70, 1},--Outlands World Bosses
---		--Raids
---		[509]={60, 3},[531]={60, 3},[469]={60, 3},[409]={60, 3},[309]={60, 3},[249]={60, 3},--Classic Raids (309 is legacy ZG)
---		[564]={70, 3},[534]={70, 3},[532]={70, 3},[565]={70, 3},[544]={70, 3},[548]={70, 3},[580]={70, 3},[550]={70, 3},[568]={70, 3},--BC Raids (568 is legacy ZA)
---		[615]={30, 3},[724]={30, 3},[649]={30, 3},[616]={30, 3},[631]={30, 3},[533]={30, 3},[249]={30, 3},[603]={30, 3},[624]={30, 3},--Wrath Raids
---		--Dungeons
---		[429]={45, 2},[389]={18, 2},[349]={52, 2},[329]={60, 2},[289]={60, 2},[230]={60, 2},[229]={60, 2},[209]={54, 2},[189]={45, 2},[129]={47, 2},[109]={60, 2},[90]={34, 2},[70]={52, 2},[48]={32, 2},[47]={42, 2},[43]={27, 2},[36]={25, 2},[34]={32, 2},[33]={30, 2},--Classic Dungeons
---		[540]={70, 2},[558]={70, 2},[556]={70, 2},[555]={70, 2},[542]={70, 2},[546]={70, 2},[545]={70, 2},[547]={70, 2},[553]={70, 2},[554]={70, 2},[552]={70, 2},[557]={70, 2},[269]={70, 2},[560]={70, 2},[543]={70, 2},[585]={70, 2},--BC Dungeons
---		[619]={30, 2},[601]={30, 2},[595]={30, 2},[600]={30, 2},[604]={30, 2},[602]={30, 2},[599]={30, 2},[576]={30, 2},[578]={30, 2},[574]={30, 2},[575]={30, 2},[608]={30, 2},[658]={30, 2},[632]={30, 2},[668]={30, 2},[650]={30, 2},--Wrath Dungeons
---	}
+elseif isWrath then--Since naxx is moved to northrend, wrath can't use tbc/classics table
+	instanceDifficultyBylevel = {
+		--World
+		[0]={60,1},[1]={60, 1},--Eastern Kingdoms and Kalimdor world bosses.
+		[530]={70, 1},--Outlands World Bosses
+		--Raids
+		[509]={60, 3},[531]={60, 3},[469]={60, 3},[409]={60, 3},[309]={60, 3},--Classic Raids (309 is legacy ZG)
+		[564]={70, 3},[534]={70, 3},[532]={70, 3},[565]={70, 3},[544]={70, 3},[548]={70, 3},[580]={70, 3},[550]={70, 3},[568]={70, 3},--BC Raids (568 is legacy ZA)
+		[615]={30, 3},[724]={30, 3},[649]={30, 3},[616]={30, 3},[631]={30, 3},[533]={30, 3},[249]={30, 3},[603]={30, 3},[624]={30, 3},--Wrath Raids
+		--Dungeons
+		[429]={45, 2},[389]={18, 2},[349]={52, 2},[329]={60, 2},[289]={60, 2},[230]={60, 2},[229]={60, 2},[209]={54, 2},[189]={45, 2},[129]={47, 2},[109]={60, 2},[90]={34, 2},[70]={52, 2},[48]={32, 2},[47]={42, 2},[43]={27, 2},[36]={25, 2},[34]={32, 2},[33]={30, 2},--Classic Dungeons
+		[540]={70, 2},[558]={70, 2},[556]={70, 2},[555]={70, 2},[542]={70, 2},[546]={70, 2},[545]={70, 2},[547]={70, 2},[553]={70, 2},[554]={70, 2},[552]={70, 2},[557]={70, 2},[269]={70, 2},[560]={70, 2},[543]={70, 2},[585]={70, 2},--BC Dungeons
+		[619]={30, 2},[601]={30, 2},[595]={30, 2},[600]={30, 2},[604]={30, 2},[602]={30, 2},[599]={30, 2},[576]={30, 2},[578]={30, 2},[574]={30, 2},[575]={30, 2},[608]={30, 2},[658]={30, 2},[632]={30, 2},[668]={30, 2},[650]={30, 2},--Wrath Dungeons
+	}
 else--TBC and Vanilla
 	instanceDifficultyBylevel = {
 		--World
@@ -1094,7 +1097,7 @@ do
 					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 					if not arg1 and event:sub(-11) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
 						eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target"
-						if isRetail then
+						if not isClassic then
 							eventWithArgs = eventWithArgs .. " focus"
 						end
 						event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
@@ -1415,7 +1418,7 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
-			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or "")))
+			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-WOTLKC" or "")))
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -1484,6 +1487,14 @@ do
 							AddMsg(self, "The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message. Check for an updated version of " .. addonName .. " that is compatible with your game version.")
 						else
 							local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
+
+							local minToc = tonumber(GetAddOnMetadata(i, "X-Min-Interface") or 0)
+							if isBCC then
+								minToc = tonumber(GetAddOnMetadata(i, "X-Min-Interface-BCC") or minToc)
+							elseif isWrath then
+								minToc = tonumber(GetAddOnMetadata(i, "X-Min-Interface-WOTLKC") or minToc)
+							end
+
 							tinsert(self.AddOns, {
 								sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
 								type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
@@ -1504,7 +1515,7 @@ do
 								isExpedition	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Expedition") or 0) == 1,
 								minRevision		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinCoreRevision") or 0),
 								minExpansion	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MinExpansion") or 0),
-								minToc			= tonumber(GetAddOnMetadata(i, "X-Min-Interface") or 0),
+								minToc			= minToc,
 								modId			= addonName,
 							})
 							for j = #self.AddOns[#self.AddOns].mapId, 1, -1 do
