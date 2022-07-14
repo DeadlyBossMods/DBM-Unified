@@ -774,7 +774,7 @@ do
 	local category = {}
 	local subTabId = 0
 	local expansions = {
-		"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS"
+		"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT"
 	}
 
 	function DBM_GUI:UpdateModList()
