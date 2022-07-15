@@ -188,6 +188,8 @@ globals = {
 	"C_Map.GetMapInfo",
 	"C_Map.GetPlayerMapPosition",
 	"C_Map.GetWorldPosFromMapPos",
+	"C_ModifiedInstance",
+	"C_ModifiedInstance.GetModifiedInstanceInfoFromMapID",
 	"C_NamePlate.GetNamePlateForUnit",
 	"C_NamePlate.GetNamePlates",
 	"C_PlayerInfo.IsPlayerInChromieTime",

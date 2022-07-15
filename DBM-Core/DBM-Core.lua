@@ -6787,6 +6787,15 @@ do
 	bossModPrototype.IsSeasonal = DBM.IsSeasonal
 end
 
+function DBM:IsFated()
+	--Returns table if fated, nil otherwise
+	if C_ModifiedInstance and C_ModifiedInstance.GetModifiedInstanceInfoFromMapID(LastInstanceMapID) then
+		return true
+	end
+	return false
+end
+bossModPrototype.IsFated = DBM.IsFated
+
 --Catch all to basically allow encounter mods to use pre retail changes within mods
 function bossModPrototype:IsClassic()
 	return not isRetail
