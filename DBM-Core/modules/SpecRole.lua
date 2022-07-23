@@ -390,6 +390,38 @@ if isRetail then
 			["MeleeDps"] = true,
 			["Physical"] = true,
 		},
+		[1467] = {	--Evoker Devastation
+			["Dps"] = true,
+			["CasterDps"] = true,
+			["Ranged"] = true,
+			["RangedDps"] = true,
+			["ManaUser"] = true,
+			["SpellCaster"] = true,
+			["RemovePoison"] = IsSpellKnown(365585),--Expunge. Must be specced
+			["RemoveCurse"] = IsSpellKnown(374251),--Cauterizing Flame
+			["RemoveDisease"] = IsSpellKnown(374251),--Cauterizing Flame
+			["RemoveEnrage"] = IsSpellKnown(374346),--Overawe
+		},
+		[1468] = {	--Evoker Preservation
+			["Healer"] = true,
+			["Ranged"] = true,
+			["ManaUser"] = true,
+			["SpellCaster"] = true,
+			["RemoveMagic"] = true,
+			["RemovePoison"] = true,--Auto known
+			["RemoveCurse"] = IsSpellKnown(374251),--Cauterizing Flame
+			["RemoveDisease"] = IsSpellKnown(374251),--Cauterizing Flame
+			["RemoveEnrage"] = IsSpellKnown(374346),--Overawe
+			["RaidCooldown"] = IsSpellKnown(363534),--Rewind
+		},
+		[1465] = {	--Evoker Initial (treated as both healer and dps for basic leveling purposes)
+			["Dps"] = true,
+			["CasterDps"] = true,
+			["Healer"] = true,
+			["Ranged"] = true,
+			["ManaUser"] = true,
+			["SpellCaster"] = true,
+		},
 	}
 	specRoleTable[63] = specRoleTable[62]--Frost Mage same as arcane
 	specRoleTable[64] = specRoleTable[62]--Fire Mage same as arcane
