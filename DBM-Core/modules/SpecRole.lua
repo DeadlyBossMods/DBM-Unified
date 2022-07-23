@@ -394,6 +394,7 @@ if isRetail then
 			["Dps"] = true,
 			["CasterDps"] = true,
 			["Ranged"] = true,
+			["RangedDps"] = true,
 			["ManaUser"] = true,
 			["SpellCaster"] = true,
 			["RemovePoison"] = IsSpellKnown(365585),--Expunge. Must be specced
