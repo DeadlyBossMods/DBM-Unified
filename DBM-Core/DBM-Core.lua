@@ -5100,6 +5100,7 @@ do
 			end
 		end
 	end
+	function DBM.UNIT_HEALTH_FREQUENT = DBM.UNIT_HEALTH
 
 	function DBM:EndCombat(mod, wipe, srmIncluded)
 		if removeEntry(inCombat, mod) then
