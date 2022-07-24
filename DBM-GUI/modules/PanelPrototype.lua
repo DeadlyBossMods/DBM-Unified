@@ -504,7 +504,7 @@ function PanelPrototype:CreateArea(name)
 end
 
 function PanelPrototype:CreateAbility(titleText, icon)
-	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,OptionsBoxTemplate")
+	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "TooltipBorderBackdropTemplate")
 	area.mytype = "ability"
 	area.hidden = not DBM.Options.AutoExpandSpellGroups
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
