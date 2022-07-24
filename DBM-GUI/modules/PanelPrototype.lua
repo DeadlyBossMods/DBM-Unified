@@ -514,7 +514,7 @@ function PanelPrototype:CreateAbility(titleText, icon)
 	else
 		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 	end
-	local title = _G[area:GetName() .. "Title"]
+	local title = area:CreateFontString("$parentTitle", "BACKGROUND", "GameFontHighlightSmall")
 	if icon then
 		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
 		title:SetText(markup .. titleText)
