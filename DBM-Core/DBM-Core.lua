@@ -4424,7 +4424,9 @@ do
 			delayedFunction = nil
 		end
 		if watchFrameRestore then
-			if isRetail then
+			if isWrath then
+				-- TODO: Work out what's used, as both ObjectiveTracker and QuestWatchFrame don't exist
+			elseif isRetail then
 				ObjectiveTracker_Expand()
 			else
 				QuestWatchFrame:Show()
@@ -4901,7 +4903,9 @@ do
 				self:StartLogging(0, nil)
 			end
 			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and (not isRetail or GetNumTrackedAchievements() == 0) and difficultyIndex ~= 8 and not InCombatLockdown() then
-				if isRetail then
+				if isWrath then
+					-- TODO: Work out what's used, as both ObjectiveTracker and QuestWatchFrame don't exist
+				elseif isRetail then
 					if ObjectiveTrackerFrame:IsVisible() then
 						ObjectiveTracker_Collapse()
 						watchFrameRestore = true
@@ -5347,7 +5351,9 @@ do
 				self.Arrow:Hide(true)
 				if not InCombatLockdown() then
 					if watchFrameRestore then
-						if isRetail then
+						if isWrath then
+							-- TODO: Work out what's used, as both ObjectiveTracker and QuestWatchFrame don't exist
+						elseif isRetail then
 							ObjectiveTracker_Expand()
 						else
 							QuestWatchFrame:Show()
@@ -7605,7 +7611,7 @@ do
 	frame:SetWidth(1)
 	frame:SetHeight(1)
 	frame:SetFrameStrata("HIGH")
-	frame:SetClampedToScreen()
+	frame:SetClampedToScreen(true)
 	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 300)
 	font1u:Hide()
 	font2u:Hide()
@@ -7790,7 +7796,7 @@ do
 				anchorFrame:EnableMouse(true)
 				anchorFrame:SetPoint("TOP", frame, "TOP", 0, 32)
 				anchorFrame:RegisterForDrag("LeftButton")
-				anchorFrame:SetClampedToScreen()
+				anchorFrame:SetClampedToScreen(true)
 				anchorFrame:Hide()
 				local texture = anchorFrame:CreateTexture()
 				texture:SetTexture("Interface\\Addons\\DBM-Core\\textures\\dot.blp")
@@ -8398,7 +8404,7 @@ do
 	frame:SetWidth(1)
 	frame:SetHeight(1)
 	frame:SetFrameStrata("HIGH")
-	frame:SetClampedToScreen()
+	frame:SetClampedToScreen(true)
 	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 
 	local font1elapsed, font2elapsed, moving
@@ -8501,7 +8507,7 @@ do
 				anchorFrame:EnableMouse(true)
 				anchorFrame:SetPoint("TOP", frame, "TOP", 0, 32)
 				anchorFrame:RegisterForDrag("LeftButton")
-				anchorFrame:SetClampedToScreen()
+				anchorFrame:SetClampedToScreen(true)
 				anchorFrame:Hide()
 				local texture = anchorFrame:CreateTexture()
 				texture:SetTexture("Interface\\Addons\\DBM-Core\\textures\\dot.blp")
