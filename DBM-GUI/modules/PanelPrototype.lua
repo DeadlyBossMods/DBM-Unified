@@ -235,7 +235,7 @@ function PanelPrototype:CreateLine(text)
 	end
 	line.myheight = 20
 	line.mytype = "line"
-	local linetext = line:CreateFontString(line:GetName() .. "Text", "ARTWORK", "GameFontNormal")
+	local linetext = line:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
 	linetext:SetPoint("TOPLEFT", line, "TOPLEFT")
 	linetext:SetJustifyH("LEFT")
 	linetext:SetHeight(18)
@@ -385,7 +385,7 @@ do
 		local buttonText
 		if desc then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			buttonText = CreateFrame("SimpleHTML", "$parentText", button)
-			buttonText:SetFontObject("GameFontNormal")
+			buttonText:SetFontObject("p", "GameFontNormal")
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data)
 				GameTooltip:SetOwner(self, "ANCHOR_NONE")
@@ -439,19 +439,19 @@ do
 			buttonText = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormal")
 			buttonText:SetPoint("LEFT", button, "RIGHT", 0, 1)
 		end
-		buttonText.text = desc or CL.UNKNOWN
-		buttonText.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
-		buttonText:SetWidth(self.frame:GetWidth() - buttonText.widthPad)
+		button.textObj = buttonText
+		button.text = desc or CL.UNKNOWN
+		button.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
+		buttonText:SetWidth(self.frame:GetWidth() - button.widthPad)
 		if textLeft then
 			buttonText:ClearAllPoints()
 			buttonText:SetPoint("RIGHT", frame2 or frame or button, "LEFT")
-			buttonText:SetJustifyH("RIGHT")
+			buttonText:SetJustifyH("p", "RIGHT")
 		else
-			buttonText:SetJustifyH("LEFT")
+			buttonText:SetJustifyH("p", "LEFT")
 			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
-			button.myheight = mmax(buttonText:GetContentHeight() + 12, button.myheight)
 		end
-		buttonText:SetText(buttonText.text)
+		buttonText:SetText(button.text)
 		button.myheight = mmax(buttonText:GetContentHeight() + 12, 25)
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
 			button:SetScript("OnShow", function(self)
@@ -483,11 +483,12 @@ do
 end
 
 function PanelPrototype:CreateArea(name)
-	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,OptionsBoxTemplate")
+	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "TooltipBorderBackdropTemplate")
 	area.mytype = "area"
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
-	_G[area:GetName() .. "Title"]:SetText(parseDescription(name))
+	local title = area:CreateFontString("$parentTitle", "BACKGROUND", "GameFontHighlightSmall")
+	title:SetText(parseDescription(name))
 	if select("#", self.frame:GetChildren()) == 1 then
 		area:SetPoint("TOPLEFT", self.frame, 5, -20)
 	else
