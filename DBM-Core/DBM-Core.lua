@@ -1658,7 +1658,6 @@ do
 				"BOSS_KILL",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
-				"UNIT_HEALTH mouseover target focus player",
 				"CHAT_MSG_WHISPER",
 				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
@@ -1678,7 +1677,7 @@ do
 				"LOADING_SCREEN_DISABLED",
 				"LOADING_SCREEN_ENABLED"
 			)
-			if not isClassic then -- Retail and BCC
+			if not isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
 					"LFG_PROPOSAL_FAILED",
 					"LFG_PROPOSAL_SHOW",
@@ -1688,12 +1687,14 @@ do
 			end
 			if isRetail then
 				self:RegisterEvents(
+					"UNIT_HEALTH mouseover target focus player",--Is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED"
 				)
-			else -- BCC and Classic
+			else -- WoTLKC, BCC and Classic
 				self:RegisterEvents(
+					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
 					"CHARACTER_POINTS_CHANGED"
 				)
 			end
