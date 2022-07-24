@@ -610,6 +610,14 @@ else
 			["SpellCaster"] = true,
 			["CasterDps"] = true,
 		},
+		["DEATHKNIGHT1"] = {--Just treat all DKs as all roles, they are hybrid as hell in wrath and any spec can be any role
+			["Tank"] = true,
+			["Melee"] = true,
+			["Dps"] = true,
+			["MeleeDps"] = true,
+			["Physical"] = true,
+			["HasInterrupt"] = true,
+		},
 	}
 	specRoleTable["MAGE3"] = specRoleTable["MAGE1"]--Frost Mage same as arcane
 	specRoleTable["MAGE2"] = specRoleTable["MAGE1"]--Fire Mage same as arcane
@@ -619,6 +627,8 @@ else
 	specRoleTable["ROGUE3"] = specRoleTable["ROGUE1"]--Subtlety Rogue same as Assassination
 	specRoleTable["WARLOCK2"] = specRoleTable["WARLOCK1"]--Demonology Warlock same as Affliction
 	specRoleTable["WARLOCK3"] = specRoleTable["WARLOCK1"]--Destruction Warlock same as Affliction
+	specRoleTable["DEATHKNIGHT2"] = specRoleTable["DEATHKNIGHT1"]
+	specRoleTable["DEATHKNIGHT3"] = specRoleTable["DEATHKNIGHT1"]
 end
 
 private.specRoleTable = specRoleTable
