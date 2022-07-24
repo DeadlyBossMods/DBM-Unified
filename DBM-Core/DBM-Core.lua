@@ -9892,6 +9892,9 @@ do
 	end
 
 	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId, optionType)
+		if optionDefault == nil and optionName == nil then
+			return
+		end
 		if optionName ~= false then
 			self.option = optionName or self.id
 			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId, optionType)
