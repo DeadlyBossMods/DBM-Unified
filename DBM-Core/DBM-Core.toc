@@ -37,9 +37,7 @@ Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\LibDeflate.lua
 Libs\LibSerialize\lib.xml
-#@retail@
 Libs\LibSpecialization\LibSpecialization.xml
-#@end-retail@
 
 localization.en.lua
 localization.br.lua
