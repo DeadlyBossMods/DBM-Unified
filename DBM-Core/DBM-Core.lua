@@ -503,14 +503,17 @@ end
 --  Libraries  --
 -----------------
 local LibStub = _G["LibStub"]
-local LibSpec = LibStub("LibSpecialization")
+local LibSpec
 do
-	local function update(specID, _, _, playerName)
-		if raid[playerName] then
-			raid[playerName].specID = specID
+	if isRetail then
+		LibSpec = LibStub("LibSpecialization")
+		local function update(specID, _, _, playerName)
+			if raid[playerName] then
+				raid[playerName].specID = specID
+			end
 		end
+		LibSpec:Register(DBM, update)
 	end
-	LibSpec:Register(DBM, update)
 end
 
 --------------------------------------------------------
