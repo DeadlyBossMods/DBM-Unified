@@ -146,12 +146,13 @@ globals = {
 	"GameFontWhite",
 	"MovieFrame",
 	"ObjectiveTrackerFrame",
-	"QuestWatchFrame", -- Classic
+	"QuestWatchFrame", -- Classic Era / BCC
 	"RaidBossEmoteFrame",
 	"RolePollPopup",
 	"SlashCmdList",
 	"StaticPopupDialogs",
 	"TimerTracker",
+	"WatchFrame", -- WotLKC
 	"WorldFrame",
 
 	"ChatEdit_GetActiveWindow",

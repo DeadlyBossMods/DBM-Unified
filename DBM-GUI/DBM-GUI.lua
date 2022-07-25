@@ -717,7 +717,7 @@ do
 					heroic		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY3 or PLAYER_DIFFICULTY2,
 					heroic25	= RAID_DIFFICULTY4,
 					mythic		= PLAYER_DIFFICULTY6,
-					challenge	= mod.addon.minExpansion < 6 and CHALLENGE_MODE and not mod.upgradedMPlus or (PLAYER_DIFFICULTY6 .. "+"),
+					challenge	= (mod.addon.minExpansion < 6 and not mod.upgradedMPlus) and CHALLENGE_MODE or (PLAYER_DIFFICULTY6 .. "+"),
 					timewalker	= PLAYER_DIFFICULTY_TIMEWALKER
 				}
 				if (mod.addon.type == "PARTY" or mod.addon.type == "SCENARIO") or -- Fixes dungeons being labled incorrectly
@@ -726,7 +726,6 @@ do
 					statTypes.normal = PLAYER_DIFFICULTY1
 					statTypes.heroic = PLAYER_DIFFICULTY2
 				end
-
 
 				local lastArea = 0
 

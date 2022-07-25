@@ -88,8 +88,8 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2022, 7, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.4 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 7, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.5 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 7, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -4424,11 +4424,11 @@ do
 			delayedFunction = nil
 		end
 		if watchFrameRestore then
-			if isWrath then
-				-- TODO: Work out what's used, as both ObjectiveTracker and QuestWatchFrame don't exist
-			elseif isRetail then
+			if isRetail then
 				ObjectiveTracker_Expand()
-			else
+			elseif isWrath then
+				WatchFrame:Show()
+			else -- Classic Era / BCC
 				QuestWatchFrame:Show()
 			end
 			watchFrameRestore = false
@@ -4903,15 +4903,18 @@ do
 				self:StartLogging(0, nil)
 			end
 			if self.Options.HideObjectivesFrame and mod.addon.type ~= "SCENARIO" and (not isRetail or GetNumTrackedAchievements() == 0) and difficultyIndex ~= 8 and not InCombatLockdown() then
-				if isWrath then
-					-- TODO: Work out what's used, as both ObjectiveTracker and QuestWatchFrame don't exist
-				elseif isRetail then
+				if isRetail then
 					if ObjectiveTrackerFrame:IsVisible() then
 						ObjectiveTracker_Collapse()
 						watchFrameRestore = true
 					end
 				else
-					if QuestWatchFrame:IsVisible() then
+					if isWrath then
+						if WatchFrame:IsVisible() then
+							WatchFrame:Hide()
+							watchFrameRestore = true
+						end
+					elseif QuestWatchFrame:IsVisible() then -- Classic Era / BCC
 						QuestWatchFrame:Hide()
 						watchFrameRestore = true
 					end
@@ -5351,11 +5354,11 @@ do
 				self.Arrow:Hide(true)
 				if not InCombatLockdown() then
 					if watchFrameRestore then
-						if isWrath then
-							-- TODO: Work out what's used, as both ObjectiveTracker and QuestWatchFrame don't exist
-						elseif isRetail then
+						if isRetail then
 							ObjectiveTracker_Expand()
-						else
+						elseif isWrath then
+							WatchFrame:Show()
+						else -- Classic Era / BCC
 							QuestWatchFrame:Show()
 						end
 						watchFrameRestore = false

@@ -514,7 +514,7 @@ function PanelPrototype:CreateAbility(titleText, icon)
 	else
 		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 	end
-	local title = _G[area:GetName() .. "Title"]
+	local title = area:CreateFontString("$parentTitle", "BACKGROUND", "GameFontHighlightSmall")
 	if icon then
 		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
 		title:SetText(markup .. titleText)
@@ -542,7 +542,6 @@ function PanelPrototype:CreateAbility(titleText, icon)
 		button.toggle:SetPushedTexture(area.hidden and 130836 or 130820) -- "Interface\\Buttons\\UI-PlusButton-DOWN", "Interface\\Buttons\\UI-MinusButton-DOWN"
 		_G["DBM_GUI_OptionsFrame"]:DisplayFrame(DBM_GUI.currentViewing)
 	end
-	button:RegisterForClicks(false)
 	--
 	self:SetLastObj(area)
 	return setmetatable({
