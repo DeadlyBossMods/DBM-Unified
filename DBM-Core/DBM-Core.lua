@@ -503,14 +503,17 @@ end
 --  Libraries  --
 -----------------
 local LibStub = _G["LibStub"]
-local LibSpec = LibStub("LibSpecialization")
+local LibSpec
 do
-	local function update(specID, _, _, playerName)
-		if raid[playerName] then
-			raid[playerName].specID = specID
+	if isRetail then
+		LibSpec = LibStub("LibSpecialization")
+		local function update(specID, _, _, playerName)
+			if raid[playerName] then
+				raid[playerName].specID = specID
+			end
 		end
+		LibSpec:Register(DBM, update)
 	end
-	LibSpec:Register(DBM, update)
 end
 
 --------------------------------------------------------
@@ -9524,6 +9527,8 @@ do
 				colorId = self.mod.Options[self.option .. "TColor"]
 			elseif self.colorType and type(self.colorType) == "string" then--No option for specific timer, but another bool option given that tells us where to look for TColor
 				colorId = self.mod.Options[self.colorType .. "TColor"]
+			else--No option, or secondary option, set colorId to hardcoded color type
+				colorId = self.colorType
 			end
 			local countVoice, countVoiceMax = 0, self.countdownMax or 4
 			if self.option then
