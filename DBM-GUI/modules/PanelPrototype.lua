@@ -488,6 +488,7 @@ function PanelPrototype:CreateArea(name)
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	local title = area:CreateFontString("$parentTitle", "BACKGROUND", "GameFontHighlightSmall")
+	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 5, 0)
 	title:SetText(parseDescription(name))
 	if select("#", self.frame:GetChildren()) == 1 then
 		area:SetPoint("TOPLEFT", self.frame, 5, -20)
