@@ -17,6 +17,7 @@ L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "About"
 
 L.TabCategory_OTHER			= "Other Mods"
+L.TabCategory_AFFIXES		= "Affixes"
 
 L.BossModLoaded 			= "%s statistics"
 L.BossModLoad_now 			= [[This boss mod is not loaded.
