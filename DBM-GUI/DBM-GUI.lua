@@ -780,7 +780,7 @@ do
 		for _, addon in ipairs(DBM.AddOns) do
 			local cat = addon.category:upper()
 			if not category[cat] then
-				category[cat] = DBM_GUI:CreateNewPanel(_G["EXPANSION_NAME" .. (tIndexOf(expansions, cat) or 99) - 1] or L.TabCategory_OTHER, nil, cat == expansions[GetExpansionLevel() + 1])
+				category[cat] = DBM_GUI:CreateNewPanel(_G["EXPANSION_NAME" .. (tIndexOf(expansions, cat) or 99) - 1] or cat == "AFFIXES" and L.TabCategory_AFFIXES or L.TabCategory_OTHER, nil, cat == expansions[GetExpansionLevel() + 1])
 			end
 
 			if not addon.panel then
