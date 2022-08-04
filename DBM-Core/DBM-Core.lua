@@ -6715,6 +6715,12 @@ function bossModPrototype:SetStage(stage)
 	end
 end
 
+function bossModPrototype:AffixEvent(eventType)
+	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
+		fireEvent("DBM_AffixEvent", self, self.id, eventType, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId)--Mod, modId, Encounter Id (if available)
+	end
+end
+
 --------------
 --  Events  --
 --------------
