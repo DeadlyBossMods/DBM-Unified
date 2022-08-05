@@ -6715,9 +6715,9 @@ function bossModPrototype:SetStage(stage)
 	end
 end
 
-function bossModPrototype:AffixEvent(eventType, customStage)
+function bossModPrototype:AffixEvent(eventType, customStage, timeAdjust)
 	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
-		fireEvent("DBM_AffixEvent", self, self.id, eventType, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, customStage or self.vb.phase or 1)--Mod, modId, type (0 end, 1, begin, 2, restart), Encounter Id (if available), stage
+		fireEvent("DBM_AffixEvent", self, self.id, eventType, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, customStage or self.vb.phase or 1, timeAdjust)--Mod, modId, type (0 end, 1, begin, 2, timerExtend), Encounter Id (if available), stage, amount of time to extend to
 	end
 end
 
