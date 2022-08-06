@@ -3269,28 +3269,20 @@ do
 			if not self:IsTrivial() then
 				if instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2 and not GetAddOnInfo("DBM-Party-BC") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
-					modAdvertisementShown = true
 				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not GetAddOnInfo("DBM-BlackTemple") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
-					modAdvertisementShown = true
 				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Ulduar") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
-					modAdvertisementShown = true
 				elseif cataZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Firelands") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
-					modAdvertisementShown = true
 				elseif mopZones[LastInstanceMapID] and not GetAddOnInfo("DBM-SiegeOfOrgrimmarV2") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
-					modAdvertisementShown = true
 				elseif wodZones[LastInstanceMapID] and not GetAddOnInfo("DBM-HellfireCitadel") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
-					modAdvertisementShown = true
 				elseif legionZones[LastInstanceMapID] and not GetAddOnInfo("DBM-AntorusBurningThrone") then--Technically 45 level with quish, but because of tuning you need need mods even at 50
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"))
-					modAdvertisementShown = true
 				elseif bfaZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Nyalotha") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Battle for Azeroth mods"))
-					modAdvertisementShown = true
 				end
 			elseif challengeScenarios[LastInstanceMapID] and not GetAddOnInfo("DBM-Challenges") then--No trivial check on challenge scenarios
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"))
@@ -4384,7 +4376,7 @@ do
 		if not combatInitialized then return end
 		if dbmIsEnabled and combatInfo[LastInstanceMapID] then
 			for _, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if v.type:find("combat") and not v.noRegenDetection then
+				if v.type:find("combat") and not v.noRegenDetection and not (#inCombat > 0 and v.noMultiBoss) then
 					if v.multiMobPullDetection then
 						for _, mob in ipairs(v.multiMobPullDetection) do
 							if checkForPull(mob, v) then
@@ -10652,6 +10644,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.noRegenDetection then
 		info.noRegenDetection = self.noRegenDetection
 	end
+	if self.noMultiBoss then
+		info.noMultiBoss = self.noMultiBoss
+	end
 	if self.WBEsync then
 		info.WBEsync = self.WBEsync
 	end
@@ -10777,6 +10772,13 @@ function bossModPrototype:DisableRegenDetection()
 	self.noRegenDetection = true
 	if self.combatInfo then
 		self.combatInfo.noRegenDetection = true
+	end
+end
+
+function bossModPrototype:DisableMultiBossPulls()
+	self.noMultiBoss = true
+	if self.combatInfo then
+		self.combatInfo.noMultiBoss = true
 	end
 end
 
