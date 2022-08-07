@@ -76,8 +76,8 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "9.2.28 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 8, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "9.2.28"
+	DBM.ReleaseRevision = releaseDate(2022, 8, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 243, "d58ab26"
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.27 alpha"
