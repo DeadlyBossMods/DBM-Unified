@@ -117,7 +117,7 @@ L.DoNotLogLFG				= "Do not record LFG or LFR (queued content)"
 --Auto Logging: Recorded Content types
 L.Area_AutoLoggingContent	= "Auto Logging Content"
 L.LogCurrentMythicRaids		= "Current level Mythic raids"--Retail Only
-L.LogCurrentRaids			= "Current level non Mythic raids (Heroic, Normal, and LFR if LGF/LFR filter is disabled)"
+L.LogCurrentRaids			= "Current level non Mythic raids (Heroic, Normal, and LFR if LFG/LFR filter is disabled)"
 L.LogTWRaids				= "Timewalking or Chromie Time raids"--Retail Only
 L.LogTrivialRaids			= "Trivial (below character level) raids"
 L.LogCurrentMPlus			= "Current level M+ dungeons"--Retail Only
