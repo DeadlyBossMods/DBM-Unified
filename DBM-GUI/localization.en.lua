@@ -474,7 +474,7 @@ L.Panel_Range				= "Rangeframe"
 
 -- Panel: Nameplate
 L.Panel_Nameplates			= "Nameplates"
-L.UseNameplateHandoff		= "Hand off nameplate aura requests to supported nameplate addons (KuiNameplates, Threat Plates, Plater) instead of handling internally. This is recommended option as it allows more advanted features and configuration to be done via nameplate addon"
+L.UseNameplateHandoff		= "Hand off nameplate aura requests to supported nameplate addons (KuiNameplates, Threat Plates, Plater) instead of handling internally. This is recommended option as it allows more advanced features and configuration to be done via nameplate addon"
 L.Area_NPStyle				= "Style (Note: Only configures style when DBM is handling nameplates.)"
 L.NPAuraSize				= "Aura Pixel size (squared): %d"
 
