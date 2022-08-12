@@ -4043,7 +4043,7 @@ do
 	guildSyncHandlers["GCB"] = function(_, modId, ver, difficulty, difficultyModifier, name)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
 		if not ver or ver ~= "3" then return end--Ignore old versions
-		if DBM:AntiSpam(10, "GCB") then
+		if DBM:AntiSpam(isRetail and 10 or 20, "GCB") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
@@ -4074,7 +4074,7 @@ do
 	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
 		if not ver or ver ~= "6" then return end--Ignore old versions
-		if DBM:AntiSpam(5, "GCE") then
+		if DBM:AntiSpam(isRetail and 10 or 20, "GCE") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
@@ -5010,7 +5010,7 @@ do
 							local check = not statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 							if check and not self.Options.DisableGuildStatus then--Only send relevant content, not guild beating down lich king or LFR.
 								self:Unschedule(delayedGCSync, modId)
-								self:Schedule(1.5, delayedGCSync, modId, difficultyIndex, difficultyModifier, name)
+								self:Schedule(isRetail and 1.5 or 3, delayedGCSync, modId, difficultyIndex, difficultyModifier, name)
 							end
 						end
 					end
@@ -5184,7 +5184,7 @@ do
 								usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10 -- Classic
 							if check and not self.Options.DisableGuildStatus then
 								self:Unschedule(delayedGCSync, modId)
-								self:Schedule(1.5, delayedGCSync, modId, usedDifficultyIndex, difficultyModifier, name, strFromTime(thisTime), wipeHP)
+								self:Schedule(isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, difficultyModifier, name, strFromTime(thisTime), wipeHP)
 							end
 						end
 					end
@@ -5290,7 +5290,7 @@ do
 					local check = not statusGuildDisabled and (isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and updateNotificationDisplayed == 0 then
 						self:Unschedule(delayedGCSync, modId)
-						self:Schedule(1.5, delayedGCSync, modId, usedDifficultyIndex, difficultyModifier, name, thisTimeString)
+						self:Schedule(isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, difficultyModifier, name, thisTimeString)
 					end
 					self:Schedule(1, self.AddMsg, self, msg)
 				end
