@@ -1699,7 +1699,13 @@ do
 					"PLAYER_SPECIALIZATION_CHANGED",
 					"SCENARIO_COMPLETED"
 				)
-			else -- WoTLKC, BCC and Classic
+			elseif isWrath then -- WoTLKC
+				self:RegisterEvents(
+					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
+					"CHARACTER_POINTS_CHANGED",
+					"PLAYER_TALENT_UPDATE"
+				)
+			else -- BCC and Classic
 				self:RegisterEvents(
 					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
 					"CHARACTER_POINTS_CHANGED"
@@ -3187,8 +3193,8 @@ function DBM:PLAYER_SPECIALIZATION_CHANGED()
 		end
 	end
 end
-
 DBM.CHARACTER_POINTS_CHANGED = DBM.PLAYER_SPECIALIZATION_CHANGED -- Classic/BCC support
+DBM.PLAYER_TALENT_UPDATE = DBM.PLAYER_SPECIALIZATION_CHANGED -- Wrath support
 
 do
 	local function AcceptPartyInvite()
