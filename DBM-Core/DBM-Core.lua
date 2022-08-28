@@ -6836,6 +6836,11 @@ function bossModPrototype:IsMythic()
 	return diff == "mythic" or diff == "challenge5" or diff == "mythicisland"
 end
 
+function bossModPrototype:IsMythicPlus()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "challenge5"
+end
+
 function bossModPrototype:IsEvent()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	return diff == "event5" or diff == "event20" or diff == "event40"
