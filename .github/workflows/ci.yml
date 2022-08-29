@@ -39,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: ['DBM-Retail', 'DBM-Classic', 'DBM-BCC', 'DBM-WoTLKC']
+        repo: ['DBM-Retail', 'DBM-Classic', 'DBM-WoTLKC']
 
     steps:
       - uses: actions/checkout@v1
