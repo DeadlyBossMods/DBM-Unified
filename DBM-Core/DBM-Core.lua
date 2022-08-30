@@ -84,12 +84,12 @@ elseif isClassic then
 	DBM.ReleaseRevision = releaseDate(2022, 8, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isBCC then
-	DBM.DisplayVersion = "2.5.43 alpha"
+	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
 	DBM.ReleaseRevision = releaseDate(2022, 8, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.7 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 8, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.7"
+	DBM.ReleaseRevision = releaseDate(2022, 8, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
