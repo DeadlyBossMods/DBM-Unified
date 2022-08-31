@@ -201,7 +201,6 @@ DBM.DefaultOptions = {
 	FilterDispel = true,
 	FilterTrashWarnings2 = true,
 	FilterVoidFormSay = true,
-	--FilterSelfHud = true,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
 	RecordOnlyBosses = false,
