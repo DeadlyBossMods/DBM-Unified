@@ -5489,7 +5489,7 @@ do
 
 	function DBM:StartLogging(timer, checkFunc, force)
 		self:Unschedule(DBM.StopLogging)
-		if isLogableContent(self, force) then return end
+		if isLogableContent(self, force) then
 			if self.Options.AutologBosses then
 				if not LoggingCombat() then
 					autoLog = true
