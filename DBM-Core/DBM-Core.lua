@@ -2171,7 +2171,6 @@ do
 					raid[name].guid = UnitGUID(id) or ""
 					raid[name].updated = true
 					raidGuids[UnitGUID(id) or ""] = name
-					--RequestSpecialization(nil, name)
 				end
 			end
 			private.enableIcons = false
@@ -4840,9 +4839,6 @@ do
 			local name = mod.combatInfo.name
 			local modId = mod.id
 			if isRetail then
-				--Build current SpecID info on combat start.
-				--Inefficient since very mew mods actually use it, but currently no way to request individual specID info, just everyones all at once
-				LibSpec:RequestSpecialization()
 				if mod.addon.type == "SCENARIO" and C_Scenario.IsInScenario() and not mod.soloChallenge then
 					mod.inScenario = true
 				end
