@@ -6898,7 +6898,7 @@ do
 		if unitID and checkOnlyTandF then return true end--checkOnlyTandF means this isn't an interrupt check at all, skip all the rest and return true if we met TandF rquirement
 
 		--Just return false if target or focus target is required and source isn't our target or focus, no need to do further checks
-		if not unitID and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown")) then
+		if not ignoreTandF and (not unitID and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown"))) then
 			return false
 		end
 
@@ -7000,7 +7000,6 @@ do
 		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckDispelFilter running on multiple raid members getting debuffed at once
 			return lastReturn
 		end
-		local check
 		if dispelType then
 			--Singe magic requires checking if pet is out
 			if dispelType == "magic" and (GetSpellCooldown(89808)) == 0 and (UnitExists("pet") and self:GetCIDFromGUID(UnitGUID("pet")) == 416) then
