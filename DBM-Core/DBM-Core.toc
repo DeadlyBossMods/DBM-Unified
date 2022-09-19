@@ -64,6 +64,7 @@ commonlocal.ru.lua
 # Pre-core modules
 modules\Modules.lua
 
+modules\SpecRole.lua
 modules\Scheduler.lua
 modules\DevTools.lua
 modules\Icons.lua
@@ -84,7 +85,6 @@ modules\Hyperlinks.lua
 modules\MinimapButton.lua
 modules\Notes.lua
 modules\Sounds.lua
-modules\SpecRole.lua
 modules\UpdateReminder.lua
 
 modules\objects\Localization.lua

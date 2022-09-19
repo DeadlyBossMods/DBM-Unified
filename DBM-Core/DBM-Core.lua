@@ -1710,7 +1710,7 @@ do
 					"CHARACTER_POINTS_CHANGED"
 				)
 			end
-			if RolePollPopup and RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") then
+			if RolePollPopup and RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") and isRetail then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 			end
 			self:GROUP_ROSTER_UPDATE()
@@ -6870,66 +6870,6 @@ function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
 	return false
 end
 
-do
-	local interruptSpells = {
-		[1766] = true,--Rogue Kick
-		[2139] = true,--Mage Counterspell
-		[6552] = true,--Warrior Pummel
-		[15487] = true,--Priest Silence
-		[47528] = true,--Death Knight Mind Freeze
-		[57994] = true,--Shaman Wind Shear
-		[78675] = true,--Druid Solar Beam
-		[96231] = true,--Paldin Rebuke
-		[106839] = true,--Druid Skull Bash
-		[116705] = true,--Monk Spear Hand Strike
-		[183752] = true,--Demon hunter Disrupt
-		[351338] = true,--Evoker Quell
-	}
-	--onlyTandF param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
-	--checkCooldown should always be passed true except for special rotations like count warnings when you should be alerted it's your turn even if you dropped ball and put it on CD at wrong time
-	--ignoreTandF is passed usually when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
-	function bossModPrototype:CheckInterruptFilter(sourceGUID, checkOnlyTandF, checkCooldown, ignoreTandF)
-		--Just return true if interrupt filtering is disabled (and it's actually for an interrupt)
-		if DBM.Options.FilterInterrupt2 == "None" and not checkOnlyTandF then return true end
-
-		local unitID = (UnitGUID("target") == sourceGUID) and "target" or isRetail and (UnitGUID("focus") == sourceGUID) and "focus"
-
-		--Just return true if target or focus is ONLY requirement (not an interrupt check) and we already confirmed T and F
-		if unitID and checkOnlyTandF then return true end--checkOnlyTandF means this isn't an interrupt check at all, skip all the rest and return true if we met TandF rquirement
-
-		--Just return false if target or focus target is required and source isn't our target or focus, no need to do further checks
-		if not ignoreTandF and (not unitID and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown"))) then
-			return false
-		end
-
-		local InterruptAvailable = true--We want to default to true versus false, since some interrupts don't require CD checks
-		if checkCooldown then
-			for spellID, _ in pairs(interruptSpells) do
-				--For an inverse check, don't need to check if it's known, if it's on cooldown it's known
-				--This is possible since no class has 2 interrupt spells (well, actual interrupt spells)
-				if (GetSpellCooldown(spellID)) ~= 0 then--Spell is known and on cooldown
-					InterruptAvailable = false
-				end
-			end
-		end
-		if InterruptAvailable then
-			--Check if it's casting something that's not interruptable at the moment
-			--needed for torghast since many mobs can have interrupt immunity with same spellIds as other mobs that can be interrupted
-			if unitID then
-				if UnitCastingInfo(unitID) then
-					local _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unitID)
-					if notInterruptible then return false end
-				elseif UnitChannelInfo(unitID) then
-					local _, _, _, _, _, _, notInterruptible = UnitChannelInfo(unitID)
-					if notInterruptible then return false end
-				end
-			end
-			return true
-		end
-		return false
-	end
-end
-
 function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
 	if not isRetail then
 		print("bossModPrototype:IsCriteriaCompleted should not be called in classic, report this message")
@@ -7457,6 +7397,66 @@ end
 -----------------------
 --  Filter Methods  --
 -----------------------
+
+do
+	local interruptSpells = {
+		[1766] = true,--Rogue Kick
+		[2139] = true,--Mage Counterspell
+		[6552] = true,--Warrior Pummel
+		[15487] = true,--Priest Silence
+		[47528] = true,--Death Knight Mind Freeze
+		[57994] = true,--Shaman Wind Shear
+		[78675] = true,--Druid Solar Beam
+		[96231] = true,--Paldin Rebuke
+		[106839] = true,--Druid Skull Bash
+		[116705] = true,--Monk Spear Hand Strike
+		[183752] = true,--Demon hunter Disrupt
+		[351338] = true,--Evoker Quell
+	}
+	--onlyTandF param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
+	--checkCooldown should always be passed true except for special rotations like count warnings when you should be alerted it's your turn even if you dropped ball and put it on CD at wrong time
+	--ignoreTandF is passed usually when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
+	function bossModPrototype:CheckInterruptFilter(sourceGUID, checkOnlyTandF, checkCooldown, ignoreTandF)
+		--Just return true if interrupt filtering is disabled (and it's actually for an interrupt)
+		if DBM.Options.FilterInterrupt2 == "None" and not checkOnlyTandF then return true end
+
+		local unitID = (UnitGUID("target") == sourceGUID) and "target" or isRetail and (UnitGUID("focus") == sourceGUID) and "focus"
+
+		--Just return true if target or focus is ONLY requirement (not an interrupt check) and we already confirmed T and F
+		if unitID and checkOnlyTandF then return true end--checkOnlyTandF means this isn't an interrupt check at all, skip all the rest and return true if we met TandF rquirement
+
+		--Just return false if target or focus target is required and source isn't our target or focus, no need to do further checks
+		if not ignoreTandF and (not unitID and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown"))) then
+			return false
+		end
+
+		local InterruptAvailable = true--We want to default to true versus false, since some interrupts don't require CD checks
+		if checkCooldown then
+			for spellID, _ in pairs(interruptSpells) do
+				--For an inverse check, don't need to check if it's known, if it's on cooldown it's known
+				--This is possible since no class has 2 interrupt spells (well, actual interrupt spells)
+				if (GetSpellCooldown(spellID)) ~= 0 then--Spell is known and on cooldown
+					InterruptAvailable = false
+				end
+			end
+		end
+		if InterruptAvailable then
+			--Check if it's casting something that's not interruptable at the moment
+			--needed for torghast since many mobs can have interrupt immunity with same spellIds as other mobs that can be interrupted
+			if unitID then
+				if UnitCastingInfo(unitID) then
+					local _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unitID)
+					if notInterruptible then return false end
+				elseif UnitChannelInfo(unitID) then
+					local _, _, _, _, _, _, notInterruptible = UnitChannelInfo(unitID)
+					if notInterruptible then return false end
+				end
+			end
+			return true
+		end
+		return false
+	end
+end
 
 do
 	--lazyCheck mostly for migration, doesn't distinquish dispel types
