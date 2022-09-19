@@ -6930,108 +6930,6 @@ do
 	end
 end
 
-do
-	--lazyCheck mostly for migration, doesn't distinquish dispel types
-	local lazyCheck = {
-		[88423] = true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
-		[2782] = true,--Druid: Remove Corruption (Curse and Poison)
-		[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
-		[218164] = true,--Monk: Detox (non Healer) (Poison and Disease)
-		[527] = true,--Priest: Purify (Magic and Disease)
-		[213634] = true,--Priest: Purify Disease (Disease)
-		[4987] = true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
-		[51886] = true,--Shaman: Cleanse Spirit (Curse)
-		[77130] = true,--Shaman: Purify Spirit (Magic and Curse)
-		[475] = true,--Mage: Remove Curse (Curse)
-		[89808] = true,--Warlock: Singe Magic (Magic)
-		[360823] = true,--Evoker: Naturalize (Magic and Poison)
-		[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
-		[365585] = true,--Evoker: Expunge (Poison)
-	}
-	--Obviously only checks spells releventt for the dispel type
-	local typeCheck = {
-		["magic"] = {
-			[88423] = true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
-			[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
-			[527] = true,--Priest: Purify (Magic and Disease)
-			[4987] = true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
-			[77130] = true,--Shaman: Purify Spirit (Magic and Curse)
-			[89808] = true,--Warlock: Singe Magic (Magic)
-			[360823] = true,--Evoker: Naturalize (Magic and Poison)
-		},
-		["curse"] = {
-			[88423] = DBM:IsHealer() and true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
-			[2782] = true,--Druid: Remove Corruption (Curse and Poison)
-			[51886] = true,--Shaman: Cleanse Spirit (Curse)
-			[77130] = true,--Shaman: Purify Spirit (Magic and Curse)
-			[475] = true,--Mage: Remove Curse (Curse)
-			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
-		},
-		["poison"] = {
-			[88423] = DBM:IsHealer() and true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
-			[2782] = true,--Druid: Remove Corruption (Curse and Poison)
-			[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
-			[218164] = true,--Monk: Detox (non Healer) (Poison and Disease)
-			[4987] = DBM:IsHealer() and true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
-			[360823] = true,--Evoker: Naturalize (Magic and Poison)
-			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
-			[365585] = true,--Evoker: Expunge (Poison)
-		},
-		["disease"] = {
-			[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
-			[218164] = true,--Monk: Detox (non Healer) (Poison and Disease)
-			[527] = true,--Priest: Purify (Magic and Disease)
-			[213634] = true,--Priest: Purify Disease (Disease)
-			[4987] = DBM:IsHealer() and true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
-			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
-		},
-		["bleed"] = {
-			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
-		},
-	}
-	local lastCheck, lastReturn = 0, true
-	function bossModPrototype:CheckDispelFilter(dispelType)
-		if not DBM.Options.FilterDispel then return true end
-		-- Retail - Druid: Nature's Cure (88423), Remove Corruption (2782), Monk: Detox (115450) Monk: Detox (218164), Priest: Purify (527) Priest: Purify Disease (213634), Paladin: Cleanse (4987), Shaman: Cleanse Spirit (51886), Purify Spirit (77130), Mage: Remove Curse (475), Warlock: Singe Magic (89808)
-		-- Classic - Druid: Remove Curse (2782), Priest: Purify (527), Paladin: Cleanse (4987), Mage: Remove Curse (475)
-		--start, duration, enable = GetSpellCooldown
-		--start & duration == 0 if spell not on cd
-		if UnitIsDeadOrGhost("player") then return false end--if dead, can't dispel
-		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckDispelFilter running on multiple raid members getting debuffed at once
-			return lastReturn
-		end
-		if dispelType then
-			--Singe magic requires checking if pet is out
-			if dispelType == "magic" and (GetSpellCooldown(89808)) == 0 and (UnitExists("pet") and self:GetCIDFromGUID(UnitGUID("pet")) == 416) then
-				lastCheck = GetTime()
-				lastReturn = true
-				return true
-			end
-			--We cannot do inverse check here because some classes actually have two dispels for same type (such as evoker)
-			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
-			--As such, we have to check if a spell is known in addition to it not being on cooldown
-			for spellID, _ in pairs(typeCheck[dispelType]) do
-				if typeCheck[dispelType][spellID] and IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
-					lastCheck = GetTime()
-					lastReturn = true
-					return true
-				end
-			end
-		else--use lazy check until all mods are migrated to define type
-			for spellID, _ in pairs(lazyCheck) do
-				if IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
-					lastCheck = GetTime()
-					lastReturn = true
-					return true
-				end
-			end
-		end
-		lastCheck = GetTime()
-		lastReturn = false
-		return false
-	end
-end
-
 function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
 	if not isRetail then
 		print("bossModPrototype:IsCriteriaCompleted should not be called in classic, report this message")
@@ -7554,6 +7452,112 @@ function bossModPrototype:GetNumAliveTanks()
 		end
 	end
 	return count
+end
+
+-----------------------
+--  Filter Methods  --
+-----------------------
+
+do
+	--lazyCheck mostly for migration, doesn't distinquish dispel types
+	local lazyCheck = {
+		[88423] = true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
+		[2782] = true,--Druid: Remove Corruption (Curse and Poison)
+		[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
+		[218164] = true,--Monk: Detox (non Healer) (Poison and Disease)
+		[527] = true,--Priest: Purify (Magic and Disease)
+		[213634] = true,--Priest: Purify Disease (Disease)
+		[4987] = true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
+		[51886] = true,--Shaman: Cleanse Spirit (Curse)
+		[77130] = true,--Shaman: Purify Spirit (Magic and Curse)
+		[475] = true,--Mage: Remove Curse (Curse)
+		[89808] = true,--Warlock: Singe Magic (Magic)
+		[360823] = true,--Evoker: Naturalize (Magic and Poison)
+		[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
+		[365585] = true,--Evoker: Expunge (Poison)
+	}
+	--Obviously only checks spells releventt for the dispel type
+	local typeCheck = {
+		["magic"] = {
+			[88423] = true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
+			[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
+			[527] = true,--Priest: Purify (Magic and Disease)
+			[4987] = true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
+			[77130] = true,--Shaman: Purify Spirit (Magic and Curse)
+			[89808] = true,--Warlock: Singe Magic (Magic)
+			[360823] = true,--Evoker: Naturalize (Magic and Poison)
+		},
+		["curse"] = {
+			[88423] = DBM:IsHealer() and true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
+			[2782] = true,--Druid: Remove Corruption (Curse and Poison)
+			[51886] = true,--Shaman: Cleanse Spirit (Curse)
+			[77130] = true,--Shaman: Purify Spirit (Magic and Curse)
+			[475] = true,--Mage: Remove Curse (Curse)
+			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
+		},
+		["poison"] = {
+			[88423] = DBM:IsHealer() and true,--Druid: Nature's Cure (Dps: Magic only. Healer: Magic, Curse, Poison)
+			[2782] = true,--Druid: Remove Corruption (Curse and Poison)
+			[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
+			[218164] = true,--Monk: Detox (non Healer) (Poison and Disease)
+			[4987] = DBM:IsHealer() and true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
+			[360823] = true,--Evoker: Naturalize (Magic and Poison)
+			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
+			[365585] = true,--Evoker: Expunge (Poison)
+		},
+		["disease"] = {
+			[115450] = true,--Monk: Detox (Healer) (Magic, Poison, and Disease)
+			[218164] = true,--Monk: Detox (non Healer) (Poison and Disease)
+			[527] = true,--Priest: Purify (Magic and Disease)
+			[213634] = true,--Priest: Purify Disease (Disease)
+			[4987] = DBM:IsHealer() and true,--Paladin: Cleanse ( Dps/Healer: Magic. Healer Only: Poison, Disease)
+			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
+		},
+		["bleed"] = {
+			[374251] = true,--Evoker: Cauterizing Flame (Bleed, Poison, Curse, and Disease)
+		},
+	}
+	local lastCheck, lastReturn = 0, true
+	function bossModPrototype:CheckDispelFilter(dispelType)
+		if not DBM.Options.FilterDispel then return true end
+		-- Retail - Druid: Nature's Cure (88423), Remove Corruption (2782), Monk: Detox (115450) Monk: Detox (218164), Priest: Purify (527) Priest: Purify Disease (213634), Paladin: Cleanse (4987), Shaman: Cleanse Spirit (51886), Purify Spirit (77130), Mage: Remove Curse (475), Warlock: Singe Magic (89808)
+		-- Classic - Druid: Remove Curse (2782), Priest: Purify (527), Paladin: Cleanse (4987), Mage: Remove Curse (475)
+		--start, duration, enable = GetSpellCooldown
+		--start & duration == 0 if spell not on cd
+		if UnitIsDeadOrGhost("player") then return false end--if dead, can't dispel
+		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckDispelFilter running on multiple raid members getting debuffed at once
+			return lastReturn
+		end
+		if dispelType then
+			--Singe magic requires checking if pet is out
+			if dispelType == "magic" and (GetSpellCooldown(89808)) == 0 and (UnitExists("pet") and self:GetCIDFromGUID(UnitGUID("pet")) == 416) then
+				lastCheck = GetTime()
+				lastReturn = true
+				return true
+			end
+			--We cannot do inverse check here because some classes actually have two dispels for same type (such as evoker)
+			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
+			--As such, we have to check if a spell is known in addition to it not being on cooldown
+			for spellID, _ in pairs(typeCheck[dispelType]) do
+				if typeCheck[dispelType][spellID] and IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+					lastCheck = GetTime()
+					lastReturn = true
+					return true
+				end
+			end
+		else--use lazy check until all mods are migrated to define type
+			for spellID, _ in pairs(lazyCheck) do
+				if IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+					lastCheck = GetTime()
+					lastReturn = true
+					return true
+				end
+			end
+		end
+		lastCheck = GetTime()
+		lastReturn = false
+		return false
+	end
 end
 
 ----------------------------
