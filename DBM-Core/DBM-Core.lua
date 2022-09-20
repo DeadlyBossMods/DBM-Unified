@@ -88,7 +88,7 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2022, 8, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.11"
+	DBM.DisplayVersion = "3.4.12"
 	DBM.ReleaseRevision = releaseDate(2022, 9, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
@@ -7426,12 +7426,19 @@ do
 		if unitID and checkOnlyTandF then return true end--checkOnlyTandF means this isn't an interrupt check at all, skip all the rest and return true if we met TandF rquirement
 
 		--Just return false if target or focus target is required and source isn't our target or focus, no need to do further checks
-		if not ignoreTandF and (not unitID and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown"))) then
+		--TandF required in all checks except "None" or if ignoreTandF is passed
+		if not ignoreTandF and not unitID then
 			return false
 		end
 
+		--Check if cooldown check is actually required
+		local cooldownRequired = checkCooldown
+		if cooldownRequired and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown")) then
+			cooldownRequired = false
+		end
+
 		local InterruptAvailable = true--We want to default to true versus false, since some interrupts don't require CD checks
-		if checkCooldown then
+		if cooldownRequired then
 			for spellID, _ in pairs(interruptSpells) do
 				--For an inverse check, don't need to check if it's known, if it's on cooldown it's known
 				--This is possible since no class has 2 interrupt spells (well, actual interrupt spells)
