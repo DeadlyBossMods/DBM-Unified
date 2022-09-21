@@ -88,8 +88,8 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2022, 8, 1) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.11 alpha"
-	DBM.ReleaseRevision = releaseDate(2022, 9, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.13 alpha"
+	DBM.ReleaseRevision = releaseDate(2022, 9, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -7420,22 +7420,29 @@ do
 		--Just return true if interrupt filtering is disabled (and it's actually for an interrupt)
 		if DBM.Options.FilterInterrupt2 == "None" and not checkOnlyTandF then return true end
 
-		local unitID = (UnitGUID("target") == sourceGUID) and "target" or isRetail and (UnitGUID("focus") == sourceGUID) and "focus"
+		local unitID = (UnitGUID("target") == sourceGUID) and "target" or not isClassic and (UnitGUID("focus") == sourceGUID) and "focus"
 
 		--Just return true if target or focus is ONLY requirement (not an interrupt check) and we already confirmed T and F
 		if unitID and checkOnlyTandF then return true end--checkOnlyTandF means this isn't an interrupt check at all, skip all the rest and return true if we met TandF rquirement
 
-		--Just return false if target or focus target is required and source isn't our target or focus, no need to do further checks
-		if not ignoreTandF and (not unitID and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown"))) then
+		--TandF required in all checks except "None" or if ignoreTandF is passed
+		--Just return false if source isn't our target or focus, no need to do further checks
+		if not ignoreTandF and not unitID then
 			return false
 		end
 
+		--Check if cooldown check is actually required
+		local cooldownRequired = checkCooldown--First set to default value defined by arg
+		if cooldownRequired and ((DBM.Options.FilterInterrupt2 == "onlyTandF") or self.isTrashMod and (DBM.Options.FilterInterrupt2 == "TandFandBossCooldown")) then
+			cooldownRequired = false
+		end
+
 		local InterruptAvailable = true--We want to default to true versus false, since some interrupts don't require CD checks
-		if checkCooldown then
+		if cooldownRequired then
 			for spellID, _ in pairs(interruptSpells) do
 				--For an inverse check, don't need to check if it's known, if it's on cooldown it's known
 				--This is possible since no class has 2 interrupt spells (well, actual interrupt spells)
-				if (GetSpellCooldown(spellID)) ~= 0 then--Spell is known and on cooldown
+				if (GetSpellCooldown(spellID)) ~= 0 then--Spell is on cooldown
 					InterruptAvailable = false
 				end
 			end
@@ -7443,7 +7450,7 @@ do
 		if InterruptAvailable then
 			--Check if it's casting something that's not interruptable at the moment
 			--needed for torghast since many mobs can have interrupt immunity with same spellIds as other mobs that can be interrupted
-			if unitID then
+			if isRetail and unitID then
 				if UnitCastingInfo(unitID) then
 					local _, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unitID)
 					if notInterruptible then return false end
