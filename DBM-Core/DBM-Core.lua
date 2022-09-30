@@ -3182,7 +3182,7 @@ function DBM:READY_CHECK()
 end
 
 do
-	local throttledTalentCheck(self)
+	local function throttledTalentCheck(self)
 		local lastSpecID = currentSpecID
 		self:SetCurrentSpecInfo()
 		if currentSpecID ~= lastSpecID then--Don't fire specchanged unless spec actually has changed.
