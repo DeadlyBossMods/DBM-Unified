@@ -23,6 +23,10 @@ end
 do
 	local CL = DBM_COMMON_L
 
+	local bossTargetuIds = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10", "focus", "target"
+	}
+
 	local function getBossTarget(guid, scanOnlyBoss)
 		local name, uid, bossuid
 		local cacheuid = bossuIdCache[guid] or "boss1"
