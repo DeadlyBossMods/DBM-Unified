@@ -2376,7 +2376,6 @@ do
 		end
 	end
 
-	--TODO: Possibly replace with UnitTokenFromGUID and call it a day
 	function DBM:GetRaidUnitId(name)
 		for i = 1, 10 do
 			local unitId = "boss"..i
@@ -2388,7 +2387,7 @@ do
 		return raid[name] and raid[name].id
 	end
 
-	local mobUids = {
+	local fullUids = {
 		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10",
 		"mouseover", "target", "focus", "focustarget", "targettarget", "mouseovertarget",
 		"party1target", "party2target", "party3target", "party4target",
@@ -2402,23 +2401,28 @@ do
 		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
 	}
 
+	local bossTargetuIds = {
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10", "focus", "target"
+	}
+
 	--(UnitTokenFromGUID doesn't support nameplate tokens so fallback is still needed even on retal)
-	function DBM:GetEnemyUnitIdByGUID(guid)
+	function DBM:GetEnemyUnitIdByGUID(guid, scanOnlyBoss)
 		local unitID
-		if UnitTokenFromGUID then
+		--First use blizzard internal client token check, but only if it's not boss only (because blizzard checks every token imaginable, even more than fullUids does)
+		if UnitTokenFromGUID and not scanOnlyBoss then
 			unitID = UnitTokenFromGUID(guid)
 		end
 		if unitID then
 			return unitID
 		else
-			for _, unitId in ipairs(mobUids) do
+			local usedTable = scanOnlyBoss and bossTargetuIds or fullUids
+			for _, unitId in ipairs(usedTable) do
 				local guid2 = UnitGUID(unitId)
 				if guid == guid2 then
 					return unitId
 				end
 			end
 		end
-		return CL.UNKNOWN
 	end
 
 	function DBM:GetPlayerGUIDByName(name)
@@ -4712,7 +4716,7 @@ function checkWipe(self, confirm)
 			wipe = 0
 		elseif bossuIdFound and LastInstanceType == "raid" then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
 			wipe = 2
-			for i = 1, 5 do
+			for i = 1, 10 do
 				if UnitExists("boss"..i) then
 					wipe = 0 -- Boss found. No wipe
 					break
@@ -6888,7 +6892,7 @@ function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) then return true end
 	else
 		local unitId = DBM:GetEnemyUnitIdByGUID(sourceGUID)
-		if UnitExists(unitId) and UnitAffectingCombat(unitId) then
+		if unitId and UnitExists(unitId) and UnitAffectingCombat(unitId) then
 			return true
 		end
 	end
@@ -7336,14 +7340,13 @@ function bossModPrototype:IsTanking(playerUnitID, enemyUnitID, isName, onlyReque
 		DBM:Debug("IsTanking passed with invalid unit", 2)
 		return false
 	end
-	--If we don't know enemy unit token, but know it's GUID and it's dragonflight,
-	--we can ask blizzard directly for enemy unitID and prevent a lot of unnessesary checks
-	if not enemyUnitID and enemyGUID and UnitTokenFromGUID then
-		enemyUnitID = UnitTokenFromGUID(enemyGUID)
+	--If we don't know enemy unit token, but know it's GUID
+	if not enemyUnitID and enemyGUID then
+		enemyUnitID = DBM:GetEnemyUnitIdByGUID(enemyGUID)
 	end
 
 	--Threat/Tanking Checks
-	--Most efficent and fastest check, we have both units. No need to find unitID
+	--We have both units. No need to find unitID
 	if enemyUnitID then
 		--Check threat first
 		local tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
@@ -7351,66 +7354,41 @@ function bossModPrototype:IsTanking(playerUnitID, enemyUnitID, isName, onlyReque
 			return true
 		end
 		--Non threat fallback
-		if includeTarget and UnitExists(enemyUnitID) then
-			local guid = UnitGUID(enemyUnitID)
-			local _, targetuid = self:GetBossTarget(guid, true)
-			if UnitIsUnit(playerUnitID, targetuid) then
+		if includeTarget and UnitExists(enemyUnitID.."target") then
+			if UnitIsUnit(playerUnitID, enemyUnitID.."target") then
 				return true
 			end
 		end
-	--Check literally everything because we don't have enemy unit token or guid (or we do have guid but it's not dragonflight)
-	else
-		for i = 1, 10 do
-			local unitID = "boss"..i
-			local guid = UnitGUID(unitID)
-			--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
-			if not enemyGUID or (guid and guid == enemyGUID) then
-				--Check threat first
-				local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
-				if (not onlyS3 and tanking) or (status == 3) then
-					return true
-				end
-				--Non threat fallback
-				if includeTarget and UnitExists(unitID) then
-					local _, targetuid = self:GetBossTarget(guid, true)
-					if UnitIsUnit(playerUnitID, targetuid) then
-						return true
-					end
-				end
-			end
+	end
+	--if onlyRequested is false/nil, it means we also accept anyone that's a tank role or tanking any boss unit
+	if not onlyRequested then
+		--Use these as fallback if threat target not found
+		if GetPartyAssignment("MAINTANK", playerUnitID, 1) then
+			return true
 		end
-		--Check group targets if no boss unitIDs found and enemyGUID passed.
-		--This allows IsTanking to be used in situations boss UnitIds don't exist
-		if enemyGUID then
-			local groupType = (IsInRaid() and "raid") or "party"
-			for i = 0, GetNumGroupMembers() do
-				local unitID = (i == 0 and "target") or groupType..i.."target"
+		if isRetail then
+			--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
+			if UnitGroupRolesAssigned(playerUnitID) == "TANK" then
+				return true
+			end
+			for i = 1, 10 do
+				local unitID = "boss"..i
 				local guid = UnitGUID(unitID)
-				if guid and guid == enemyGUID then
+				--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
+				if not enemyGUID or (guid and guid == enemyGUID) then
 					--Check threat first
 					local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
 					if (not onlyS3 and tanking) or (status == 3) then
 						return true
 					end
 					--Non threat fallback
-					if includeTarget and UnitExists(unitID) then
-						local _, targetuid = self:GetBossTarget(guid, true)
-						if UnitIsUnit(playerUnitID, targetuid) then
+					if includeTarget and UnitExists(unitID.."target") then
+						if UnitIsUnit(playerUnitID, unitID.."target") then
 							return true
 						end
 					end
 				end
 			end
-		end
-	end
-	if not onlyRequested then
-		--Use these as fallback if threat target not found
-		if GetPartyAssignment("MAINTANK", playerUnitID, 1) then
-			return true
-		end
-		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
-		if isRetail and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
-			return true
 		end
 	end
 	return false
