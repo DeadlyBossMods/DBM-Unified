@@ -41,7 +41,7 @@ do
 			if unitID then
 				bossuid = unitID
 				name = DBM:GetUnitFullName(unitID.."target")
-				unitID = unitID.."target"
+				uid = unitID.."target"
 				bossuIdCache[guid] = bossuid
 			end
 		end
