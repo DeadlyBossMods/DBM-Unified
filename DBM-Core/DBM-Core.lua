@@ -4503,7 +4503,7 @@ do
 			end
 			if combatInfo[LastInstanceMapID] then
 				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
-					if not v.noESDetection then
+					if not v.noESDetection and not (#inCombat > 0 and v.noMultiBoss) then
 						if v.multiEncounterPullDetection then
 							for _, eId in ipairs(v.multiEncounterPullDetection) do
 								if encounterID == eId then
