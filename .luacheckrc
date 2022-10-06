@@ -362,4 +362,6 @@ globals = {
 	"UnitRealmRelationship",
 	"UnitSetRole",
 	"UnitThreatSituation",
+	"UnitTokenFromGUID",
+	"UnitPercentHealthFromGUID",
 }

@@ -536,6 +536,7 @@ local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
 local UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty = UnitAffectingCombat, InCombatLockdown, IsFalling, IsEncounterInProgress, UnitPlayerOrPetInRaid, UnitPlayerOrPetInParty
 local UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff, UnitAura = UnitGUID, UnitHealth, UnitHealthMax, UnitBuff, UnitDebuff, UnitAura
 local UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit = UnitExists, UnitIsDead, UnitIsFriend, UnitIsUnit
+--local UnitTokenFromGUID, UnitPercentHealthFromGUID = UnitTokenFromGUID, UnitPercentHealthFromGUID
 local GetSpellInfo, GetDungeonInfo, GetSpellTexture, GetSpellCooldown = GetSpellInfo, C_LFGInfo and C_LFGInfo.GetDungeonInfo or GetDungeonInfo, GetSpellTexture, GetSpellCooldown
 local EJ_GetEncounterInfo, EJ_GetCreatureInfo = EJ_GetEncounterInfo, EJ_GetCreatureInfo
 local EJ_GetSectionInfo, GetSectionIconFlags
@@ -2375,6 +2376,7 @@ do
 		end
 	end
 
+	--TODO: Possibly replace with UnitTokenFromGUID and call it a day
 	function DBM:GetRaidUnitId(name)
 		for i = 1, 10 do
 			local unitId = "boss"..i
@@ -2400,6 +2402,8 @@ do
 		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
 	}
 
+	--TODO, optimize to prefer UnitTokenFromGUID first, but fallback to old way for classic or if UnitTokenFromGUID has no return
+	--(UnitTokenFromGUID doesn't support nameplate tokens so fallback is still needed even on retal)
 	function DBM:GetEnemyUnitIdByGUID(guid)
 		for _, unitId in ipairs(mobUids) do
 			local guid2 = UnitGUID(unitId)
@@ -7316,66 +7320,75 @@ function DBM:IsHealer(uId)
 end
 bossModPrototype.IsHealer = DBM.IsHealer
 
-function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID, includeTarget, onlyS3)
-	if isName then--Passed combat log name, so pull unit ID
-		unit = DBM:GetRaidUnitId(unit)
+function bossModPrototype:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
+	--Didn't have playerUnitID so combat log name was passed
+	if isName then
+		playerUnitID = DBM:GetRaidUnitId(playerUnitID)
 	end
-	if not unit then
+	if not playerUnitID then
 		DBM:Debug("IsTanking passed with invalid unit", 2)
 		return false
 	end
-	--Prefer threat target first
-	if boss then--Only checking one bossID as requested
+	--If we don't know enemy unit token, but know it's GUID and it's dragonflight,
+	--we can ask blizzard directly for enemy unitID and prevent a lot of unnessesary checks
+	if not enemyUnitID and enemyGUID and UnitTokenFromGUID then
+		enemyUnitID = UnitTokenFromGUID(enemyGUID)
+	end
+
+	--Threat/Tanking Checks
+	--Most efficent and fastest check, we have both units. No need to find unitID
+	if enemyUnitID then
 		--Check threat first
-		local tanking, status = UnitDetailedThreatSituation(unit, boss)
+		local tanking, status = UnitDetailedThreatSituation(playerUnitID, enemyUnitID)
 		if (not onlyS3 and tanking) or (status == 3) then
 			return true
 		end
 		--Non threat fallback
-		if includeTarget and UnitExists(boss) then
-			local guid = UnitGUID(boss)
+		if includeTarget and UnitExists(enemyUnitID) then
+			local guid = UnitGUID(enemyUnitID)
 			local _, targetuid = self:GetBossTarget(guid, true)
-			if UnitIsUnit(unit, targetuid) then
+			if UnitIsUnit(playerUnitID, targetuid) then
 				return true
 			end
 		end
-	else--Check all of them if one isn't defined
+	--Check literally everything because we don't have enemy unit token or guid (or we do have guid but it's not dragonflight)
+	else
 		for i = 1, 10 do
 			local unitID = "boss"..i
 			local guid = UnitGUID(unitID)
 			--No GUID, any unit having threat returns true, GUID, only specific unit matching guid
-			if not bossGUID or (guid and guid == bossGUID) then
+			if not enemyGUID or (guid and guid == enemyGUID) then
 				--Check threat first
-				local tanking, status = UnitDetailedThreatSituation(unit, unitID)
+				local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
 				if (not onlyS3 and tanking) or (status == 3) then
 					return true
 				end
 				--Non threat fallback
 				if includeTarget and UnitExists(unitID) then
 					local _, targetuid = self:GetBossTarget(guid, true)
-					if UnitIsUnit(unit, targetuid) then
+					if UnitIsUnit(playerUnitID, targetuid) then
 						return true
 					end
 				end
 			end
 		end
-		--Check group targets if no boss unitIDs found and bossGUID passed.
+		--Check group targets if no boss unitIDs found and enemyGUID passed.
 		--This allows IsTanking to be used in situations boss UnitIds don't exist
-		if bossGUID then
+		if enemyGUID then
 			local groupType = (IsInRaid() and "raid") or "party"
 			for i = 0, GetNumGroupMembers() do
 				local unitID = (i == 0 and "target") or groupType..i.."target"
 				local guid = UnitGUID(unitID)
-				if guid and guid == bossGUID then
+				if guid and guid == enemyGUID then
 					--Check threat first
-					local tanking, status = UnitDetailedThreatSituation(unit, unitID)
+					local tanking, status = UnitDetailedThreatSituation(playerUnitID, unitID)
 					if (not onlyS3 and tanking) or (status == 3) then
 						return true
 					end
 					--Non threat fallback
 					if includeTarget and UnitExists(unitID) then
 						local _, targetuid = self:GetBossTarget(guid, true)
-						if UnitIsUnit(unit, targetuid) then
+						if UnitIsUnit(playerUnitID, targetuid) then
 							return true
 						end
 					end
@@ -7385,11 +7398,11 @@ function bossModPrototype:IsTanking(unit, boss, isName, onlyRequested, bossGUID,
 	end
 	if not onlyRequested then
 		--Use these as fallback if threat target not found
-		if GetPartyAssignment("MAINTANK", unit, 1) then
+		if GetPartyAssignment("MAINTANK", playerUnitID, 1) then
 			return true
 		end
 		--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
-		if isRetail and UnitGroupRolesAssigned(unit) == "TANK" then
+		if isRetail and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
 			return true
 		end
 	end
@@ -7584,6 +7597,7 @@ end
 ----------------------------
 --  Boss Health Function  --
 ----------------------------
+--This accepts both CID and GUID which makes switching to UnitPercentHealthFromGUID and UnitTokenFromGUID not as cut and dry
 function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 	local uId = bossHealthuIdCache[cIdOrGUID] or "target"
 	local guid = UnitGUID(uId)
