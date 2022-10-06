@@ -2402,13 +2402,20 @@ do
 		"nameplate31", "nameplate32", "nameplate33", "nameplate34", "nameplate35", "nameplate36", "nameplate37", "nameplate38", "nameplate39", "nameplate40"
 	}
 
-	--TODO, optimize to prefer UnitTokenFromGUID first, but fallback to old way for classic or if UnitTokenFromGUID has no return
 	--(UnitTokenFromGUID doesn't support nameplate tokens so fallback is still needed even on retal)
 	function DBM:GetEnemyUnitIdByGUID(guid)
-		for _, unitId in ipairs(mobUids) do
-			local guid2 = UnitGUID(unitId)
-			if guid == guid2 then
-				return unitId
+		local unitID
+		if UnitTokenFromGUID then
+			unitID = UnitTokenFromGUID(guid)
+		end
+		if unitID then
+			return unitID
+		else
+			for _, unitId in ipairs(mobUids) do
+				local guid2 = UnitGUID(unitId)
+				if guid == guid2 then
+					return unitId
+				end
 			end
 		end
 		return CL.UNKNOWN

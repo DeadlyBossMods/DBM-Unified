@@ -36,6 +36,16 @@ do
 			bossuIdCache[guid] = bossuid
 		end
 		if name then return name, uid, bossuid end
+		if UnitTokenFromGUID then--Dragon flight api check
+			local unitID = UnitTokenFromGUID(guid)
+			if unitID then
+				bossuid = unitID
+				name = DBM:GetUnitFullName(unitID.."target")
+				unitID = unitID.."target"
+				bossuIdCache[guid] = bossuid
+			end
+		end
+		if name then return name, uid, bossuid end
 		for _, uId in ipairs(bossTargetuIds) do
 			if UnitGUID(uId) == guid then
 				bossuid = uId
