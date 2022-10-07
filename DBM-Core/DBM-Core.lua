@@ -2405,8 +2405,8 @@ do
 		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10", "focus", "target"
 	}
 
-	--(UnitTokenFromGUID doesn't support nameplate tokens so fallback is still needed even on retal)
-	function DBM:GetEnemyUnitIdByGUID(guid, scanOnlyBoss)
+	--Not to be confused with GetUnitIdFromCID
+	function DBM:GetUnitIdFromGUID(guid, scanOnlyBoss)
 		local unitID
 		--First use blizzard internal client token check, but only if it's not boss only (because blizzard checks every token imaginable, even more than fullUids does)
 		if UnitTokenFromGUID and not scanOnlyBoss then
@@ -2583,20 +2583,15 @@ function DBM:GetBossUnitId(name, bossOnly)--Deprecated, only old mods use this
 	return returnUnitID
 end
 
-function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
+--Not to be confused with GetUnitIdFromGUID
+function DBM:GetUnitIdFromCID(creatureID, bossOnly)
 	local returnUnitID
 	for i = 1, 10 do
 		local unitId = "boss"..i
 		local bossGUID = UnitGUID(unitId)
-		if type(cidOrGuid) == "number" then--CID passed
-			local cid = self:GetCIDFromGUID(bossGUID)
-			if cid == cidOrGuid then
-				returnUnitID = unitId
-			end
-		else--GUID passed
-			if bossGUID == cidOrGuid then
-				returnUnitID = unitId
-			end
+		local cid = self:GetCIDFromGUID(bossGUID)
+		if cid == creatureID then
+			returnUnitID = unitId
 		end
 	end
 	--Didn't find valid unitID from boss units, scan raid targets
@@ -2604,8 +2599,8 @@ function DBM:GetUnitIdFromGUID(cidOrGuid, bossOnly)
 		for uId in DBM:GetGroupMembers() do--Do not use self on this function, because self might be bossModPrototype
 			local unitId = uId .. "target"
 			local bossGUID = UnitGUID(unitId)
-			local cid = self:GetCIDFromGUID(cidOrGuid)
-			if bossGUID == cidOrGuid or cid == cidOrGuid then
+			local cid = self:GetCIDFromGUID(bossGUID)
+			if cid == creatureID then
 				returnUnitID = unitId
 			end
 		end
@@ -6891,7 +6886,7 @@ function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
 	if customunitID then
 		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) then return true end
 	else
-		local unitId = DBM:GetEnemyUnitIdByGUID(sourceGUID)
+		local unitId = DBM:GetUnitIdFromGUID(sourceGUID)
 		if unitId and UnitExists(unitId) and UnitAffectingCombat(unitId) then
 			return true
 		end
@@ -6937,6 +6932,7 @@ bossModPrototype.HasMapRestrictions = DBM.HasMapRestrictions
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
 bossModPrototype.IsCreatureGUID = DBM.IsCreatureGUID
+bossModPrototype.GetUnitIdFromCID = DBM.GetUnitIdFromCID
 bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
 bossModPrototype.CheckNearby = DBM.CheckNearby
 bossModPrototype.IsTrivial = DBM.IsTrivial
@@ -7019,7 +7015,12 @@ do
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		cidOrGuid = cidOrGuid or self.creatureId
-		local uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
+		local uId
+		if type(cidOrGuid) == "number" then--CID passed
+			uId = DBM:GetUnitIdFromCID(cidOrGuid, onlyBoss)
+		else--GUID
+			uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
+		end
 		if uId then
 			itemId = itemId or 32698
 			local inRange = IsItemInRange(itemId, uId)
@@ -7342,7 +7343,7 @@ function bossModPrototype:IsTanking(playerUnitID, enemyUnitID, isName, onlyReque
 	end
 	--If we don't know enemy unit token, but know it's GUID
 	if not enemyUnitID and enemyGUID then
-		enemyUnitID = DBM:GetEnemyUnitIdByGUID(enemyGUID)
+		enemyUnitID = DBM:GetUnitIdFromGUID(enemyGUID)
 	end
 
 	--Threat/Tanking Checks

@@ -39,7 +39,7 @@ do
 		end
 		if name then return name, uid, bossuid end
 		--Else, perform iteration again
-		local unitID = DBM:GetEnemyUnitIdByGUID(guid, scanOnlyBoss)
+		local unitID = DBM:GetUnitIdFromGUID(guid, scanOnlyBoss)
 		if unitID then
 			bossuid = unitID
 			name = DBM:GetUnitFullName(unitID.."target")
