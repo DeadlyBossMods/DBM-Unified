@@ -4118,7 +4118,7 @@ do
 
 	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, groupLeader, wipeHP)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
-		if not ver or ver ~= "7" then return end--Ignore old versions
+		if not ver or ver ~= "8" then return end--Ignore old versions
 		if DBM:AntiSpam(isRetail and 10 or 20, "GCE") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
