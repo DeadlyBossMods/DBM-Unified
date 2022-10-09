@@ -4116,7 +4116,7 @@ do
 		end
 	end
 
-	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP, groupLeader)
+	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, groupLeader, wipeHP)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
 		if not ver or ver ~= "7" then return end--Ignore old versions
 		if DBM:AntiSpam(isRetail and 10 or 20, "GCE") then
@@ -4149,15 +4149,15 @@ do
 					difficultyName = PLAYER_DIFFICULTY1
 				end
 				if wipe == "1" then
-					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader, difficultyName.."-"..bossName, wipeHP, time))--"%s's Guild group has wiped on %s (%s) after %s.
+					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader or CL.UNKNOWN, difficultyName.."-"..bossName, wipeHP, time))--"%s's Guild group has wiped on %s (%s) after %s.
 				else
-					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(difficultyName.."-"..bossName, groupLeader, time))--"%s has been defeated by %s's guild group after %s!"
+					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(difficultyName.."-"..bossName, groupLeader or CL.UNKNOWN, time))--"%s has been defeated by %s's guild group after %s!"
 				end
 			else--Vanilla and TBC single format raids
 				if wipe == "1" then
-					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader, bossName, wipeHP, time))
+					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader or CL.UNKNOWN, bossName, wipeHP, time))
 				else
-					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(bossName, groupLeader, time))
+					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(bossName, groupLeader or CL.UNKNOWN, time))
 				end
 			end
 		end
@@ -4798,9 +4798,9 @@ do
 		if not statusGuildDisabled and updateNotificationDisplayed == 0 then
 			if thisTime then--Wipe event
 				if wipeHP then
-					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t7\t1\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..wipeHP.."\t"..lastGroupLeader, "GUILD")
+					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t8\t1\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..lastGroupLeader.."\t"..wipeHP, "GUILD")
 				else
-					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t7\t0\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..lastGroupLeader, "GUILD")
+					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t8\t0\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..lastGroupLeader, "GUILD")
 				end
 			else
 				SendAddonMessage(DBMPrefix, "GCB\t"..modId.."\t4\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..lastGroupLeader, "GUILD")
