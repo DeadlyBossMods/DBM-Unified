@@ -405,7 +405,7 @@ local newerVersionPerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPer
 -- False variables
 local voiceSessionDisabled, statusGuildDisabled, statusWhisperDisabled, targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false, false, false, false
 -- Nil variables
-local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, savedDifficulty, difficultyText, difficultyIndex
+local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, savedDifficulty, difficultyText, difficultyIndex, lastGroupLeader
 -- 0 variables
 local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, difficultyModifier, LastGroupSize = 0, 0, 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
@@ -2172,6 +2172,9 @@ do
 					raid[name].guid = UnitGUID(id) or ""
 					raid[name].updated = true
 					raidGuids[UnitGUID(id) or ""] = name
+					if rank == 2 then
+						lastGroupLeader = name
+					end
 				end
 			end
 			private.enableIcons = false
@@ -2240,6 +2243,9 @@ do
 				raid[name].groupId = i
 				raid[name].updated = true
 				raidGuids[UnitGUID(id) or ""] = name
+				if rank >= 1 then
+					lastGroupLeader = name
+				end
 			end
 			private.enableIcons = false
 			twipe(iconSeter)
@@ -2284,6 +2290,7 @@ do
 			raid[playerName].displayVersion = DBM.DisplayVersion
 			raid[playerName].locale = GetLocale()
 			raidGuids[UnitGUID("player")] = playerName
+			lastGroupLeader = nil
 		end
 	end
 
@@ -4070,16 +4077,16 @@ do
 		end
 	end
 
-	guildSyncHandlers["GCB"] = function(_, modId, ver, difficulty, difficultyModifier, name)
+	guildSyncHandlers["GCB"] = function(_, modId, ver, difficulty, difficultyModifier, name, groupLeader)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
-		if not ver or ver ~= "3" then return end--Ignore old versions
+		if not ver or ver ~= "4" then return end--Ignore old versions
 		if DBM:AntiSpam(isRetail and 10 or 20, "GCB") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
 			modId = tonumber(modId)
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			if isRetail then
+			if isRetail or isWrath then
 				local difficultyName
 				if difficulty == 8 then
 					if difficultyModifier and difficultyModifier ~= 0 then
@@ -4087,6 +4094,14 @@ do
 					else
 						difficultyName = PLAYER_DIFFICULTY6.."+"
 					end
+				elseif difficulty == 3 or difficulty == 175 then
+					difficultyName = RAID_DIFFICULTY1
+				elseif difficulty == 4 or difficulty == 176 then
+					difficultyName = RAID_DIFFICULTY2
+				elseif difficulty == 5 or difficulty == 193 then
+					difficultyName = RAID_DIFFICULTY3
+				elseif difficulty == 6 or difficulty == 194 then
+					difficultyName = RAID_DIFFICULTY4
 				elseif difficulty == 16 then
 					difficultyName = PLAYER_DIFFICULTY6
 				elseif difficulty == 15 then
@@ -4094,23 +4109,23 @@ do
 				else
 					difficultyName = PLAYER_DIFFICULTY1
 				end
-				DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(difficultyName.."-"..bossName))
-			else
-				DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(bossName))
+				DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(difficultyName.."-"..bossName, groupLeader))-- "%s has been engaged by %s's guild group"
+			else--Vanilla and TBC single format raids
+				DBM:AddMsg(L.GUILD_COMBAT_STARTED:format(bossName, groupLeader))
 			end
 		end
 	end
 
-	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP)
+	guildSyncHandlers["GCE"] = function(_, modId, ver, wipe, time, difficulty, difficultyModifier, name, wipeHP, groupLeader)
 		if not DBM.Options.ShowGuildMessages or not difficulty then return end
-		if not ver or ver ~= "6" then return end--Ignore old versions
+		if not ver or ver ~= "7" then return end--Ignore old versions
 		if DBM:AntiSpam(isRetail and 10 or 20, "GCE") then
 			if IsInInstance() then return end--Simple filter, if you are inside an instance, just filter it, if not in instance, good to go.
 			difficulty = tonumber(difficulty)
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
 			modId = tonumber(modId)
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			if isRetail then
+			if isRetail or isWrath then
 				local difficultyName
 				if difficulty == 8 then
 					if difficultyModifier and difficultyModifier ~= 0 then
@@ -4118,6 +4133,14 @@ do
 					else
 						difficultyName = PLAYER_DIFFICULTY6.."+"
 					end
+				elseif difficulty == 3 or difficulty == 175 then
+					difficultyName = RAID_DIFFICULTY1
+				elseif difficulty == 4 or difficulty == 176 then
+					difficultyName = RAID_DIFFICULTY2
+				elseif difficulty == 5 or difficulty == 193 then
+					difficultyName = RAID_DIFFICULTY3
+				elseif difficulty == 6 or difficulty == 194 then
+					difficultyName = RAID_DIFFICULTY4
 				elseif difficulty == 16 then
 					difficultyName = PLAYER_DIFFICULTY6
 				elseif difficulty == 15 then
@@ -4126,15 +4149,15 @@ do
 					difficultyName = PLAYER_DIFFICULTY1
 				end
 				if wipe == "1" then
-					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(difficultyName.."-"..bossName, wipeHP, time))
+					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader, difficultyName.."-"..bossName, wipeHP, time))--"%s's Guild group has wiped on %s (%s) after %s.
 				else
-					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(difficultyName.."-"..bossName, time))
+					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(difficultyName.."-"..bossName, groupLeader, time))--"%s has been defeated by %s's guild group after %s!"
 				end
-			else
+			else--Vanilla and TBC single format raids
 				if wipe == "1" then
-					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(bossName, wipeHP, time))
+					DBM:AddMsg(L.GUILD_COMBAT_ENDED_AT:format(groupLeader, bossName, wipeHP, time))
 				else
-					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(bossName, time))
+					DBM:AddMsg(L.GUILD_BOSS_DOWN:format(bossName, groupLeader, time))
 				end
 			end
 		end
@@ -4775,12 +4798,12 @@ do
 		if not statusGuildDisabled and updateNotificationDisplayed == 0 then
 			if thisTime then--Wipe event
 				if wipeHP then
-					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t6\t1\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..wipeHP, "GUILD")
+					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t7\t1\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..wipeHP.."\t"..lastGroupLeader, "GUILD")
 				else
-					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t6\t0\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name, "GUILD")
+					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t7\t0\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..lastGroupLeader, "GUILD")
 				end
 			else
-				SendAddonMessage(DBMPrefix, "GCB\t"..modId.."\t3\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name, "GUILD")
+				SendAddonMessage(DBMPrefix, "GCB\t"..modId.."\t4\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..lastGroupLeader, "GUILD")
 			end
 		end
 	end
