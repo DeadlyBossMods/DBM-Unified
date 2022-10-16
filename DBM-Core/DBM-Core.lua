@@ -5587,6 +5587,7 @@ do
 		["WARLOCK"] = 1454,
 		["MONK"] = 1450,
 		["DEMONHUNTER"] = 1456,
+		["EVOKER"] = 1465,
 	}
 
 	function DBM:SetCurrentSpecInfo()
