@@ -462,6 +462,8 @@ L.AUTO_TIMER_OPTIONS.addscustom		= "쫄 등장 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.roleplay		= "NPC 대사 지속 시간 타이머 바 보기"
 
 L.AUTO_ICONS_OPTION_TARGETS				= "$spell:%s 대상에 공격대 징표 설정"--Usually used for player targets with no specific sorting
+L.AUTO_ICONS_OPTION_TARGETS_TANK_A		= "$spell:%s 대상에 공격대 징표 설정 (탱커 근접 원거리 순서 및 이름 순서 우선)"
+L.AUTO_ICONS_OPTION_TARGETS_TANK_R		= "$spell:%s 대상에 공격대 징표 설정 (탱커 근접 원거리 순서 및 공격대 배치 순서 우선)"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_A		= "$spell:%s 대상에 공격대 징표 설정 (근접 캐릭터와 이름 순서 우선)"
 L.AUTO_ICONS_OPTION_TARGETS_MELEE_R		= "$spell:%s 대상에 공격대 징표 설정 (근접 캐릭터와 공격대 배치 순서 우선)"
 L.AUTO_ICONS_OPTION_TARGETS_RANGED_A	= "$spell:%s 대상에 공격대 징표 설정 (원거리 캐릭터와 이름 순서 우선)"
