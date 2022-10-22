@@ -11102,6 +11102,14 @@ do
 		return iconsModule:SetIcon(self, ...)
 	end
 
+	function bossModPrototype:SetIconByTable(...)
+		return iconsModule:SetIconByTable(self, ...)
+	end
+
+	function bossModPrototype:SetUnsortedIcon(...)
+		return iconsModule:SetUnsortedIcon(self, ...)
+	end
+
 	--Backwards compat for old mods using this method, which is now merged into SetSortedIcon
 	function bossModPrototype:SetAlphaIcon(delay, target, maxIcon, returnFunc, scanId, ...)
 		return iconsModule:SetSortedIcon(self, "alpha", delay, target, 1, maxIcon, false, returnFunc, scanId, ...)
