@@ -40,7 +40,7 @@ L.MOD_AVAILABLE					= "%s在此區域有模組可用。你可以在Curse、Wago�
 
 L.COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 L.COMBAT_STARTED_IN_PROGRESS	= "與%s開戰已進行的戰鬥。祝好運與盡興! :)"
-L.GUILD_COMBAT_STARTED			= "%s已經開戰，在%s的公會團隊於%s之後！"
+L.GUILD_COMBAT_STARTED			= "%s已經與%s的公會團隊開戰！"
 L.SCENARIO_STARTED				= "%s開始。祝好運與盡興! :)"
 L.SCENARIO_STARTED_IN_PROGRESS	= "加入進行中的%s事件。祝好運與盡興! :)"
 L.BOSS_DOWN						= "擊敗%s，用了%s!"
