@@ -19,13 +19,13 @@ local tabFrame1
 if isDragonflight then
 	tabFrame1 = CreateFrame("ScrollFrame", "DBM_GUI_DropDown", _G["DBM_GUI_OptionsFrame"], "BackdropTemplate,UIPanelScrollFrameTemplate")
 	tabFrame1.backdropInfo = {
-    	bgFile		= "Interface\\ChatFrame\\ChatFrameBackground", -- 130937
-    	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
-    	tile		= true,
-    	tileSize	= 16,
-    	edgeSize	= 16,
-    	insets		= { left = 3, right = 3, top = 5, bottom = 3 }
-    }
+		bgFile		= "Interface\\ChatFrame\\ChatFrameBackground", -- 130937
+		edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
+		tile		= true,
+		tileSize	= 16,
+		edgeSize	= 16,
+		insets		= { left = 3, right = 3, top = 5, bottom = 3 }
+	}
 else
 	-- Temporary hack, till I get both versions running smoothly on the new system
 	tabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", _G["DBM_GUI_OptionsFrame"], "BackdropTemplate,OptionsFrameListTemplate")
