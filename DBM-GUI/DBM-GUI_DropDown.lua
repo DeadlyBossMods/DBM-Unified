@@ -31,13 +31,13 @@ else
 	tabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", _G["DBM_GUI_OptionsFrame"], "BackdropTemplate,OptionsFrameListTemplate")
 	tabFrame1.backdropInfo = {
 		-- BgFile renders super weird in classic era
-    	--bgFile		= "Interface\\ChatFrame\\ChatFrameBackground", -- 130937
-    	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
-    	tile		= true,
-    	tileSize	= 16,
-    	edgeSize	= 16,
-    	insets		= { left = 3, right = 3, top = 5, bottom = 3 }
-    }
+		--bgFile		= "Interface\\ChatFrame\\ChatFrameBackground", -- 130937
+		edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
+		tile		= true,
+		tileSize	= 16,
+		edgeSize	= 16,
+		insets		= { left = 3, right = 3, top = 5, bottom = 3 }
+	}
 end
 tabFrame1:Hide()
 tabFrame1:SetFrameStrata("TOOLTIP")
