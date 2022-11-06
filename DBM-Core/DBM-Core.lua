@@ -9443,7 +9443,7 @@ do
 	end
 
 	do
-		local minVoicePackVersion = isRetail and 12 or 10
+		local minVoicePackVersion = isRetail and 13 or 10
 
 		function DBM:CheckVoicePackVersion(value)
 			local activeVP = self.Options.ChosenVoicePack2
