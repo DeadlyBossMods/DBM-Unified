@@ -43,6 +43,7 @@ localization.es.lua
 localization.br.lua
 
 DBM-GUI.lua
+DBM-GUI_DropDown.xml
 DBM-GUI_DropDown.lua
 
 # Modules
