@@ -164,10 +164,6 @@ globals = {
 	"StaticPopup_Hide",
 	"StaticPopup_Show",
 	"TimerTracker_OnEvent",
-	"UIDropDownMenu_AddButton",
-	"UIDropDownMenu_CreateInfo",
-	"UIDropDownMenu_Initialize",
-	"UIDropDownMenu_SetWidth",
 
 	"Spell.CreateFromSpellID",
 
