@@ -7426,7 +7426,7 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 	end
 	return false
 end
-bossModPrototype.IsMelee = DBM.IsMelee
+bossModPrototype.IsTanking = DBM.IsTanking
 
 function bossModPrototype:GetNumAliveTanks()
 	if not IsInGroup() then return 1 end--Solo raid, you're the "tank"
