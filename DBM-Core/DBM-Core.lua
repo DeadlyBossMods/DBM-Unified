@@ -7364,7 +7364,7 @@ function DBM:IsHealer(uId)
 end
 bossModPrototype.IsHealer = DBM.IsHealer
 
-function bossModPrototype:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
+function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGUID, includeTarget, onlyS3)
 	--Didn't have playerUnitID so combat log name was passed
 	if isName then
 		playerUnitID = DBM:GetRaidUnitId(playerUnitID)
@@ -7426,6 +7426,7 @@ function bossModPrototype:IsTanking(playerUnitID, enemyUnitID, isName, onlyReque
 	end
 	return false
 end
+bossModPrototype.IsMelee = DBM.IsMelee
 
 function bossModPrototype:GetNumAliveTanks()
 	if not IsInGroup() then return 1 end--Solo raid, you're the "tank"
