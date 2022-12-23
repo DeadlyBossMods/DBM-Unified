@@ -48,6 +48,7 @@ CL.RINGS						= "고리"
 CL.CHEST						= "상자"--As in Treasure 'Chest'. Not Chest as in body part.
 CL.ADD						= "쫄"--A fight Add as in "boss spawned extra adds"
 CL.ADDS						= "쫄"
+CL.ADDCOUNT						= "쫄 %s"--ie, Add 1, Add 2, Add 3
 CL.BIG_ADD					= "큰 쫄"
 CL.BOSS						= "보스"
 CL.ENEMIES					= "적"
