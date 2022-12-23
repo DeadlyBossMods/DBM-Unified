@@ -3290,7 +3290,7 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
-	local wipeNagShown, pvpShown = false, false
+	local pvpShown = false
 	local classicZones = {[509]=true,[531]=true,[469]=true,[409]=true}
 	local bcZones = {[564]=true,[534]=true,[532]=true,[565]=true,[544]=true,[548]=true,[580]=true,[550]=true}
 	local wrathZones = {[615]=true,[724]=true,[649]=true,[616]=true,[631]=true,[533]=true,[249]=true,[603]=true,[624]=true}
