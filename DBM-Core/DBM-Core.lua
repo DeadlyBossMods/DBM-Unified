@@ -7448,6 +7448,7 @@ do
 		[96231] = true,--Paldin Rebuke
 		[106839] = true,--Druid Skull Bash
 		[116705] = true,--Monk Spear Hand Strike
+		[147362] = true,--Hunter Countershot
 		[183752] = true,--Demon hunter Disrupt
 		[351338] = true,--Evoker Quell
 	}
