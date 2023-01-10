@@ -338,6 +338,7 @@ DBM.DefaultOptions = {
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
+	DontAutoGossip = false,
 	DontShowPT2 = false,
 	DontShowPTCountdownText = false,
 	DontPlayPTCountdown = false,
@@ -2653,6 +2654,22 @@ function DBM:IsTrivial(customLevel)
 		end
 	end
 	return false
+end
+
+function DBM:GetGossipID()
+	if self.Options.DontAutoGossip then return false end
+	local table = C_GossipInfo.GetOptions()
+	if table[1] and table[1].gossipOptionID then
+		return table[1].gossipOptionID
+	else
+		return false
+	end
+end
+
+function DBM:SelectGossip(gossipOptionID)
+	if gossipOptionID and not self.Options.DontAutoGossip then
+		C_GossipInfo.SelectOption(gossipOptionID)
+	end
 end
 
 ---------------
@@ -6964,6 +6981,8 @@ bossModPrototype.GetUnitIdFromCID = DBM.GetUnitIdFromCID
 bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
 bossModPrototype.CheckNearby = DBM.CheckNearby
 bossModPrototype.IsTrivial = DBM.IsTrivial
+bossModPrototype.GetGossipID = DBM.GetGossipID
+bossModPrototype.SelectGossip = DBM.SelectGossip
 
 do
 	local TargetScanning = private:GetModule("TargetScanning")
