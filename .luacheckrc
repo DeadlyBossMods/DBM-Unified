@@ -180,6 +180,7 @@ globals = {
 	"C_FriendList.GetFriendInfo",
 	"C_GamePad.SetVibration",
 	"C_Garrison.IsOnGarrisonMap",
+	"C_GossipInfo",
 	"C_LFGInfo",
 	"C_LFGInfo.GetDungeonInfo",
 	"C_Map.GetBestMapForUnit",
