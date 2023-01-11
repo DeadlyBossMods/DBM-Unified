@@ -14,6 +14,7 @@ CL.INTERMISSION				= "사잇 단계"
 CL.NO_DEBUFF					= "%s 없음"--For use in places like info frame where you put "Not Spellname"
 CL.ALLY						= "공대원"--Such as "Move to Ally"
 CL.ALLIES					= "공대원"--Such as "Move to Allies"
+CL.CLEAR							= "지움"
 CL.SAFE						= "안전함"
 CL.NOTSAFE					= "위험함"
 CL.SEASONAL							= "시즌제"--Used for option headers to label options that apply to seasonal mechanics (Such as season of mastery on classic era)
