@@ -81,7 +81,7 @@ if isRetail then
 	DBM.ReleaseRevision = releaseDate(2023, 1, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 259, "3fbb48c"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.29"
+	DBM.DisplayVersion = "1.14.30 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 1, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isBCC then
@@ -89,7 +89,7 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2023, 1, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.24"
+	DBM.DisplayVersion = "3.4.25 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 1, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
