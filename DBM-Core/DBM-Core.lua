@@ -10630,7 +10630,7 @@ function bossModPrototype:AddHudMapOption(name, spellId, default)
 	self:SetOptionCategory(name, "misc")
 end
 
-function bossModPrototype:AddNamePlateOption(name, spellId, default)
+function bossModPrototype:AddNamePlateOption(name, spellId, default, forceDBM)
 	if not spellId then
 		error("AddNamePlateOption must provide valid spellId", 2)
 	end
@@ -10641,7 +10641,7 @@ function bossModPrototype:AddNamePlateOption(name, spellId, default)
 	self.Options[name] = (default == nil) or default
 	self:GroupSpells(spellId, name)
 	self:SetOptionCategory(name, "nameplate")
-	self.localization.options[name] = L.AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
+	self.localization.options[name] = forceDBM and L.AUTO_NAMEPLATE_OPTION_TEXT_FORCED:format(spellId) or L.AUTO_NAMEPLATE_OPTION_TEXT:format(spellId)
 end
 
 function bossModPrototype:AddInfoFrameOption(spellId, default, optionVersion, optionalThreshold)
