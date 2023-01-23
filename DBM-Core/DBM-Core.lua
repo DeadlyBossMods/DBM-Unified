@@ -2666,9 +2666,9 @@ function DBM:GetGossipID()
 	end
 end
 
-function DBM:SelectGossip(gossipOptionID)
+function DBM:SelectGossip(gossipOptionID, confirm)
 	if gossipOptionID and not self.Options.DontAutoGossip then
-		C_GossipInfo.SelectOption(gossipOptionID)
+		C_GossipInfo.SelectOption(gossipOptionID, "", confirm)
 	end
 end
 
