@@ -89,7 +89,7 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2023, 1, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.28"
+	DBM.DisplayVersion = "3.4.29 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 1, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 41, "287b8dd"
 end
