@@ -2090,9 +2090,9 @@ do
 				end
 				return false
 			end
-			if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
-				collectgarbage("collect")
-			end
+--			if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
+--				collectgarbage("collect")
+--			end
 			firstLoad = true
 		end
 		DBM_GUI:ShowHide()
@@ -3593,9 +3593,9 @@ function DBM:LoadMod(mod, force)
 				self:GROUP_ROSTER_UPDATE(true)
 			end
 		end
-		if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
-			collectgarbage("collect")
-		end
+--		if not InCombatLockdown() and not UnitAffectingCombat("player") and not IsFalling() then--We loaded in combat but still need to avoid garbage collect in combat
+--			collectgarbage("collect")
+--		end
 		return true
 	end
 end
