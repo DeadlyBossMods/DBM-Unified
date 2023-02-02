@@ -77,7 +77,6 @@ do
 				local usedTable = scanOnlyBoss and bossTargetuIds or fullUids
 				for _, uId in ipairs(usedTable) do
 					if mod:GetUnitCreatureId(uId) == cidOrGuid then
-						found = true
 						bossuIdCache[cidOrGuid] = uId
 						bossuIdCache[UnitGUID(uId)] = uId
 						name, uid, bossuid = getBossTarget(UnitGUID(uId), scanOnlyBoss)
