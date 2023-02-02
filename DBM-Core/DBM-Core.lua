@@ -2659,8 +2659,12 @@ end
 function DBM:GetGossipID()
 	if self.Options.DontAutoGossip then return false end
 	local table = C_GossipInfo.GetOptions()
-	if table[1] and table[1].gossipOptionID then
-		return table[1].gossipOptionID
+	if table[1] then
+		if table[1].gossipOptionID then
+			return table[1].gossipOptionID
+		elseif table[1].orderIndex then
+			return table[1].orderIndex
+		end
 	else
 		return false
 	end
@@ -2668,7 +2672,11 @@ end
 
 function DBM:SelectGossip(gossipOptionID, confirm)
 	if gossipOptionID and not self.Options.DontAutoGossip then
-		C_GossipInfo.SelectOption(gossipOptionID, "", confirm)
+		if C_GossipInfo.SelectOptionByIndex and gossipOptionID < 10 then--Using Index
+			C_GossipInfo.SelectOptionByIndex(gossipOptionID, "", confirm)
+		else
+			C_GossipInfo.SelectOption(gossipOptionID, "", confirm)
+		end
 	end
 end
 
