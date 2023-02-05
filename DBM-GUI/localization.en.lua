@@ -9,11 +9,11 @@ L.TranslationBy 					= nil -- your name here, localizers!
 L.Website							= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Follow on twitter @deadlybossmods or @MysticalOS"
 L.WebsiteButton						= "Website"
 
-L.OTabBosses						= "Bosses"--Deprecated and will be deleted once tabs no longer use this
+L.OTabBosses						= "Boss Options"--Deprecated and will be deleted once tabs no longer use this
 L.OTabRaids							= "Raid"--Raids & PVP
 L.OTabDungeons						= "Party/Solo"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
 L.OTabPlugins						= "Core Plugins"
-L.OTabOptions						= GAMEOPTIONS_MENU
+L.OTabOptions						= "Core Options"
 L.OTabAbout							= "About"
 
 L.TabCategory_OTHER					= "Other Mods"

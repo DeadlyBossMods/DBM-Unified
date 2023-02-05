@@ -3484,6 +3484,7 @@ do
 	end
 
 	function DBM:CHALLENGE_MODE_RESET()
+		difficultyIndex = 8
 		self:CheckAvailableMods()
 		if not self.Options.RecordOnlyBosses then
 			self:StartLogging(0, nil, true)
