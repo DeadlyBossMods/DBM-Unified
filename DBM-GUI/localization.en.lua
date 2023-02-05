@@ -410,7 +410,7 @@ L.PT_Threshold						= "Do not play Pull/Break/Combat/Custom Timer countdown audi
 L.Panel_ReducedInformation			= "Reduce Information"
 
 L.Area_SpamFilter_Anounces			= "Announce Filters/De-escalation"
-L.SpamBlockNoShowTgtAnnounce		= "Do not show text or play sound for TARGET general announcements that do not affect yourself, expect where noted that specific warning ignores this filter (above filter overrides this one)"
+L.SpamBlockNoShowTgtAnnounce		= "Do not show text or play sound for TARGET general announcements that do not affect yourself, expect where noted that specific warning ignores this filter (global disable in DBM Features overrides this one)"
 L.SpamBlockNoTrivialSpecWarnSound	= "Do not play special announce sounds or show screen flash for content that is trivial for your level (plays user selected non emphasized announce sound instead)"
 
 L.Area_SpamFilter					= "Spam Filter Options"
