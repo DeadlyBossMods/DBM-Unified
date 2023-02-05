@@ -3756,7 +3756,7 @@ do
 
 	syncHandlers["RLD"] = function(sender, version, statusWhisper, guildStatus, raidIcons, chatBubbles)
 		if (DBM:GetRaidRank(sender) ~= 2 or not IsInGroup()) then return end--If not on group, we're probably sender, don't disable status. IF not leader, someone is trying to spoof this, block that too
-		if not version or ver ~= "1" then return end--Ignore old versions
+		if not version or version ~= "1" then return end--Ignore old versions
 		DBM:Debug("Raid leader disable comm Received")
 		statusWhisper, guildStatus, raidIcons, chatBubbles = tonumber(statusWhisper) or 0, tonumber(guildStatus) or 0, tonumber(raidIcons) or 0, tonumber(chatBubbles) or 0
 		if statusWhisper == 1 then
