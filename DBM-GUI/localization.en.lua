@@ -9,11 +9,11 @@ L.TranslationBy 					= nil -- your name here, localizers!
 L.Website							= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Follow on twitter @deadlybossmods or @MysticalOS"
 L.WebsiteButton						= "Website"
 
-L.OTabBosses						= "Bosses"--Deprecated and will be deleted once tabs no longer use this
+L.OTabBosses						= "Boss Options"--Deprecated and will be deleted once tabs no longer use this
 L.OTabRaids							= "Raid"--Raids & PVP
 L.OTabDungeons						= "Party/Solo"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
 L.OTabPlugins						= "Core Plugins"
-L.OTabOptions						= GAMEOPTIONS_MENU
+L.OTabOptions						= "Core Options"
 L.OTabAbout							= "About"
 
 L.TabCategory_OTHER					= "Other Mods"
@@ -410,7 +410,7 @@ L.PT_Threshold						= "Do not play Pull/Break/Combat/Custom Timer countdown audi
 L.Panel_ReducedInformation			= "Reduce Information"
 
 L.Area_SpamFilter_Anounces			= "Announce Filters/De-escalation"
-L.SpamBlockNoShowTgtAnnounce		= "Do not show text or play sound for TARGET general announcements that do not affect yourself, expect where noted that specific warning ignores this filter (above filter overrides this one)"
+L.SpamBlockNoShowTgtAnnounce		= "Do not show text or play sound for TARGET general announcements that do not affect yourself, expect where noted that specific warning ignores this filter (global disable in DBM Features overrides this one)"
 L.SpamBlockNoTrivialSpecWarnSound	= "Do not play special announce sounds or show screen flash for content that is trivial for your level (plays user selected non emphasized announce sound instead)"
 
 L.Area_SpamFilter					= "Spam Filter Options"
