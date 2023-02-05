@@ -173,19 +173,19 @@ end
 do
 	local function SetIconBySortedTable(mod, sortType, startIcon, descendingIcon, returnFunc, scanId)
 		if sortType == "tankalpha" then
-			tsort(iconUnitTable[scanId], DBM:SortByTankAlpha)
+			tsort(iconUnitTable[scanId], DBM.SortByTankAlpha)
 		elseif sortType == "tankroster" then
-			tsort(iconUnitTable[scanId], DBM:SortByTankRoster)
+			tsort(iconUnitTable[scanId], DBM.SortByTankRoster)
 		elseif sortType == "meleealpha" then
-			tsort(iconUnitTable[scanId], DBM:SortByMeleeAlpha)
+			tsort(iconUnitTable[scanId], DBM.SortByMeleeAlpha)
 		elseif sortType == "meleeroster" then
-			tsort(iconUnitTable[scanId], DBM:SortByMeleeRoster)
+			tsort(iconUnitTable[scanId], DBM.SortByMeleeRoster)
 		elseif sortType == "rangedalpha" then
-			tsort(iconUnitTable[scanId], DBM:SortByRangedAlpha)
+			tsort(iconUnitTable[scanId], DBM.SortByRangedAlpha)
 		elseif sortType == "rangedroster" then
-			tsort(iconUnitTable[scanId], DBM:SortByRangedRoster)
+			tsort(iconUnitTable[scanId], DBM.SortByRangedRoster)
 		elseif sortType == "roster" then
-			tsort(iconUnitTable[scanId], DBM:SortByGroup)
+			tsort(iconUnitTable[scanId], DBM.SortByGroup)
 		else--Just generic "alpha" sort
 			tsort(iconUnitTable[scanId])
 		end
