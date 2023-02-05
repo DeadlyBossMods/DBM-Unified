@@ -192,6 +192,8 @@ DBM.DefaultOptions = {
 	WhisperStats = false,
 	DisableStatusWhisper = false,
 	DisableGuildStatus = false,
+	DisableRaidIcons = false,
+	DisableChatBubbles = false,
 	HideBossEmoteFrame2 = true,
 	SWarningAlphabetical = true,
 	SWarnNameInNote = true,
@@ -389,6 +391,8 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 private.modSyncSpam = {}
 private.updateFunctions = {}
+--Raid Leader Disable variables
+private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDisabled, private.chatBubblesDisabled = false, false, false, false
 
 --------------
 --  Locals  --
@@ -405,7 +409,7 @@ local dbmIsEnabled = true
 -- Table variables
 local newerVersionPerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 -- False variables
-local voiceSessionDisabled, statusGuildDisabled, statusWhisperDisabled, targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false, false, false, false
+local voiceSessionDisabled, targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false, false
 -- Nil variables
 local currentSpecID, currentSpecName, currentSpecGroup, pformat, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, savedDifficulty, difficultyText, difficultyIndex, lastGroupLeader
 -- 0 variables
@@ -3675,7 +3679,7 @@ do
 	-- WBE = World Boss engage info
 	-- WBD = World Boss defeat info
 	-- WBA = World Buff Activation
-	-- DSW = Disable Send Whisper
+	-- RLD = Raid Leader Disable
 	-- NS = Note Share
 
 	syncHandlers["M"] = function(sender, mod, revision, event, ...)
@@ -3750,16 +3754,23 @@ do
 		end
 	end
 
-	syncHandlers["DSW"] = function(sender)
+	syncHandlers["RLD"] = function(sender, version, statusWhisper, guildStatus, raidIcons, chatBubbles)
 		if (DBM:GetRaidRank(sender) ~= 2 or not IsInGroup()) then return end--If not on group, we're probably sender, don't disable status. IF not leader, someone is trying to spoof this, block that too
-		statusWhisperDisabled = true
-		DBM:Debug("Raid leader has disabled status whispers")
-	end
-
-	syncHandlers["DGP"] = function(sender)
-		if (DBM:GetRaidRank(sender) ~= 2 or not IsInGroup()) then return end--If not on group, we're probably sender, don't disable status. IF not leader, someone is trying to spoof this, block that too
-		statusGuildDisabled = true
-		DBM:Debug("Raid leader has disabled guild progress messages")
+		if not version or ver ~= "1" then return end--Ignore old versions
+		DBM:Debug("Raid leader disable comm Received")
+		statusWhisper, guildStatus, raidIcons, chatBubbles = tonumber(statusWhisper) or 0, tonumber(guildStatus) or 0, tonumber(raidIcons) or 0, tonumber(chatBubbles) or 0
+		if statusWhisper == 1 then
+			private.statusWhisperDisabled = true
+		end
+		if guildStatus == 1 then
+			private.statusGuildDisabled = true
+		end
+		if raidIcons == 1 then
+			private.raidIconsDisabled = true
+		end
+		if chatBubbles == 1 then
+			private.chatBubblesDisabled = true
+		end
 	end
 
 	syncHandlers["IS"] = function(_, guid, ver, optionName)
@@ -4820,7 +4831,7 @@ do
 	local tooltipsHidden = false
 	--Delayed Guild Combat sync object so we allow time for RL to disable them
 	local function delayedGCSync(modId, difficultyIndex, difficultyModifier, name, thisTime, wipeHP)
-		if not statusGuildDisabled and updateNotificationDisplayed == 0 then
+		if not private.statusGuildDisabled and updateNotificationDisplayed == 0 then
 			if thisTime then--Wipe event
 				if wipeHP then
 					SendAddonMessage(DBMPrefix, "GCE\t"..modId.."\t8\t1\t"..thisTime.."\t"..difficultyIndex.."\t"..difficultyModifier.."\t"..name.."\t"..lastGroupLeader.."\t"..wipeHP, "GUILD")
@@ -5055,11 +5066,10 @@ do
 					sendSync("C", (delay or 0).."\t"..modId.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..tostring(self.Revision).."\t"..(mod.hotfixNoticeRev or 0).."\t"..event)
 				end
 				if UnitIsGroupLeader("player") then
-					if self.Options.DisableGuildStatus then
-						sendSync("DGP")
-					end
-					if self.Options.DisableStatusWhisper and (difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) then
-						sendSync("DSW")
+					--Global disables require normal, heroic, mythic raid on retail, or 10 man normal, 25 man normal, 40 man normal, 10 man heroic, or 25 man heroic on classic
+					if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 or difficultyIndex == 175 or difficultyIndex == 176 or difficultyIndex == 186 or difficultyIndex == 193 or difficultyIndex == 194 then
+						local statusWhisper, guildStatus, raidIcons, chatBubbles = self.Options.DisableStatusWhisper and 1 or 0, self.Options.DisableGuildStatus and 1 or 0, self.Options.DisableRaidIcons and 1 or 0, self.Options.DisableChatBubbles and 1 or 0
+						sendSync("RLD", "1\t"..statusWhisper.."\t"..guildStatus.."\t"..raidIcons.."\t"..chatBubbles)
 					end
 				end
 				if self.Options.oRA3AnnounceConsumables and _G["oRA3Frame"] then
@@ -5082,7 +5092,7 @@ do
 							self:AddMsg(L.SCENARIO_STARTED:format(difficultyText..name))
 						else
 							self:AddMsg(L.COMBAT_STARTED:format(difficultyText..name))
-							local check = not statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
+							local check = not private.statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 							if check and not self.Options.DisableGuildStatus then--Only send relevant content, not guild beating down lich king or LFR.
 								self:Unschedule(delayedGCSync, modId)
 								self:Schedule(isRetail and 1.5 or 3, delayedGCSync, modId, difficultyIndex, difficultyModifier, name)
@@ -5365,7 +5375,7 @@ do
 							msg = L.BOSS_DOWN_L:format(usedDifficultyText..name, thisTimeString, strFromTime(lastTime), strFromTime(bestTime), totalKills)
 						end
 					end
-					local check = not statusGuildDisabled and (isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
+					local check = not private.statusGuildDisabled and (isRetail and ((usedDifficultyIndex == 8 or usedDifficultyIndex == 14 or usedDifficultyIndex == 15 or usedDifficultyIndex == 16) and InGuildParty()) or usedDifficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
 					if not scenario and thisTimeString and check and not self.Options.DisableGuildStatus and updateNotificationDisplayed == 0 then
 						self:Unschedule(delayedGCSync, modId)
 						self:Schedule(isRetail and 1.5 or 3, delayedGCSync, modId, usedDifficultyIndex, difficultyModifier, name, thisTimeString)
@@ -5413,8 +5423,7 @@ do
 			mod.engagedDiffIndex = nil
 			mod.vb.stageTotality = nil
 			if #inCombat == 0 then--prevent error if you pulled multiple boss. (Earth, Wind and Fire)
-				statusWhisperDisabled = false
-				statusGuildDisabled = false
+				private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDisabled, private.chatBubblesDisabled = false, false, false, false
 				if self.Options.RecordOnlyBosses then
 					self:Schedule(10, self.StopLogging, self)--small delay to catch kill/died combatlog events
 				end
@@ -6234,7 +6243,7 @@ do
 
 	-- sender is a presenceId for real id messages, a character name otherwise
 	local function onWhisper(msg, sender, isRealIdMessage)
-		if statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
+		if private.statusWhisperDisabled then return end--RL has disabled status whispers for entire raid.
 		if not checkForSafeSender(sender, true, true, true, isRealIdMessage) then return end--Automatically reject all whisper functions from non friends, non guildies, or people in group with us
 		if msg:find(chatPrefixShort) and not InCombatLockdown() and DBM:AntiSpam(60, "Ogron") and DBM.Options.AutoReplySound then
 			--Might need more validation if people figure out they can just whisper people with chatPrefix to trigger it.
@@ -8576,11 +8585,11 @@ do
 	--Standard "Yell" object that will use SAY/YELL based on what's defined in the object (Defaulting to SAY if nil)
 	--I realize object being :Yell is counter intuitive to default being "SAY" but for many years the default was YELL and it's too many years of mods to change now
 	function yellPrototype:Yell(...)
-		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
+		if not IsInInstance() then--as of 8.2.5+, forbidden in outdoor world
 			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
 			return
 		end
-		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and (not isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
+		if DBM.Options.DontSendYells or private.chatBubblesDisabled or  self.yellType and self.yellType == "position" and (not isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
 		if not self.option or self.mod.Options[self.option] then
 			if self.yellType == "combo" then
 				SendChatMessage(pformat(self.text, ...), self.chatType or "YELL")
@@ -8593,11 +8602,11 @@ do
 
 	--Force override to use say message, even when object defines "YELL"
 	function yellPrototype:Say(...)
-		if not IsInInstance() then--as of 8.2.5, forbidden in outdoor world
+		if not IsInInstance() then--as of 8.2.5+, forbidden in outdoor world
 			DBM:Debug("WARNING: A mod is still trying to call chat SAY/YELL messages outdoors, FIXME")
 			return
 		end
-		if DBM.Options.DontSendYells or self.yellType and self.yellType == "position" and (not isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
+		if DBM.Options.DontSendYells or private.chatBubblesDisabled or self.yellType and self.yellType == "position" and (not isRetail or DBM:UnitBuff("player", voidForm) and DBM.Options.FilterVoidFormSay) then return end
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(pformat(self.text, ...), "SAY")
 		end

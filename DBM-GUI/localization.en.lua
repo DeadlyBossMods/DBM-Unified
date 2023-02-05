@@ -460,18 +460,20 @@ L.RaidCombat						= "Disable in combat (bosses only)"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Raid Leader Controls"
-L.Area_FeatureOverides				= "Feature Overide Options"
-L.OverideIcons 						= "Disable icon marking for all users in raid, including myself"
-L.OverideSay						= "Disable chat bubble/SAY messages for all users in the raid, including myself"
-L.DisableStatusWhisperShort			= "Disable status/reply whispers for the entire group"
-L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
-L.DiabledForBoth					= "Disable above features for both DBM and BW"--NYI
-L.DiabledForDBM						= "Disable above features for only DBM users"--NYI
-L.DiabledForBW						= "Disable above features for only BW users"--NYI
-L.Area_ConfigOverides				= "Configuration Overide Options"--NYI
-L.OverideBossAnnounceOptions		= "Set all DBM users boss mod announce configuration to my configuration"--NYI
-L.OverideBossTimerOptions			= "Set all DBM users boss mod timer configuration to my configuration"--NYI
-L.OverideBossIconOptions			= "Set all DBM users boss mod icon configuration to my configuration (if icon setting disabled in above options, this option is ignored)"--NYI
+L.Area_FeatureOverrides				= "Feature Override Options"
+L.OverrideIcons 					= "Disable icon marking for all users in raid, including myself (Use override instead of disable if you want DBM to do marking under your terms)"
+L.OverrideSay						= "Disable chat bubble/SAY messages for all users in the raid, including myself"
+L.DisableStatusWhisperShort			= "Disable status/reply whispers for the entire group"--Duplicated from privacy but makes sense to include option in both panels
+L.DisableGuildStatusShort			= "Disable progression messages from being synced to guild for the entire group"--Duplicated from privacy but makes sense to include option in both panels
+--L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
+--L.DiabledForBoth					= "Disable above features for both DBM and BW"--NYI
+--L.DiabledForDBM					= "Disable above features for only DBM users"--NYI
+--L.DiabledForBW					= "Disable above features for only BW users"--NYI
+L.Area_ConfigOverrides				= "Configuration Override Options (NYI, coming later)"--NYI
+L.OverrideBossAnnounceOptions		= "Set all DBM users boss mod announce configuration to my configuration"--NYI
+L.OverrideBossTimerOptions			= "Set all DBM users boss mod timer configuration to my configuration"--NYI
+L.OverrideBossIconOptions			= "Set all DBM users boss mod icon configuration to my configuration (if icon setting disabled in above options, this option is ignored)"--NYI
+L.OverrideBossSayOptions			= "Set all DBM users boss mod chat bubble configuration to my configuration (if chat bubble setting disabled in above options, this option is ignored)"--NYI
 L.ConfigAreaFooter					= "Options in this area only temporariliy override users saved configuration on engage without altering their saved configuration.\nRecommended to consider all roles and do not exclude timers/alerts a tank, etc might need"
 L.TabFooter							= "All options in this panel only work if you are group leader in a non group dungeon/LFR group"
 
