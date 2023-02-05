@@ -464,12 +464,13 @@ L.Area_FeatureOverides				= "Feature Overide Options"
 L.OverideIcons 						= "Disable icon marking for all DBM users in raid, including myself"
 L.OverideSay						= "Disable chat bubble/SAY messages for all DBM users in the raid, including myself"
 L.DisableStatusWhisperShort			= "Disable status/reply whispers for the entire group"
+L.AlsoBW							= "Also send above disables to BW users"--NYI
 L.Area_ConfigOverides				= "Configuration Overide Options"--NYI
 L.OverideBossAnnounceOptions		= "Set all DBM users boss mod announce configuration to my configuration"--NYI
 L.OverideBossTimerOptions			= "Set all DBM users boss mod timer configuration to my configuration"--NYI
 L.OverideBossIconOptions			= "Set all DBM users boss mod icon configuration to my configuration (if icon setting disabled in above options, this option is ignored)"--NYI
 L.ConfigAreaFooter					= "Options in this area only temporariliy override users saved configuration on engage without altering their saved configuration.\nRecommended to consider all roles and do not exclude timers/alerts a tank, etc might need"
-L.TabFooter							= "All options in this panel only work if you are group leader in a non group finder/queud group"
+L.TabFooter							= "All options in this panel only work if you are group leader in a non group dungeon/LFR group"
 
 -- Panel: Privacy
 L.Tab_Privacy 						= "Privacy Controls"
