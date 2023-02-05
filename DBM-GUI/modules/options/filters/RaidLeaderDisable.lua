@@ -7,7 +7,7 @@ featureOverridesArea:CreateCheckButton(L.OverrideSay, true, nil, "DisableChatBub
 featureOverridesArea:CreateCheckButton(L.DisableStatusWhisperShort, true, nil, "DisableStatusWhisper")--TODO, whenc hanging this checkbox, make sure other checkbox in privacy also updates?
 featureOverridesArea:CreateCheckButton(L.DisableGuildStatusShort, true, nil, "DisableGuildStatus")--TODO, whenc hanging this checkbox, make sure other checkbox in privacy also updates?
 
-local configOverrideArea = privacyPanel:CreateArea(L.Area_ConfigOverrides)
+local configOverrideArea = rlControlsPanel:CreateArea(L.Area_ConfigOverrides)
 configOverrideArea:CreateCheckButton(L.OverrideBossAnnounceOptions, true, nil, "OverrideBossAnnounce")
 configOverrideArea:CreateCheckButton(L.OverrideBossTimerOptions, true, nil, "OverrideBossTimer")
 configOverrideArea:CreateCheckButton(L.OverrideBossIconOptions, true, nil, "OverrideBossIcon")
@@ -15,5 +15,5 @@ configOverrideArea:CreateCheckButton(L.OverrideBossSayOptions, true, nil, "Overr
 local infotext = configOverrideArea:CreateText(L.ConfigAreaFooter, 380, false, GameFontNormalSmall, "LEFT", 0)
 infotext:SetPoint("BOTTOMLEFT", featureOverridesArea.frame, "BOTTOMLEFT", 10, 10)
 
-local infotext = rlControlsPanel:CreateText(L.TabFooter, 380, false, GameFontNormalSmall, "LEFT", 0)
-infotext:SetPoint("BOTTOMLEFT", rlControlsPanel.frame, "BOTTOMLEFT", 10, 10)
+local infotext2 = rlControlsPanel:CreateText(L.TabFooter, 380, false, GameFontNormalSmall, "LEFT", 0)
+infotext2:SetPoint("BOTTOMLEFT", rlControlsPanel.frame, "BOTTOMLEFT", 10, 10)
