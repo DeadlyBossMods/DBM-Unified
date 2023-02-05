@@ -12,8 +12,8 @@ configOverrideArea:CreateCheckButton(L.OverrideBossAnnounceOptions, true, nil, "
 configOverrideArea:CreateCheckButton(L.OverrideBossTimerOptions, true, nil, "OverrideBossTimer")
 configOverrideArea:CreateCheckButton(L.OverrideBossIconOptions, true, nil, "OverrideBossIcon")
 configOverrideArea:CreateCheckButton(L.OverrideBossSayOptions, true, nil, "OverrideBossSay")
-local infotext = raidwarncolors:CreateText(L.ConfigAreaFooter, 380, false, GameFontNormalSmall, "LEFT", 0)
+local infotext = configOverrideArea:CreateText(L.ConfigAreaFooter, 380, false, GameFontNormalSmall, "LEFT", 0)
 infotext:SetPoint("BOTTOMLEFT", featureOverridesArea.frame, "BOTTOMLEFT", 10, 10)
 
-local infotext = raidwarncolors:CreateText(L.TabFooter, 380, false, GameFontNormalSmall, "LEFT", 0)
+local infotext = rlControlsPanel:CreateText(L.TabFooter, 380, false, GameFontNormalSmall, "LEFT", 0)
 infotext:SetPoint("BOTTOMLEFT", rlControlsPanel.frame, "BOTTOMLEFT", 10, 10)
