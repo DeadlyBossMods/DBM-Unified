@@ -461,8 +461,8 @@ L.RaidCombat						= "Disable in combat (bosses only)"
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Raid Leader Controls"
 L.Area_FeatureOverides				= "Feature Overide Options"
-L.OverideIcons 						= "Disable icon marking for all DBM users in raid, including myself"
-L.OverideSay						= "Disable chat bubble/SAY messages for all DBM users in the raid, including myself"
+L.OverideIcons 						= "Disable icon marking for all users in raid, including myself"
+L.OverideSay						= "Disable chat bubble/SAY messages for all users in the raid, including myself"
 L.DisableStatusWhisperShort			= "Disable status/reply whispers for the entire group"
 L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
 L.DiabledForBoth					= "Disable above features for both DBM and BW"--NYI
