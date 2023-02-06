@@ -458,6 +458,37 @@ L.AfterFirst						= "In instance, after each movie has played once"
 L.CombatOnly						= "Disable in combat (any)"
 L.RaidCombat						= "Disable in combat (bosses only)"
 
+-- Panel: Raid Leader Controls
+L.Tab_RLControls					= "Raid Leader Controls"
+L.Area_FeatureOverrides				= "Feature Override Options"
+L.OverrideIcons 					= "Disable icon marking for all users in raid, including myself (Use override instead of disable if you want DBM to do marking under your terms)"
+L.OverrideSay						= "Disable chat bubble/SAY messages for all users in the raid, including myself"
+L.DisableStatusWhisperShort			= "Disable status/reply whispers for the entire group"--Duplicated from privacy but makes sense to include option in both panels
+L.DisableGuildStatusShort			= "Disable progression messages from being synced to guild for the entire group"--Duplicated from privacy but makes sense to include option in both panels
+--L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
+--L.DiabledForBoth					= "Disable above features for both DBM and BW"--NYI
+--L.DiabledForDBM					= "Disable above features for only DBM users"--NYI
+--L.DiabledForBW					= "Disable above features for only BW users"--NYI
+
+L.Area_ConfigOverrides				= "Configuration Override Options (NYI, coming later)"--NYI
+L.OverrideBossAnnounceOptions		= "Set all DBM users boss mod announce configuration to my configuration"--NYI
+L.OverrideBossTimerOptions			= "Set all DBM users boss mod timer configuration to my configuration"--NYI
+L.OverrideBossIconOptions			= "Set all DBM users boss mod icon configuration to my configuration (if icon setting is disabled in above options, this option is ignored)"--NYI
+L.OverrideBossSayOptions			= "Set all DBM users boss mod chat bubble configuration to my configuration (if chat bubble setting is disabled in above options, this option is ignored)"--NYI
+L.ConfigAreaFooter					= "Options in this area only temporariliy override users configuration on engage without altering their saved configuration."
+L.ConfigAreaFooter2					= "Recommended to consider all roles and do not exclude timers/alerts a tank, etc might need"
+
+L.Area_receivingOptions				= "Receiving Options (NYI, coming later)"--NYI
+L.NoAnnounceOverride				= "Do not accept announce overrides from raid leaders."--NYI
+L.NoTimerOverridee					= "Do not accept timer overrides from raid leaders."--NYI
+L.ReplaceMyConfigOnOverride			= "WARNING: Perminantly replace my mod configurations with Raid leaders, on override"--NYI
+L.ReceivingFooter					= "Icon and chat bubble option overrides cannot be opted out since these settings affect other players around you"--NYI
+L.ReceivingFooter2					= "If you enable these options, it's between you and RL if your configuration causes conflict with their intent"--NYI
+L.ReceivingFooter3					= "If you enable the 'replace my mod configuration' your original settings will be lost on override"--NYI
+
+
+L.TabFooter							= "All options in this panel only work if you are group leader in a non dungeon/LFR group"
+
 -- Panel: Privacy
 L.Tab_Privacy 						= "Privacy Controls"
 L.Area_WhisperMessages				= "Whisper Message Options"
