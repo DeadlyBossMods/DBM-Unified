@@ -475,7 +475,7 @@ L.OverrideBossAnnounceOptions		= "Set all DBM users boss mod announce configurat
 L.OverrideBossTimerOptions			= "Set all DBM users boss mod timer configuration to my configuration"--NYI
 L.OverrideBossIconOptions			= "Set all DBM users boss mod icon configuration to my configuration (if icon setting is disabled in above options, this option is ignored)"--NYI
 L.OverrideBossSayOptions			= "Set all DBM users boss mod chat bubble configuration to my configuration (if chat bubble setting is disabled in above options, this option is ignored)"--NYI
-L.ConfigAreaFooter					= "Options in this area only temporariliy override users saved configuration on engage without altering their saved configuration."
+L.ConfigAreaFooter					= "Options in this area only temporariliy override users configuration on engage without altering their saved configuration."
 L.ConfigAreaFooter2					= "Recommended to consider all roles and do not exclude timers/alerts a tank, etc might need"
 
 L.Area_receivingOptions				= "Receiving Options (NYI, coming later)"--NYI
