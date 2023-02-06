@@ -484,7 +484,7 @@ L.NoTimerOverridee					= "Do not accept timer overrides from raid leaders."--NYI
 L.ReplaceMyConfigOnOverride			= "WARNING: Perminantly replace my mod configurations with Raid leaders, on override"--NYI
 L.ReceivingFooter					= "Icon and chat bubble option overrides cannot be opted out since these settings affect other players around you"--NYI
 L.ReceivingFooter2					= "If you enable these options, it's between you and RL if your configuration causes conflict with their intent"--NYI
-L.ReceivingFooter3					= "If you enable the 'replace my mod configuration' option that your original settings will be lost"--NYI
+L.ReceivingFooter3					= "If you enable the 'replace my mod configuration' your original settings will be lost on override"--NYI
 
 
 L.TabFooter							= "All options in this panel only work if you are group leader in a non dungeon/LFR group"
