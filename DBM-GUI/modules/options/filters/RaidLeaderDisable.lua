@@ -19,9 +19,6 @@ infotext2:SetPoint("BOTTOMLEFT", configOverrideArea.frame, "BOTTOMLEFT", 10, 10)
 local infotext3 = configOverrideArea:CreateText(L.ConfigAreaFooter2, nil, false, GameFontNormalSmall, "LEFT", 25)
 infotext3:SetPoint("BOTTOMLEFT", infotext2, "BOTTOMLEFT", 0, 20)
 
-local infotext4 = rlControlsPanel:CreateText(L.TabFooter, nil, false, GameFontNormalSmall, "LEFT", 0)
-infotext4:SetPoint("BOTTOMLEFT", rlControlsPanel.frame, "BOTTOMLEFT", 10, 10)
-
 local receivingOverrideArea = rlControlsPanel:CreateArea(L.Area_receivingOptions)
 receivingOverrideArea:CreateCheckButton(L.NoAnnounceOverride, true, nil, "NoAnnounceOverride")
 receivingOverrideArea:CreateCheckButton(L.NoTimerOverridee, true, nil, "NoTimerOverridee")
@@ -32,3 +29,6 @@ local infotext6 = receivingOverrideArea:CreateText(L.ReceivingFooter2, nil, fals
 infotext6:SetPoint("BOTTOMLEFT", infotext5, "BOTTOMLEFT", 0, 20)
 local infotext7 = receivingOverrideArea:CreateText(L.ReceivingFooter3, nil, false, GameFontNormalSmall, "LEFT", 25)
 infotext7:SetPoint("BOTTOMLEFT", infotext6, "BOTTOMLEFT", 0, 20)
+
+local infotext4 = rlControlsPanel:CreateText(L.TabFooter, nil, false, GameFontNormalSmall, "LEFT", 0)
+infotext4:SetPoint("BOTTOMLEFT", rlControlsPanel.frame, "BOTTOMLEFT", 10, 10)
