@@ -38,7 +38,7 @@ L.Import					= "가져오기"
 L.Enable					= "활성화"
 L.Disable					= "비활성화"
 
-L.NoSound					= "효과음 없음"
+L.NoSound					= "없음"
 
 L.IconsInUse				= "사용되는 공격대 징표:"
 
@@ -423,6 +423,7 @@ L.FilterVoidFormSay			= "공허의 형상일땐 공격대 징표나 초읽기를
 L.Area_SpecFilter			= "역할 관련 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 알림 보지 않기 (참고: '도발' 알림은 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"
 L.FilterInterruptsHeader	= "상황에 따라 주문 차단 알림을 표시하지 않기"
+L.SWFNever				= "항상 표시"
 L.FilterInterrupts			= "주문 시전 몹이 현재 대상/주시 대상이 아닐 때 (항상)"
 L.FilterInterrupts2			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 전투만)"
 L.FilterInterrupts3			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 및 쫄 정리시)"
@@ -458,6 +459,37 @@ L.OnlyFight					= "전투중일 때 한번만 재생"
 L.AfterFirst				= "인스턴스 던전에 있을 때 한번만 재생"
 L.CombatOnly				= "전투중 차단 (모든 전투)"
 L.RaidCombat				= "전투중 차단 (보스만)"
+
+-- Panel: Raid Leader Controls
+L.Tab_RLControls					= "공대장 제어 설정"
+L.Area_FeatureOverrides				= "기능 무시 설정"
+L.OverrideIcons 					= "공격대에서 자신 포함 모든 사용자들의 공격대 징표 설정을 비활성화 (DBM이 원하는 방식대로 징표를 지정하게 만들려면 비활성화 대신 강제 적용 설정을 사용하세요)"
+L.OverrideSay						= "공격대에서 자신 포함 모든 사용자들의 말풍선/일반 대화 메시지 설정 비활성화"
+L.DisableStatusWhisperShort			= "공격대/파티의 현재 상태/답변 귓속말 비활성화"--Duplicated from privacy but makes sense to include option in both panels
+L.DisableGuildStatusShort			= "공격대/파티의 길드와 연동된 공략 진도 메시지 비활성화"--Duplicated from privacy but makes sense to include option in both panels
+--L.DisabledForDropdown				= "비활성화 기능이 적용될 보스 모드 선택"--NYI
+--L.DiabledForBoth					= "DBM과 BW 모두 위의 기능 비활성화"--NYI
+--L.DiabledForDBM					= "DBM 사용자들만 위의 기능 비활성화"--NYI
+--L.DiabledForBW					= "BW 사용자들만 위의 기능 비활성화"--NYI
+
+L.Area_ConfigOverrides				= "기능 강제 적용 설정 (미구현, 향후 구현 예정)"--NYI
+L.OverrideBossAnnounceOptions		= "모든 DBM 사용자의 보스 모드 알림 설정을 내 설정대로 적용"--NYI
+L.OverrideBossTimerOptions			= "모든 DBM 사용자의 보스 모드 타이머 바 설정을 내 설정대로 적용"--NYI
+L.OverrideBossIconOptions			= "모든 DBM 사용자의 보스 모드 공격대 징표 설정을 내 설정대로 적용 (위의 설정에서 공격대 징표를 비활성화했다면 이 설정은 무시합니다)"--NYI
+L.OverrideBossSayOptions			= "모든 DBM 사용자의 보스 모드 말풍선 설정을 내 설정대로 적용 (위의 설정에서 말풍선을 비활성화했다면 이 설정은 무시합니다)"--NYI
+L.ConfigAreaFooter					= "이곳의 설정들은 전투 시작시 임시로 사용자에게 강제 적용되는 것으로 저장된 개인 설정은 바꾸지 않습니다."
+L.ConfigAreaFooter2					= "모든 역할들의 설정을 검토하는 것을 권장하며 탱커나 그밖에 필요로 하는 역할의 타이머 바/경고 설정을 제외하지 마세요"
+
+L.Area_receivingOptions				= "수신 설정 (미구현, 향후 구현 예정)"--NYI
+L.NoAnnounceOverride				= "공대장의 알림 강제 적용을 수락하지 않습니다."--NYI
+L.NoTimerOverridee					= "공대장의 타이머 바 강제 적용을 수락하지 않습니다."--NYI
+L.ReplaceMyConfigOnOverride			= "경고: 강제 적용시 공대장의 설정이 내 모드 설정을 대체하게 되며 되돌릴 수 없습니다"--NYI
+L.ReceivingFooter					= "공격대 징표와 말풍선 설정이 주변 다른 사람들에게 적용되고 나면 나만 예외로 빠질 수 없습니다"--NYI
+L.ReceivingFooter2					= "이러한 설정을 활성화했을때 내 설정이 의도한 것과 충돌할 경우 당신과 공대장 둘만 조정하면 됩니다"--NYI
+L.ReceivingFooter3					= "'내 모드 설정을 대체'를 활성화하면 당신의 원래 설정은 강제 적용된 설정에 의해 지워질 것입니다"--NYI
+
+
+L.TabFooter							= "이 패널의 모든 설정은 당신이 공격대/공찾 공대장일때만 작동합니다"
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "사생활 보호 수위 조정"
