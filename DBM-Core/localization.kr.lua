@@ -555,6 +555,8 @@ L.DUR_HEADER					= L.DEADLY_BOSS_MODS .. " - 내구도 검사 결과"
 L.DUR_ENTRY					= "%s: 내구도 [%d 퍼센트] / 깨진 장비 [%s]"
 L.LAG_FOOTER					= "응답 없음: %s"
 
+L.OVERRIDE_ACTIVATED					= "이 전투에서 공대장에 의해 설정 강제 적용이 활성화되었습니다"
+
 --LDB
 L.LDB_TOOLTIP_HELP1			= "왼쪽 클릭으로 " .. L.DBM .. " 열기"
 L.SILENTMODE_IS					= "조용함 모드 "
