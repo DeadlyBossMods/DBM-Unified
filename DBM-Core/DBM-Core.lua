@@ -3686,7 +3686,7 @@ do
 	-- WBE = World Boss engage info
 	-- WBD = World Boss defeat info
 	-- WBA = World Buff Activation
-	-- RLD = Raid Leader Disable
+	-- RLO = Raid Leader Override
 	-- NS = Note Share
 
 	syncHandlers["M"] = function(sender, mod, revision, event, ...)
@@ -3761,22 +3761,30 @@ do
 		end
 	end
 
-	syncHandlers["RLD"] = function(sender, version, statusWhisper, guildStatus, raidIcons, chatBubbles)
+	syncHandlers["RLO"] = function(sender, version, statusWhisper, guildStatus, raidIcons, chatBubbles)
 		if (DBM:GetRaidRank(sender) ~= 2 or not IsInGroup()) then return end--If not on group, we're probably sender, don't disable status. IF not leader, someone is trying to spoof this, block that too
 		if not version or version ~= "1" then return end--Ignore old versions
-		DBM:Debug("Raid leader disable comm Received")
+		DBM:Debug("Raid leader override comm Received")
 		statusWhisper, guildStatus, raidIcons, chatBubbles = tonumber(statusWhisper) or 0, tonumber(guildStatus) or 0, tonumber(raidIcons) or 0, tonumber(chatBubbles) or 0
+		local activated = false
 		if statusWhisper == 1 then
+			activated = true
 			private.statusWhisperDisabled = true
 		end
 		if guildStatus == 1 then
+			activated = true
 			private.statusGuildDisabled = true
 		end
 		if raidIcons == 1 then
+			activated = true
 			private.raidIconsDisabled = true
 		end
 		if chatBubbles == 1 then
+			activated = true
 			private.chatBubblesDisabled = true
+		end
+		if activated then
+			AddMsg(L.OVERRIDE_ACTIVATED)
 		end
 	end
 
@@ -5076,7 +5084,9 @@ do
 					--Global disables require normal, heroic, mythic raid on retail, or 10 man normal, 25 man normal, 40 man normal, 10 man heroic, or 25 man heroic on classic
 					if difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16 or difficultyIndex == 175 or difficultyIndex == 176 or difficultyIndex == 186 or difficultyIndex == 193 or difficultyIndex == 194 then
 						local statusWhisper, guildStatus, raidIcons, chatBubbles = self.Options.DisableStatusWhisper and 1 or 0, self.Options.DisableGuildStatus and 1 or 0, self.Options.DisableRaidIcons and 1 or 0, self.Options.DisableChatBubbles and 1 or 0
-						sendSync("RLD", "1\t"..statusWhisper.."\t"..guildStatus.."\t"..raidIcons.."\t"..chatBubbles)
+						if statusWhisper ~= 0 or guildStatus ~= 0 or raidIcons ~= 0 or chatBubbles ~= 0 then
+							sendSync("RL0", "1\t"..statusWhisper.."\t"..guildStatus.."\t"..raidIcons.."\t"..chatBubbles)
+						end
 					end
 				end
 				if self.Options.oRA3AnnounceConsumables and _G["oRA3Frame"] then

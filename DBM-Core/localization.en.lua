@@ -600,6 +600,8 @@ L.DUR_HEADER							= L.DEADLY_BOSS_MODS.. " - Durability Results"
 L.DUR_ENTRY								= "%s: Durability [%d percent] / Gear broken [%s]"
 L.LAG_FOOTER							= "No Response: %s"
 
+L.OVERRIDE_ACTIVATED					= "Configuration overrides have been activated for this encounter by RL"
+
 --LDB
 L.LDB_TOOLTIP_HELP1						= "Click to open " .. L.DBM
 L.LDB_TOOLTIP_HELP2						= "Alt+right click to toggle Silent Mode"
