@@ -7345,10 +7345,10 @@ do
 	---------------------
 	--  Sort Methods  --
 	---------------------
-	function DBM:SortByGroup(v1, v2)
+	function DBM.SortByGroup(v1, v2)
 		return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
 	end
-	function DBM:SortByTankAlpha(v1, v2)
+	function DBM.SortByTankAlpha(v1, v2)
 		--Tank > Melee > Ranged prio, and if two of any of types, alphabetical names are preferred
 		if DBM:IsTanking(v1) == DBM:IsTanking(v2) then
 			return DBM:GetUnitFullName(v1) < DBM:GetUnitFullName(v2)
@@ -7366,7 +7366,7 @@ do
 			return false
 		end
 	end
-	function DBM:SortByTankRoster(v1, v2)
+	function DBM.SortByTankRoster(v1, v2)
 		--Tank > Melee > Ranged prio, and if two of any of types, roster index as secondary
 		if DBM:IsTanking(v1) == DBM:IsTanking(v2) then
 			return DBM:GetGroupId(DBM:GetUnitFullName(v1), true) < DBM:GetGroupId(DBM:GetUnitFullName(v2), true)
@@ -7384,7 +7384,7 @@ do
 			return false
 		end
 	end
-	function DBM:SortByMeleeAlpha(v1, v2)
+	function DBM.SortByMeleeAlpha(v1, v2)
 		--if both are melee, the return values are equal and we use alpha sort
 		--if both are ranged, the return values are equal and we use alpha sort
 		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then
@@ -7396,7 +7396,7 @@ do
 			return false
 		end
 	end
-	function DBM:SortByMeleeRoster(v1, v2)
+	function DBM.SortByMeleeRoster(v1, v2)
 		--if both are melee, the return values are equal and we use raid roster index sort
 		--if both are ranged, the return values are equal and we use raid roster index sort
 		if DBM:IsMelee(v1) == DBM:IsMelee(v2) then
@@ -7408,7 +7408,7 @@ do
 			return false
 		end
 	end
-	function DBM:SortByRangedAlpha(v1, v2)
+	function DBM.SortByRangedAlpha(v1, v2)
 		--if both are melee, the return values are equal and we use alpha sort
 		--if both are ranged, the return values are equal and we use alpha sort
 		if DBM:IsRanged(v1) == DBM:IsRanged(v2) then
@@ -7420,7 +7420,7 @@ do
 			return false
 		end
 	end
-	function DBM:SortByRangedRoster(v1, v2)
+	function DBM.SortByRangedRoster(v1, v2)
 		--if both are melee, the return values are equal and we use raid roster index sort
 		--if both are ranged, the return values are equal and we use raid roster index sort
 		if DBM:IsRanged(v1) == DBM:IsRanged(v2) then
