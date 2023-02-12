@@ -6961,13 +6961,13 @@ function bossModPrototype:IsScenario()
 	return diff == "normalscenario" or diff == "heroicscenario" or diff == "couragescenario" or diff == "loyaltyscenario" or diff == "wisdomscenario" or diff == "humilityscenario"
 end
 
-function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose)
+function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowFriendly)
 	if loose and InCombatLockdown() and GetNumGroupMembers() < 2 then return true end--In a loose check, this basically just checks if we're in combat, important for solo runs of torghast to not gimp mod too much
 	if customunitID then
-		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) then return true end
+		if UnitExists(customunitID) and UnitGUID(customunitID) == sourceGUID and UnitAffectingCombat(customunitID) and (allowFriendly or not UnitIsFriend("player", customunitID)) then return true end
 	else
 		local unitId = DBM:GetUnitIdFromGUID(sourceGUID)
-		if unitId and UnitExists(unitId) and UnitAffectingCombat(unitId) then
+		if unitId and UnitExists(unitId) and UnitAffectingCombat(unitId) and (allowFriendly or not UnitIsFriend("player", unitId)) then
 			return true
 		end
 	end
