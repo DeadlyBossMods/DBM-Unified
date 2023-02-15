@@ -708,16 +708,18 @@ end
 
 -- automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
 local function sendSync(prefix, msg)
-	msg = msg or ""
-	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-		SendAddonMessage(DBMPrefix, prefix .. "\t" .. msg, "INSTANCE_CHAT")
-	else
-		if IsInRaid() then
-			SendAddonMessage(DBMPrefix, prefix .. "\t" .. msg, "RAID")
-		elseif IsInGroup(1) then
-			SendAddonMessage(DBMPrefix, prefix .. "\t" .. msg, "PARTY")
-		else--for solo raid
-			handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
+	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only how version checks if force disabled, nothing else
+		msg = msg or ""
+		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+			SendAddonMessage(DBMPrefix, prefix .. "\t" .. msg, "INSTANCE_CHAT")
+		else
+			if IsInRaid() then
+				SendAddonMessage(DBMPrefix, prefix .. "\t" .. msg, "RAID")
+			elseif IsInGroup(1) then
+				SendAddonMessage(DBMPrefix, prefix .. "\t" .. msg, "PARTY")
+			else--for solo raid
+				handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
+			end
 		end
 	end
 end
@@ -725,22 +727,25 @@ private.sendSync = sendSync
 
 --Custom sync function that should only be used for user generated sync messages
 local function sendLoggedSync(prefix, msg)
-	msg = msg or ""
-	if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
-		C_ChatInfo.SendAddonMessageLogged(DBMPrefix, prefix .. "\t" .. msg, "INSTANCE_CHAT")
-	else
-		if IsInRaid() then
-			C_ChatInfo.SendAddonMessageLogged(DBMPrefix, prefix .. "\t" .. msg, "RAID")
-		elseif IsInGroup(1) then
-			C_ChatInfo.SendAddonMessageLogged(DBMPrefix, prefix .. "\t" .. msg, "PARTY")
-		else--for solo raid
-			handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
+	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only how version checks if force disabled, nothing else
+		msg = msg or ""
+		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
+			C_ChatInfo.SendAddonMessageLogged(DBMPrefix, prefix .. "\t" .. msg, "INSTANCE_CHAT")
+		else
+			if IsInRaid() then
+				C_ChatInfo.SendAddonMessageLogged(DBMPrefix, prefix .. "\t" .. msg, "RAID")
+			elseif IsInGroup(1) then
+				C_ChatInfo.SendAddonMessageLogged(DBMPrefix, prefix .. "\t" .. msg, "PARTY")
+			else--for solo raid
+				handleSync("SOLO", playerName, prefix, strsplit("\t", msg))
+			end
 		end
 	end
 end
 
 --Sync Object specifically for out in the world sync messages that have different rules than standard syncs
 local function SendWorldSync(self, prefix, msg, noBNet)
+	if not dbmIsEnabled then return end--Block all world syncs if force disabled
 	DBM:Debug("SendWorldSync running for "..prefix)
 	if IsInRaid() then
 		SendAddonMessage(DBMPrefix, prefix.."\t"..msg, "RAID")
@@ -2156,7 +2161,9 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
-				SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+				if dbmIsEnabled then
+					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+				end
 				if isRetail then
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
@@ -2228,7 +2235,9 @@ do
 				-- joined a new party
 				inRaid = true
 				sendSync("H")
-				SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
+				if dbmIsEnabled then
+					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
+				end
 				if isRetail then
 					self:Schedule(2, self.RoleCheck, false, self)
 				end
@@ -3147,7 +3156,7 @@ do
 		end
 		DBM_UsedProfile = usedProfile
 		self.Options = DBM_AllSavedOptions[usedProfile] or {}
-		dbmIsEnabled = true
+		self:Enable()
 		self:AddDefaultOptions(self.Options, self.DefaultOptions)
 		DBM_AllSavedOptions[usedProfile] = self.Options
 
@@ -3990,7 +3999,7 @@ do
 			SendAddonMessage(DBMPrefix, "GV\t" .. message, "GUILD")
 			return
 		end
-		if DBM.Options.FakeBWVersion then
+		if DBM.Options.FakeBWVersion and not dbmIsEnabled then
 			SendAddonMessage("BigWigs", bwVersionResponseString:format(fakeBWVersion, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")
 			return
 		end
@@ -4037,7 +4046,7 @@ do
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, showRealDate(version)))
 					showConstantReminder = 1
-				elseif #newerVersionPerson == 3 and raid[newerVersionPerson[1]] and raid[newerVersionPerson[2]] and raid[newerVersionPerson[3]] and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
+				elseif #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if out of date and it's a major patch.
 					if not testBuild and dbmToc < wowTOC then
 						updateNotificationDisplayed = 3
@@ -4846,6 +4855,7 @@ do
 	local tooltipsHidden = false
 	--Delayed Guild Combat sync object so we allow time for RL to disable them
 	local function delayedGCSync(modId, difficultyIndex, difficultyModifier, name, thisTime, wipeHP)
+		if not dbmIsEnabled then return end
 		if not private.statusGuildDisabled and updateNotificationDisplayed == 0 then
 			if thisTime then--Wipe event
 				if wipeHP then
@@ -6023,6 +6033,7 @@ do
 	end
 
 	function DBM:RequestTimers(requestNum)
+		if not dbmIsEnabled then return end
 		local sortMe, clientUsed = {}, {}
 		for _, v in pairs(raid) do
 			tinsert(sortMe, v)
@@ -6093,6 +6104,7 @@ end
 do
 	local spamProtection = {}
 	function DBM:SendTimers(target)
+		if not dbmIsEnabled then return end
 		self:Debug("SendTimers requested by "..target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
@@ -6124,6 +6136,7 @@ do
 		self:SendTimerInfo(mod, target)
 	end
 	function DBM:SendPVPTimers(target)
+		if not dbmIsEnabled then return end
 		self:Debug("SendPVPTimers requested by "..target, 2)
 		local spamForTarget = spamProtection[target] or 0
 		local time = GetTime()
@@ -6145,10 +6158,12 @@ do
 end
 
 function DBM:SendCombatInfo(mod, target)
+	if not dbmIsEnabled then return end
 	return SendAddonMessage(DBMPrefix, ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
+	if not dbmIsEnabled then return end
 	for _, v in ipairs(mod.timers) do
 		--Pass on any timer that has no type, or has one that isn't an ai timer
 		if not v.type or v.type and v.type ~= "ai" then
@@ -6169,6 +6184,7 @@ function DBM:SendTimerInfo(mod, target)
 end
 
 function DBM:SendVariableInfo(mod, target)
+	if not dbmIsEnabled then return end
 	for vname, v in pairs(mod.vb) do
 		local v2 = tostring(v)
 		if v2 then
@@ -11174,6 +11190,7 @@ function bossModPrototype:SendSync(event, ...)
 end
 
 function bossModPrototype:SendBigWigsSync(msg, extra)
+	if not dbmIsEnabled then return end
 	msg = "B^".. msg
 	if extra then
 		msg = msg .."^".. extra
