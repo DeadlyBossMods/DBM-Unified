@@ -33,6 +33,7 @@ local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
 
+local DBMOldPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC" or isWrath and "D4WC"
 local DBMPrefix = isRetail and "D5" or isClassic and "D5C" or isBCC and "D5BC" or isWrath and "D5WC"
 local DBMSyncProtocol = 1
 private.DBMPrefix = DBMPrefix
@@ -4409,23 +4410,36 @@ do
 		end
 	end
 
-	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
+	local function GetCorrectSender(senderOne, senderTwo)
+		local correctSender = senderOne
+		if senderOne:find("-") then--first sender arg has realm name
+			correctSender = Ambiguate(senderOne, "none")
+		elseif senderTwo and senderTwo:find("-") then--Second sender arg has realm name
+			correctSender = Ambiguate(senderTwo, "none")
+		end
+		return correctSender
+	end
+
+	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, senderOne, senderTwo)
 		if prefix == DBMPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
-			sender = Ambiguate(sender, "none")
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
 			if channel == "WHISPER" then
-				handleSync(channel, sender, nil, strsplit("\t", msg))
+				handleSync(channel, correctSender, nil, strsplit("\t", msg))
 			else
-				handleSync(channel, sender, strsplit("\t", msg))
+				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
+		elseif prefix == DBMOldPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
+			handleSync(channel, correctSender, nil, 1, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
+				local correctSender = GetCorrectSender(senderOne, senderTwo)
 				if bwPrefix == "V" and extra then--Nil check "extra" to avoid error from older version
 					local verString, hash = bwMsg, extra
 					local version = tonumber(verString) or 0
 					if version == 0 then return end--Just a query
-					sender = Ambiguate(sender, "none")
-					handleSync(channel, sender, nil, DBMSyncProtocol, "BV", version, hash)--Prefix changed, so it's not handled by DBMs "V" handler
+					handleSync(channel, correctSender, nil, DBMSyncProtocol, "BV", version, hash)--Prefix changed, so it's not handled by DBMs "V" handler
 					if version > fakeBWVersion then--Newer revision found, upgrade!
 						fakeBWVersion = version
 						fakeBWHash = hash
@@ -4437,29 +4451,30 @@ do
 					for i = 1, #inCombat do
 						local mod = inCombat[i]
 						if mod and mod.OnBWSync then
-							mod:OnBWSync(bwMsg, extra, sender)
+							mod:OnBWSync(bwMsg, extra, correctSender)
 						end
 					end
 					for i = 1, #oocBWComms do
 						local mod = oocBWComms[i]
 						if mod and mod.OnBWSync then
-							mod:OnBWSync(bwMsg, extra, sender)
+							mod:OnBWSync(bwMsg, extra, correctSender)
 						end
 					end
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
 			for i = 1, #inCombat do
 				local mod = inCombat[i]
 				if mod and mod.OnTranscriptorSync then
-					mod:OnTranscriptorSync(msg, sender)
+					mod:OnTranscriptorSync(msg, correctSender)
 				end
 			end
 			local transcriptor = _G["Transcriptor"]
 			if msg:find("spell:") and (DBM.Options.DebugLevel > 2 or (transcriptor and transcriptor:IsLogging())) then
 				local spellId = string.match(msg, "spell:(%d+)") or CL.UNKNOWN
 				local spellName = string.match(msg, "h%[(.-)%]|h") or CL.UNKNOWN
-				local message = "RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")"
+				local message = "RAID_BOSS_WHISPER on "..correctSender.." with spell of "..spellName.." ("..spellId..")"
 				self:Debug(message)
 			end
 		end
@@ -4469,6 +4484,8 @@ do
 	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, _, sender)
 		if prefix == DBMPrefix and msg then
 			handleSync("BN_WHISPER", sender, nil, strsplit("\t", msg))
+		elseif prefix == DBMOldPrefix and msg then
+			handleSync("BN_WHISPER", sender, nil, 0, strsplit("\t", msg))
 		end
 	end
 end
@@ -6237,6 +6254,9 @@ do
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMOldPrefix) then -- main prefix for DBM4
+				self:AddMsg("Error: unable to register old DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
 			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
 				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
