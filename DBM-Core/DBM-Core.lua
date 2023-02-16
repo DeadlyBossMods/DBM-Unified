@@ -3710,7 +3710,7 @@ do
 	-- RLO = Raid Leader Override
 	-- NS = Note Share
 
-	syncHandlers["M"] = function(sender, protocol, mod, revision, event, ...)
+	syncHandlers["M"] = function(sender, _, mod, revision, event, ...)
 		mod = DBM:GetModByName(mod or "")
 		if mod and event and revision then
 			revision = tonumber(revision) or 0
@@ -3718,7 +3718,7 @@ do
 		end
 	end
 
-	syncHandlers["NS"] = function(sender, protocol, modid, modvar, text, abilityName)
+	syncHandlers["NS"] = function(sender, _, modid, modvar, text, abilityName)
 		if sender == playerName then return end
 		if DBM.Options.BlockNoteShare or InCombatLockdown() or UnitAffectingCombat("player") or IsFalling() then return end--or DBM:GetRaidRank(sender) == 0
 		if IsInGroup(2) and IsInInstance() then return end
@@ -3738,7 +3738,7 @@ do
 		end
 	end
 
-	syncHandlers["C"] = function(sender, protocol, delay, mod, modRevision, startHp, dbmRevision, modHFRevision, event)
+	syncHandlers["C"] = function(sender, _, delay, mod, modRevision, startHp, dbmRevision, modHFRevision, event)
 		if not dbmIsEnabled or sender == playerName then return end
 		if LastInstanceType == "pvp" then return end
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
@@ -3809,7 +3809,7 @@ do
 		end
 	end
 
-	syncHandlers["IS"] = function(_, protocol, guid, ver, optionName)
+	syncHandlers["IS"] = function(_, _, guid, ver, optionName)
 		ver = tonumber(ver) or 0
 		if ver > (iconSetRevision[optionName] or 0) then--Save first synced version and person, ignore same version. refresh occurs only above version (fastest person)
 			iconSetRevision[optionName] = ver
@@ -3824,13 +3824,13 @@ do
 		DBM:Debug(name.." was elected icon setter for "..optionName, 2)
 	end
 
-	syncHandlers["K"] = function(_, protocol, cId)
+	syncHandlers["K"] = function(_, _, cId)
 		if select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "none" then return end
 		cId = tonumber(cId or "")
 		if cId then DBM:OnMobKill(cId, true) end
 	end
 
-	syncHandlers["EE"] = function(sender, protocol, eId, success, mod, modRevision)
+	syncHandlers["EE"] = function(sender, _, eId, success, mod, modRevision)
 		if select(2, IsInInstance()) == "pvp" then return end
 		eId = tonumber(eId or "")
 		success = tonumber(success)
@@ -3846,7 +3846,7 @@ do
 	end
 
 	local dummyMod -- dummy mod for the pull timer
-	syncHandlers["PT"] = function(sender, protocol, timer, senderMapID, target)
+	syncHandlers["PT"] = function(sender, _, timer, senderMapID, target)
 		if DBM.Options.DontShowUserTimers then return end
 		local LFGTankException = isRetail and IsPartyLFG() and UnitGroupRolesAssigned(sender) == "TANK"
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup() and not LFGTankException) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
@@ -3985,7 +3985,7 @@ do
 		end
 	end
 
-	syncHandlers["BT"] = function(sender, protocol, timer)
+	syncHandlers["BT"] = function(sender, _, timer)
 		if DBM.Options.DontShowUserTimers then return end
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
@@ -3995,7 +3995,7 @@ do
 		breakTimerStart(DBM, timer, sender)
 	end
 
-	whisperSyncHandlers["BTR3"] = function(sender, protocol, timer)
+	whisperSyncHandlers["BTR3"] = function(sender, _, timer)
 		if DBM.Options.DontShowUserTimers then return end
 		timer = tonumber(timer or 0)
 		if timer > 3600 then return end
@@ -4099,14 +4099,14 @@ do
 		end
 	end
 
-	syncHandlers["BV"] = function(sender, protocol, version, hash)--Parsed from bigwigs V7+
+	syncHandlers["BV"] = function(sender, _, version, hash)--Parsed from bigwigs V7+
 		if version and raid[sender] then
 			raid[sender].bwversion = version
 			raid[sender].bwhash = hash or ""
 		end
 	end
 
-	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, VPVersion)
+	syncHandlers["V"] = function(sender, _, revision, version, displayVersion, locale, iconEnabled, VPVersion)
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion and raid[sender] then
 			raid[sender].revision = revision
@@ -4129,7 +4129,7 @@ do
 		end
 	end
 
-	syncHandlers["U"] = function(sender, protocol, time, text)
+	syncHandlers["U"] = function(sender, _, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
 		if DBM.Options.DontShowUserTimers then return end
 		if DBM:GetRaidRank(sender) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then return end
@@ -4141,7 +4141,7 @@ do
 		end
 	end
 
-	whisperSyncHandlers["UW"] = function(sender, protocol, time, text)
+	whisperSyncHandlers["UW"] = function(sender, _, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
 		if DBM.Options.DontShowUserTimers then return end
 		if DBM:GetRaidRank(sender) == 0 or difficultyIndex == 7 or difficultyIndex == 17 then return end--Block in LFR, or if not an assistant
@@ -4343,7 +4343,7 @@ do
 		end
 	end
 
-	whisperSyncHandlers["CI"] = function(sender, protocol, mod, time)
+	whisperSyncHandlers["CI"] = function(sender, _, mod, time)
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
@@ -4351,7 +4351,7 @@ do
 		end
 	end
 
-	whisperSyncHandlers["TR"] = function(sender, protocol, mod, timeLeft, totalTime, id, paused, ...)
+	whisperSyncHandlers["TR"] = function(sender, _, mod, timeLeft, totalTime, id, paused, ...)
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
@@ -4360,7 +4360,7 @@ do
 		end
 	end
 
-	whisperSyncHandlers["VI"] = function(sender, protocol, mod, name, value)
+	whisperSyncHandlers["VI"] = function(sender, _, mod, name, value)
 		mod = DBM:GetModByName(mod or "")
 		value = tonumber(value) or value
 		if mod and name and value then
@@ -4371,7 +4371,7 @@ do
 	--Function to correct a blizzard bug where off realm players have realm name stripped
 	--Had to be custom function due to bugs with two players with same name on different realms
 	local function VerifyRaidName(apiName, SyncedName)
-		local shortName, serverName = string.split("-", SyncedName)
+		local _, serverName = string.split("-", SyncedName)
 		if serverName and serverName ~= playerRealm then
 			return SyncedName--Use synced name with realm added back on
 		else
