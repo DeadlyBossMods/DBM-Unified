@@ -4468,7 +4468,7 @@ do
 
 	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, _, sender)
 		if prefix == DBMPrefix and msg then
-			handleSync("BN_WHISPER", sender, nil, DBMSyncProtocol, strsplit("\t", msg))
+			handleSync("BN_WHISPER", sender, nil, strsplit("\t", msg))
 		end
 	end
 end
