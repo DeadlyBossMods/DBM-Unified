@@ -3860,7 +3860,7 @@ do
 		if timer > 60 or (timer > 0 and timer < 3) or timer < 0 then
 			return
 		end
-		if timer ~= 0 and DBM:AntiSpam(1, sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
+		if timer ~= 0 and DBM:AntiSpam(1, "PT"..sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
 			if not dummyMod then
 				local threshold = DBM.Options.PTCountThreshold2
 				threshold = floor(threshold)
@@ -3995,7 +3995,9 @@ do
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
-		breakTimerStart(DBM, timer, sender)
+		if timer ~= 0 and DBM:AntiSpam(1, "BT"..sender) then
+			breakTimerStart(DBM, timer, sender)
+		end
 	end
 
 	whisperSyncHandlers["BTR3"] = function(sender, _, timer)
