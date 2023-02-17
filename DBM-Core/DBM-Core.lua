@@ -3584,9 +3584,6 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-	if not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
-		wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
-	end
 	if mod.minExpansion > GetExpansionLevel() then
 		self:AddMsg(L.LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
@@ -4068,10 +4065,6 @@ do
 					showConstantReminder = 1
 				elseif #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if out of date and it's a major patch.
-					if not dbmToc and not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
-						dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or "")))
-						wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
-					end
 					if not testBuild and dbmToc < wowTOC then
 						updateNotificationDisplayed = 3
 						AddMsg(DBM, L.UPDATEREMINDER_MAJORPATCH)
