@@ -2172,6 +2172,7 @@ do
 	local function updateAllRoster(self)
 		if IsInRaid() then
 			if not inRaid then
+				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
 				if dbmIsEnabled then
@@ -2246,6 +2247,7 @@ do
 		elseif IsInGroup() then
 			if not inRaid then
 				-- joined a new party
+				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
 				if dbmIsEnabled then
@@ -4129,7 +4131,7 @@ do
 	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion)
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion then
-			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
+			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision)..", Display Version "..displayVersion, 3)
 			HandleVersion(revision, version, displayVersion, sender)
 		end
 	end
