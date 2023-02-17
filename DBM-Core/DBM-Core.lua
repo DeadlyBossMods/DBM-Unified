@@ -33,6 +33,7 @@ local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
 
+local DBMOldPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC" or isWrath and "D4WC"
 local DBMPrefix = isRetail and "D5" or isClassic and "D5C" or isBCC and "D5BC" or isWrath and "D5WC"
 local DBMSyncProtocol = 1
 private.DBMPrefix = DBMPrefix
@@ -79,21 +80,21 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.26 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	fakeBWVersion, fakeBWHash = 259, "3fbb48c"
+	DBM.DisplayVersion = "10.0.27 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.31 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	fakeBWVersion, fakeBWHash = 41, "287b8dd"
+	DBM.DisplayVersion = "1.14.33 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
-	DBM.ReleaseRevision = releaseDate(2023, 2, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	fakeBWVersion, fakeBWHash = 41, "287b8dd"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.33 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	fakeBWVersion, fakeBWHash = 41, "287b8dd"
+	DBM.DisplayVersion = "3.4.34 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -1457,7 +1458,7 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
-			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and ("-WOTLKC" or "-Wrath") or "")))
+			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or "")))
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -3583,6 +3584,9 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
+	if not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
+		wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
+	end
 	if mod.minExpansion > GetExpansionLevel() then
 		self:AddMsg(L.LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
@@ -3859,84 +3863,86 @@ do
 		if timer > 60 or (timer > 0 and timer < 3) or timer < 0 then
 			return
 		end
-		if not dummyMod then
-			local threshold = DBM.Options.PTCountThreshold2
-			threshold = floor(threshold)
-			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
-			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = L.MINIMAP_TOOLTIP_HEADER }
-			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
-			dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
-			dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 4, threshold)
-		end
-		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-		if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
-			dummyMod.timer:Stop()
-		end
-		local timerTrackerRunning = false
-		if not DBM.Options.DontShowPTCountdownText and TimerTracker then
-			for _, tttimer in pairs(TimerTracker.timerList) do
-				if not tttimer.isFree then--Timer event running
-					if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
-						FreeTimerTrackerTimer(tttimer)
-					else--Verify that a TimerTracker event NOT started by DBM isn't running, if it is, prevent executing new TimerTracker events below
-						timerTrackerRunning = true
-					end
-				end
+		if timer == 0 or DBM:AntiSpam(1, "PT"..sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
+			if not dummyMod then
+				local threshold = DBM.Options.PTCountThreshold2
+				threshold = floor(threshold)
+				dummyMod = DBM:NewMod("PullTimerCountdownDummy")
+				DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = L.MINIMAP_TOOLTIP_HEADER }
+				dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
+				dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
+				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 4, threshold)
 			end
-		end
-		dummyMod.text:Cancel()
-		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-		DBM:FlashClientIcon()
-		if not DBM.Options.DontShowPT2 then
-			dummyMod.timer:Start(timer, L.TIMER_PULL)
-		end
-		if not DBM.Options.DontShowPTCountdownText and TimerTracker then
-			if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
-				--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
-				--Find the timer object DBM just created and hack our own changes into it.
+			--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
+			if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
+				dummyMod.timer:Stop()
+			end
+			local timerTrackerRunning = false
+			if not DBM.Options.DontShowPTCountdownText and TimerTracker then
 				for _, tttimer in pairs(TimerTracker.timerList) do
-					if tttimer.type == 3 and not tttimer.isFree then
-						--We don't want the PVP bar, we only want timer text
-						if timer > 10 then
-							--b.startNumbers:Play()
-							tttimer.bar:Hide()
+					if not tttimer.isFree then--Timer event running
+						if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
+							FreeTimerTrackerTimer(tttimer)
+						else--Verify that a TimerTracker event NOT started by DBM isn't running, if it is, prevent executing new TimerTracker events below
+							timerTrackerRunning = true
 						end
-						break
 					end
 				end
 			end
-		end
-		if not DBM.Options.DontShowPTText then
-			if target then
-				dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
-				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
-			else
-				dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
-				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
+			dummyMod.text:Cancel()
+			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
+			DBM:FlashClientIcon()
+			if not DBM.Options.DontShowPT2 then
+				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
-		end
-		if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
-			DBM:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
-		end
-		if DBM.Options.RecordOnlyBosses then
-			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
-		end
-		if isRetail and DBM.Options.CheckGear and not testBuild then
-			local bagilvl, equippedilvl = GetAverageItemLevel()
-			local difference = bagilvl - equippedilvl
-			local weapon = GetInventoryItemLink("player", 16)
-			local fishingPole = false
-			if weapon then
-				local _, _, _, _, _, _, type = GetItemInfo(weapon)
-				if type and type == L.GEAR_FISHING_POLE then
-					fishingPole = true
+			if not DBM.Options.DontShowPTCountdownText and TimerTracker then
+				if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
+					--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
+					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
+					--Find the timer object DBM just created and hack our own changes into it.
+					for _, tttimer in pairs(TimerTracker.timerList) do
+						if tttimer.type == 3 and not tttimer.isFree then
+							--We don't want the PVP bar, we only want timer text
+							if timer > 10 then
+								--b.startNumbers:Play()
+								tttimer.bar:Hide()
+							end
+							break
+						end
+					end
 				end
 			end
-			if IsInRaid() and difference >= 30 then
-				dummyMod.geartext:Show(L.GEAR_WARNING:format(floor(difference)))
-			elseif IsInRaid() and (not weapon or fishingPole) then
-				dummyMod.geartext:Show(L.GEAR_WARNING_WEAPON)
+			if not DBM.Options.DontShowPTText then
+				if target then
+					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
+					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
+				else
+					dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
+					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
+				end
+			end
+			if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
+				DBM:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
+			end
+			if DBM.Options.RecordOnlyBosses then
+				DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
+			end
+			if isRetail and DBM.Options.CheckGear and not testBuild then
+				local bagilvl, equippedilvl = GetAverageItemLevel()
+				local difference = bagilvl - equippedilvl
+				local weapon = GetInventoryItemLink("player", 16)
+				local fishingPole = false
+				if weapon then
+					local _, _, _, _, _, _, type = GetItemInfo(weapon)
+					if type and type == L.GEAR_FISHING_POLE then
+						fishingPole = true
+					end
+				end
+				if IsInRaid() and difference >= 30 then
+					dummyMod.geartext:Show(L.GEAR_WARNING:format(floor(difference)))
+				elseif IsInRaid() and (not weapon or fishingPole) then
+					dummyMod.geartext:Show(L.GEAR_WARNING_WEAPON)
+				end
 			end
 		end
 	end
@@ -3992,7 +3998,9 @@ do
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
-		breakTimerStart(DBM, timer, sender)
+		if timer == 0 or DBM:AntiSpam(1, "BT"..sender) then
+			breakTimerStart(DBM, timer, sender)
+		end
 	end
 
 	whisperSyncHandlers["BTR3"] = function(sender, _, timer)
@@ -4060,6 +4068,10 @@ do
 					showConstantReminder = 1
 				elseif #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if out of date and it's a major patch.
+					if not dbmToc and not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
+						dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or "")))
+						wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
+					end
 					if not testBuild and dbmToc < wowTOC then
 						updateNotificationDisplayed = 3
 						AddMsg(DBM, L.UPDATEREMINDER_MAJORPATCH)
@@ -4121,7 +4133,7 @@ do
 		DBM:GROUP_ROSTER_UPDATE()
 	end
 
-	guildSyncHandlers["GV"] = function(sender, revision, version, displayVersion)
+	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion)
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion then
 			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
@@ -4409,23 +4421,36 @@ do
 		end
 	end
 
-	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
+	local function GetCorrectSender(senderOne, senderTwo)
+		local correctSender = senderOne
+		if senderOne:find("-") then--first sender arg has realm name
+			correctSender = Ambiguate(senderOne, "none")
+		elseif senderTwo and senderTwo:find("-") then--Second sender arg has realm name
+			correctSender = Ambiguate(senderTwo, "none")
+		end
+		return correctSender
+	end
+
+	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, senderOne, senderTwo)
 		if prefix == DBMPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
-			sender = Ambiguate(sender, "none")
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
 			if channel == "WHISPER" then
-				handleSync(channel, sender, nil, strsplit("\t", msg))
+				handleSync(channel, correctSender, nil, strsplit("\t", msg))
 			else
-				handleSync(channel, sender, strsplit("\t", msg))
+				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
+		elseif prefix == DBMOldPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
+			handleSync(channel, correctSender, nil, 1, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
+				local correctSender = GetCorrectSender(senderOne, senderTwo)
 				if bwPrefix == "V" and extra then--Nil check "extra" to avoid error from older version
 					local verString, hash = bwMsg, extra
 					local version = tonumber(verString) or 0
 					if version == 0 then return end--Just a query
-					sender = Ambiguate(sender, "none")
-					handleSync(channel, sender, nil, DBMSyncProtocol, "BV", version, hash)--Prefix changed, so it's not handled by DBMs "V" handler
+					handleSync(channel, correctSender, nil, DBMSyncProtocol, "BV", version, hash)--Prefix changed, so it's not handled by DBMs "V" handler
 					if version > fakeBWVersion then--Newer revision found, upgrade!
 						fakeBWVersion = version
 						fakeBWHash = hash
@@ -4437,29 +4462,30 @@ do
 					for i = 1, #inCombat do
 						local mod = inCombat[i]
 						if mod and mod.OnBWSync then
-							mod:OnBWSync(bwMsg, extra, sender)
+							mod:OnBWSync(bwMsg, extra, correctSender)
 						end
 					end
 					for i = 1, #oocBWComms do
 						local mod = oocBWComms[i]
 						if mod and mod.OnBWSync then
-							mod:OnBWSync(bwMsg, extra, sender)
+							mod:OnBWSync(bwMsg, extra, correctSender)
 						end
 					end
 				end
 			end
 		elseif prefix == "Transcriptor" and msg then
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
 			for i = 1, #inCombat do
 				local mod = inCombat[i]
 				if mod and mod.OnTranscriptorSync then
-					mod:OnTranscriptorSync(msg, sender)
+					mod:OnTranscriptorSync(msg, correctSender)
 				end
 			end
 			local transcriptor = _G["Transcriptor"]
 			if msg:find("spell:") and (DBM.Options.DebugLevel > 2 or (transcriptor and transcriptor:IsLogging())) then
 				local spellId = string.match(msg, "spell:(%d+)") or CL.UNKNOWN
 				local spellName = string.match(msg, "h%[(.-)%]|h") or CL.UNKNOWN
-				local message = "RAID_BOSS_WHISPER on "..sender.." with spell of "..spellName.." ("..spellId..")"
+				local message = "RAID_BOSS_WHISPER on "..correctSender.." with spell of "..spellName.." ("..spellId..")"
 				self:Debug(message)
 			end
 		end
@@ -4469,6 +4495,8 @@ do
 	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, _, sender)
 		if prefix == DBMPrefix and msg then
 			handleSync("BN_WHISPER", sender, nil, strsplit("\t", msg))
+		elseif prefix == DBMOldPrefix and msg then
+			handleSync("BN_WHISPER", sender, nil, 0, strsplit("\t", msg))
 		end
 	end
 end
@@ -6237,6 +6265,9 @@ do
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMOldPrefix) then -- old main prefix for DBM4
+				self:AddMsg("Error: unable to register old DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
 			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
 				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
