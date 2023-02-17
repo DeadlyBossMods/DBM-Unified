@@ -80,11 +80,11 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.27 alpha"
+	DBM.DisplayVersion = "10.0.26"
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.32 alpha"
+	DBM.DisplayVersion = "1.14.32"
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isBCC then
@@ -92,7 +92,7 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.34 alpha"
+	DBM.DisplayVersion = "3.4.33"
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 end
@@ -3860,7 +3860,7 @@ do
 		if timer > 60 or (timer > 0 and timer < 3) or timer < 0 then
 			return
 		end
-		if timer ~= 0 and DBM:AntiSpam(1, "PT"..sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
+		if timer == 0 or DBM:AntiSpam(1, "PT"..sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
 			if not dummyMod then
 				local threshold = DBM.Options.PTCountThreshold2
 				threshold = floor(threshold)
@@ -3995,7 +3995,7 @@ do
 		if (DBM:GetRaidRank(sender) == 0 and IsInGroup()) or select(2, IsInInstance()) == "pvp" or IsEncounterInProgress() then
 			return
 		end
-		if timer ~= 0 and DBM:AntiSpam(1, "BT"..sender) then
+		if timer == 0 or DBM:AntiSpam(1, "BT"..sender) then
 			breakTimerStart(DBM, timer, sender)
 		end
 	end
