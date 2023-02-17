@@ -1458,7 +1458,7 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
-			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and ("-WOTLKC" or "-Wrath") or "")))
+			dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or "")))
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -3584,6 +3584,9 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
+	if not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
+		wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
+	end
 	if mod.minExpansion > GetExpansionLevel() then
 		self:AddMsg(L.LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
@@ -4065,6 +4068,10 @@ do
 					showConstantReminder = 1
 				elseif #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if out of date and it's a major patch.
+					if not dbmToc and not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
+						dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or "")))
+						wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
+					end
 					if not testBuild and dbmToc < wowTOC then
 						updateNotificationDisplayed = 3
 						AddMsg(DBM, L.UPDATEREMINDER_MAJORPATCH)
@@ -6259,7 +6266,7 @@ do
 			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
-			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMOldPrefix) then -- main prefix for DBM4
+			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMOldPrefix) then -- old main prefix for DBM4
 				self:AddMsg("Error: unable to register old DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
 			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
