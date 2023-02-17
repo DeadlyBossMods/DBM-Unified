@@ -3860,84 +3860,86 @@ do
 		if timer > 60 or (timer > 0 and timer < 3) or timer < 0 then
 			return
 		end
-		if not dummyMod then
-			local threshold = DBM.Options.PTCountThreshold2
-			threshold = floor(threshold)
-			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
-			DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = L.MINIMAP_TOOLTIP_HEADER }
-			dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
-			dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
-			dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 4, threshold)
-		end
-		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
-		if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
-			dummyMod.timer:Stop()
-		end
-		local timerTrackerRunning = false
-		if not DBM.Options.DontShowPTCountdownText and TimerTracker then
-			for _, tttimer in pairs(TimerTracker.timerList) do
-				if not tttimer.isFree then--Timer event running
-					if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
-						FreeTimerTrackerTimer(tttimer)
-					else--Verify that a TimerTracker event NOT started by DBM isn't running, if it is, prevent executing new TimerTracker events below
-						timerTrackerRunning = true
-					end
-				end
+		if timer ~= 0 and DBM:AntiSpam(1, sender) then--prevent double pull timer from BW and other mods that are sending D4 and D5 at same time
+			if not dummyMod then
+				local threshold = DBM.Options.PTCountThreshold2
+				threshold = floor(threshold)
+				dummyMod = DBM:NewMod("PullTimerCountdownDummy")
+				DBM:GetModLocalization("PullTimerCountdownDummy"):SetGeneralLocalization{ name = L.MINIMAP_TOOLTIP_HEADER }
+				dummyMod.text = dummyMod:NewAnnounce("%s", 1, "132349")
+				dummyMod.geartext = dummyMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3)
+				dummyMod.timer = dummyMod:NewTimer(20, "%s", "132349", nil, nil, 0, nil, nil, DBM.Options.DontPlayPTCountdown and 0 or 4, threshold)
 			end
-		end
-		dummyMod.text:Cancel()
-		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
-		DBM:FlashClientIcon()
-		if not DBM.Options.DontShowPT2 then
-			dummyMod.timer:Start(timer, L.TIMER_PULL)
-		end
-		if not DBM.Options.DontShowPTCountdownText and TimerTracker then
-			if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
-				--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
-				--Find the timer object DBM just created and hack our own changes into it.
+			--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
+			if not DBM.Options.DontShowPT2 then--and DBT:GetBar(L.TIMER_PULL)
+				dummyMod.timer:Stop()
+			end
+			local timerTrackerRunning = false
+			if not DBM.Options.DontShowPTCountdownText and TimerTracker then
 				for _, tttimer in pairs(TimerTracker.timerList) do
-					if tttimer.type == 3 and not tttimer.isFree then
-						--We don't want the PVP bar, we only want timer text
-						if timer > 10 then
-							--b.startNumbers:Play()
-							tttimer.bar:Hide()
+					if not tttimer.isFree then--Timer event running
+						if tttimer.type == 3 then--Its a pull timer event, this is one we cancel before starting a new pull timer
+							FreeTimerTrackerTimer(tttimer)
+						else--Verify that a TimerTracker event NOT started by DBM isn't running, if it is, prevent executing new TimerTracker events below
+							timerTrackerRunning = true
 						end
-						break
 					end
 				end
 			end
-		end
-		if not DBM.Options.DontShowPTText then
-			if target then
-				dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
-				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
-			else
-				dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
-				dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
+			dummyMod.text:Cancel()
+			if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
+			DBM:FlashClientIcon()
+			if not DBM.Options.DontShowPT2 then
+				dummyMod.timer:Start(timer, L.TIMER_PULL)
 			end
-		end
-		if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
-			DBM:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
-		end
-		if DBM.Options.RecordOnlyBosses then
-			DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
-		end
-		if isRetail and DBM.Options.CheckGear and not testBuild then
-			local bagilvl, equippedilvl = GetAverageItemLevel()
-			local difference = bagilvl - equippedilvl
-			local weapon = GetInventoryItemLink("player", 16)
-			local fishingPole = false
-			if weapon then
-				local _, _, _, _, _, _, type = GetItemInfo(weapon)
-				if type and type == L.GEAR_FISHING_POLE then
-					fishingPole = true
+			if not DBM.Options.DontShowPTCountdownText and TimerTracker then
+				if not timerTrackerRunning then--if a TimerTracker event is running not started by DBM, block creating one of our own (object gets buggy if it has 2+ events running)
+					--Start A TimerTracker timer using the new countdown type 3 type (ie what C_PartyInfo.DoCountdown triggers, but without sending it to entire group)
+					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 3, timer, timer)
+					--Find the timer object DBM just created and hack our own changes into it.
+					for _, tttimer in pairs(TimerTracker.timerList) do
+						if tttimer.type == 3 and not tttimer.isFree then
+							--We don't want the PVP bar, we only want timer text
+							if timer > 10 then
+								--b.startNumbers:Play()
+								tttimer.bar:Hide()
+							end
+							break
+						end
+					end
 				end
 			end
-			if IsInRaid() and difference >= 30 then
-				dummyMod.geartext:Show(L.GEAR_WARNING:format(floor(difference)))
-			elseif IsInRaid() and (not weapon or fishingPole) then
-				dummyMod.geartext:Show(L.GEAR_WARNING_WEAPON)
+			if not DBM.Options.DontShowPTText then
+				if target then
+					dummyMod.text:Show(L.ANNOUNCE_PULL_TARGET:format(target, timer, sender))
+					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW_TARGET:format(target))
+				else
+					dummyMod.text:Show(L.ANNOUNCE_PULL:format(timer, sender))
+					dummyMod.text:Schedule(timer, L.ANNOUNCE_PULL_NOW)
+				end
+			end
+			if DBM.Options.EventSoundPullTimer and DBM.Options.EventSoundPullTimer ~= "" and DBM.Options.EventSoundPullTimer ~= "None" then
+				DBM:PlaySoundFile(DBM.Options.EventSoundPullTimer, nil, true)
+			end
+			if DBM.Options.RecordOnlyBosses then
+				DBM:StartLogging(timer, checkForActualPull)--Start logging here to catch pre pots.
+			end
+			if isRetail and DBM.Options.CheckGear and not testBuild then
+				local bagilvl, equippedilvl = GetAverageItemLevel()
+				local difference = bagilvl - equippedilvl
+				local weapon = GetInventoryItemLink("player", 16)
+				local fishingPole = false
+				if weapon then
+					local _, _, _, _, _, _, type = GetItemInfo(weapon)
+					if type and type == L.GEAR_FISHING_POLE then
+						fishingPole = true
+					end
+				end
+				if IsInRaid() and difference >= 30 then
+					dummyMod.geartext:Show(L.GEAR_WARNING:format(floor(difference)))
+				elseif IsInRaid() and (not weapon or fishingPole) then
+					dummyMod.geartext:Show(L.GEAR_WARNING_WEAPON)
+				end
 			end
 		end
 	end
