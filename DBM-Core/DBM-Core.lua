@@ -80,11 +80,11 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.26"
+	DBM.DisplayVersion = "10.0.27 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.32"
+	DBM.DisplayVersion = "1.14.33 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isBCC then
@@ -92,7 +92,7 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.33"
+	DBM.DisplayVersion = "3.4.34 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 end
