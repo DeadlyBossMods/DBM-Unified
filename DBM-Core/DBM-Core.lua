@@ -80,20 +80,20 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.27 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.0.28 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.33 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.34 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
 	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.34 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.35 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -2172,6 +2172,7 @@ do
 	local function updateAllRoster(self)
 		if IsInRaid() then
 			if not inRaid then
+				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
 				if dbmIsEnabled then
@@ -2246,6 +2247,7 @@ do
 		elseif IsInGroup() then
 			if not inRaid then
 				-- joined a new party
+				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				inRaid = true
 				sendSync(DBMSyncProtocol, "H")
 				if dbmIsEnabled then
@@ -3584,9 +3586,6 @@ function DBM:LoadMod(mod, force)
 		end
 		return
 	end
-	if not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
-		wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
-	end
 	if mod.minExpansion > GetExpansionLevel() then
 		self:AddMsg(L.LOAD_MOD_EXP_MISMATCH:format(mod.name))
 		return
@@ -4068,10 +4067,6 @@ do
 					showConstantReminder = 1
 				elseif #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if out of date and it's a major patch.
-					if not dbmToc and not wowTOC then--User reported nil errors for one of these, not sure how either possible but if either nil, try to fix it
-						dbmToc = tonumber(GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or "")))
-						wowVersionString, wowBuild, _, wowTOC = GetBuildInfo()
-					end
 					if not testBuild and dbmToc < wowTOC then
 						updateNotificationDisplayed = 3
 						AddMsg(DBM, L.UPDATEREMINDER_MAJORPATCH)
@@ -4136,7 +4131,7 @@ do
 	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion)
 		revision, version = tonumber(revision), tonumber(version)
 		if revision and version and displayVersion then
-			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
+			DBM:Debug("Received G version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision)..", Display Version "..displayVersion, 3)
 			HandleVersion(revision, version, displayVersion, sender)
 		end
 	end
