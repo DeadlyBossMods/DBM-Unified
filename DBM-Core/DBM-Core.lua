@@ -2174,7 +2174,8 @@ do
 			if not inRaid then
 				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				inRaid = true
-				sendSync(DBMSyncProtocol, "H")
+				--sendSync(DBMSyncProtocol, "H")
+				SendAddonMessage("D4", "H", IsInGroup(2) and "INSTANCE_CHAT" or "RAID")--Purposely sent on old protocol to get all versions
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 				end
@@ -2249,7 +2250,8 @@ do
 				-- joined a new party
 				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				inRaid = true
-				sendSync(DBMSyncProtocol, "H")
+				--sendSync(DBMSyncProtocol, "H")
+				SendAddonMessage("D4", "H", IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				end
