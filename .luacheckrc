@@ -202,6 +202,7 @@ globals = {
 	"C_Timer.After",
 	"C_Timer.NewTicker",
 	"C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo",
+	"C_UnitAuras",
 	"AcceptGroup",
 	"Ambiguate",
 	"BNGetFriendIndex", -- Classic
