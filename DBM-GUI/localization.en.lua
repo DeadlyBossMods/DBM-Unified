@@ -429,6 +429,13 @@ L.FilterInterruptNoteName			= "Filter announcements for interruptable spells (wi
 L.FilterDispels						= "Filter announcements for dispelable spells if your dispel is on cooldown"
 L.FilterTrashWarnings				= "Filter all trash mob announcements in normal, heroic, and trivial (outleveled) dungeons"
 
+L.Area_BInterruptFilter				= "Boss Interrupt Filter Options"
+L.FilterTargetFocus					= "Filter if caster is not current target/focus"
+L.FilterInterruptCooldown			= "Filter if interrupt spell is on cooldown"
+L.FilterInterruptHealer				= "Filter if I am in a healer spec"
+L.Area_BInterruptFilterFooter		= "If no filters are selected, all interrupts are shown (May be spammy)"
+L.Area_TInterruptFilter				= "Trash Interrupt Filter Options"--Reuses above 3 strings
+
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "Reduce DBM Handholding"
 L.Area_SpamFilter_SpecRoleFilters	= "Special Announce Type Filters (control how much handholding DBM does)"
