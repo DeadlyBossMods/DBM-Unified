@@ -15,16 +15,18 @@ local spamSpecArea = reducPanel:CreateArea(L.Area_SpecFilter)
 spamSpecArea:CreateCheckButton(L.FilterTankSpec, true, nil, "FilterTankSpec")
 spamSpecArea:CreateCheckButton(L.FilterDispels, true, nil, "FilterDispel")
 spamSpecArea:CreateCheckButton(L.FilterTrashWarnings, true, nil, "FilterTrashWarnings2")
-local FilterInterruptNote = spamSpecArea:CreateCheckButton(L.FilterInterruptNoteName, true, nil, "FilterInterruptNoteName")
 
-local interruptOptions = {
-	{	text	= L.SWFNever,			value	= "None"},
-	{	text	= L.FilterInterrupts,	value	= "onlyTandF"},
-	{	text	= L.FilterInterrupts2,	value	= "TandFandBossCooldown"},
-	{	text	= L.FilterInterrupts3,	value	= "TandFandAllCooldown"},
-}
-local interruptDropDown		= spamSpecArea:CreateDropdown(L.FilterInterruptsHeader, interruptOptions, "DBM", "FilterInterrupt2", function(value)
-	DBM.Options.FilterInterrupt2 = value
-end, 410)
-interruptDropDown:SetPoint("TOPLEFT", FilterInterruptNote, "BOTTOMLEFT", -15, -25)
-interruptDropDown.myheight = 50
+local bInterruptSpecArea = reducPanel:CreateArea(L.Area_BInterruptFilter)
+bInterruptSpecArea:CreateCheckButton(L.FilterTargetFocus, true, nil, "FilterBTargetFocus")
+bInterruptSpecArea:CreateCheckButton(L.FilterInterruptCooldown, true, nil, "FilterBInterruptCooldown")
+bInterruptSpecArea:CreateCheckButton(L.FilterInterruptHealer, true, nil, "FilterBInterruptHealer")
+bInterruptSpecArea:CreateCheckButton(L.FilterInterruptNoteName, true, nil, "FilterInterruptNoteName")
+local infotext1 = bInterruptSpecArea:CreateText(L.Area_BInterruptFilterFooter, nil, false, GameFontNormalSmall, "LEFT", 20)
+infotext1:SetPoint("BOTTOMLEFT", bInterruptSpecArea.frame, "BOTTOMLEFT", 10, 10)
+
+local tInterruptSpecArea = reducPanel:CreateArea(L.Area_TInterruptFilter)
+tInterruptSpecArea:CreateCheckButton(L.FilterTargetFocus, true, nil, "FilterTTargetFocus")
+tInterruptSpecArea:CreateCheckButton(L.FilterInterruptCooldown, true, nil, "FilterTInterruptCooldown")
+tInterruptSpecArea:CreateCheckButton(L.FilterInterruptHealer, true, nil, "FilterTInterruptHealer")
+local infotext2 = tInterruptSpecArea:CreateText(L.Area_BInterruptFilterFooter, nil, false, GameFontNormalSmall, "LEFT", 20)
+infotext2:SetPoint("BOTTOMLEFT", tInterruptSpecArea.frame, "BOTTOMLEFT", 10, 10)

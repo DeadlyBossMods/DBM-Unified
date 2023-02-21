@@ -420,14 +420,16 @@ L.FilterVoidFormSay					= "Do not send chat icon or countdown chat yells when in
 
 L.Area_SpecFilter					= "Role Filter Options"
 L.FilterTankSpec					= "Filter announcements designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' announcements are now all on by default.)"
-L.FilterInterruptsHeader			= "Filter announcements for interruptable spells based on behavior preference."
-L.SWFNever							= "Never"
-L.FilterInterrupts					= "If caster is not current target/focus (Always)."
-L.FilterInterrupts2					= "If caster is not current target/focus (Always) or interrupt on CD (Boss Only)"
-L.FilterInterrupts3					= "If caster is not current target/focus (Always) or interrupt on CD (Boss & Trash)"
-L.FilterInterruptNoteName			= "Filter announcements for interruptable spells (with count) if announce does not contain your name in the custom note"
 L.FilterDispels						= "Filter announcements for dispelable spells if your dispel is on cooldown"
 L.FilterTrashWarnings				= "Filter all trash mob announcements in normal, heroic, and trivial (outleveled) dungeons"
+
+L.Area_BInterruptFilter				= "Boss Interrupt Filter Options"
+L.FilterTargetFocus					= "Filter if caster is not current target/focus"
+L.FilterInterruptCooldown			= "Filter if interrupt spell is on cooldown"
+L.FilterInterruptHealer				= "Filter if you're in a healer spec"
+L.FilterInterruptNoteName			= "Filter if alert has a count but your name isn't in the custom note"--Only used on bosses, trash mods don't assign counts
+L.Area_BInterruptFilterFooter		= "If no filters are selected, all interrupts are shown (May be spammy)\nSome mods may ignore these filters entirely if spell is critically important"
+L.Area_TInterruptFilter				= "Trash Interrupt Filter Options"--Reuses above 3 strings
 
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "Reduce DBM Handholding"
@@ -461,8 +463,8 @@ L.RaidCombat						= "Disable in combat (bosses only)"
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Raid Leader Controls"
 L.Area_FeatureOverrides				= "Feature Override Options"
-L.OverrideIcons 					= "Disable icon marking for all users in raid, including myself (Use override instead of disable if you want DBM to do marking under your terms)"
-L.OverrideSay						= "Disable chat bubble/SAY messages for all users in the raid, including myself"
+L.OverrideIcons 					= "Disable icon marking for all users in raid, including your own (Use override instead of disable if you want DBM to do marking under your terms)"
+L.OverrideSay						= "Disable chat bubble/SAY messages for all users in the raid, including your own"
 L.DisableStatusWhisperShort			= "Disable status/reply whispers for the entire group"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "Disable progression messages from being synced to guild for the entire group"--Duplicated from privacy but makes sense to include option in both panels
 --L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
