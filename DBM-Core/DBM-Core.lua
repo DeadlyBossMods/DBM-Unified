@@ -7708,7 +7708,7 @@ do
 		end
 
 		--Check if cooldown check is required
-		if checkCooldown and (self.isTrashMod and DBM.Options.FilterTInterruptCooldown or DBM.Options.FilterBInterruptCooldown) then
+		if checkCooldown and (self.isTrashMod and DBM.Options.FilterTInterruptCooldown or not self.isTrashMod and DBM.Options.FilterBInterruptCooldown) then
 			for spellID, _ in pairs(interruptSpells) do
 				--For an inverse check, don't need to check if it's known, if it's on cooldown it's known
 				--This is possible since no class has 2 interrupt spells (well, actual interrupt spells)
