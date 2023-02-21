@@ -24,7 +24,7 @@ bInterruptSpecArea:CreateCheckButton(L.FilterInterruptNoteName, true, nil, "Filt
 local infotext1 = bInterruptSpecArea:CreateText(L.Area_BInterruptFilterFooter, nil, false, GameFontNormalSmall, "LEFT", 20)
 infotext1:SetPoint("BOTTOMLEFT", bInterruptSpecArea.frame, "BOTTOMLEFT", 10, 10)
 
-local tInterruptSpecArea = reducPanel:CreateArea(L.Area_SpecFilter)
+local tInterruptSpecArea = reducPanel:CreateArea(L.Area_TInterruptFilter)
 tInterruptSpecArea:CreateCheckButton(L.FilterTargetFocus, true, nil, "FilterTTargetFocus")
 tInterruptSpecArea:CreateCheckButton(L.FilterInterruptCooldown, true, nil, "FilterTInterruptCooldown")
 tInterruptSpecArea:CreateCheckButton(L.FilterInterruptHealer, true, nil, "FilterTInterruptHealer")
