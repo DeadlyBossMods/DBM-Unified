@@ -4054,7 +4054,7 @@ do
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
 					if forceDisable > DBM.ForceDisable and not checkEntry(forceDisablePerson, sender) then
-						DBM:Debug("Newer force disable detected from "..sender.." : Rev - "..forceDisable), 3)
+						DBM:Debug("Newer force disable detected from "..sender.." : Rev - "..forceDisable, 3)
 					end
 				end
 				if #newerVersionPerson == 2 and updateNotificationDisplayed < 2 then--Only requires 2 for update notification.
