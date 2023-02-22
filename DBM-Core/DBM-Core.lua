@@ -750,7 +750,7 @@ private.sendGuildSync = sendGuildSync
 
 --Custom sync function that should only be used for user generated sync messages
 local function sendLoggedSync(protocol, prefix, msg)
-	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only how version checks if force disabled, nothing else
+	if dbmIsEnabled then
 		msg = msg or ""
 		local fullname = playerName.."-"..playerRealm
 		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
@@ -2108,13 +2108,7 @@ do
 			return
 		end
 		if not dbmIsEnabled then
-			if testBuild then
-				self:AddMsg(L.UPDATEREMINDER_DISABLETEST)
-			elseif dbmToc < wowTOC then
-				self:AddMsg(L.UPDATEREMINDER_MAJORPATCH)
-			else
-				self:AddMsg(L.UPDATEREMINDER_DISABLE)
-			end
+			self:ForceDisableSpam()
 			return
 		end
 		if self.NewerVersion and showConstantReminder >= 1 then
@@ -4090,16 +4084,12 @@ do
 					--Disable if out of date and at least 3 players sent a higher forceDisable revision
 					if not testBuild and #forceDisablePerson == 3 then
 						updateNotificationDisplayed = 3
-						if dbmToc < wowTOC then
-							AddMsg(DBM, L.UPDATEREMINDER_MAJORPATCH)
-						else
-							AddMsg(DBM, L.UPDATEREMINDER_DISABLE)
-						end
+						DBM:ForceDisableSpam()
 						DBM:Disable(true)
 					--Disallow out of date to run during beta/ptr what so ever regardless of forceDisable revision
 					elseif testBuild then
 						updateNotificationDisplayed = 3
-						AddMsg(DBM, L.UPDATEREMINDER_DISABLETEST)
+						DBM:ForceDisableSpam()
 						DBM:Disable(true)
 					end
 				end
@@ -6516,6 +6506,7 @@ do
 	function DBM:Disable(forceDisable)
 		DBMScheduler:Unschedule()
 		dbmIsEnabled = false
+		private.dbmIsEnabled = false
 		forceDisabled = forceDisable
 	end
 
@@ -6527,6 +6518,16 @@ do
 
 	function DBM:IsEnabled()
 		return dbmIsEnabled
+	end
+
+	function DBM:ForceDisableSpam()
+		if testBuild then
+			DBM:AddMsg(L.UPDATEREMINDER_DISABLETEST)
+		elseif dbmToc < wowTOC then
+			DBM:AddMsg(L.UPDATEREMINDER_MAJORPATCH)
+		else
+			DBM:AddMsg(L.UPDATEREMINDER_DISABLE)
+		end
 	end
 end
 

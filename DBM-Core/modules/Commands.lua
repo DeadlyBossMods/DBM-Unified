@@ -147,13 +147,7 @@ local trackedHudMarkers = {}
 SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	if not private.dbmIsEnabled then
-		if testBuild then
-			DBM:AddMsg(L.UPDATEREMINDER_DISABLETEST)
-		elseif dbmToc < wowTOC then
-			DBM:AddMsg(L.UPDATEREMINDER_MAJORPATCH)
-		else
-			DBM:AddMsg(L.UPDATEREMINDER_DISABLE)
-		end
+		DBM:ForceDisableSpam()
 		return
 	end
 	local cmd = msg:lower()
