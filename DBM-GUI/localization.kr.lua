@@ -422,14 +422,16 @@ L.FilterVoidFormSay			= "공허의 형상일땐 공격대 징표나 초읽기를
 
 L.Area_SpecFilter			= "역할 관련 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 알림 보지 않기 (참고: '도발' 알림은 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"
-L.FilterInterruptsHeader	= "상황에 따라 주문 차단 알림을 표시하지 않기"
-L.SWFNever				= "항상 표시"
-L.FilterInterrupts			= "주문 시전 몹이 현재 대상/주시 대상이 아닐 때 (항상)"
-L.FilterInterrupts2			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 전투만)"
-L.FilterInterrupts3			= "주문 시전 몹이 현재 대상/주시 대상이 아니거나 (항상) 차단기가 쿨타임일 때 (보스 및 쫄 정리시)"
-L.FilterInterruptNoteName	= "사용자 메모에 자기 이름이 포함되지 않은 경우 차단 가능 주문의 알림 보지 않기"
 L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 알림 보지 않기"
 L.FilterTrashWarnings		= "일반, 영웅, 이전 확장팩 던전에선 일반몹 알림 보지 않기"
+
+L.Area_BInterruptFilter				= "보스 차단 알림 필터 설정"
+L.FilterTargetFocus					= "현재 대상/주시 대상이 아니면 알림 표시 안함"
+L.FilterInterruptCooldown			= "차단 주문이 쿨타임일땐 표시 안함"
+L.FilterInterruptHealer				= "힐러일때 표시 안함"
+L.FilterInterruptNoteName			= "시전 횟수가 포함되어 있는 차단 알림에서 사용자 정의 메모에 내 이름이 없으면 표시 안함"--Only used on bosses, trash mods don't assign counts
+L.Area_BInterruptFilterFooter		= "필터를 선택하지 않으면 모든 차단 알림이 표시됩니다 (스팸이 될 수 있음)\n일부 모드에선 매우 중요한 주문일 경우 필터 설정이 완전히 무시될 수 있습니다"
+L.Area_TInterruptFilter				= "일반몹 차단 알림 필터 설정"--Reuses above 3 strings
 
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "DBM 관할 알림 줄이기"
