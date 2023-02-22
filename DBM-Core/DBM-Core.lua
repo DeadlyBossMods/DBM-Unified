@@ -4054,6 +4054,7 @@ do
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
 					if forceDisable > DBM.ForceDisable and not checkEntry(forceDisablePerson, sender) then
+						forceDisablePerson[#forceDisablePerson + 1] = sender
 						DBM:Debug("Newer force disable detected from "..sender.." : Rev - "..forceDisable, 3)
 					end
 				end
