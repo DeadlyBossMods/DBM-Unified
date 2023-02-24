@@ -80,8 +80,8 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.29 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.0.30 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
@@ -421,6 +421,7 @@ local mainFrame = CreateFrame("Frame", "DBMMainFrame")
 local playerName = UnitName("player")
 local playerLevel = UnitLevel("player")
 local playerRealm = GetRealmName()
+local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
 local lastCombatStarted = GetTime()
 local chatPrefixShort = "<" .. L.DBM .. "> "
 local usedProfile = "Default"
@@ -723,7 +724,7 @@ end
 local function sendSync(protocol, prefix, msg)
 	if dbmIsEnabled or prefix == "V" or prefix == "H" then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		local fullname = playerName.."-"..playerRealm
+		local fullname = playerName.."-"..normalizedPlayerRealm
 		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 			SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "INSTANCE_CHAT")
 		else
@@ -742,7 +743,7 @@ private.sendSync = sendSync
 local function sendGuildSync(protocol, prefix, msg)
 	if IsInGuild() and (dbmIsEnabled or prefix == "V" or prefix == "H") then--Only show version checks if force disabled, nothing else
 		msg = msg or ""
-		local fullname = playerName.."-"..playerRealm
+		local fullname = playerName.."-"..normalizedPlayerRealm
 		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix.."\t"..msg, "GUILD")--Even guild syncs send realm so we can keep antispam the same across realid as well.
 	end
 end
@@ -752,7 +753,7 @@ private.sendGuildSync = sendGuildSync
 local function sendLoggedSync(protocol, prefix, msg)
 	if dbmIsEnabled then
 		msg = msg or ""
-		local fullname = playerName.."-"..playerRealm
+		local fullname = playerName.."-"..normalizedPlayerRealm
 		if IsInGroup(2) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 			C_ChatInfo.SendAddonMessageLogged(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix .. "\t" .. msg, "INSTANCE_CHAT")
 		else
@@ -771,7 +772,7 @@ end
 local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 	if not dbmIsEnabled then return end--Block all world syncs if force disabled
 	DBM:Debug("SendWorldSync running for "..prefix)
-	local fullname = playerName.."-"..playerRealm
+	local fullname = playerName.."-"..normalizedPlayerRealm
 	if IsInRaid() then
 		SendAddonMessage(DBMPrefix, fullname .. "\t" .. (protocol or DBMSyncProtocol) .. "\t" .. prefix.."\t"..msg, "RAID")
 	elseif IsInGroup(1) then
@@ -807,7 +808,7 @@ local function SendWorldSync(self, protocol, prefix, msg, noBNet)
 						end
 					end
 				else
-					if realmName == playerRealm then
+					if realmName == playerRealm or realmName == normalizedPlayerRealm then
 						sameRealm = true
 					end
 				end
@@ -2493,7 +2494,7 @@ do
 	end
 
 	function DBM:GetMyPlayerInfo()
-		return playerName, playerLevel, playerRealm
+		return playerName, playerLevel, playerRealm, normalizedPlayerRealm
 	end
 
 	--Intentionally grabs server name at all times, usually to make sure warning/infoframe target info can name match the combat log in the table
@@ -2507,7 +2508,7 @@ do
 	function DBM:GetShortServerName(name)
 		if not self.Options.StripServerName then return name end--If strip is disabled, just return name
 		local shortName, serverName = string.split("-", name)
-		if serverName and serverName ~= playerRealm then
+		if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
 			return shortName.."*"
 		else
 			return name
@@ -4269,7 +4270,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end--We recently got a sync about this boss on this realm, so do nothing.
 		lastBossEngage[modId..realm] = GetTime()
-		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
 			DBM:AddMsg(L.WORLDBOSS_ENGAGED:format(bossName, floor(health), sender))
@@ -4280,7 +4281,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 		lastBossDefeat[modId..realm] = GetTime()
-		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 			modId = tonumber(modId)--If it fails to convert into number, this makes it nil
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
 			DBM:AddMsg(L.WORLDBOSS_DEFEATED:format(bossName, sender))
@@ -4309,7 +4310,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossEngage[modId..realm] and (GetTime() - lastBossEngage[modId..realm] < 30) then return end
 		lastBossEngage[modId..realm] = GetTime()
-		if realm == playerRealm and DBM.Options.WorldBossAlert and (isRetail and not IsEncounterInProgress() or #inCombat == 0) then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and (isRetail and not IsEncounterInProgress() or #inCombat == 0) then
 			local toonName
 			if isRetail then
 				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
@@ -4328,7 +4329,7 @@ do
 		if not protocol or protocol ~= 8 then return end--Ignore old versions
 		if lastBossDefeat[modId..realm] and (GetTime() - lastBossDefeat[modId..realm] < 30) then return end
 		lastBossDefeat[modId..realm] = GetTime()
-		if realm == playerRealm and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
+		if (realm == playerRealm or realm == normalizedPlayerRealm) and DBM.Options.WorldBossAlert and not IsEncounterInProgress() then
 			local toonName
 			if isRetail then
 				local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(sender)
@@ -4396,16 +4397,16 @@ do
 
 	--Function to correct a blizzard bug where off realm players have realm name stripped
 	--Had to be custom function due to bugs with two players with same name on different realms
-	local function VerifyRaidName(apiName, SyncedName)
-		local _, serverName = string.split("-", SyncedName)
-		if serverName and serverName ~= playerRealm then
-			return SyncedName--Use synced name with realm added back on
-		else
-			return apiName--Use api name without realm
-		end
-	end
+	--local function VerifyRaidName(apiName, SyncedName)
+	--	local _, serverName = string.split("-", SyncedName)
+	--	if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
+	--		return SyncedName--Use synced name with realm added back on
+	--	else
+	--		return apiName--Use api name without realm
+	--	end
+	--end
 
-	handleSync = function(channel, sender, dbmSender, protocol, prefix, ...)
+	handleSync = function(channel, sender, _, protocol, prefix, ...)--dbmSender unused for now
 		protocol = tonumber(protocol)
 		if protocol < DBMSyncProtocol then
 			return
@@ -4428,9 +4429,12 @@ do
 			handler = syncHandlers[prefix]
 		end
 		if handler then
-			if dbmSender then
-				sender = VerifyRaidName(sender, dbmSender)
-			end
+			--if dbmSender then
+			--	--Strip spaces from realm name, since this is what Unit Tokens expect
+			--	--(newer versions of DBM do this on send, but we double check for older versions)
+			--	dbmSender = dbmSender:gsub("[%s-]+", "")--Needs to be fixed, if this is ever uncommented as right now it'd strip realm
+			--	sender = VerifyRaidName(sender, dbmSender)
+			--end
 			return handler(sender, protocol, ...)
 		end
 	end
@@ -5257,9 +5261,9 @@ do
 				end
 			end
 			if savedDifficulty == "worldboss" and mod.WBEsync then
-				if lastBossEngage[modId..playerRealm] and (GetTime() - lastBossEngage[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
-				lastBossEngage[modId..playerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
-				SendWorldSync(self, 8, "WBE", modId.."\t"..playerRealm.."\t"..startHp.."\t"..name)
+				if lastBossEngage[modId..normalizedPlayerRealm] and (GetTime() - lastBossEngage[modId..normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+				lastBossEngage[modId..normalizedPlayerRealm] = GetTime()--Update last engage time, that way we ignore our own sync
+				SendWorldSync(self, 8, "WBE", modId.."\t"..normalizedPlayerRealm.."\t"..startHp.."\t"..name)
 			end
 		end
 	end
@@ -5504,9 +5508,9 @@ do
 				end
 				fireEvent("DBM_Kill", mod)
 				if usedDifficulty == "worldboss" and mod.WBEsync then
-					if lastBossDefeat[modId..playerRealm] and (GetTime() - lastBossDefeat[modId..playerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
-					lastBossDefeat[modId..playerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
-					SendWorldSync(self, 8, "WBD", modId.."\t"..playerRealm.."\t"..name)
+					if lastBossDefeat[modId..normalizedPlayerRealm] and (GetTime() - lastBossDefeat[modId..normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
+					lastBossDefeat[modId..normalizedPlayerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
+					SendWorldSync(self, 8, "WBD", modId.."\t"..normalizedPlayerRealm.."\t"..name)
 				end
 				if self.Options.EventSoundVictory2 and self.Options.EventSoundVictory2 ~= "None" and self.Options.EventSoundVictory2 ~= "" then
 					if self.Options.EventSoundVictory2 == "Random" then
@@ -10725,9 +10729,8 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 end
 
 function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId, optionType)
-	if checkDuplicateObjects[name] and name ~= "timer_berserk" then
+	if checkDuplicateObjects[name] then
 		DBM:Debug("|cffff0000Option already exists for: |r"..name)
-		return
 	else
 		checkDuplicateObjects[name] = true
 	end
