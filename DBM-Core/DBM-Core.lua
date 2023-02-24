@@ -4397,14 +4397,14 @@ do
 
 	--Function to correct a blizzard bug where off realm players have realm name stripped
 	--Had to be custom function due to bugs with two players with same name on different realms
-	local function VerifyRaidName(apiName, SyncedName)
-		local _, serverName = string.split("-", SyncedName)
-		if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
-			return SyncedName--Use synced name with realm added back on
-		else
-			return apiName--Use api name without realm
-		end
-	end
+	--local function VerifyRaidName(apiName, SyncedName)
+	--	local _, serverName = string.split("-", SyncedName)
+	--	if serverName and serverName ~= playerRealm and serverName ~= normalizedPlayerRealm then
+	--		return SyncedName--Use synced name with realm added back on
+	--	else
+	--		return apiName--Use api name without realm
+	--	end
+	--end
 
 	handleSync = function(channel, sender, dbmSender, protocol, prefix, ...)
 		protocol = tonumber(protocol)
@@ -4429,12 +4429,12 @@ do
 			handler = syncHandlers[prefix]
 		end
 		if handler then
-			if dbmSender then
-				--Strip spaces from realm name, since this is what Unit Tokens expect
-				--(newer versions of DBM do this on send, but we double check for older versions)
-				dbmSender = dbmSender:gsub("[%s-]+", "")
-				sender = VerifyRaidName(sender, dbmSender)
-			end
+			--if dbmSender then
+			--	--Strip spaces from realm name, since this is what Unit Tokens expect
+			--	--(newer versions of DBM do this on send, but we double check for older versions)
+			--	dbmSender = dbmSender:gsub("[%s-]+", "")--Needs to be fixed, if this is ever uncommented as right now it'd strip realm
+			--	sender = VerifyRaidName(sender, dbmSender)
+			--end
 			return handler(sender, protocol, ...)
 		end
 	end
