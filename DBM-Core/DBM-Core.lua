@@ -4406,7 +4406,7 @@ do
 	--	end
 	--end
 
-	handleSync = function(channel, sender, dbmSender, protocol, prefix, ...)
+	handleSync = function(channel, sender, _, protocol, prefix, ...)--dbmSender unused for now
 		protocol = tonumber(protocol)
 		if protocol < DBMSyncProtocol then
 			return
