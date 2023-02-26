@@ -100,7 +100,7 @@ if isRetail then
 			["RaidCooldown"] = true,--Rallying Cry
 			["Physical"] = true,
 			["HasInterrupt"] = true,
-			["ImmunityDispeller"] = true,
+			["ImmunityDispeller"] = IsSpellKnown(64382),
 		},
 		[73] = {	--Protection Warrior
 			["Tank"] = true,
@@ -108,7 +108,7 @@ if isRetail then
 			["Physical"] = true,
 			["HasInterrupt"] = true,
 			["RaidCooldown"] = true,--Rallying Cry
-			["ImmunityDispeller"] = true,
+			["ImmunityDispeller"] = IsSpellKnown(64382),
 		},
 		[1446] = {	--Initial Warrior (used in exiles reach tutorial mode). Treated as hybrid. Utility disabled because that'd require checking tutorial progress
 			["Tank"] = true,
