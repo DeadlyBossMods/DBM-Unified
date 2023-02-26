@@ -7720,9 +7720,11 @@ do
 		[2139] = true,--Mage Counterspell
 		[6552] = true,--Warrior Pummel
 		[15487] = true,--Priest Silence
+		[19647] = true,--Warlock pet Spell Lock
 		[47528] = true,--Death Knight Mind Freeze
 		[57994] = true,--Shaman Wind Shear
 		[78675] = true,--Druid Solar Beam
+		[89766] = true,--Warlock Pet Axe Toss
 		[96231] = true,--Paldin Rebuke
 		[106839] = true,--Druid Skull Bash
 		[116705] = true,--Monk Spear Hand Strike
