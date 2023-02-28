@@ -10294,6 +10294,7 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
 		if bar then
+			DBM:Unschedule(playCountSound, id)--Kill countdown on pause
 			fireEvent("DBM_TimerPause", id)
 			return bar:Pause()
 		end
@@ -10303,6 +10304,18 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
 		if bar then
+			--Have to check if paused bar had a countdown on resume so we can restore it
+			if self.option and not bar.fade then
+				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+				if not bar.fad and (type(countVoice) == "string" or countVoice > 0) then
+					local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
+					if elapsed and total then
+						local remaining = total - elapsed
+						playCountdown(id, remaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						DBM:Debug("Updating a countdown after a timer Resume call for timer ID:"..id)
+					end
+				end
+			end
 			fireEvent("DBM_TimerResume", id)
 			return bar:Resume()
 		end
