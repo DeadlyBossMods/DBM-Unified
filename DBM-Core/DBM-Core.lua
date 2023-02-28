@@ -10307,7 +10307,7 @@ do
 			--Have to check if paused bar had a countdown on resume so we can restore it
 			if self.option and not bar.fade then
 				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-				if not bar.fad and (type(countVoice) == "string" or countVoice > 0) then
+				if (type(countVoice) == "string" or countVoice > 0) then
 					local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 					if elapsed and total then
 						local remaining = total - elapsed
