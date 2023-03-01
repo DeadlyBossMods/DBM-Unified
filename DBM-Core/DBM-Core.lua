@@ -80,23 +80,23 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.30 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 24) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.0.31 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.35 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.36 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
-	DBM.ReleaseRevision = releaseDate(2023, 2, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.36 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.37 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 end
@@ -10210,15 +10210,22 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
 		fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
-		if bar and self.option then
-			local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-			if (type(countVoice) == "string" or countVoice > 0) then
-				DBM:Unschedule(playCountSound, id)
-				if not bar.fade then--Don't start countdown voice if it's faded bar
-					local newRemaining = totalTime-elapsed
-					if newRemaining > 2 then
-						playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
-						DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
+		if bar then
+			local newRemaining = totalTime-elapsed
+			if newRemaining > 0 then
+				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
+				self.mod:Unschedule(removeEntry, self.startedTimers, id)
+				self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
+			end
+			if self.option then
+				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+				if (type(countVoice) == "string" or countVoice > 0) then
+					DBM:Unschedule(playCountSound, id)
+					if not bar.fade then--Don't start countdown voice if it's faded bar
+						if newRemaining > 2 then
+							playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+							DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
+						end
 					end
 				end
 			end
@@ -10236,12 +10243,15 @@ do
 			if bar then
 				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 				if elapsed and total then
+					local newRemaining = (total+extendAmount) - elapsed
+					--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
+					self.mod:Unschedule(removeEntry, self.startedTimers, id)
+					self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
 					if self.option then
 						local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 						if (type(countVoice) == "string" or countVoice > 0) then
 							DBM:Unschedule(playCountSound, id)
 							if not bar.fade then--Don't start countdown voice if it's faded bar
-								local newRemaining = (total+extendAmount) - elapsed
 								playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
 								DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
 							end
@@ -10262,14 +10272,17 @@ do
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			local bar = DBT:GetBar(id)
 			if bar then
+				self.mod:Unschedule(removeEntry, self.startedTimers, id)--Needs to be unscheduled here, or the entry might just get left in table until original expire time, if new expire time is less than 0
+				DBM:Unschedule(playCountSound, id)--Needs to be unscheduled here,or countdown might not be canceled if removing time made it cease to have a > 0 value
 				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 				if elapsed and total then
 					local newRemaining = (total-reduceAmount) - elapsed
 					if newRemaining > 0 then
+						--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
+						self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
 						if self.option and newRemaining > 2 then
 							local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 							if (type(countVoice) == "string" or countVoice > 0) then
-								DBM:Unschedule(playCountSound, id)
 								if not bar.fade then--Don't start countdown voice if it's faded bar
 									if newRemaining > 2 then
 										playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
@@ -10281,7 +10294,6 @@ do
 						fireEvent("DBM_TimerUpdate", id, elapsed, total-reduceAmount)
 						return DBT:UpdateBar(id, elapsed, total-reduceAmount)
 					else--New remaining less than 0
-						DBM:Unschedule(playCountSound, id)
 						fireEvent("DBM_TimerStop", id)
 						return DBT:CancelBar(id)
 					end
@@ -10294,6 +10306,8 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
 		if bar then
+			DBM:Unschedule(playCountSound, id)--Kill countdown on pause
+			self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 			fireEvent("DBM_TimerPause", id)
 			return bar:Pause()
 		end
@@ -10303,6 +10317,19 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
 		if bar then
+			local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
+			if elapsed and total then
+				local remaining = total - elapsed
+				self.mod:Schedule(remaining, removeEntry, self.startedTimers, id)--Re-schedule the auto remove entry stuff
+				--Have to check if paused bar had a countdown on resume so we can restore it
+				if self.option and not bar.fade then
+					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+					if (type(countVoice) == "string" or countVoice > 0) then
+						playCountdown(id, remaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						DBM:Debug("Updating a countdown after a timer Resume call for timer ID:"..id)
+					end
+				end
+			end
 			fireEvent("DBM_TimerResume", id)
 			return bar:Resume()
 		end
