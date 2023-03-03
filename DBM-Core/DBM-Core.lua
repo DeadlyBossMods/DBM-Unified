@@ -9421,7 +9421,7 @@ do
 		if optionId then
 			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
 			obj.option = optionId..(optionVersion or "")
-			self:AddSpecialWarningOption(optionId, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID)
 		end
 		tinsert(self.specwarns, obj)
 		return obj
