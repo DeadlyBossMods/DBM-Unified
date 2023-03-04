@@ -81,22 +81,22 @@ local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
 	DBM.DisplayVersion = "10.0.31 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.36 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
-	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isWrath then
 	DBM.DisplayVersion = "3.4.37 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 2, 28) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 end
