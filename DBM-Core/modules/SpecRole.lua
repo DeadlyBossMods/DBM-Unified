@@ -1,4 +1,5 @@
 local _, private = ...
+DBMExtraGlobal = {}
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
@@ -28,7 +29,7 @@ local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local specRoleTable
 
-function DBM:rebuildSpecTable()
+function DBMExtraGlobal:rebuildSpecTable()
 	-- Retail
 	if isRetail then
 		specRoleTable = {
@@ -651,4 +652,4 @@ function DBM:rebuildSpecTable()
 	end
 	private.specRoleTable = specRoleTable
 end
-DBM:rebuildSpecTable()--Initial build
+DBMExtraGlobal:rebuildSpecTable()--Initial build

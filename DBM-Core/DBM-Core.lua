@@ -3290,7 +3290,7 @@ do
 		self:SetCurrentSpecInfo()
 		if not InCombatLockdown() then
 			--Refresh entire spec table if not in combat
-			self:rebuildSpecTable()
+			DBMExtraGlobal:rebuildSpecTable()
 		end
 		if currentSpecID ~= lastSpecID then--Don't fire specchanged unless spec actually has changed.
 			self:SpecChanged()
