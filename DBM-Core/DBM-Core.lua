@@ -80,8 +80,8 @@ local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.32 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.0.33 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 3, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
@@ -3288,6 +3288,10 @@ do
 	local function throttledTalentCheck(self)
 		local lastSpecID = currentSpecID
 		self:SetCurrentSpecInfo()
+		if not InCombatLockdown() then
+			--Refresh entire spec table if not in combat
+			DBMExtraGlobal:rebuildSpecTable()
+		end
 		if currentSpecID ~= lastSpecID then--Don't fire specchanged unless spec actually has changed.
 			self:SpecChanged()
 			if isRetail and IsInGroup() then
