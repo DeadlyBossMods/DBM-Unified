@@ -120,6 +120,7 @@ DBT.DefaultOptions = {
 	IconLocked = true,
 	DynamicColor = true,
 	ClickThrough = false,
+	DisableRightClick = false,
 	KeepBars = true,
 	FadeBars = true,
 	Texture = "Interface\\AddOns\\DBM-StatusBarTimers\\textures\\default.blp",
@@ -186,7 +187,7 @@ do
 			smallBarsAnchor:StopMovingOrSizing()
 			largeBarsAnchor:StopMovingOrSizing()
 			DBT:SavePosition()
-			if btn == "RightButton" then
+			if btn == "RightButton" and not DBT.Options.DisableRightClick then
 				self.obj:Cancel()
 			elseif btn == "LeftButton" and IsShiftKeyDown() then
 				self.obj:Announce()
