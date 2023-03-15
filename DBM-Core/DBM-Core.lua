@@ -9061,7 +9061,7 @@ do
 		["moveto"] = "spell",
 		["jump"] = "spell",
 		["run"] = "spell",
-		["runcount"] = "spell"
+		["runcount"] = "spell",
 		["cast"] = "spell",
 		["lookaway"] = "spell",
 		["reflect"] = "target",
@@ -9350,7 +9350,7 @@ do
 --		["moveto"] = "spell",
 --		["jump"] = "spell",
 --		["run"] = "spell",
---		["runcount"] = "spell"
+--		["runcount"] = "spell",
 --		["cast"] = "spell",
 --		["lookaway"] = "spell",
 --		["reflect"] = "target",
