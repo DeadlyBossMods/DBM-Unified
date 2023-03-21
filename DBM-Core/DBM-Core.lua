@@ -78,26 +78,27 @@ DBM = {
 
 local fakeBWVersion, fakeBWHash
 local bwVersionResponseString = "V^%d^%s"
+local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.33 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 3, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
+	DBM.DisplayVersion = "10.0.33"
+	DBM.ReleaseRevision = releaseDate(2023, 3, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.37 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
+	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
 	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
+	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 elseif isWrath then
 	DBM.DisplayVersion = "3.4.38 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 3, 3) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	DBM.ForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
+	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 47, "ca1da33"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -4039,7 +4040,7 @@ do
 
 	local function SendVersion(guild)
 		if guild then
-			local message = ("%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(DBM.ForceDisable))
+			local message = ("%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, tostring(PForceDisable))
 			sendGuildSync(2, "GV", message)
 			return
 		end
@@ -4054,9 +4055,9 @@ do
 			VPVersion = "/ VP"..VoicePack..": v"..DBM.VoiceVersions[VoicePack]
 		end
 		if VPVersion then
-			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(DBM.ForceDisable), VPVersion))
+			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), VPVersion))
 		else
-			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(DBM.ForceDisable)))
+			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable)))
 		end
 	end
 
@@ -4066,7 +4067,7 @@ do
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
-					if forceDisable > DBM.ForceDisable and not checkEntry(forceDisablePerson, sender) then
+					if forceDisable > PForceDisable and not checkEntry(forceDisablePerson, sender) then
 						forceDisablePerson[#forceDisablePerson + 1] = sender
 						DBM:Debug("Newer force disable detected from "..sender.." : Rev - "..forceDisable, 3)
 					end
