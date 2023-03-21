@@ -4098,6 +4098,25 @@ do
 				elseif #newerVersionPerson >= 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if out of date and at least 3 players sent a higher forceDisable revision
 					if not testBuild and #forceDisablePerson == 3 then
+						-- Start days check
+						local curseDate = tostring(version)
+						local daysPerMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+						local year, month, day = curseDate:sub(1, 4), curseDate:sub(5, 6), curseDate:sub(7, 8)
+						if day + 2 > daysPerMonth[month] then
+							day = day + 2 - daysPerMonth[month]
+							month = month + 1
+						else
+							day = day + 2
+						end
+						if month > 12 then
+							month = 1
+							year = year + 1
+						end
+						local currentDateTable = date("*t")
+						if currentDateTable.year < year or currentDateTable.month < month or currentDateTable.day < day then
+							return
+						end
+						-- End days check
 						updateNotificationDisplayed = 3
 						DBM:ForceDisableSpam()
 						DBM:Disable(true)
