@@ -81,7 +81,7 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.0.33"
+	DBM.DisplayVersion = "10.0.34 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 3, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 265, "5c1ee43"
@@ -4057,7 +4057,7 @@ do
 		if VPVersion then
 			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable), VPVersion))
 		else
-			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable)))
+			sendSync(2, "V", ("%s\t%s\t%s\t%s\t%s\t%s"):format(tostring(DBM.Revision), tostring(DBM.ReleaseRevision), DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons), tostring(PForceDisable)))
 		end
 	end
 
@@ -4095,9 +4095,28 @@ do
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
 					AddMsg(DBM, L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, showRealDate(version)))
 					showConstantReminder = 1
-				elseif #newerVersionPerson == 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
+				elseif #newerVersionPerson >= 3 and updateNotificationDisplayed < 3 then--The following code requires at least THREE people to send that higher revision. That should be more than adaquate
 					--Disable if out of date and at least 3 players sent a higher forceDisable revision
 					if not testBuild and #forceDisablePerson == 3 then
+						-- Start days check
+						local curseDate = tostring(version)
+						local daysPerMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+						local year, month, day = curseDate:sub(1, 4), curseDate:sub(5, 6), curseDate:sub(7, 8)
+						if day + 2 > daysPerMonth[month] then
+							day = day + 2 - daysPerMonth[month]
+							month = month + 1
+						else
+							day = day + 2
+						end
+						if month > 12 then
+							month = 1
+							year = year + 1
+						end
+						local currentDateTable = date("*t")
+						if currentDateTable.year < year or currentDateTable.month < month or currentDateTable.day < day then
+							return
+						end
+						-- End days check
 						updateNotificationDisplayed = 3
 						DBM:ForceDisableSpam()
 						DBM:Disable(true)
