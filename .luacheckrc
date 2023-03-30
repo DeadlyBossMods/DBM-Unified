@@ -168,6 +168,7 @@ globals = {
 
 	"Spell.CreateFromSpellID",
 
+	"C_AddOns.GetAddOnMetadata",
 	"C_BattleNet.GetAccountInfoByID",
 	"C_BattleNet.GetFriendAccountInfo",
 	"C_BattleNet.GetGameAccountInfoByID",
