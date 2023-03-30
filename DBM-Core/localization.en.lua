@@ -351,6 +351,8 @@ L.AUTO_ANNOUNCE_OPTIONS = {
 
 L.AUTO_SPEC_WARN_TEXTS = {
 	spell								= "%s!",
+	incoming							= "%s incoming debuff",
+	incomingcount						= "%s incoming debuff (%%s)",
 	ends								= "%s ended",
 	fades								= "%s faded",
 	soon								= "%s soon",
@@ -401,6 +403,8 @@ L.AUTO_SPEC_WARN_TEXTS = {
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS = {
 	spell 								= "Show special announce for $spell:%s",
+	incoming							= "Show special announce for incoming $spell:%s debuffs",
+	incomingcount						= "Show special announce (with count) for incoming $spell:%s debuffs",
 	ends 								= "Show special announce when $spell:%s has ended",
 	fades 								= "Show special announce when $spell:%s has faded",
 	soon 								= "Show pre-special announce for $spell:%s",
