@@ -389,7 +389,7 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange		= "Смена цели - переключи
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell 			= "Спецпредупреждение для $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.incoming		= "Спецпредупреждение о входящих дебаффах $spell:%s"
-L.AUTO_SPEC_WARN_OPTIONS.incomingcount	= "Спецпредупреждение (со счётчиком) о входящих дебаффах $spell:%s",
+L.AUTO_SPEC_WARN_OPTIONS.incomingcount	= "Спецпредупреждение (со счётчиком) о входящих дебаффах $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.ends 			= "Спецпредупреждение об окончании $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.fades 			= "Спецпредупреждение о спадении $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.soon 			= "Спецпредупреждение, что скоро $spell:%s"
