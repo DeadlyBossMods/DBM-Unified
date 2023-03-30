@@ -9551,6 +9551,14 @@ do
 		return newSpecialWarning(self, "spell", spellId, nil, optionDefault, ...)
 	end
 
+	function bossModPrototype:NewSpecialWarningIncoming(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "incoming", spellId, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningIncomingCount(spellId, optionDefault, ...)
+		return newSpecialWarning(self, "incomingcount", spellId, nil, optionDefault, ...)
+	end
+
 	function bossModPrototype:NewSpecialWarningEnd(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "ends", spellId, nil, optionDefault, ...)
 	end
