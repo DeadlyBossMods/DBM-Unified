@@ -332,6 +332,8 @@ L.AUTO_ANNOUNCE_OPTIONS.count		= "$spell:%s 시전 완료 알림 보기 (횟수 
 L.AUTO_ANNOUNCE_OPTIONS.stack		= "$spell:%s 중첩 알림"
 L.AUTO_ANNOUNCE_OPTIONS.moveto		= "$spell:%s에 특정인 또는 특정 위치로 이동 알림 보기"
 
+L.AUTO_SPEC_WARN_TEXTS.incoming		= "%s 디버프 걸림"
+L.AUTO_SPEC_WARN_TEXTS.incomingcount	= "%s 디버프 걸림 (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.ends		= "%s 종료!"
 L.AUTO_SPEC_WARN_TEXTS.fades		= "%s 사라짐!"
 L.AUTO_SPEC_WARN_TEXTS.soon		= "곧 %s"
@@ -379,6 +381,8 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange	= "대상 변경 - %%s 치세요"
 
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell			= "$spell:%s 특수 알림 보기"
+L.AUTO_SPEC_WARN_OPTIONS.incoming		= "$spell:%s 디버프에 걸릴 때 특수 알림 보기"
+L.AUTO_SPEC_WARN_OPTIONS.incomingcount		= "$spell:%s 디버프에 걸릴 때 특수 알림 보기 (횟수 포함)"
 L.AUTO_SPEC_WARN_OPTIONS.ends			= "$spell:%s 지속 시간 종료시 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.fades			= "$spell:%s|1이;가; 사라졌을 때 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.soon			= "$spell:%s 이전에 특수 알림 보기"
