@@ -338,6 +338,8 @@ L.AUTO_ANNOUNCE_OPTIONS.stack 			= "Объявлять количество ст
 L.AUTO_ANNOUNCE_OPTIONS.moveto			= "Объявлять, когда нужно переместиться к кому-то или куда-то для $spell:%s"
 
 L.AUTO_SPEC_WARN_TEXTS.spell			= "%s!"
+L.AUTO_SPEC_WARN_TEXTS.incoming			= "%s входящий дебафф"
+L.AUTO_SPEC_WARN_TEXTS.incomingcount	= "%s входящий дебафф (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.ends				= "%s заканчивается"
 L.AUTO_SPEC_WARN_TEXTS.fades			= "%s спадает"
 L.AUTO_SPEC_WARN_TEXTS.soon				= "Скоро %s"
@@ -386,6 +388,8 @@ L.AUTO_SPEC_WARN_TEXTS.targetchange		= "Смена цели - переключи
 
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS.spell 			= "Спецпредупреждение для $spell:%s"
+L.AUTO_SPEC_WARN_OPTIONS.incoming		= "Спецпредупреждение о входящих дебаффах $spell:%s"
+L.AUTO_SPEC_WARN_OPTIONS.incomingcount	= "Спецпредупреждение (со счётчиком) о входящих дебаффах $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.ends 			= "Спецпредупреждение об окончании $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.fades 			= "Спецпредупреждение о спадении $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.soon 			= "Спецпредупреждение, что скоро $spell:%s"
