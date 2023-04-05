@@ -1741,7 +1741,8 @@ do
 					"UNIT_HEALTH mouseover target focus player",--Is Frequent on retail, and _FREQUENT deleted
 					"CHALLENGE_MODE_RESET",
 					"PLAYER_SPECIALIZATION_CHANGED",
-					"SCENARIO_COMPLETED"
+					"SCENARIO_COMPLETED",
+					"GOSSIP_SHOW"
 				)
 			elseif isWrath then -- WoTLKC
 				self:RegisterEvents(
@@ -2709,8 +2710,8 @@ function DBM:IsTrivial(customLevel)
 	return false
 end
 
-function DBM:GetGossipID()
-	if self.Options.DontAutoGossip then return false end
+function DBM:GetGossipID(force)
+	if self.Options.DontAutoGossip and not force then return false end
 	local table = C_GossipInfo.GetOptions()
 	if table[1] then
 		if table[1].gossipOptionID then
@@ -4866,6 +4867,15 @@ do
 		--TINTERFACE\\ICONS\\ability_socererking_arcanewrath.blp:20|t You have been branded by |cFFF00000|Hspell:156238|h[Arcane Wrath]|h|r!"
 		if msg and msg ~= "" and IsInGroup() and not _G["BigWigs"] then
 			SendAddonMessage("Transcriptor", msg, IsInGroup(2) and "INSTANCE_CHAT" or IsInRaid() and "RAID" or "PARTY")--Send any emote to transcriptor, even if no spellid
+		end
+	end
+
+	function DBM:GOSSIP_SHOW()
+		if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
+		local cid = self:GetUnitCreatureId("npc") or 0
+		local gossipOptionID = self:GetGossipID(true)
+		if gossipOptionID then
+			self:Debug("GOSSIP_SHOW triggered with a gossip ID of "..gossipOptionID.." on creatureID "..cid)
 		end
 	end
 
