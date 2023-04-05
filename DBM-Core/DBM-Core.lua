@@ -4870,7 +4870,7 @@ do
 		end
 	end
 
-	function DBM:GOSSIP_SHOW(msg)
+	function DBM:GOSSIP_SHOW()
 		if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
 		local cid = self:GetUnitCreatureId("npc") or 0
 		local gossipOptionID = self:GetGossipID(true)
