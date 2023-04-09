@@ -11335,8 +11335,32 @@ function bossModPrototype:EnableWBEngageSync()
 	end
 end
 
+--used for knowing if a specific mod is engaged
 function bossModPrototype:IsInCombat()
 	return self.inCombat
+end
+
+--Used for knowing if any person is in any kind of combat period
+function bossModPrototype:GroupInCombat()
+	local combatFound = false
+	--Any Boss engaged
+	if IsEncounterInProgress() then
+		combatFound = true
+	end
+	--Self in Combat
+	if InCombatLockdown() or UnitAffectingCombat("player") then
+		combatFound = true
+	end
+	--Any Other group member in combat
+	if not combatFound then
+		for uId in DBM:GetGroupMembers() do
+			if UnitAffectingCombat(uId) and not UnitIsDeadOrGhost(uId) then
+				combatFound = true
+				break
+			end
+		end
+	end
+	return combatFound
 end
 
 function bossModPrototype:IsAlive()
