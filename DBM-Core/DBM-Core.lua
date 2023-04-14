@@ -6996,6 +6996,23 @@ function bossModPrototype:SetStage(stage)
 	end
 end
 
+--If stage or stateTotal used, returns true or false
+--If neither used, simply returns current stage and stage total
+function bossModPrototype:GetStage(stage, stageTotal)
+	local currentStage, currentTotal = self.vb.phase or 0, self.vb.stageTotality or 0
+	if stage or stageTotal then
+		if stage and stage == currentStage then
+			return true
+		end
+		if stageTotal and stageTotal == currentTotal then
+			return true
+		end
+		return false
+	else
+		return currentStage, currentTotal
+	end
+end
+
 function bossModPrototype:AffixEvent(eventType, stage, timeAdjust, spellDebit)
 	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
 		fireEvent("DBM_AffixEvent", self, self.id, eventType, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, stage or 1, timeAdjust, spellDebit)--Mod, modId, type (0 end, 1, begin, 2, timerExtend), Encounter Id (if available), stage, amount of time to extend to, spellDebit, whether to subtrack the previous extend arg from next timer
