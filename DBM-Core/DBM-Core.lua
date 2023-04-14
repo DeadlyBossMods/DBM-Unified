@@ -6999,7 +6999,7 @@ end
 --If args are passed, returns true or false
 --If no args given, just returns current stage and stage total
 --stage: stage value to checkf or true/false rules
---checkType: 0 or nil for just current stage match, 1 for less than check, 2 for greater than check, 3
+--checkType: 0 or nil for just current stage match, 1 for less than check, 2 for greater than check, 3 not equal check
 --useTotal: uses stage total instead of current
 function bossModPrototype:GetStage(stage, checkType, useTotal)
 	local currentStage, currentTotal = self.vb.phase or 0, self.vb.stageTotality or 0
@@ -7010,6 +7010,8 @@ function bossModPrototype:GetStage(stage, checkType, useTotal)
 		elseif (checkType == 1) and (useTotal and currentTotal or currentStage) < stage then
 			return true
 		elseif (checkType == 2) and (useTotal and currentTotal or currentStage) > stage then
+			return true
+		elseif (checkType == 3) and (useTotal and currentTotal or currentStage) ~= stage then
 			return true
 		end
 		return false
