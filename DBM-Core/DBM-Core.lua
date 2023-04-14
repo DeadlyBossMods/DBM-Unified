@@ -7005,11 +7005,11 @@ function bossModPrototype:GetStage(stage, checkType, useTotal)
 	local currentStage, currentTotal = self.vb.phase or 0, self.vb.stageTotality or 0
 	if stage then
 		checkType = checkType or 0--Optional pass if just an exact match check
-		if (checkType == 0) and stage == (useTotal and currentTotal or currentStage) then
+		if (checkType == 0) and (useTotal and currentTotal or currentStage) == stage then
 			return true
-		elseif (checkType == 1) and stage < (useTotal and currentTotal or currentStage) then
+		elseif (checkType == 1) and (useTotal and currentTotal or currentStage) < stage then
 			return true
-		elseif (checkType == 2) and stage > (useTotal and currentTotal or currentStage) then
+		elseif (checkType == 2) and (useTotal and currentTotal or currentStage) > stage then
 			return true
 		end
 		return false
