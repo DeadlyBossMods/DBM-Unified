@@ -385,7 +385,6 @@ DBM.DefaultOptions = {
 	WorldBossAlert = not isRetail,
 	WorldBuffAlert = not isRetail,
 	BadTimerAlert = false,
-	BadIDAlert = false,
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
@@ -6042,11 +6041,7 @@ function DBM:EJ_GetSectionInfo(sectionID)
 	end
 	local info = EJ_GetSectionInfo(sectionID)
 	if not info then
-		if self.Options.BadIDAlert then
-			self:AddMsg("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID..". Please report this bug")
-		else
-			self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
-		end
+		self:Debug("|cffff0000Invalid call to EJ_GetSectionInfo for sectionID: |r"..sectionID)
 		return
 	end
 	local flag1, flag2, flag3, flag4
@@ -6076,11 +6071,7 @@ function DBM:GetSpellInfo(spellId)
 			self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId.." as a string!")
 		else
 			if spellId > 4 then
-				if self.Options.BadIDAlert then
-					self:AddMsg("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId..". Please report this bug")
-				else
-					self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId)
-				end
+				self:Debug("|cffff0000Invalid call to GetSpellInfo for spellId: |r"..spellId)
 			end
 		end
 		return
