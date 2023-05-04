@@ -10090,6 +10090,11 @@ do
 					end
 				end
 			end
+			--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
+			--This check is performed secondary to args scan so that no adds guids are overwritten
+			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs then
+				guid = UnitGUID("boss1")
+			end
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid)
 			if not tContains(self.startedTimers, id) then--Make sure timer doesn't exist already before adding it
 				tinsert(self.startedTimers, id)
