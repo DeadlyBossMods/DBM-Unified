@@ -8833,7 +8833,7 @@ do
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
 			if expireTime then
 				local remaining = expireTime-GetTime()
-				DBMScheduler:ScheduleCountdown(remaining, numAnnounces, self.Yell, self.mod, self, ...)
+				DBMScheduler:ScheduleCountdown(remaining, numAnnounces, self.Say, self.mod, self, ...)
 			end
 		else
 			DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Say, self.mod, self, ...)
