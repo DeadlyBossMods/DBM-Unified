@@ -81,7 +81,7 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.5"
+	DBM.DisplayVersion = "10.1.6 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 5, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 4--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 270, "48070b1"
@@ -848,7 +848,7 @@ do
 
 	function pformat(fstr, ...)
 		local ok, str = pcall(format, fstr, ...)
-		return ok and str or fstr:gsub("(%%+)([^%%%s<]+)", replace):gsub("%%%%", "%%")
+		return ok and str or fstr:gsub("(%%+)([^%%%s%)<]+)", replace):gsub("%%%%", "%%")
 	end
 end
 
@@ -8833,7 +8833,7 @@ do
 			local _, _, _, _, _, expireTime = DBM:UnitDebuff("player", time)
 			if expireTime then
 				local remaining = expireTime-GetTime()
-				DBMScheduler:ScheduleCountdown(remaining, numAnnounces, self.Yell, self.mod, self, ...)
+				DBMScheduler:ScheduleCountdown(remaining, numAnnounces, self.Say, self.mod, self, ...)
 			end
 		else
 			DBMScheduler:ScheduleCountdown(time, numAnnounces, self.Say, self.mod, self, ...)
