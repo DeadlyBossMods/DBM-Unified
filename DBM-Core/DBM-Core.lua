@@ -10906,7 +10906,7 @@ function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersio
 		if not self.paSounds then self.paSounds = {} end
 		local mediaPath
 		--Check valid voice pack sound
-		if (voiceVersion >= SWFilterDisabled) then
+		if (voiceVersion <= SWFilterDisabled) then
 			local chosenVoice = DBM.Options.ChosenVoicePack2
 			mediaPath = "Interface\\AddOns\\DBM-VP"..chosenVoice.."\\"..voice..".ogg"
 		else
