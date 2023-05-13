@@ -8667,6 +8667,14 @@ do
 		return newAnnounce(self, "spell", spellId, color or 2, ...)
 	end
 
+	function bossModPrototype:NewIncomingAnnounce(spellId, color, ...)
+		return newAnnounce(self, "incoming", spellId, color or 2, ...)
+	end
+
+	function bossModPrototype:NewIncomingCountAnnounce(spellId, color, ...)
+		return newAnnounce(self, "incomingcount", spellId, color or 2, ...)
+	end
+
 	function bossModPrototype:NewEndAnnounce(spellId, color, ...)
 		return newAnnounce(self, "ends", spellId, color or 2, ...)
 	end
@@ -9580,14 +9588,6 @@ do
 
 	function bossModPrototype:NewSpecialWarningSpell(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "spell", spellId, nil, optionDefault, ...)
-	end
-
-	function bossModPrototype:NewSpecialWarningIncoming(spellId, optionDefault, ...)
-		return newSpecialWarning(self, "incoming", spellId, nil, optionDefault, ...)
-	end
-
-	function bossModPrototype:NewSpecialWarningIncomingCount(spellId, optionDefault, ...)
-		return newSpecialWarning(self, "incomingcount", spellId, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningEnd(spellId, optionDefault, ...)
