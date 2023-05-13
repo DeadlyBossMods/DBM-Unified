@@ -5359,6 +5359,9 @@ do
 				mod:UnregisterOnUpdateHandler()
 			end
 			mod:Stop()
+			if mod.paSounds then
+				mod:DisablePrivateAuraSounds()
+			end
 			if event then
 				self:Debug("EndCombat called by : "..event..". LastInstanceMapID is "..LastInstanceMapID)
 			end
@@ -10881,6 +10884,42 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 		self:GroupSpells(spellId, name)
 	end
 	self:SetOptionCategory(name, cat, optionType)
+end
+
+--Generic enable for entire module
+function bossModPrototype:AddPrivateAuraSoundOption(default)
+	self.DefaultOptions["PrivateAuraSounds"] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options["PrivateAuraSounds"] = (default == nil) or default
+	self.localization.options["PrivateAuraSounds"] = L.AUTO_PRIVATEAURA_OPTION_TEXT
+	self:SetOptionCategory("PrivateAuraSounds", "misc")
+end
+
+--Function to actually register specific media to specific auras
+--auraspellId: Private aura spellId
+--voice: voice pack media path
+--voiceVersion: Required voice pack verion (if not met, falls back to airhorn
+function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
+	if self.Options["PrivateAuraSounds"] then
+		if not self.paSounds then self.paSounds = {} end
+		--Check valid voice pack sound
+		local mediaPath = (voiceVersion >= SWFilterDisabled) and voice or "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg"
+		self.paSounds[#self.paSounds + 1] = C_UnitAuras.AddPrivateAuraAppliedSound({
+			spellID = auraspellId,
+			unitToken = "player",
+			soundFileName = mediaPath,
+			outputChannel = "master",
+		})
+	end
+end
+
+function bossModPrototype:DisablePrivateAuraSounds()
+	for _, id in next, self.paSounds do
+		C_UnitAuras.RemovePrivateAuraAppliedSound(id)
+	end
+	self.paSounds = nil
 end
 
 --Extended Icon Usage Notes
