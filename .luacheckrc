@@ -35,6 +35,8 @@ globals = {
 	"LOCALE_zhCN",
 	"LOCALE_zhTW",
 
+	"Plater",
+
 	-- Lua
 	"bit.band",
 	"date",
