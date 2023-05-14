@@ -19,6 +19,9 @@ spamNameplates:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNam
 if _G["Plater"] then
 	spamNameplates:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
 	spamNameplates:CreateCheckButton(L.SpamBlockTimersWithNameplates, true, nil, "DontShowTimersWithNameplates")
+else
+	local infotext = spamPanel:CreateText(L.NameplateFooter, nil, false, GameFontNormalSmall, "LEFT", 25)
+	infotext:SetPoint("BOTTOMLEFT", spamPanel.frame, "BOTTOMLEFT", 10, 10)
 end
 
 local spamMisc = spamPanel:CreateArea(L.Area_SpamFilter_Misc)
