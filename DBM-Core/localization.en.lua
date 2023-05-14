@@ -306,6 +306,8 @@ L.AUTO_ANNOUNCE_TEXTS = {
 	targetsource						= ">%%s< cast %s on >%%s<",
 	targetcount							= "%s (%%s) on >%%s<",
 	spell								= "%s",
+	incoming							= "%s incoming debuff",
+	incomingcount						= "%s incoming debuff (%%s)",
 	ends 								= "%s ended",
 	endtarget							= "%s ended: >%%s<",
 	fades								= "%s faded",
@@ -331,6 +333,8 @@ L.AUTO_ANNOUNCE_OPTIONS = {
 	targetsource						= "Announce $spell:%s targets (with source)",
 	targetcount							= "Announce $spell:%s targets (with count)",
 	spell								= "Announce when $spell:%s has been cast",
+	incoming							= "Announce when $spell:%s has incoming debuffs",
+	incomingcount						= "Announce (with count) when $spell:%s has incoming debuffs",
 	ends								= "Announce when $spell:%s has ended",
 	endtarget							= "Announce when $spell:%s has ended (with target)",
 	fades								= "Announce when $spell:%s has faded",
@@ -351,8 +355,6 @@ L.AUTO_ANNOUNCE_OPTIONS = {
 
 L.AUTO_SPEC_WARN_TEXTS = {
 	spell								= "%s!",
-	incoming							= "%s incoming debuff",
-	incomingcount						= "%s incoming debuff (%%s)",
 	ends								= "%s ended",
 	fades								= "%s faded",
 	soon								= "%s soon",
@@ -403,8 +405,6 @@ L.AUTO_SPEC_WARN_TEXTS = {
 -- Auto-generated Special Warning Localizations
 L.AUTO_SPEC_WARN_OPTIONS = {
 	spell 								= "Show special announce for $spell:%s",
-	incoming							= "Show special announce for incoming $spell:%s debuffs",
-	incomingcount						= "Show special announce (with count) for incoming $spell:%s debuffs",
 	ends 								= "Show special announce when $spell:%s has ended",
 	fades 								= "Show special announce when $spell:%s has faded",
 	soon 								= "Show pre-special announce for $spell:%s",
@@ -557,6 +557,7 @@ L.AUTO_INFO_FRAME_OPTION_TEXT2			= "Show info frame for encounter overview"
 L.AUTO_INFO_FRAME_OPTION_TEXT3			= "Show info frame for $spell:%s (when threshold of %%s is met)"
 L.AUTO_READY_CHECK_OPTION_TEXT			= "Play ready check sound when boss is pulled (even if it's not targeted)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT			= "Show timer for fastest clear of %s"
+L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM sound alerts for private auras on this fight. Sound Priority: Voice pack if available, Air Horn fallback"
 
 -- New special warnings
 L.MOVE_WARNING_BAR						= "Announce movable"
