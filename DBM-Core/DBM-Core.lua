@@ -10886,15 +10886,17 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self:SetOptionCategory(name, cat, optionType)
 end
 
---Generic enable for entire module
-function bossModPrototype:AddPrivateAuraSoundOption(default)
-	self.DefaultOptions["PrivateAuraSounds"] = (default == nil) or default
+--auraspellId must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
+--groupSpellId is used if a diff option key is used in all other options with spell (will be quite common)
+function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupSpellId)
+	self.DefaultOptions["PrivateAuraSound"..auraspellId] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
-	self.Options["PrivateAuraSounds"] = (default == nil) or default
-	self.localization.options["PrivateAuraSounds"] = L.AUTO_PRIVATEAURA_OPTION_TEXT
-	self:SetOptionCategory("PrivateAuraSounds", "misc")
+	self.Options["PrivateAuraSound"..auraspellId] = (default == nil) or default
+	self.localization.options["PrivateAuraSound"..auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
+	self:GroupSpells(groupSpellId or auraspellId, "PrivateAuraSound"..auraspellId)
+	self:SetOptionCategory("PrivateAuraSound"..auraspellId, "misc")
 end
 
 --Function to actually register specific media to specific auras
@@ -10902,7 +10904,7 @@ end
 --voice: voice pack media path
 --voiceVersion: Required voice pack verion (if not met, falls back to airhorn
 function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
-	if self.Options["PrivateAuraSounds"] then
+	if self.Options["PrivateAuraSound"..auraspellId] then
 		if not self.paSounds then self.paSounds = {} end
 		local mediaPath
 		--Check valid voice pack sound
