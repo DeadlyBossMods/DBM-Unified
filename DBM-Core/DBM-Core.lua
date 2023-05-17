@@ -81,8 +81,8 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.8 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 5, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.1.9 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 5, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 4--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
@@ -2622,7 +2622,7 @@ function DBM:GetCIDFromGUID(guid)
 end
 
 function DBM:IsNonPlayableGUID(guid)
-	if type(guid) == "number" then return false end
+	if type(guid) ~= "string" then return false end
 	local guidType = strsplit("-", guid or "")
 	return guidType and (guidType == "Creature" or guidType == "Vehicle" or guidType == "NPC")--To determine, add pet or not?
 end
