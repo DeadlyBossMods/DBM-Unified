@@ -81,8 +81,8 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.9 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 5, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.1.9"
+	DBM.ReleaseRevision = releaseDate(2023, 5, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 4--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
@@ -8347,7 +8347,7 @@ do
 	-- TODO: is there a good reason that this is a weak table?
 	local cachedColorFunctions = setmetatable({}, {__mode = "kv"})
 
-	local function setText(announceType, spellId, castTime, preWarnTime, customName)
+	local function setText(announceType, spellId, castTime, preWarnTime, customName, originalSpellID)
 		local spellName
 		if customName then
 			spellName = customName
@@ -8362,7 +8362,7 @@ do
 		local text
 		if announceType == "cast" then
 			local spellHaste = select(4, DBM:GetSpellInfo(10059)) / 10000 -- 10059 = Stormwind Portal, should have 10000 ms cast time
-			local timer = (select(4, DBM:GetSpellInfo(spellId)) or 1000) / spellHaste
+			local timer = (select(4, DBM:GetSpellInfo(originalSpellID or spellId)) or 1000) / spellHaste
 			text = L.AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, castTime or (timer / 1000))
 		elseif announceType == "prewarn" then
 			if type(preWarnTime) == "string" then
@@ -8599,7 +8599,7 @@ do
 		if soundOption and type(soundOption) == "boolean" then
 			soundOption = 0--No Sound
 		end
-		local text, spellName = setText(announceType, alternateSpellId or spellId, castTime, preWarnTime)
+		local text, spellName = setText(announceType, alternateSpellId or spellId, castTime, preWarnTime, nil, spellId)
 		icon = icon or spellId
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
