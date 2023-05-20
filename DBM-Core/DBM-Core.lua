@@ -9806,13 +9806,19 @@ do
 			local activeVP = self.Options.ChosenVoicePack2
 			--Check if voice pack out of date
 			if activeVP ~= "None" and activeVP == value then
-				if self.VoiceVersions[value] < minVoicePackVersion then--Version will be bumped when new voice packs released that contain new voices.
-					if self.Options.ShowReminders then
-						self:AddMsg(L.VOICE_PACK_OUTDATED)
+				-- User might reselect "missing" entry shown in GUI if previously selected voice pack is uninstalled or disabled
+				if self.VoiceVersions[value] then
+					voiceSessionDisabled = false
+					if self.VoiceVersions[value] < minVoicePackVersion then--Version will be bumped when new voice packs released that contain new voices.
+						if self.Options.ShowReminders then
+							self:AddMsg(L.VOICE_PACK_OUTDATED)
+						end
+						SWFilterDisabled = self.VoiceVersions[value]--Set disable to version on current voice pack
+					else
+						SWFilterDisabled = minVoicePackVersion
 					end
-					SWFilterDisabled = self.VoiceVersions[value]--Set disable to version on current voice pack
 				else
-					SWFilterDisabled = minVoicePackVersion
+					voiceSessionDisabled = true
 				end
 			end
 		end
@@ -10912,8 +10918,8 @@ function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersio
 		if not self.paSounds then self.paSounds = {} end
 		local mediaPath
 		--Check valid voice pack sound
-		if (voiceVersion <= SWFilterDisabled) then
-			local chosenVoice = DBM.Options.ChosenVoicePack2
+		local chosenVoice = DBM.Options.ChosenVoicePack2
+		if chosenVoice ~= "None" and not voiceSessionDisabled and voiceVersion <= SWFilterDisabled then
 			mediaPath = "Interface\\AddOns\\DBM-VP"..chosenVoice.."\\"..voice..".ogg"
 		else
 			mediaPath = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg"
