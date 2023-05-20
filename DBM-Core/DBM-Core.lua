@@ -9808,6 +9808,7 @@ do
 			if activeVP ~= "None" and activeVP == value then
 				-- User might reselect "missing" entry shown in GUI if previously selected voice pack is uninstalled or disabled
 				if self.VoiceVersions[value] then
+					voiceSessionDisabled = false
 					if self.VoiceVersions[value] < minVoicePackVersion then--Version will be bumped when new voice packs released that contain new voices.
 						if self.Options.ShowReminders then
 							self:AddMsg(L.VOICE_PACK_OUTDATED)
@@ -9816,6 +9817,8 @@ do
 					else
 						SWFilterDisabled = minVoicePackVersion
 					end
+				else
+					voiceSessionDisabled = true
 				end
 			end
 		end
