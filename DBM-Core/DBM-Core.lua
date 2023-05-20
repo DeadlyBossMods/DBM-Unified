@@ -4169,12 +4169,16 @@ do
 		revision, version = tonumber(revision), tonumber(version)
 		if protocol >= 2 then
 			forceDisable = tonumber(forceDisable) or 0
+		else
+			-- Protocol 1 did not send forceDisable, VPVersion was in that position
+			VPVersion = forceDisable
+			forceDisable = 0
 		end
 		if revision and version and displayVersion and raid[sender] then
 			raid[sender].revision = revision
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
-			raid[sender].VPVersion = protocol == 2 and VPVersion or forceDisable--If protocol 1, there is no forceDisable arg
+			raid[sender].VPVersion = VPVersion
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
 			DBM:Debug("Received version info from "..sender.." : Rev - "..revision..", Ver - "..version..", Rev Diff - "..(revision - DBM.Revision), 3)
