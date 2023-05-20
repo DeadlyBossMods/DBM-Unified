@@ -9899,14 +9899,15 @@ do
 		end
 	end
 
-	local function playCountSound(_, path) -- timerId, path
+	local function playCountSound(_, path, requiresCombat) -- timerId, path
+		if requiresCombat and not (InCombatLockdown() or UnitAffectingCombat("player")) then return end
 		DBM:PlaySoundFile(path)
 	end
 
-	local function playCountdown(timerId, timer, voice, count)
+	local function playCountdown(timerId, timer, voice, count, requiresCombat)
 		if DBM.Options.DontPlayCountdowns then return end
 		timer = timer or 10
-		count = count or 5
+		count = count or 4
 		voice = voice or 1
 		if timer <= count then count = floor(timer) end
 		if not countpath1 or not countpath2 or not countpath3 then
@@ -9937,13 +9938,13 @@ do
 		if count == 0 then--If a count of 0 is passed,then it's a "Countout" timer, not "Countdown"
 			for i = 1, timer do
 				if i < maxCount then
-					DBM:Schedule(i, playCountSound, timerId, path..i..".ogg")
+					DBM:Schedule(i, playCountSound, timerId, path..i..".ogg", requiresCombat)
 				end
 			end
 		else
 			for i = count, 1, -1 do
 				if i <= maxCount then
-					DBM:Schedule(timer-i, playCountSound, timerId, path..i..".ogg")
+					DBM:Schedule(timer-i, playCountSound, timerId, path..i..".ogg", requiresCombat)
 				end
 			end
 		end
@@ -10065,7 +10066,7 @@ do
 			if self.option then
 				countVoice = self.mod.Options[self.option .. "CVoice"]
 				if not self.fade and (type(countVoice) == "string" or countVoice > 0) then--Started without faded and has count voice assigned
-					playCountdown(id, timer, countVoice, countVoiceMax)--timerId, timer, voice, count
+					playCountdown(id, timer, countVoice, countVoiceMax, self.requiresCombat)--timerId, timer, voice, count
 				end
 			end
 			local bar = DBT:CreateBar(timer, id, self.icon, nil, nil, nil, nil, colorId, nil, self.keep, self.fade, countVoice, countVoiceMax)
@@ -10159,7 +10160,7 @@ do
 					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 					if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
 						DBM:Unschedule(playCountSound, id)
-						playCountdown(id, bar.timer, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						playCountdown(id, bar.timer, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 						DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetFade disable call")
 					end
 				end
@@ -10187,7 +10188,7 @@ do
 					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 					if (type(countVoice) == "string" or countVoice > 0) then--Unfading bar, start countdown
 						DBM:Unschedule(playCountSound, id)
-						playCountdown(id, bar.timer, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						playCountdown(id, bar.timer, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 						DBM:Debug("Re-enabling a countdown on bar ID: "..id.." after a SetSTFade disable call")
 					end
 				end
@@ -10330,7 +10331,7 @@ do
 					DBM:Unschedule(playCountSound, id)
 					if not bar.fade then--Don't start countdown voice if it's faded bar
 						if newRemaining > 2 then
-							playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+							playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 							DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
 						end
 					end
@@ -10361,7 +10362,7 @@ do
 						if (type(countVoice) == "string" or countVoice > 0) then
 							DBM:Unschedule(playCountSound, id)
 							if not bar.fade then--Don't start countdown voice if it's faded bar
-								playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+								playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 								DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
 							end
 						end
@@ -10398,7 +10399,7 @@ do
 							if (type(countVoice) == "string" or countVoice > 0) then
 								if not bar.fade then--Don't start countdown voice if it's faded bar
 									if newRemaining > 2 then
-										playCountdown(id, newRemaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+										playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 										DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:"..id)
 									end
 								end
@@ -10442,7 +10443,7 @@ do
 				if self.option and not bar.fade then
 					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 					if (type(countVoice) == "string" or countVoice > 0) then
-						playCountdown(id, remaining, countVoice, bar.countdownMax)--timerId, timer, voice, count
+						playCountdown(id, remaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 						DBM:Debug("Updating a countdown after a timer Resume call for timer ID:"..id)
 					end
 				end
@@ -10538,7 +10539,7 @@ do
 	-- new constructor for the new auto-localized timer types
 	-- note that the function might look unclear because it needs to handle different timer types, especially achievement timers need special treatment
 	-- If a new countdown is added to an existing timer that didn't have one before, use optionName (number) to force timer to reset defaults by assigning it a new variable
-	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, inlineIcon, keep, countdown, countdownMax, r, g, b)
+	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, inlineIcon, keep, countdown, countdownMax, r, g, b, requiresCombat)
 		if type(timer) == "string" and timer:match("OptionVersion") then
 			DBM:Debug("|cffff0000OptionVersion hack depricated, remove it from: |r"..spellId)
 			return
@@ -10615,6 +10616,7 @@ do
 				r = r,
 				g = g,
 				b = b,
+				requiresCombat = requiresCombat,
 				allowdouble = allowdouble,
 				startedTimers = {},
 				mod = self,
