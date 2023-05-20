@@ -9806,13 +9806,16 @@ do
 			local activeVP = self.Options.ChosenVoicePack2
 			--Check if voice pack out of date
 			if activeVP ~= "None" and activeVP == value then
-				if self.VoiceVersions[value] < minVoicePackVersion then--Version will be bumped when new voice packs released that contain new voices.
-					if self.Options.ShowReminders then
-						self:AddMsg(L.VOICE_PACK_OUTDATED)
+				-- User might reselect "missing" entry shown in GUI if previously selected voice pack is uninstalled or disabled
+				if self.VoiceVersions[value] then
+					if self.VoiceVersions[value] < minVoicePackVersion then--Version will be bumped when new voice packs released that contain new voices.
+						if self.Options.ShowReminders then
+							self:AddMsg(L.VOICE_PACK_OUTDATED)
+						end
+						SWFilterDisabled = self.VoiceVersions[value]--Set disable to version on current voice pack
+					else
+						SWFilterDisabled = minVoicePackVersion
 					end
-					SWFilterDisabled = self.VoiceVersions[value]--Set disable to version on current voice pack
-				else
-					SWFilterDisabled = minVoicePackVersion
 				end
 			end
 		end
