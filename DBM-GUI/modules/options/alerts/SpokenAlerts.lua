@@ -65,6 +65,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.VPReplacesSA2 = DBM.DefaultOptions.VPReplacesSA2
 	DBM.Options.VPReplacesSA3 = DBM.DefaultOptions.VPReplacesSA3
 	DBM.Options.VPReplacesSA4 = DBM.DefaultOptions.VPReplacesSA4
+	DBM.Options.VPReplacesGTFO = DBM.DefaultOptions.VPReplacesGTFO
 	DBM.Options.VPReplacesCustom = DBM.DefaultOptions.VPReplacesCustom
 	-- Set UI visuals
 	VPReplaceAnnounce:SetChecked(DBM.Options.VPReplacesAnnounce)
@@ -72,6 +73,7 @@ resetbutton:SetScript("OnClick", function()
 	VPReplaceSA2:SetChecked(DBM.Options.VPReplacesSA2)
 	VPReplaceSA3:SetChecked(DBM.Options.VPReplacesSA3)
 	VPReplaceSA4:SetChecked(DBM.Options.VPReplacesSA4)
+	VPReplacesGTFO:SetChecked(DBM.Options.VPReplacesGTFO)
 	VPReplaceCustom:SetChecked(DBM.Options.VPReplacesCustom)
 end)
 
