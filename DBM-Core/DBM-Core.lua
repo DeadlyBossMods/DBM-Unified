@@ -167,6 +167,7 @@ DBM.DefaultOptions = {
 	VPReplacesSA2 = true,
 	VPReplacesSA3 = true,
 	VPReplacesSA4 = true,
+	VPReplacesGTFO = true,
 	VPReplacesCustom = false,
 	AlwaysPlayVoice = false,
 	VPDontMuteSounds = false,
@@ -9166,7 +9167,9 @@ do
 	local function canVoiceReplace(self, soundId)
 		soundId = soundId or self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 		local isVoicePackUsed
-		if type(soundId) == "number" then
+		if self.announceType == "gtfo" then
+			isVoicePackUsed = DBM.Options.VPReplacesGTFO
+		elseif type(soundId) == "number" then
 			isVoicePackUsed = DBM.Options["VPReplacesSA"..soundId]
 		else
 			isVoicePackUsed = DBM.Options.VPReplacesCustom

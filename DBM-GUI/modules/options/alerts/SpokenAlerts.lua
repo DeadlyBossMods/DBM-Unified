@@ -51,6 +51,7 @@ local VPReplaceSA1			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA1, true, n
 local VPReplaceSA2			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA2, true, nil, "VPReplacesSA2")
 local VPReplaceSA3			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA3, true, nil, "VPReplacesSA3")
 local VPReplaceSA4			= voiceReplaceArea:CreateCheckButton(L.ReplacesSA4, true, nil, "VPReplacesSA4")
+local VPReplacesGTFO		= voiceReplaceArea:CreateCheckButton(L.ReplacesGTFO, true, nil, "VPReplacesGTFO")
 local VPReplaceCustom		= voiceReplaceArea:CreateCheckButton(L.ReplacesCustom, true, nil, "VPReplacesCustom")
 
 local resetbutton = voiceReplaceArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
