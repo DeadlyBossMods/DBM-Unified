@@ -5084,7 +5084,6 @@ do
 			mod.engagedDiffText = difficultyText
 			mod.engagedDiffIndex = difficultyIndex
 			mod.inCombat = true
-			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - (delay or 0)
 			bossuIdFound = event == "IEEU"
 			if mod.minCombatTime then
@@ -5378,7 +5377,6 @@ do
 				twipe(mod.iconRestore)
 			end
 			mod.inCombat = false
-			mod.blockSyncs = true
 			if mod.combatInfo.killMobs then
 				for i, _ in pairs(mod.combatInfo.killMobs) do
 					mod.combatInfo.killMobs[i] = true
@@ -11526,7 +11524,7 @@ end
 function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	local spamId = self.id .. event .. strjoin("\t", ...)
 	local time = GetTime()
-	if (not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > self.SyncThreshold) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+	if (not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > self.SyncThreshold) and self.OnSync and (not self.minSyncRevision or revision >= self.minSyncRevision) then
 		private.modSyncSpam[spamId] = time
 		-- we have to use the sender as last argument for compatibility reasons (stupid old API...)
 		-- avoid table allocations for frequently used number of arguments
