@@ -11507,7 +11507,7 @@ function bossModPrototype:SendSync(event, ...)
 	--Mod syncs are more strict and enforce latency threshold always.
 	--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
 	if not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > 8 then
-		self:ReceiveSync(event, playerName, self.revision or 0, tostringall(...))
+		self:ReceiveSync(event, nil, self.revision or 0, tostringall(...)) -- keep sender as nil, for (self.blockSyncs and sender) check
 		sendSync(DBMSyncProtocol, "M", str)
 	end
 end
