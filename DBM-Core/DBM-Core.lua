@@ -347,6 +347,8 @@ DBM.DefaultOptions = {
 	SpamSpecRoleswitch = false,
 	SpamSpecRolegtfo = false,
 	DontShowBossTimers = false,
+	DontShowTrashTimers = false,
+	DontShowEventTimers = false,
 	DontShowUserTimers = false,
 	DontShowFarWarnings = true,
 	DontSetIcons = false,
@@ -357,7 +359,7 @@ DBM.DefaultOptions = {
 	DontShowHudMap2 = false,
 	DontShowNameplateIcons = false,
 	DontSendBossGUIDs = false,
---	DontShowTimersWithNameplates = false,
+	DontShowTimersWithNameplates = true,
 	UseNameplateHandoff = true,
 	NPAuraSize = 40,
 	DontPlayCountdowns = false,
@@ -457,11 +459,31 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-BattlefieldBarrens",--Apparently people are still running this
 	"DBM-RaidLeadTools", -- Killed plugin
 	"DBM-Party-Classic", -- Renamed to DBM-Party-Vanilla
+	--The Culling
+    "DBM-Onyxia",--Combined into DBM-Raids-WoTLK
+    "DBM-Ulduar",--Combined into DBM-Raids-WoTLK
+    "DBM-VoA",--Combined into DBM-Raids-WoTLK
+    "DBM-ChamberOfAspects",--Combined into DBM-Raids-WoTLK
+    "DBM-Coliseum",--Combined into DBM-Raids-WoTLK
+    "DBM-EyeOfEternity",--Combined into DBM-Raids-WoTLK
 }
 if isRetail then
 	table.insert(bannedMods, "DBM-ZulAman") -- Part of Cataclysm party mods
 	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods
 	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
+	--The Culling
+	table.insert(bannedMods, "DBM-AQ20")--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-AQ40")--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-BWL")--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-MC")--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-BlackTemple")--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-Hyjal")--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-Sunwell")--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-TheEye")--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-Serpentshrine")--Combined into DBM-Raids-BC
+end
+if not isClassic and not isBCC then--Vanilla and tbc classic still use forced legacy naxx, retail and wrath classic use DBM-Raids-WoTLK
+	table.insert(bannedMods, "DBM-Naxx")
 end
 
 --[InstanceID]={level,zoneType}
@@ -3256,7 +3278,7 @@ do
 end
 
 function DBM:LFG_PROPOSAL_SHOW()
-	if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
+	if self.Options.ShowQueuePop and not self.Options.DontShowEventTimers then
 		DBT:CreateBar(40, L.LFG_INVITE, 237538)
 		fireEvent("DBM_TimerStart", "DBMLFGTimer", L.LFG_INVITE, 40, "237538", "extratimer", nil, 0)
 	end
@@ -3346,7 +3368,7 @@ end
 function DBM:UPDATE_BATTLEFIELD_STATUS(queueID)
 	for i = 1, 2 do
 		if GetBattlefieldStatus(i) == "confirm" then
-			if self.Options.ShowQueuePop and not self.Options.DontShowBossTimers then
+			if self.Options.ShowQueuePop and not self.Options.DontShowEventTimers then
 				queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
 				local expiration = GetBattlefieldPortExpiration(queueID)
 				local timerIcon = (isRetail and GetPlayerFactionGroup("player") or UnitFactionGroup("player")) == "Alliance" and 132486 or 132485
@@ -3400,9 +3422,9 @@ do
 			if not self:IsTrivial() then
 				if instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2 and not GetAddOnInfo("DBM-Party-Dragonflight") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
-				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not GetAddOnInfo("DBM-BlackTemple") then
+				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not GetAddOnInfo("DBM-Raids-BC") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
-				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Ulduar") then
+				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-WoTLK") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
 				elseif cataZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Firelands") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
@@ -4728,7 +4750,7 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
-			if (isRetail or v.respawnTime) and success == 0 and self.Options.ShowRespawn and not self.Options.DontShowBossTimers then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
+			if (isRetail or v.respawnTime) and success == 0 and self.Options.ShowRespawn and not self.Options.DontShowEventTimers then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				name = string.split(",", name)
 				DBT:CreateBar(v.respawnTime, L.TIMER_RESPAWN:format(name), isRetail and 237538 or 136106)--Interface\\Icons\\Spell_Holy_BorrowedTime, Spell_nature_timestop
 				fireEvent("DBM_TimerStart", "DBMRespawnTimer", L.TIMER_RESPAWN:format(name), v.respawnTime or 29, isRetail and "237538" or "136106", "extratimer", nil, 0, v.id)
@@ -5084,7 +5106,6 @@ do
 			mod.engagedDiffText = difficultyText
 			mod.engagedDiffIndex = difficultyIndex
 			mod.inCombat = true
-			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - (delay or 0)
 			bossuIdFound = event == "IEEU"
 			if mod.minCombatTime then
@@ -5378,7 +5399,6 @@ do
 				twipe(mod.iconRestore)
 			end
 			mod.inCombat = false
-			mod.blockSyncs = true
 			if mod.combatInfo.killMobs then
 				for i, _ in pairs(mod.combatInfo.killMobs) do
 					mod.combatInfo.killMobs[i] = true
@@ -9954,7 +9974,8 @@ do
 	end
 
 	function timerPrototype:Start(timer, ...)
-		if DBM.Options.DontShowBossTimers then return end
+		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
+		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		if timer and type(timer) ~= "number" then
 			return self:Start(nil, timer, ...) -- first argument is optional!
 		end
@@ -10314,7 +10335,8 @@ do
 	end
 
 	function timerPrototype:Update(elapsed, totalTime, ...)
-		if DBM.Options.DontShowBossTimers then return end
+		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
+		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		if self:GetTime(...) == 0 then
 			self:Start(totalTime, ...)
 		end
@@ -10345,7 +10367,8 @@ do
 	end
 
 	function timerPrototype:AddTime(extendAmount, ...)
-		if DBM.Options.DontShowBossTimers then return end
+		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
+		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		if self:GetTime(...) == 0 then
 			return self:Start(extendAmount, ...)
 		else
@@ -10378,7 +10401,8 @@ do
 	end
 
 	function timerPrototype:RemoveTime(reduceAmount, ...)
-		if DBM.Options.DontShowBossTimers then return end
+		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
+		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		if self:GetTime(...) == 0 then
 			return--Do nothing
 		else
@@ -11526,7 +11550,7 @@ end
 function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	local spamId = self.id .. event .. strjoin("\t", ...)
 	local time = GetTime()
-	if (not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > self.SyncThreshold) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+	if (not private.modSyncSpam[spamId] or (time - private.modSyncSpam[spamId]) > self.SyncThreshold) and self.OnSync and (not self.minSyncRevision or revision >= self.minSyncRevision) then
 		private.modSyncSpam[spamId] = time
 		-- we have to use the sender as last argument for compatibility reasons (stupid old API...)
 		-- avoid table allocations for frequently used number of arguments
