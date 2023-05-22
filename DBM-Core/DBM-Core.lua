@@ -464,6 +464,16 @@ if isRetail then
 	table.insert(bannedMods, "DBM-ZulAman") -- Part of Cataclysm party mods
 	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods
 	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
+	--The Culling
+	table.insert(bannedMods, "DBM-AQ20"),--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-AQ40"),--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-BWL"),--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-MC"),--Combined into DBM-Raids-Vanilla
+	table.insert(bannedMods, "DBM-BlackTemple"),--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-Hyjal"),--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-Sunwell"),--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-TheEye"),--Combined into DBM-Raids-BC
+	table.insert(bannedMods, "DBM-Serpentshrine"),--Combined into DBM-Raids-BC
 end
 
 --[InstanceID]={level,zoneType}
@@ -3402,7 +3412,7 @@ do
 			if not self:IsTrivial() then
 				if instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2 and not GetAddOnInfo("DBM-Party-Dragonflight") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
-				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not GetAddOnInfo("DBM-BlackTemple") then
+				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not GetAddOnInfo("DBM-Raids-BC") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
 				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Ulduar") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
