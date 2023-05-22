@@ -459,6 +459,13 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-BattlefieldBarrens",--Apparently people are still running this
 	"DBM-RaidLeadTools", -- Killed plugin
 	"DBM-Party-Classic", -- Renamed to DBM-Party-Vanilla
+	--The Culling
+    "DBM-Onyxia",--Combined into DBM-Raids-WoTLK
+    "DBM-Ulduar",--Combined into DBM-Raids-WoTLK
+    "DBM-VoA",--Combined into DBM-Raids-WoTLK
+    "DBM-ChamberOfAspects",--Combined into DBM-Raids-WoTLK
+    "DBM-Coliseum",--Combined into DBM-Raids-WoTLK
+    "DBM-EyeOfEternity",--Combined into DBM-Raids-WoTLK
 }
 if isRetail then
 	table.insert(bannedMods, "DBM-ZulAman") -- Part of Cataclysm party mods
@@ -474,6 +481,9 @@ if isRetail then
 	table.insert(bannedMods, "DBM-Sunwell")--Combined into DBM-Raids-BC
 	table.insert(bannedMods, "DBM-TheEye")--Combined into DBM-Raids-BC
 	table.insert(bannedMods, "DBM-Serpentshrine")--Combined into DBM-Raids-BC
+end
+if not isClassic and not isBCC then--Vanilla and tbc classic still use forced legacy naxx, retail and wrath classic use DBM-Raids-WoTLK
+	table.insert(bannedMods, "DBM-Naxx")
 end
 
 --[InstanceID]={level,zoneType}
@@ -3414,7 +3424,7 @@ do
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
 				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not GetAddOnInfo("DBM-Raids-BC") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
-				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Ulduar") then
+				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-WoTLK") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
 				elseif cataZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Firelands") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
