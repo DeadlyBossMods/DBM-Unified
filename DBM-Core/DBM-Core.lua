@@ -466,21 +466,24 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
     "DBM-ChamberOfAspects",--Combined into DBM-Raids-WoTLK
     "DBM-Coliseum",--Combined into DBM-Raids-WoTLK
     "DBM-EyeOfEternity",--Combined into DBM-Raids-WoTLK
+
+	"DBM-Karazhan",--Combined into DBM-Raids-BC
+	"DBM-BlackTemple",--Combined into DBM-Raids-BC
+	"DBM-Hyjal",--Combined into DBM-Raids-BC
+	"DBM-Sunwell",--Combined into DBM-Raids-BC
+	"DBM-TheEye",--Combined into DBM-Raids-BC
+	"DBM-Serpentshrine",--Combined into DBM-Raids-BC
+	"DBM-ZulAman", -- Part of Cataclysm party mods on retail, and merged into DBM-Raids-BC on classic
 }
 if isRetail then
-	table.insert(bannedMods, "DBM-ZulAman") -- Part of Cataclysm party mods
-	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods
+	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods on retail, and part on DBM-Raids-BC on classic
 	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
 	--The Culling
 	table.insert(bannedMods, "DBM-AQ20")--Combined into DBM-Raids-Vanilla
 	table.insert(bannedMods, "DBM-AQ40")--Combined into DBM-Raids-Vanilla
 	table.insert(bannedMods, "DBM-BWL")--Combined into DBM-Raids-Vanilla
 	table.insert(bannedMods, "DBM-MC")--Combined into DBM-Raids-Vanilla
-	table.insert(bannedMods, "DBM-BlackTemple")--Combined into DBM-Raids-BC
-	table.insert(bannedMods, "DBM-Hyjal")--Combined into DBM-Raids-BC
-	table.insert(bannedMods, "DBM-Sunwell")--Combined into DBM-Raids-BC
-	table.insert(bannedMods, "DBM-TheEye")--Combined into DBM-Raids-BC
-	table.insert(bannedMods, "DBM-Serpentshrine")--Combined into DBM-Raids-BC
+
 end
 if not isClassic and not isBCC then--Vanilla and tbc classic still use forced legacy naxx, retail and wrath classic use DBM-Raids-WoTLK
 	table.insert(bannedMods, "DBM-Naxx")
