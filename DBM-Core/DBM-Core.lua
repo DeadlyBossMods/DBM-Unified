@@ -460,7 +460,6 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-RaidLeadTools", -- Killed plugin
 	"DBM-Party-Classic", -- Renamed to DBM-Party-Vanilla
 	--The Culling
-    "DBM-Onyxia",--Combined into DBM-Raids-WoTLK
     "DBM-Ulduar",--Combined into DBM-Raids-WoTLK
     "DBM-VoA",--Combined into DBM-Raids-WoTLK
     "DBM-ChamberOfAspects",--Combined into DBM-Raids-WoTLK
@@ -486,7 +485,8 @@ if isRetail then
 
 end
 if not isClassic and not isBCC then--Vanilla and tbc classic still use forced legacy naxx, retail and wrath classic use DBM-Raids-WoTLK
-	table.insert(bannedMods, "DBM-Naxx")
+	table.insert(bannedMods, "DBM-Onyxia")--Combined into DBM-Raids-WoTLK
+	table.insert(bannedMods, "DBM-Naxx")--Combined into DBM-Raids-WoTLK
 end
 
 --[InstanceID]={level,zoneType}
