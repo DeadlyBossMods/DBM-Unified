@@ -473,6 +473,10 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-TheEye",--Combined into DBM-Raids-BC
 	"DBM-Serpentshrine",--Combined into DBM-Raids-BC
 	"DBM-ZulAman", -- Part of Cataclysm party mods on retail, and merged into DBM-Raids-BC on classic
+
+	"DBM-Highmaul",--Combined into DBM-Raids-WoD
+	"DBM-BlackrockFoundry",--Combined into DBM-Raids-WoD
+	"DBM-HellfireCitadel",--Combined into DBM-Raids-WoD
 }
 if isRetail then
 	--Retail doesn't use this folder, classic era, bc, and wrath still do
