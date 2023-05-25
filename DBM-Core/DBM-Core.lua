@@ -475,18 +475,18 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-ZulAman", -- Part of Cataclysm party mods on retail, and merged into DBM-Raids-BC on classic
 }
 if isRetail then
-	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods on retail, and part on DBM-Raids-BC on classic
+	--Retail doesn't use this folder, classic era, bc, and wrath still do
 	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
-	--The Culling
+end
+if not isClassic then
+	--The Culling (classic era still uses split modules, BC and later use unified)
+	table.insert(bannedMods, "DBM-Onyxia")--Combined into DBM-Raids-WoTLK
+	table.insert(bannedMods, "DBM-Naxx")--Combined into DBM-Raids-WoTLK
+	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods on retail, and part on DBM-Raids-BC on classic
 	table.insert(bannedMods, "DBM-AQ20")--Combined into DBM-Raids-Vanilla
 	table.insert(bannedMods, "DBM-AQ40")--Combined into DBM-Raids-Vanilla
 	table.insert(bannedMods, "DBM-BWL")--Combined into DBM-Raids-Vanilla
 	table.insert(bannedMods, "DBM-MC")--Combined into DBM-Raids-Vanilla
-
-end
-if not isClassic and not isBCC then--Vanilla and tbc classic still use forced legacy naxx, retail and wrath classic use DBM-Raids-WoTLK
-	table.insert(bannedMods, "DBM-Onyxia")--Combined into DBM-Raids-WoTLK
-	table.insert(bannedMods, "DBM-Naxx")--Combined into DBM-Raids-WoTLK
 end
 
 --[InstanceID]={level,zoneType}
