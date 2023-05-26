@@ -474,6 +474,13 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Serpentshrine",--Combined into DBM-Raids-BC
 	"DBM-ZulAman", -- Part of Cataclysm party mods on retail, and merged into DBM-Raids-BC on classic
 
+	"DBM-BaradinHold",--Combined into DBM-Raids-Cata
+	"DBM-BastionTwilight",--Combined into DBM-Raids-Cata
+	"DBM-BlackwingDescent",--Combined into DBM-Raids-Cata
+	"DBM-DragonSoul",--Combined into DBM-Raids-Cata
+	"DBM-Firelands",--Combined into DBM-Raids-Cata
+	"DBM-ThroneFourWinds",--Combined into DBM-Raids-Cata
+
 	"DBM-Highmaul",--Combined into DBM-Raids-WoD
 	"DBM-BlackrockFoundry",--Combined into DBM-Raids-WoD
 	"DBM-HellfireCitadel",--Combined into DBM-Raids-WoD
@@ -10772,6 +10779,22 @@ do
 
 	function bossModPrototype:NewAddsCustomTimer(...)
 		return newTimer(self, "addscustom", ...)
+	end
+
+	function bossModPrototype:NewCDNPTimer(...)
+		return newTimer(self, "cdnp", ...)
+	end
+
+	function bossModPrototype:NewNextNPTimer(...)
+		return newTimer(self, "nextnp", ...)
+	end
+
+	function bossModPrototype:NewCDCountNPTimer(...)
+		return newTimer(self, "cdcountnp", ...)
+	end
+
+	function bossModPrototype:NewNextCountNPTimer(...)
+		return newTimer(self, "nextcountnp", ...)
 	end
 
 	function bossModPrototype:NewAITimer(...)
