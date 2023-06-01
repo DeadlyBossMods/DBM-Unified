@@ -11008,13 +11008,22 @@ end
 function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
 	if self.Options["PrivateAuraSound"..auraspellId] then
 		if not self.paSounds then self.paSounds = {} end
+		local soundId = self.Options["PrivateAuraSound"..auraspellId.."SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
 		--Check valid voice pack sound
 		local chosenVoice = DBM.Options.ChosenVoicePack2
 		if chosenVoice ~= "None" and not voiceSessionDisabled and voiceVersion <= SWFilterDisabled then
-			mediaPath = "Interface\\AddOns\\DBM-VP"..chosenVoice.."\\"..voice..".ogg"
+			local isVoicePackUsed
+			--Vet if user has voice pack enabled by sound ID
+			if type(soundId) == "number" and soundId < 5 then--Value 1-4 are SW1 defaults, otherwise it's file data ID and handled by Custom
+				isVoicePackUsed = DBM.Options["VPReplacesSA"..soundId]
+			else
+				isVoicePackUsed = DBM.Options.VPReplacesCustom
+			end
+			if isVoicePackUsed then
+				mediaPath = "Interface\\AddOns\\DBM-VP"..chosenVoice.."\\"..voice..".ogg"
+			end
 		else
-			local soundId = self.Options["PrivateAuraSound"..auraspellId.."SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 			mediaPath = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId
 		end
 		--Absolute media path is still a number, so at this point we know it's file data Id, we need to set soundFileID
