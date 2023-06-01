@@ -381,7 +381,9 @@ do
 				end
 			end
 			frame.myheight = 0
-			frame2.myheight = 0
+			if frame2 then
+				frame2.myheight = 0
+			end
 		end
 		local buttonText
 		if desc then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
@@ -442,7 +444,11 @@ do
 		end
 		button.textObj = buttonText
 		button.text = desc or CL.UNKNOWN
-		button.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
+		if frame2 then
+			button.widthPad = frame and frame:GetWidth() + frame2:GetWidth() or 0
+		else
+			button.widthPad = frame and frame:GetWidth() or 0
+		end
 		buttonText:SetWidth(self.frame:GetWidth() - button.widthPad)
 		if textLeft then
 			buttonText:ClearAllPoints()
