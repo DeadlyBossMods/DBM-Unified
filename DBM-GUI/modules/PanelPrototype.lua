@@ -374,7 +374,7 @@ do
 					frame2:SetSize(25, 25)
 					frame2:SetText("|TInterface/FriendsFrame/UI-FriendsFrame-Note.blp:14:0:2:-1|t")
 					frame2.mytype = "button"
-					frame2:SetScript("OnClick", function(self)
+					frame2:SetScript("OnClick", function()
 						DBM:ShowNoteEditor(mod, modvar, noteSpellName)
 					end)
 					textPad = 2
@@ -403,15 +403,15 @@ do
 				else -- "journal:contentType:contentID:difficulty"
 					local _, contentType, contentID = strsplit(":", data)
 					if contentType == "2" then
-						local name, description = DBM:EJ_GetSectionInfo(tonumber(contentID))
-						GameTooltip:AddLine(name or CL.UNKNOWN, 255, 255, 255, 0)
+						local spellName, spellDesc = DBM:EJ_GetSectionInfo(tonumber(contentID))
+						GameTooltip:AddLine(spellName or CL.UNKNOWN, 255, 255, 255, 0)
 						GameTooltip:AddLine(" ")
-						GameTooltip:AddLine(description or CL.UNKNOWN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+						GameTooltip:AddLine(spellDesc or CL.UNKNOWN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
 					end
 				end
 				GameTooltip:Show()
 				currActiveButton = self:GetParent()
-				updateFrame:SetScript("OnUpdate", function(self)
+				updateFrame:SetScript("OnUpdate", function()
 					local inHitBox = GetCursorPosition() - currActiveButton:GetCenter() < -100
 					if currActiveButton.fakeHighlight and not inHitBox then
 						currActiveButton:UnlockHighlight()
