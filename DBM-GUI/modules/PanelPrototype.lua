@@ -383,6 +383,8 @@ do
 			frame.myheight = 0
 			if frame2 then
 				frame2.myheight = 0
+			else
+				textPad = 37
 			end
 		end
 		local buttonText
