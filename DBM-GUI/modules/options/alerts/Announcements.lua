@@ -93,15 +93,15 @@ local Sounds = DBM_GUI:MixinSharedMedia3("sound", {
 	},
 	{
 		text	= "RaidWarning",
-		value	= 8959 -- "Sound\\interface\\RaidWarning.ogg"
+		value	= 567397 -- "Sound\\interface\\RaidWarning.ogg"
 	},
 	{
 		text	= "Classic",
-		value	= isRetail and 11742 or 6674 -- "Sound\\Doodad\\BellTollNightElf.ogg"
+		value	= 566558 -- "Sound\\Doodad\\BellTollNightElf.ogg"
 	},
 	{
 		text	= "Ding",
-		value	= 12889 -- "Sound\\interface\\AlarmClockWarning3.ogg"
+		value	= 567458 -- "Sound\\interface\\AlarmClockWarning3.ogg"
 	}
 })
 

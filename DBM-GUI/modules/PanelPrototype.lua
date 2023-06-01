@@ -272,26 +272,26 @@ do
 		{ text = "SA 2", value = 2 },
 		{ text = "SA 3", value = 3 },
 		{ text = "SA 4", value = 4 },
-		-- Inject DBMs custom media that's not available to LibSharedMedia because it uses SoundKit Id (which LSM doesn't support)
+		-- Inject DBMs custom media that's not available to LibSharedMedia because I haven't added it yet
 		--{ text = "AirHorn (DBM)", value = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg" },
-		{ text = "Algalon: Beware!", value = isRetail and 15391 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
-		{ text = "BB Wolf: Run Away", value = not isClassic and 9278 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg" },
-		{ text = "Illidan: Not Prepared", value = not isClassic and 11466 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\BLACK_Illidan_04.ogg" },
-		{ text = "Illidan: Not Prepared2", value = isRetail and 68563 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\VO_703_Illidan_Stormrage_03.ogg" },
-		{ text = "Kil'Jaeden: Destruction", value = not isClassic and 12506 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\KILJAEDEN02.ogg" },
-		{ text = "Loatheb: I see you", value = isRetail and 128466 or 8826 },
-		{ text = "Night Elf Bell", value = isRetail and 11742 or 6674 },
-		{ text = "PvP Flag", value = 8174 },
+		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },
+		{ text = "BB Wolf: Run Away", value = not isClassic and 552035 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\HoodWolfTransformPlayer01.ogg" },
+		{ text = "Illidan: Not Prepared", value = not isClassic and 552503 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\BLACK_Illidan_04.ogg" },
+		{ text = "Illidan: Not Prepared2", value = isRetail and 1412178 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\VO_703_Illidan_Stormrage_03.ogg" },
+		{ text = "Kil'Jaeden: Destruction", value = not isClassic and 553193 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\KILJAEDEN02.ogg" },
+		{ text = "Loatheb: I see you", value = 554236 },
+		{ text = "Night Elf Bell", value = 566558 },
+		{ text = "PvP Flag", value = 569200 },
 	})
 	if isRetail then
-		tinsert(sounds, { text = "Blizzard Raid Emote", value = 37666 })
-		tinsert(sounds, { text = "C'Thun: You Will Die!", value = 8585 })
-		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 11965 })
-		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 11052 })
-		tinsert(sounds, { text = "Lady Malande: Flee", value = 11482 })
-		tinsert(sounds, { text = "Milhouse: Light You Up", value = 49764 })
-		tinsert(sounds, { text = "Void Reaver: Marked", value = 11213 })
-		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 15757 })
+		tinsert(sounds, { text = "Blizzard Raid Emote", value = 876098 })
+		tinsert(sounds, { text = "C'Thun: You Will Die!", value = 546633 })
+		tinsert(sounds, { text = "Headless Horseman: Laugh", value = 551703 })
+		tinsert(sounds, { text = "Kaz'rogal: Marked", value = 553050 })
+		tinsert(sounds, { text = "Lady Malande: Flee", value = 553566 })
+		tinsert(sounds, { text = "Milhouse: Light You Up", value = 555337 })
+		tinsert(sounds, { text = "Void Reaver: Marked", value = 563787 })
+		tinsert(sounds, { text = "Yogg Saron: Laugh", value = 564859 })
 	end
 
 	local function RGBPercToHex(r, g, b)

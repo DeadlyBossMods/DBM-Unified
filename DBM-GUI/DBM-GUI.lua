@@ -118,8 +118,7 @@ do
 						ins.texture = true
 					elseif mediatype == "font" then
 						ins.font = true
-					-- Only insert paths from addons folder, ignore file data ID, since there is no clean way to handle supporitng both FDID and soundkit at same time
-					elseif mediatype == "sound" and type(v) == "string" and v:lower():find("addons") then
+					elseif mediatype == "sound" then--and type(v) == "string" and v:lower():find("addons")
 						ins.sound = true
 					end
 					if ins.texture or ins.font or ins.sound then
