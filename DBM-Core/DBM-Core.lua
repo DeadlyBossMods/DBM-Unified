@@ -11022,6 +11022,8 @@ function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersio
 			end
 			if isVoicePackUsed then
 				mediaPath = "Interface\\AddOns\\DBM-VP"..chosenVoice.."\\"..voice..".ogg"
+			else
+				mediaPath = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId
 			end
 		else
 			mediaPath = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId
