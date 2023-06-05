@@ -596,7 +596,7 @@ local tinsert, tremove, twipe, tsort, tconcat = table.insert, table.remove, tabl
 local type, select = type, select
 local GetTime = GetTime
 local bband = bit.band
-local floor, mhuge, mmin, mmax, mrandom = math.floor, math.huge, math.min, math.max, math.random
+local mabs, floor, mhuge, mmin, mmax, mrandom = math.abs, math.floor, math.huge, math.min, math.max, math.random
 local GetNumGroupMembers, GetRaidRosterInfo = GetNumGroupMembers, GetRaidRosterInfo
 local UnitName, GetUnitName = UnitName, GetUnitName
 local IsInRaid, IsInGroup, IsInInstance = IsInRaid, IsInGroup, IsInInstance
@@ -10862,7 +10862,7 @@ do
 
 	function enragePrototype:Start(timer)
 		timer = timer or self.timer or 600
-		timer = timer <= 0 and self.timer - timer or timer
+		timer = timer <= 0 and self.timer - mabs(timer) or timer
 		self.bar:SetTimer(timer)
 		self.bar:Start()
 		if self.warning1 then
