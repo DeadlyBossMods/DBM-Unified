@@ -74,27 +74,27 @@ do
 		defeat = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
-			{text = "Alizabal: Incompetent Raiders",value = 25780, length=4},--"Sound\\Creature\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.ogg"
-			{text = "Bwonsamdi: Over Your Head",value = 109293, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_35_m.ogg"
-			{text = "Bwonsamdi: Pour Little Thing",value = 109295, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_37_m.ogg"
-			{text = "Bwonsamdi: Impressive Death",value = 109296, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_38_m.ogg"
-			{text = "Bwonsamdi: All That Armor",value = 109308, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_50_m.ogg"
-			{text = "Kologarn: You Fail",value = 15588, length=4},--"Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg"
-			{text = "Hodir: Tragic",value = 15553, length=4},--"Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg"
-			{text = "Scrollsage Nola: Cycle",value = 109069, length=4},--"sound/creature/scrollsage_nola/vo_801_scrollsage_nola_34_f.ogg"
-			{text = "Thorim: Failures",value = 15742, length=4},--"Sound\\Creature\\Thorim\\UR_Thorim_P1Wipe01.ogg"
-			{text = "Valithria: Failures",value = 17067, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
-			{text = "Yogg-Saron: Laugh",value = 15757, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
+			{text = "Alizabal: Incompetent Raiders",value = 572130, length=4},--"Sound\\Creature\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.ogg"
+			{text = "Bwonsamdi: Over Your Head",value = 2016732, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_35_m.ogg"
+			{text = "Bwonsamdi: Pour Little Thing",value = 2016734, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_37_m.ogg"
+			{text = "Bwonsamdi: Impressive Death",value = 2016735, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_38_m.ogg"
+			{text = "Bwonsamdi: All That Armor",value = 2016747, length=4},--"Sound\\Creature\\bwonsamdi\\vo_801_bwonsamdi_50_m.ogg"
+			{text = "Kologarn: You Fail",value = 553345, length=4},--"Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg"
+			{text = "Hodir: Tragic",value = 552023, length=4},--"Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg"
+			{text = "Scrollsage Nola: Cycle",value = 2015891, length=4},--"sound/creature/scrollsage_nola/vo_801_scrollsage_nola_34_f.ogg"
+			{text = "Thorim: Failures",value = 562111, length=4},--"Sound\\Creature\\Thorim\\UR_Thorim_P1Wipe01.ogg"
+			{text = "Valithria: Failures",value = 563333, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
+			{text = "Yogg-Saron: Laugh",value = 564859, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
 		}
 	elseif isWrath then
 		defeat = {
 			{text = CL.NONE,value  = "None"},
 			{text = CL.RANDOM,value  = "Random"},
-			{text = "Kologarn: You Fail",value = 15588, length=4},--"Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg"
-			{text = "Hodir: Tragic",value = 15553, length=4},--"Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg"
-			{text = "Thorim: Failures",value = 15742, length=4},--"Sound\\Creature\\Thorim\\UR_Thorim_P1Wipe01.ogg"
-			{text = "Valithria: Failures",value = 17067, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
-			{text = "Yogg-Saron: Laugh",value = 15757, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
+			{text = "Kologarn: You Fail",value = 553345, length=4},--"Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.ogg"
+			{text = "Hodir: Tragic",value = 552023, length=4},--"Sound\\Creature\\Hodir\\UR_Hodir_Slay01.ogg"
+			{text = "Thorim: Failures",value = 562111, length=4},--"Sound\\Creature\\Thorim\\UR_Thorim_P1Wipe01.ogg"
+			{text = "Valithria: Failures",value = 563333, length=4},--"Sound\\Creature\\ValithriaDreamwalker\\IC_Valithria_Berserk01.ogg"
+			{text = "Yogg-Saron: Laugh",value = 564859, length=4},--"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.ogg"
 		}
 	else
 		defeat = {
