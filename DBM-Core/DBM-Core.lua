@@ -10380,13 +10380,13 @@ do
 	function timerPrototype:Update(elapsed, totalTime, ...)
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
-		if self:GetTime(...) == 0 then
-			self:Start(totalTime, ...)
-		end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
+		if not bar then
+			bar = self:Start(totalTime, ...)
+		end
 		fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
-		if bar then
+		if bar then -- still need to check as :Start() can return nil instead of actually starting the timer
 			local newRemaining = totalTime-elapsed
 			if not bar.keep and newRemaining > 0 then
 				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
@@ -10412,33 +10412,31 @@ do
 	function timerPrototype:AddTime(extendAmount, ...)
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
-		if self:GetTime(...) == 0 then
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		local bar = DBT:GetBar(id)
+		if not bar then
 			return self:Start(extendAmount, ...)
 		else
-			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			local bar = DBT:GetBar(id)
-			if bar then
-				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
-				if elapsed and total then
-					local newRemaining = (total+extendAmount) - elapsed
-					if not bar.keep then
-					--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
-						self.mod:Unschedule(removeEntry, self.startedTimers, id)
-						self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
-					end
-					if self.option then
-						local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-						if (type(countVoice) == "string" or countVoice > 0) then
-							DBM:Unschedule(playCountSound, id)
-							if not bar.fade then--Don't start countdown voice if it's faded bar
-								playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
-								DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
-							end
+			local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
+			if elapsed and total then
+				local newRemaining = (total+extendAmount) - elapsed
+				if not bar.keep then
+				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
+					self.mod:Unschedule(removeEntry, self.startedTimers, id)
+					self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
+				end
+				if self.option then
+					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+					if (type(countVoice) == "string" or countVoice > 0) then
+						DBM:Unschedule(playCountSound, id)
+						if not bar.fade then--Don't start countdown voice if it's faded bar
+							playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
+							DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
 						end
 					end
-					fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
-					return DBT:UpdateBar(id, elapsed, total+extendAmount)
 				end
+				fireEvent("DBM_TimerUpdate", id, elapsed, total+extendAmount)
+				return DBT:UpdateBar(id, elapsed, total+extendAmount)
 			end
 		end
 	end
@@ -10446,41 +10444,39 @@ do
 	function timerPrototype:RemoveTime(reduceAmount, ...)
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
-		if self:GetTime(...) == 0 then
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		local bar = DBT:GetBar(id)
+		if not bar then
 			return--Do nothing
 		else
-			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			local bar = DBT:GetBar(id)
-			if bar then
-				if not bar.keep then
-					self.mod:Unschedule(removeEntry, self.startedTimers, id)--Needs to be unscheduled here, or the entry might just get left in table until original expire time, if new expire time is less than 0
-				end
-				DBM:Unschedule(playCountSound, id)--Needs to be unscheduled here,or countdown might not be canceled if removing time made it cease to have a > 0 value
-				local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
-				if elapsed and total then
-					local newRemaining = (total-reduceAmount) - elapsed
-					if newRemaining > 0 then
-						--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
-						if not bar.keep then
-							self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
-						end
-						if self.option and newRemaining > 2 then
-							local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
-							if (type(countVoice) == "string" or countVoice > 0) then
-								if not bar.fade then--Don't start countdown voice if it's faded bar
-									if newRemaining > 2 then
-										playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
-										DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:"..id)
-									end
+			if not bar.keep then
+				self.mod:Unschedule(removeEntry, self.startedTimers, id)--Needs to be unscheduled here, or the entry might just get left in table until original expire time, if new expire time is less than 0
+			end
+			DBM:Unschedule(playCountSound, id)--Needs to be unscheduled here,or countdown might not be canceled if removing time made it cease to have a > 0 value
+			local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
+			if elapsed and total then
+				local newRemaining = (total-reduceAmount) - elapsed
+				if newRemaining > 0 then
+					--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
+					if not bar.keep then
+						self.mod:Schedule(newRemaining, removeEntry, self.startedTimers, id)
+					end
+					if self.option and newRemaining > 2 then
+						local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
+						if (type(countVoice) == "string" or countVoice > 0) then
+							if not bar.fade then--Don't start countdown voice if it's faded bar
+								if newRemaining > 2 then
+									playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
+									DBM:Debug("Updating a countdown after a timer RemoveTime call for timer ID:"..id)
 								end
 							end
 						end
-						fireEvent("DBM_TimerUpdate", id, elapsed, total-reduceAmount)
-						return DBT:UpdateBar(id, elapsed, total-reduceAmount)
-					else--New remaining less than 0
-						fireEvent("DBM_TimerStop", id)
-						return DBT:CancelBar(id)
 					end
+					fireEvent("DBM_TimerUpdate", id, elapsed, total-reduceAmount)
+					return DBT:UpdateBar(id, elapsed, total-reduceAmount)
+				else--New remaining less than 0
+					fireEvent("DBM_TimerStop", id)
+					return DBT:CancelBar(id)
 				end
 			end
 		end
