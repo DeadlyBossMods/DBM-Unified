@@ -393,6 +393,7 @@ DBM.DefaultOptions = {
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
+--	FakeBWCallback = true,
 	AITimer = true,
 	ShortTimerText = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
