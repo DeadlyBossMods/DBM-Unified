@@ -393,7 +393,6 @@ DBM.DefaultOptions = {
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
---	FakeBWCallback = true,
 	AITimer = true,
 	ShortTimerText = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
@@ -491,6 +490,10 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Highmaul",--Combined into DBM-Raids-WoD
 	"DBM-BlackrockFoundry",--Combined into DBM-Raids-WoD
 	"DBM-HellfireCitadel",--Combined into DBM-Raids-WoD
+
+	"DBM-SanctumOfDomination",--Combined into DBM-Raids-Shadowlands
+	"DBM-CastleNathria",--Combined into DBM-Raids-Shadowlands
+	"DBM-Sepulcher",--Combined into DBM-Raids-Shadowlands
 }
 if isRetail then
 	--Retail doesn't use this folder, classic era, bc, and wrath still do
@@ -5977,6 +5980,7 @@ end
 
 --Public api for requesting what phase a boss is in, in case they missed the DBM_SetStage callback
 --ModId would be journal Id or mod string of mod.
+--Encounter ID, so api can be used in event two or more bosses are engaged at same time, ID can be used to verify which encounter they're requesting
 --If not mod is not provided, it'll simply return stage for first boss in combat table if a boss is engaged
 function DBM:GetStage(modId)
 	if modId then
@@ -5988,7 +5992,7 @@ function DBM:GetStage(modId)
 		if #inCombat > 0 then--At least one boss is engaged
 			local mod = inCombat[1]--Get first mod in table
 			if mod then
-				return mod.vb.phase or 0, mod.vb.stageTotality or 0
+				return mod.vb.phase or 0, mod.vb.stageTotality or 0, mod.multiEncounterPullDetection and mod.multiEncounterPullDetection[1] or mod.encounterId
 			end
 		end
 	end
@@ -7084,7 +7088,7 @@ function bossModPrototype:GetStage(stage, checkType, useTotal)
 		end
 		return false
 	else
-		return currentStage, currentTotal
+		return currentStage, currentTotal--This api doesn't need encounter Id return, since this is the local mod prototype version, which means it's already linked to specific encounter
 	end
 end
 
