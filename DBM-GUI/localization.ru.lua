@@ -460,7 +460,7 @@ L.AdvancedAutologBosses		= "Автоматически записывать бо
 L.LogOnlyNonTrivial			= "Записывать только специфические бои с рейдовыми боссами (обычные или более сложные актуальные рейды) и Миф+ подземелья"
 --
 L.Area_3rdParty				= "Параметры аддонов третих лиц"
---L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
+L.oRA3AnnounceConsumables	= "Анонсировать проверку снаряжения oRA3 при старте боя"
 L.Area_Invite				= "Параметры приглашений"
 L.AutoAcceptFriendInvite	= "Автоматически принимать приглашения в группу от друзей"
 L.AutoAcceptGuildInvite		= "Автоматически принимать приглашения в группу от согильдийцев"
