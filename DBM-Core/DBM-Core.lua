@@ -491,6 +491,18 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-BlackrockFoundry",--Combined into DBM-Raids-WoD
 	"DBM-HellfireCitadel",--Combined into DBM-Raids-WoD
 
+	"DBM-AntorusBurningThrone",--Combined into DBM-Raids-Legion
+	"DBM-EmeraldNightmare",--Combined into DBM-Raids-Legion
+	"DBM-Nighthold",--Combined into DBM-Raids-Legion
+	"DBM-TombofSargeras",--Combined into DBM-Raids-Legion
+	"DBM-TrialofValor",--Combined into DBM-Raids-Legion
+
+	"DBM-Uldir",--Combined into DBM-Raids-BfA
+	"DBM-CrucibleofStorms",--Combined into DBM-Raids-BfA
+	"DBM-ZuldazarRaid",--Combined into DBM-Raids-BfA
+	"DBM-EternalPalace",--Combined into DBM-Raids-BfA
+	"DBM-Nyalotha",--Combined into DBM-Raids-BfA
+
 	"DBM-SanctumOfDomination",--Combined into DBM-Raids-Shadowlands
 	"DBM-CastleNathria",--Combined into DBM-Raids-Shadowlands
 	"DBM-Sepulcher",--Combined into DBM-Raids-Shadowlands
