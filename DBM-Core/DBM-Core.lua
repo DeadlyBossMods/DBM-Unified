@@ -490,6 +490,10 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Highmaul",--Combined into DBM-Raids-WoD
 	"DBM-BlackrockFoundry",--Combined into DBM-Raids-WoD
 	"DBM-HellfireCitadel",--Combined into DBM-Raids-WoD
+
+	"DBM-SanctumOfDomination",--Combined into DBM-Raids-Shadowlands
+	"DBM-CastleNathria",--Combined into DBM-Raids-Shadowlands
+	"DBM-Sepulcher",--Combined into DBM-Raids-Shadowlands
 }
 if isRetail then
 	--Retail doesn't use this folder, classic era, bc, and wrath still do
