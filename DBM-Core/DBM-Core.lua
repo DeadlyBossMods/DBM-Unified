@@ -8500,12 +8500,10 @@ do
 				end
 			end
 			local announceCount
-			if self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" then
+			if self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount" then--Don't use find "count" here, it'll match countdown
 				--Stage triggers don't pass count, but they do not need to, there is a stage callback and trigger option in WA that should be used
-				for i = 1, #argTable do
-					if type(argTable[i]) == "number" then
-						announceCount = argTable[i]
-					end
+				if type(argTable[1]) == "number" then
+					announceCount = argTable[1]
 				end
 			end
 			local message = pformat(self.text, unpack(argTable))
@@ -9342,7 +9340,7 @@ do
 				if type(announceCount) == "string" then
 					--Probably a hypehnated double count like inferno slice or marked for death
 					--This is pretty atypical in newer content cause it's a bit hacky
-					local mainCount = string.split("-", noteCount)
+					local mainCount = string.split("-", announceCount)
 					announceCount = tonumber(mainCount)
 				end
 			end
@@ -9357,6 +9355,7 @@ do
 				local noteText = self.mod.Options[self.option .. "SWNote"]
 				if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
 					if announceCount then--Counts support different note for EACH count
+						local notesTable = {string.split("/", noteText)}
 						noteText = notesTable[announceCount]
 						if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
 							local hasPlayerName = noteText:find(playerName)
