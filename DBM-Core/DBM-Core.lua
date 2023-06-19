@@ -9333,9 +9333,9 @@ do
 			local announceCount
 			if self.announceType:find("count") then
 				if self.announceType == "interruptcount" then
-					announceCount = argTable[2]--Count should be first arg in table
+					announceCount = argTable[2]--Count should be second arg in table
 				else
-					announceCount = argTable[1]--Count should be second arg in table
+					announceCount = argTable[1]--Count should be first arg in table
 				end
 				if type(announceCount) == "string" then
 					--Probably a hypehnated double count like inferno slice or marked for death
