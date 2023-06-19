@@ -8499,6 +8499,15 @@ do
 					end
 				end
 			end
+			local announceCount
+			if self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" then
+				--Stage triggers don't pass count, but they do not need to, there is a stage callback and trigger option in WA that should be used
+				for i = 1, #argTable do
+					if type(argTable[i]) == "number" then
+						announceCount = argTable[i]
+					end
+				end
+			end
 			local message = pformat(self.text, unpack(argTable))
 			local text = ("%s%s%s|r%s"):format(
 				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
@@ -8544,15 +8553,16 @@ do
 			--Message: Full message text
 			--Icon: Texture path/id for icon
 			--Type: Announce type
-			----Types: you, target, targetsource, spell, ends, endtarget, fades, adds, count, stack, cast, soon, sooncount, prewarn, bait, stage, stagechange, prestage, moveto
+			----Types: you, target, targetcount, targetsource, spell, ends, endtarget, fades, adds, count, stack, cast, soon, sooncount, prewarn, bait, stage, stagechange, prestage, moveto
 			------Personal/Role (Applies to you, or your job): you, stack, bait, moveto, fades
-			------General Target Messages (informative, doesn't usually apply to you): target, targetsource
+			------General Target Messages (informative, doesn't usually apply to you): target, targetsource, targetcount
 			------Fight Changes (Stages, adds, boss buff/debuff, etc): stage, stagechange, prestage, adds, ends, endtarget
 			------General (can really apply to anything): spell, count, soon, sooncount, prewarn
 			--SpellId: Raw spell or encounter journal Id if available.
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-			--boolean: Whether or not this warning is a special warning (higher priority).
-			fireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false)
+			--boolean: Whether or not this warning is a special warning (higher priority). BW would call this "emphasized"
+			--announceCount: If it's a count announce, this will provide access to the number value of that count. This, along with spellId should be used instead of message text scanning for most weak auras that need to target specific count casts
+			fireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false, announceCount)
 			if self.sound > 0 then--0 means muted, 1 means no voice pack support, 2 means voice pack version/support
 				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
@@ -9321,6 +9331,21 @@ do
 					end
 				end
 			end
+			--Grab count for both the callback and the notes feature
+			local announceCount
+			if self.announceType:find("count") then
+				if self.announceType == "interruptcount" then
+					announceCount = argTable[2]--Count should be first arg in table
+				else
+					announceCount = argTable[1]--Count should be second arg in table
+				end
+				if type(announceCount) == "string" then
+					--Probably a hypehnated double count like inferno slice or marked for death
+					--This is pretty atypical in newer content cause it's a bit hacky
+					local mainCount = string.split("-", noteCount)
+					announceCount = tonumber(mainCount)
+				end
+			end
 			local message = pformat(self.text, unpack(argTable))
 			local text = ("%s%s%s"):format(
 				(DBM.Options.SpecialWarningIcon and self.icon and textureCode:format(self.icon)) or "",
@@ -9331,29 +9356,15 @@ do
 			if self.option then
 				local noteText = self.mod.Options[self.option .. "SWNote"]
 				if noteText and type(noteText) == "string" and noteText ~= "" then--Filter false bool and empty strings
-					local count1 = self.announceType == "count" or self.announceType == "switchcount" or self.announceType == "targetcount"
-					local count2 = self.announceType == "interruptcount"
-					if count1 or count2 then--Counts support different note for EACH count
-						local noteCount
-						local notesTable = {string.split("/", noteText)}
-						if count1 then
-							noteCount = argTable[1]--Count should be first arg in table
-						elseif count2 then
-							noteCount = argTable[2]--Count should be second arg in table
-						end
-						if type(noteCount) == "string" then
-							--Probably a hypehnated double count like inferno slice or marked for death
-							local mainCount = string.split("-", noteCount)
-							noteCount = tonumber(mainCount)
-						end
-						noteText = notesTable[noteCount]
+					if announceCount then--Counts support different note for EACH count
+						noteText = notesTable[announceCount]
 						if noteText and type(noteText) == "string" and noteText ~= "" then--Refilter after string split to make sure a note for this count exists
 							local hasPlayerName = noteText:find(playerName)
 							if DBM.Options.SWarnNameInNote and hasPlayerName then
 								noteHasName = 5
 							end
 							--Terminate special warning, it's an interrupt count warning without player name and filter enabled
-							if count2 and DBM.Options.FilterInterruptNoteName and not hasPlayerName then return end
+							if (self.announceType == "interruptcount") and DBM.Options.FilterInterruptNoteName and not hasPlayerName then return end
 							noteText = " ("..noteText..")"
 							text = text..noteText
 						end
@@ -9415,8 +9426,9 @@ do
 			------Personal/Role (Applies to you, or your job): Everything Else
 			--SpellId: Raw spell or encounter journal Id if available.
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
-			--boolean: Whether or not this warning is a special warning (higher priority).
-			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true)
+			--boolean: Whether or not this warning is a special warning (higher priority). BW would call this "emphasized"
+			--announceCount: If it's a count announce, this will provide access to the number value of that count. This, along with spellId should be used instead of message text scanning for most weak auras that need to target specific count casts
+			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true, announceCount)
 			if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or self.mod.Options[self.option.."SWSound"] ~= "None") then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
@@ -10046,7 +10058,11 @@ do
 			return self:Start(nil, timer, ...) -- first argument is optional!
 		end
 		if not self.option or self.mod.Options[self.option] then
-			if self.type and (self.type == "cdcount" or self.type == "nextcount") and not self.allowdouble then--remove previous timer.
+			local isCountTimer = false
+			if self.type and (self.type == "cdcount" or self.type == "nextcount") then
+				isCountTimer = true
+			end
+			if isCountTimer and not self.allowdouble then--remove previous timer.
 				for i = #self.startedTimers, 1, -1 do
 					if DBM.Options.BadTimerAlert or DBM.Options.DebugMode and DBM.Options.DebugLevel > 1 then
 						local bar = DBT:GetBar(self.startedTimers[i])
@@ -10187,12 +10203,17 @@ do
 			--fade: true or nil, whether or not to fade a bar (set alpha to usersetting/2)
 			--spellName: Sent so users can use a spell name instead of spellId, if they choose. Mostly to be more classic wow friendly, spellID is still preferred method (even for classic)
 			--MobGUID if it could be parsed out of args
-			local guid
+			--timerCount if current timer is a count timer. Returns number (count value) needed to have weak auras that trigger off a specific timer count without using localized message text
+			local guid, timerCount
 			if select("#", ...) > 0 then--If timer has args
 				for i = 1, select("#", ...) do
 					local v = select(i, ...)
 					if DBM:IsNonPlayableGUID(v) then--Then scan them for a mob guid
 						guid = v--If found, guid will be passed in DBM_TimerStart callback
+					end
+					--Not most efficient way to do it, but since it's already being done for guid, it's best not to repeat the work
+					if isCountTimer and type(v) == "number" then
+						timerCount = v
 					end
 				end
 			end
@@ -10201,7 +10222,7 @@ do
 			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 				guid = UnitGUID("boss1")
 			end
-			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid)
+			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 			if guid and DBM.Options.DontShowTimersWithNameplates and Plater and Plater.db.profile.bossmod_support_bars_enabled and self.mod.isTrashMod then
