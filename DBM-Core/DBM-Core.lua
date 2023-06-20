@@ -10624,6 +10624,7 @@ do
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name],
+				spellId = spellId,--Allows Localized timer text to still have a spellId arg weak auras can latch onto
 				timer = timer,
 				id = name,
 				icon = icon,
