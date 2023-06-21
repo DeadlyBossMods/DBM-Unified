@@ -506,6 +506,8 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-SanctumOfDomination",--Combined into DBM-Raids-Shadowlands
 	"DBM-CastleNathria",--Combined into DBM-Raids-Shadowlands
 	"DBM-Sepulcher",--Combined into DBM-Raids-Shadowlands
+
+	"DBM-DMF",--Combined into DBM-WorldEvents
 }
 if isRetail then
 	--Retail doesn't use this folder, classic era, bc, and wrath still do
@@ -3688,8 +3690,8 @@ function DBM:LoadMod(mod, force)
 		self:Debug("LoadMod failed because mod table not valid")
 		return false
 	end
-	--Block loading world boss mods by zoneID, except if it's a heroic warfront
-	if mod.isWorldBoss and not IsInInstance() and not force and (not isRetail or difficultyIndex ~= 149) then
+	--Block loading world boss mods by zoneID, except if it's a heroic warfront or darkmoon faire island
+	if mod.isWorldBoss and not IsInInstance() and not force and (not isRetail or difficultyIndex ~= 149) and LastInstanceMapID ~= 974 then
 		return
 	end
 	if mod.minRevision > self.Revision then
