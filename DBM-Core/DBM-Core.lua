@@ -8502,7 +8502,7 @@ do
 				end
 			end
 			local announceCount
-			if self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount" then--Don't use find "count" here, it'll match countdown
+			if self.announceType and (self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount") then--Don't use find "count" here, it'll match countdown
 				--Stage triggers don't pass count, but they do not need to, there is a stage callback and trigger option in WA that should be used
 				if type(argTable[1]) == "number" then
 					announceCount = argTable[1]
@@ -8663,6 +8663,7 @@ do
 				sound = soundOption or 1,
 				mod = self,
 				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or tonumber(icon) or 136116,
+				spellId = spellID,--For WeakAuras / other callbacks
 			},
 			mt
 		)
@@ -9333,7 +9334,7 @@ do
 			end
 			--Grab count for both the callback and the notes feature
 			local announceCount
-			if self.announceType:find("count") then
+			if self.announceType and self.announceType:find("count") then
 				if self.announceType == "interruptcount" then
 					announceCount = argTable[2]--Count should be second arg in table
 				else
@@ -9592,6 +9593,7 @@ do
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
 				difficulty = difficulty,
+				spellId = spellID,--For WeakAuras / other callbacks
 				icon = seticon,
 			},
 			mt
@@ -10197,7 +10199,7 @@ do
 			--timer: Raw timer value (number).
 			--Icon: Texture Path for Icon
 			--type: Timer type (Cooldowns: cd, cdcount, nextcount, nextsource, cdspecial, nextspecial, stage, ai. Durations: target, active, fades, roleplay. Casting: cast)
-			--spellId: Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format -%d (ie -1234 for journal section id 1234)
+			--spellId: Raw spellid if available (most timers will have spellId or EJ ID unless it's a specific timer not tied to ability such as pull or combat start or rez timers. EJ id will be in format ej%d
 			--colorID: Type classification (1-Add, 2-Aoe, 3-targeted ability, 4-Interrupt, 5-Role, 6-Stage, 7-User(custom))
 			--Mod ID: Encounter ID as string, or a generic string for mods that don't have encounter ID (such as trash, dummy/test mods)
 			--Keep: true or nil, whether or not to keep bar on screen when it expires (if true, timer should be retained until an actual TimerStop occurs or a new TimerStart with same barId happens (in which case you replace bar with new one)
@@ -10223,17 +10225,7 @@ do
 			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 				guid = UnitGUID("boss1")
 			end
-			--TODO, actually change format of all mods and calls in core to just use the BW format since it's cleaner (ej ID as number, but negative)
-			--For now, we correct it for callback compat so that EJ Ids are in same format as BW
-			local adjustedSpellId
-			if type(self.spellId) == "string" and self.spellId:match("ej%d+") then
-				adjustedSpellId = string.sub(self.spellId, 3)
-				adjustedSpellId = tonumber(adjustedSpellId)
-				adjustedSpellId = -adjustedSpellId
-			else
-				adjustedSpellId = self.spellId
-			end
-			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, adjustedSpellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
+			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 			if guid and DBM.Options.DontShowTimersWithNameplates and Plater and Plater.db.profile.bossmod_support_bars_enabled and self.mod.isTrashMod then
@@ -10531,6 +10523,7 @@ do
 					return DBT:UpdateBar(id, elapsed, total-reduceAmount)
 				else--New remaining less than 0
 					fireEvent("DBM_TimerStop", id)
+					removeEntry(self.startedTimers, id)
 					return DBT:CancelBar(id)
 				end
 			end
