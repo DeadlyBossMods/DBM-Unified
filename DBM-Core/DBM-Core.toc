@@ -71,6 +71,7 @@ modules\Scheduler.lua
 modules\DevTools.lua
 modules\Icons.lua
 modules\TargetScanning.lua
+modules\BWCallbacks.lua
 
 # Core
 DBM-Core.lua
