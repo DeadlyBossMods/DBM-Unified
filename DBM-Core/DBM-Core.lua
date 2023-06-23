@@ -10523,7 +10523,7 @@ do
 					return DBT:UpdateBar(id, elapsed, total-reduceAmount)
 				else--New remaining less than 0
 					fireEvent("DBM_TimerStop", id)
-					tremove(self.startedTimers, id)
+					removeEntry(self.startedTimers, id)
 					return DBT:CancelBar(id)
 				end
 			end
