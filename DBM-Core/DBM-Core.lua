@@ -8663,7 +8663,7 @@ do
 				sound = soundOption or 1,
 				mod = self,
 				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or tonumber(icon) or 136116,
-				spellId = spellID,
+				spellId = spellID,--For WeakAuras / other callbacks
 			},
 			mt
 		)
@@ -9593,7 +9593,7 @@ do
 				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 				hasVoice = hasVoice,
 				difficulty = difficulty,
-				spellId = spellID,
+				spellId = spellID,--For WeakAuras / other callbacks
 				icon = seticon,
 			},
 			mt
