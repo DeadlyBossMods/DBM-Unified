@@ -8502,7 +8502,7 @@ do
 				end
 			end
 			local announceCount
-			if self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount" then--Don't use find "count" here, it'll match countdown
+			if self.announceType and (self.announceType == "count" or self.announceType == "targetcount" or self.announceType == "sooncount" or self.announceType == "incomingcount") then--Don't use find "count" here, it'll match countdown
 				--Stage triggers don't pass count, but they do not need to, there is a stage callback and trigger option in WA that should be used
 				if type(argTable[1]) == "number" then
 					announceCount = argTable[1]
@@ -9333,7 +9333,7 @@ do
 			end
 			--Grab count for both the callback and the notes feature
 			local announceCount
-			if self.announceType:find("count") then
+			if self.announceType and self.announceType:find("count") then
 				if self.announceType == "interruptcount" then
 					announceCount = argTable[2]--Count should be second arg in table
 				else
