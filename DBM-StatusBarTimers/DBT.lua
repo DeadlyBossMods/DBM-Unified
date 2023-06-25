@@ -434,7 +434,7 @@ do
 		if not DBT_AllPersistentOptions[name] then
 			DBT_AllPersistentOptions[name] = {}
 		end
-		DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[name][id] or {}
+		DBT_AllPersistentOptions[DBM_UsedProfile][id] = CopyTable(DBT_AllPersistentOptions[name][id]) or {}
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
 		self.Options = DBT_AllPersistentOptions[DBM_UsedProfile][id]
 		self:Rearrange()
@@ -1146,7 +1146,7 @@ do
 			DBT_AllPersistentOptions[DBM_UsedProfile] = {}
 		end
 		if not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
-			DBT_AllPersistentOptions[DBM_UsedProfile][id] = DBT_AllPersistentOptions[DBM_UsedProfile].DBM or {}
+			DBT_AllPersistentOptions[DBM_UsedProfile][id] = CopyTable(DBT_AllPersistentOptions[DBM_UsedProfile].DBM) or {}
 			for option, value in pairs(skins[id].Defaults) do
 				DBT_AllPersistentOptions[DBM_UsedProfile][id][option] = value
 			end
