@@ -157,7 +157,7 @@ do
 	applyFakeAPI = setmetatable({}, {
 		__mode = "k",
 		__newindex = function(t, func) -- Ignore value
-			setfenv(func, fakeAPIEnv)
+			securecallfunction(setfenv, func, fakeAPIEnv)
 			rawset(t, func, true) -- Don't call __newindex again
 		end
 	})
@@ -189,8 +189,12 @@ do
 
 				-- Remove our fake API from any functions that had it applied, and restore _G
 				for func in next, applyFakeAPI do
-					setfenv(func, _G)
+					securecallfunction(setfenv, func, _G)
 				end
+
+				-- If setfenv fails or the proxy env is read out with getfenv it might be still in use somewhere.
+				-- Clear out the proxy env so all accesses still using it will go to _G through __index/__newindex.
+				table.wipe(fakeAPIEnv)
 
 				-- Move registered callbacks to BigWigs proper.
 				-- This isn't quite the same as the API not existing in the first place, but less disruptive than just abandoning the callbacks.
