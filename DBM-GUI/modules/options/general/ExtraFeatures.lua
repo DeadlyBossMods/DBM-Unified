@@ -52,4 +52,9 @@ inviteArea:CreateCheckButton(L.AutoAcceptGuildInvite, true, nil, "AutoAcceptGuil
 
 local advancedArea	= extraFeaturesPanel:CreateArea(L.Area_Advanced)
 advancedArea:CreateCheckButton(L.FakeBW, true, nil, "FakeBWVersion")
+local bwCallbacksButton = advancedArea:CreateCheckButton(L.FakeBWCallbacks, true, nil, "FakeBWCallbacks")
+bwCallbacksButton:SetScript("OnClick", function()
+	DBM.Options.FakeBWCallbacks = not DBM.Options.FakeBWCallbacks
+	DBM:UpdateBWCallbacks()
+end)
 advancedArea:CreateCheckButton(L.AITimer, true, nil, "AITimer")

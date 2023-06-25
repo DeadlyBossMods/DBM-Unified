@@ -35,6 +35,7 @@ globals = {
 	"LOCALE_zhCN",
 	"LOCALE_zhTW",
 
+	"BigWigsLoader",
 	"Plater",
 	"WeakAuras",
 

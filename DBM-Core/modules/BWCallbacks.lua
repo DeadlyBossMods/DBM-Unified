@@ -1,5 +1,12 @@
 local _, private = ...
 
+if IsAddOnLoaded("BigWigs") then
+	-- BigWigs is already loaded, so we won't want to send callbacks and there's no need to set up the infrastructure.
+	-- Lack of private.SendBWMessage signals to core that BW messages won't be used.
+	-- See bottom of file for BigWigs loading after us.
+	return
+end
+
 -------------------------
 --  DBM-to-BW mapping  --
 -------------------------
@@ -35,32 +42,27 @@ private.GetBWKey = GetBWKey
 -------------------------
 --  BW event handling  --
 -------------------------
-local RegisterBWMessage, SendBWMessage
 local applyFakeAPI -- used here as upvalue, defined in next section
-do
-	local bwCallbacks = {}
+local bwCallbacks = {}
+local function RegisterBWMessage(addon, message, callback)
+	if callback == nil then callback = message end
+	if not bwCallbacks[message] then bwCallbacks[message] = {} end
+	bwCallbacks[message][addon] = callback
+	-- callback may be a string at this point, so we can't modify the env here and have to do it in SendBWMessage
+end
 
-	function RegisterBWMessage(addon, message, callback)
-		if callback == nil then callback = message end
-		if not bwCallbacks[message] then bwCallbacks[message] = {} end
-		bwCallbacks[message][addon] = callback
-		-- callback may be a string at this point, so we can't modify the env here and have to do it in SendBWMessage
-	end
-
-	function SendBWMessage(message, mod, ...)
-		local bwMod = GetBWModule(mod)
-		for addon, callback in next, bwCallbacks[message] do
-			if type(callback) == "function" then
-				applyFakeAPI[callback] = true
-				securecallfunction(callback, message, bwMod, ...)
-			else
-				applyFakeAPI[addon[callback]] = true
-				securecallfunction(addon[callback], addon, message, bwMod, ...)
-			end
+function private.SendBWMessage(message, mod, ...)
+	local bwMod = GetBWModule(mod)
+	for addon, callback in next, bwCallbacks[message] do
+		if type(callback) == "function" then
+			applyFakeAPI[callback] = true
+			securecallfunction(callback, message, bwMod, ...)
+		else
+			applyFakeAPI[addon[callback]] = true
+			securecallfunction(addon[callback], addon, message, bwMod, ...)
 		end
 	end
 end
-private.SendBWMessage = SendBWMessage
 
 ---------------------------------
 --  Fake BW API for WeakAuras  --
@@ -95,6 +97,8 @@ do
 			IterateBossModules = function() return next, fakeModules end,
 		},
 	}, { __index = _G, __newindex = _G })
+	-- TODO: We blindly assume the function's original env was _G.
+	-- This is currently true for the WeakAuras functions we're interested in. Use of setfenv is rare in general except for sandboxing user code.
 
 	-- Modify the env of each callback if needed
 	-- Use table directly rather than calling helper func unconditionally or checking "if t[func]" manually
@@ -119,8 +123,32 @@ do
 		frame:SetScript("OnEvent", function(self, event, arg)
 			if event == "ADDON_LOADED" and arg == "WeakAuras" then
 				hookWA()
-				self:UnregisterEvent(event)
-				self:SetScript("OnEvent", nil)
+			elseif event == "ADDON_LOADED" and arg == "BigWigs" then
+				-- Other addons messing with load order and Enable/Disable/LoadAddOn can make BigWigs load at any time after us.
+				-- If BigWigs loads delayed, its API consumers might break or misbehave anyway, but do our best to remove DBM from the equation.
+
+				-- Stop core from calling SendBWMessage
+				private.SendBWMessage = nil
+				DBM:UpdateBWCallbacks()
+
+				-- Ensure we won't insert our fake API anymore even if WeakAuras loads even later.
+				frame:UnregisterEvent("ADDON_LOADED")
+				frame:SetScript("OnEvent", nil)
+
+				-- Remove our fake API from any functions that had it applied, and restore _G
+				for func in next, applyFakeAPI do
+					setfenv(func, _G)
+				end
+
+				-- Move registered callbacks to BigWigs proper.
+				-- This isn't quite the same as the API not existing in the first place, but less disruptive than just abandoning the callbacks.
+				if BigWigsLoader and BigWigsLoader.RegisterMessage then
+					for message, addons in next, bwCallbacks do
+						for addon, callback in next, addons do
+							BigWigsLoader.RegisterMessage(addon, message, callback)
+						end
+					end
+				end
 			end
 		end)
 		frame:RegisterEvent("ADDON_LOADED")
