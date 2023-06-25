@@ -103,13 +103,15 @@ end
 
 function private.SendBWMessage(message, mod, ...)
 	local bwMod = GetBWModule(mod)
-	for addon, callback in next, bwCallbacks[message] do
-		if type(callback) == "function" then
-			applyFakeAPI[callback] = true
-			securecallfunction(callback, message, bwMod, ...)
-		else
-			applyFakeAPI[addon[callback]] = true
-			securecallfunction(addon[callback], addon, message, bwMod, ...)
+	if bwCallbacks[message] then
+		for addon, callback in next, bwCallbacks[message] do
+			if type(callback) == "function" then
+				applyFakeAPI[callback] = true
+				securecallfunction(callback, message, bwMod, ...)
+			else
+				applyFakeAPI[addon[callback]] = true
+				securecallfunction(addon[callback], addon, message, bwMod, ...)
+			end
 		end
 	end
 end
