@@ -35,7 +35,9 @@ globals = {
 	"LOCALE_zhCN",
 	"LOCALE_zhTW",
 
+	"BigWigsLoader",
 	"Plater",
+	"WeakAuras",
 
 	-- Lua
 	"bit.band",
@@ -49,6 +51,7 @@ globals = {
 	"geterrorhandler",
 	"fastrandom",
 	"format",
+	"securecallfunction",
 	"strjoin",
 	"strsplit",
 	"tContains",
