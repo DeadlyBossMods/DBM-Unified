@@ -1947,7 +1947,7 @@ function DBM:CopyProfile(name)
 		self:AddMsg(L.PROFILE_COPY_ERROR_SELF)
 		return
 	end
-	DBM_AllSavedOptions[usedProfile] = DBM_AllSavedOptions[name]
+	DBM_AllSavedOptions[usedProfile] = CopyTable(DBM_AllSavedOptions[name])
 	self:AddDefaultOptions(DBM_AllSavedOptions[usedProfile], self.DefaultOptions)
 	self.Options = DBM_AllSavedOptions[usedProfile]
 	-- rearrange position
@@ -3105,8 +3105,7 @@ function DBM:CopyAllModOption(modId, sourceName, sourceProfile)
 		-- prevent nil table error
 		if not _G[savedVarsName][targetName][id] then _G[savedVarsName][targetName][id] = {} end
 		-- copy table
-		_G[savedVarsName][targetName][id][targetProfile] = {}--clear before copy
-		_G[savedVarsName][targetName][id][targetProfile] = _G[savedVarsName][sourceName][id][sourceProfile]
+		_G[savedVarsName][targetName][id][targetProfile] = CopyTable(_G[savedVarsName][sourceName][id][sourceProfile])
 		--check new option
 		local mod = self:GetModByName(id)
 		for option, optionValue in pairs(mod.Options) do

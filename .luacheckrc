@@ -45,6 +45,7 @@ globals = {
 	"time",
 
 	-- Utility functions
+	"CopyTable",
 	"geterrorhandler",
 	"fastrandom",
 	"format",
