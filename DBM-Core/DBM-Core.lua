@@ -1892,9 +1892,7 @@ end
 --  BigWigs Callbacks  --
 -------------------------
 private.inCombat = inCombat
-local SendBWMessage = private.SendBWMessage
-local GetBWStage = private.GetBWStage
-local GetBWKey = private.GetBWKey
+local SendBWMessage
 
 function DBM:UpdateBWCallbacks()
 	-- We check SendBWMessage local at call sites to see if callbacks are enabled or not
@@ -5577,7 +5575,9 @@ do
 					sendWhisper(k, msg)
 				end
 				fireEvent("DBM_Wipe", mod)
-				if SendBWMessage then SendBWMessage("BigWigs_OnBossWipe", mod) end
+				if SendBWMessage then
+					SendBWMessage("BigWigs_OnBossWipe", mod)
+				end
 			elseif not wipe and mod.stats and not mod.noStatistics then
 				mod.lastKillTime = GetTime()
 				local thisTime = GetTime() - (mod.combatInfo.pull or 0)
@@ -5667,7 +5667,9 @@ do
 					sendWhisper(k, msg)
 				end
 				fireEvent("DBM_Kill", mod)
-				if SendBWMessage then SendBWMessage("BigWigs_OnBossKill", mod) end
+				if SendBWMessage then
+					SendBWMessage("BigWigs_OnBossKill", mod)
+				end
 				if usedDifficulty == "worldboss" and mod.WBEsync then
 					if lastBossDefeat[modId..normalizedPlayerRealm] and (GetTime() - lastBossDefeat[modId..normalizedPlayerRealm] < 30) then return end--Someone else synced in last 10 seconds so don't send out another sync to avoid needless sync spam.
 					lastBossDefeat[modId..normalizedPlayerRealm] = GetTime()--Update last defeat time before we send it, so we don't handle our own sync
@@ -7099,7 +7101,9 @@ function bossModPrototype:SetStage(stage)
 	self.vb.stageTotality = self.vb.stageTotality + 1
 	if self.inCombat then--Safety, in event mod manages to run any phase change calls out of combat/during a wipe we'll just safely ignore it
 		fireEvent("DBM_SetStage", self, self.id, self.vb.phase, self.multiEncounterPullDetection and self.multiEncounterPullDetection[1] or self.encounterId, self.vb.stageTotality)--Mod, modId, Stage, Encounter Id (if available), total number of times SetStage has been called since combat start
-		if SendBWMessage then SendBWMessage("BigWigs_SetStage", self, GetBWStage(self)) end
+		if SendBWMessage then
+			SendBWMessage("BigWigs_SetStage", self, DBM:GetBWStage(self))
+		end
 		--Note, some encounters have more than one encounter Id, for these encounters, the first ID from mod is always returned regardless of actual engage ID triggered fight
 		DBM:Debug("DBM_SetStage: " .. self.vb.phase .. "/" .. self.vb.stageTotality)
 	end
@@ -8586,7 +8590,9 @@ do
 			--boolean: Whether or not this warning is a special warning (higher priority). BW would call this "emphasized"
 			--announceCount: If it's a count announce, this will provide access to the number value of that count. This, along with spellId should be used instead of message text scanning for most weak auras that need to target specific count casts
 			fireEvent("DBM_Announce", message, self.icon, self.type, self.spellId, self.mod.id, false, announceCount)
-			if SendBWMessage then SendBWMessage("BigWigs_Message", self.mod, GetBWKey(self), message, nil, self.icon) end
+			if SendBWMessage then
+				SendBWMessage("BigWigs_Message", self.mod, DBM:GetBWKey(self), message, nil, self.icon)
+			end
 			if self.sound > 0 then--0 means muted, 1 means no voice pack support, 2 means voice pack version/support
 				if self.sound > 1 and DBM.Options.ChosenVoicePack2 ~= "None" and DBM.Options.VPReplacesAnnounce and not voiceSessionDisabled and not DBM.Options.VPDontMuteSounds and self.sound <= SWFilterDisabled then return end
 				if not self.option or self.mod.Options[self.option.."SWSound"] ~= "None" then
@@ -9455,7 +9461,9 @@ do
 			--boolean: Whether or not this warning is a special warning (higher priority). BW would call this "emphasized"
 			--announceCount: If it's a count announce, this will provide access to the number value of that count. This, along with spellId should be used instead of message text scanning for most weak auras that need to target specific count casts
 			fireEvent("DBM_Announce", text, self.icon, self.type, self.spellId, self.mod.id, true, announceCount)
-			if SendBWMessage then SendBWMessage("BigWigs_Message", self.mod, GetBWKey(self), message, nil, self.icon) end--send unembellished message rather than icon/color/note augmented text
+			if SendBWMessage then
+				SendBWMessage("BigWigs_Message", self.mod, DBM:GetBWKey(self), message, nil, self.icon)--send unembellished message rather than icon/color/note augmented text
+			end
 			if self.sound and not DBM.Options.DontPlaySpecialWarningSound and (not self.option or self.mod.Options[self.option.."SWSound"] ~= "None") then
 				local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 				if noteHasName and type(soundId) == "number" then soundId = noteHasName end--Change number to 5 if it's not a custom sound, else, do nothing with it
@@ -10111,7 +10119,9 @@ do
 					end
 					DBT:CancelBar(self.startedTimers[i])
 					fireEvent("DBM_TimerStop", self.startedTimers[i])
-					if SendBWMessage then SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[self.startedTimers[i]]) end
+					if SendBWMessage then
+						SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[self.startedTimers[i]])
+					end
 					tremove(self.startedTimers, i)
 				end
 			end
@@ -10252,7 +10262,9 @@ do
 				guid = UnitGUID("boss1")
 			end
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
-			if SendBWMessage then SendBWMessage("BigWigs_StartBar", self.mod, GetBWKey(self), msg, timer, self.icon, msg:sub(1, 1) == "~", timer) end
+			if SendBWMessage then
+				SendBWMessage("BigWigs_StartBar", self.mod, DBM:GetBWKey(self), msg, timer, self.icon, msg:sub(1, 1) == "~", timer)
+			end
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 			if guid and DBM.Options.DontShowTimersWithNameplates and Plater and Plater.db.profile.bossmod_support_bars_enabled and self.mod.isTrashMod then
@@ -10372,7 +10384,9 @@ do
 		if select("#", ...) == 0 then
 			for i = #self.startedTimers, 1, -1 do
 				fireEvent("DBM_TimerStop", self.startedTimers[i])
-				if SendBWMessage then SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[self.startedTimers[i]]) end
+				if SendBWMessage then
+					SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[self.startedTimers[i]])
+				end
 				DBT:CancelBar(self.startedTimers[i])
 				DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
 				tremove(self.startedTimers, i)
@@ -10395,7 +10409,9 @@ do
 						guid = UnitGUID("boss1")
 					end
 					fireEvent("DBM_TimerStop", id, guid)
-					if SendBWMessage then SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[id]) end
+					if SendBWMessage then
+						SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[id])
+					end
 					DBT:CancelBar(id)
 					DBM:Unschedule(playCountSound, id)--Unschedule countdown by timerId
 					tremove(self.startedTimers, i)
@@ -10465,7 +10481,9 @@ do
 		end
 		local newRemaining = totalTime - elapsed
 		fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
-		if SendBWMessage then SendBWMessage("BigWigs_StartBar", self.mod, GetBWKey(self), self.startedTexts[id], newRemaining, self.icon, self.startedTexts[id]:sub(1, 1) == "~", totalTime) end
+		if SendBWMessage then
+			SendBWMessage("BigWigs_StartBar", self.mod, DBM:GetBWKey(self), self.startedTexts[id], newRemaining, self.icon, self.startedTexts[id]:sub(1, 1) == "~", totalTime)
+		end
 		if bar then -- still need to check as :Start() can return nil instead of actually starting the timer
 			if not bar.keep and newRemaining > 0 then
 				--Correct table for tracked timer objects for adjusted time, or else timers may get stuck if stop is called on them
@@ -10516,7 +10534,9 @@ do
 					end
 				end
 				fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
-				if SendBWMessage then SendBWMessage("BigWigs_StartBar", self.mod, GetBWKey(self), self.startedTexts[id], newRemaining, self.icon, self.startedTexts[id]:sub(1, 1) == "~", totalTime) end
+				if SendBWMessage then
+					SendBWMessage("BigWigs_StartBar", self.mod, DBM:GetBWKey(self), self.startedTexts[id], newRemaining, self.icon, self.startedTexts[id]:sub(1, 1) == "~", totalTime)
+				end
 				return DBT:UpdateBar(id, elapsed, totalTime)
 			end
 		end
@@ -10555,11 +10575,15 @@ do
 						end
 					end
 					fireEvent("DBM_TimerUpdate", id, elapsed, totalTime)
-					if SendBWMessage then SendBWMessage("BigWigs_StartBar", self.mod, GetBWKey(self), self.startedTexts[id], newRemaining, self.icon, self.startedTexts[id]:sub(1, 1) == "~", totalTime) end
+					if SendBWMessage then
+						SendBWMessage("BigWigs_StartBar", self.mod, DBM:GetBWKey(self), self.startedTexts[id], newRemaining, self.icon, self.startedTexts[id]:sub(1, 1) == "~", totalTime)
+					end
 					return DBT:UpdateBar(id, elapsed, totalTime)
 				else--New remaining less than 0
 					fireEvent("DBM_TimerStop", id)
-					if SendBWMessage then SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[id]) end
+					if SendBWMessage then
+						SendBWMessage("BigWigs_StopBar", self.mod, self.startedTexts[id])
+					end
 					removeEntry(self.startedTimers, id)
 					return DBT:CancelBar(id)
 				end
@@ -10576,7 +10600,9 @@ do
 				self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 			end
 			fireEvent("DBM_TimerPause", id)
-			if SendBWMessage then SendBWMessage("BigWigs_PauseBar", self.mod, self.startedTexts[id]) end
+			if SendBWMessage then
+				SendBWMessage("BigWigs_PauseBar", self.mod, self.startedTexts[id])
+			end
 			return bar:Pause()
 		end
 	end
@@ -10601,7 +10627,9 @@ do
 				end
 			end
 			fireEvent("DBM_TimerResume", id)
-			if SendBWMessage then SendBWMessage("BigWigs_ResumeBar", self.mod, self.startedTexts[id]) end
+			if SendBWMessage then
+				SendBWMessage("BigWigs_ResumeBar", self.mod, self.startedTexts[id])
+			end
 			return bar:Resume()
 		end
 	end

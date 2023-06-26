@@ -10,8 +10,9 @@ end
 -------------------------
 --  DBM-to-BW mapping  --
 -------------------------
-local GetBWStage, GetBWKey, GetBWModule
+local GetBWModule
 do
+	-- DBM Spell ID -> BigWigs Key
 	local spellIdMap = {
 		-- Kazzara
 		[406516] = 407196,
@@ -63,16 +64,21 @@ do
 		[378829] = 377497,
 	}
 
-	function GetBWStage(mod)
-		local bwCompat = mod.bwCompat
-		local modStage = bwCompat and bwCompat.useStageTotality and (mod.vb.stageTotality or 0) or (mod.vb.phase or 0)
-		return bwCompat and bwCompat.stageMap and bwCompat.stageMap[modStage] or modStage
+	local stageMap = {
+		-- Currently empty
+	}
+
+	function DBM:GetBWStage(mod)
+		local map = stageMap[mod.id]
+		local modStage = map and map.useTotal and (mod.vb.stageTotality or 0) or (mod.vb.phase or 0)
+		return map and map[modStage] or modStage
 	end
 
-	function GetBWKey(obj)
+	function DBM:GetBWKey(obj)
 		return spellIdMap[obj.spellId] or obj.spellId
 	end
 
+	-- We don't want to pass a DBM mod, but we need a table that is shared between all events belonging to same mod
 	local fakeBWModules = setmetatable({}, {
 		__index = function(this, mod)
 			local fake = {}
@@ -85,8 +91,6 @@ do
 		return fakeBWModules[mod]
 	end
 end
-private.GetBWStage = GetBWStage
-private.GetBWKey = GetBWKey
 
 
 -------------------------
@@ -135,7 +139,7 @@ do
 			GetStage = function()
 				-- Assume only one mod is active. With actual BW, WA scans for highest stage number among engaged mods.
 				local mod = private.inCombat[1]
-				if mod then return GetBWStage(mod) end
+				if mod then return DBM:GetBWStage(mod) end
 			end,
 		},
 	}

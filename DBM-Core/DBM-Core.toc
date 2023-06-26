@@ -71,7 +71,6 @@ modules\Scheduler.lua
 modules\DevTools.lua
 modules\Icons.lua
 modules\TargetScanning.lua
-modules\BWCallbacks.lua
 
 # Core
 DBM-Core.lua
@@ -83,6 +82,7 @@ DBM-HudMap.lua
 DBM-Nameplate.lua
 
 # Modules
+modules\BWCallbacks.lua
 modules\Commands.lua
 modules\Hyperlinks.lua
 modules\MinimapButton.lua
