@@ -132,7 +132,6 @@ L.AutoAcceptFriendInvite			= "Automatically accept group invites from friends"
 L.AutoAcceptGuildInvite				= "Automatically accept group invites from guild members"
 L.Area_Advanced						= "Advanced Options"
 L.FakeBW							= "Pretend to be BigWigs in version checks instead of DBM (Useful for guilds that force using BigWigs)"
-L.FakeBWCallbacks					= "Send fake BigWigs events to WeakAuras if Bigwigs isn't loaded (Useful for using WAs that are set to only work with BigWigs)"
 L.AITimer							= "Automatically generate timers for never before seen fights using DBM's built in timer AI (Useful for pulling a test boss for the very first time such as beta or PTR). Recommended to always leave this turned ON"
 
 -- Panel: Profiles
