@@ -168,13 +168,22 @@ do
 		applyFakeAPI[WeakAuras.RegisterBigWigsCallback] = true
 	end
 
-	if IsAddOnLoaded("WeakAuras") then
+	local waLoaded = IsAddOnLoaded("WeakAuras")
+	if waLoaded then
 		hookWA()
-	else
+	end
+
+	local bwMissing = select(5, GetAddOnInfo("BigWigs")) == "MISSING"
+	if not waLoaded or not bwMissing then
 		local frame = CreateFrame("Frame")
 		frame:SetScript("OnEvent", function(self, event, arg)
 			if event == "ADDON_LOADED" and arg == "WeakAuras" then
 				hookWA()
+				if bwMissing then
+					-- If BigWigs isn't installed, we don't need to keep the event handler around
+					frame:UnregisterEvent("ADDON_LOADED")
+					frame:SetScript("OnEvent", nil)
+				end
 			elseif event == "ADDON_LOADED" and arg == "BigWigs" then
 				-- Other addons messing with load order and Enable/Disable/LoadAddOn can make BigWigs load at any time after us.
 				-- If BigWigs loads delayed, its API consumers might break or misbehave anyway, but do our best to remove DBM from the equation.
