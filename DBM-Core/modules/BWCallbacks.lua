@@ -74,8 +74,8 @@ do
 		return map and map[modStage] or modStage
 	end
 
-	function DBM:GetBWKey(obj)
-		return spellIdMap[obj.spellId] or obj.spellId
+	function DBM:GetBWKey(spellId)
+		return spellIdMap[spellId] or spellId
 	end
 
 	-- We don't want to pass a DBM mod, but we need a table that is shared between all events belonging to same mod
