@@ -393,7 +393,7 @@ DBM.DefaultOptions = {
 	AutoAcceptFriendInvite = false,
 	AutoAcceptGuildInvite = false,
 	FakeBWVersion = false,
-	FakeBWCallback = false,
+	FakeBWCallbacks = false,
 	AITimer = true,
 	ShortTimerText = true,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
@@ -1897,7 +1897,7 @@ local SendBWMessage
 function DBM:UpdateBWCallbacks()
 	-- We check SendBWMessage local at call sites to see if callbacks are enabled or not
 	-- We don't wrap the check in a helper function to avoid overhead and to skip argument evaluation too
-	if DBM.Options.FakeBWCallback then
+	if DBM.Options.FakeBWCallbacks then
 		SendBWMessage = private.SendBWMessage -- BWCallbacks.lua will set/leave this to nil if BigWigs is loaded
 	else
 		SendBWMessage = nil
