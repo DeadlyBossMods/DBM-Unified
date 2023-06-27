@@ -82,7 +82,6 @@ DBM-HudMap.lua
 DBM-Nameplate.lua
 
 # Modules
-modules\BWCallbacks.lua
 modules\Commands.lua
 modules\Hyperlinks.lua
 modules\MinimapButton.lua
