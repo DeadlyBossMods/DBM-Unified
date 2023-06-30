@@ -24,7 +24,7 @@ frame:SetClampedToScreen(true)
 frame:SetUserPlaced(true)
 frame:RegisterForDrag("LeftButton")
 frame:SetFrameLevel(frame:GetFrameLevel() + 4)
-if DBM:GetTOC() < 30401 then -- Legacy API
+if DBM:GetTOC() < 11404 then -- Legacy API
 	frame:SetMinResize(800, 400)
 	frame:SetMaxResize(UIParent:GetWidth(), UIParent:GetHeight())
 else -- Is Modern API
