@@ -452,6 +452,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 		specRoleTable[261] = specRoleTable[259]--Subtlety Rogue same as Assassination
 		specRoleTable[266] = specRoleTable[265]--Demonology Warlock same as Affliction
 		specRoleTable[267] = specRoleTable[265]--Destruction Warlock same as Affliction
+		specRoleTable[1473] = specRoleTable[1467]--Just map augmentation to devastation for now
 	else
 		local IsSpellKnown = IsSpellKnown
 
