@@ -60,6 +60,7 @@ CL.MINDCONTROL						= "Mind Control"
 CL.TANKCOMBO						= "Tank Combo"
 CL.TANKCOMBOC						= "Tank Combo (%s)"
 CL.AOEDAMAGE						= "AOE Damage"
+CL.SoakC							= "Soak (%s)"
 CL.GROUPSOAK						= "Group Soak"
 CL.GROUPSOAKS						= "Group Soaks"
 
