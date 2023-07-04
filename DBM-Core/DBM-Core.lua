@@ -5341,7 +5341,7 @@ do
 							self:AddMsg(L.SCENARIO_STARTED:format(difficultyText..name))
 						else
 							self:AddMsg(L.COMBAT_STARTED:format(difficultyText..name))
-							local check = not private.statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10) -- Classic
+							local check = not private.statusGuildDisabled and (isRetail and ((difficultyIndex == 8 or difficultyIndex == 14 or difficultyIndex == 15 or difficultyIndex == 16) and InGuildParty()) or difficultyIndex ~= 1 and DBM:GetNumGuildPlayersInZone() >= 10)
 							if check and not self.Options.DisableGuildStatus then--Only send relevant content, not guild beating down lich king or LFR.
 								self:Unschedule(delayedGCSync, modId)
 								self:Schedule(isRetail and 1.5 or 3, delayedGCSync, modId, difficultyIndex, difficultyModifier, name)
@@ -5748,7 +5748,7 @@ function DBM:OnMobKill(cId, synced)
 				sendSync(DBMSyncProtocol, "K", cId)
 			end
 			v.combatInfo.killMobs[cId] = false
-			if v.numBoss then
+			if v.numBoss and (v.vb.bossLeft or 0) > 0 then
 				v.vb.bossLeft = (v.vb.bossLeft or v.numBoss) - 1
 				self:Debug("Boss left - "..v.vb.bossLeft.."/"..v.numBoss, 2)
 			end
@@ -5759,7 +5759,7 @@ function DBM:OnMobKill(cId, synced)
 					break
 				end
 			end
-			if allMobsDown then
+			if allMobsDown and not v.multiIDSingleBoss then--More hacks. don't let combat end for mutli CID single bosses
 				self:EndCombat(v, nil, nil, "All Mobs Down")
 			end
 		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
@@ -11521,10 +11521,14 @@ function bossModPrototype:SetCreatureID(...)
 		self.multiMobPullDetection = {...}
 		if self.combatInfo then
 			self.combatInfo.multiMobPullDetection = self.multiMobPullDetection
-			self.numBoss = #self.multiMobPullDetection
-			if self.inCombat then
-				--Called mid combat, fix some variables
-				self.vb.bossLeft = self.numBoss
+			if not self.multiIDSingleBoss then
+				self.numBoss = #self.multiMobPullDetection
+				if self.inCombat then
+					--Called mid combat, fix some variables
+					self.vb.bossLeft = self.numBoss
+				end
+			else
+				self.numBoss = 1
 			end
 		end
 		for i = 1, select("#", ...) do
