@@ -9699,7 +9699,7 @@ do
 					catType = "announcerole"
 				end
 			end
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId, announceType, noSpellGroup)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId, announceType)
 		end
 		obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
 		tinsert(self.specwarns, obj)
