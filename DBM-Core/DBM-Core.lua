@@ -8651,7 +8651,7 @@ do
 	end
 
 	-- old constructor (no auto-localize)
-	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption, spellID)
+	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption, spellID, noSpellGroup)
 		if not text then
 			error("NewAnnounce: you must provide announce text", 2)
 			return
@@ -8681,10 +8681,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
+			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, noSpellGroup)
 		elseif optionName ~= false then
 			obj.option = text
-			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID)
+			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, noSpellGroup)
 		end
 		tinsert(self.announces, obj)
 		return obj
@@ -9574,7 +9574,7 @@ do
 		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture, spellID)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture, spellID, noSpellGroup)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -9614,7 +9614,7 @@ do
 		if optionId then
 			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
 			obj.option = optionId..(optionVersion or "")
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID, nil, noSpellGroup)
 		end
 		tinsert(self.specwarns, obj)
 		return obj
@@ -9699,7 +9699,7 @@ do
 					catType = "announcerole"
 				end
 			end
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId, announceType)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, catType, spellId, announceType, noSpellGroup)
 		end
 		obj.voiceOptionId = hasVoice and "Voice"..spellId or nil
 		tinsert(self.specwarns, obj)
@@ -10622,15 +10622,15 @@ do
 		end
 	end
 
-	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId, optionType)
+	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId, optionType, noSpellGroup)
 		if optionName ~= false then
 			self.option = optionName or self.id
-			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId, optionType)
+			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId, optionType, noSpellGroup)
 		end
 	end
 
 	--If a new countdown default is added to a NewTimer object, change optionName of timer to reset a new default
-	function bossModPrototype:NewTimer(timer, name, texture, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat)
+	function bossModPrototype:NewTimer(timer, name, texture, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, noSpellGroup)
 		if r and type(r) == "string" then
 			DBM:Debug("|cffff0000r probably has inline icon in it and needs to be fixed for |r"..name..r)
 			r = nil--Fix it for users
@@ -10661,7 +10661,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId)
+		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId, nil, noSpellGroup)
 		tinsert(self.timers, obj)
 		return obj
 	end
@@ -10989,7 +10989,7 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionType)
+function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionType, noSpellGroup)
 	if checkDuplicateObjects[name] and name ~= "timer_berserk" then
 		DBM:Debug("|cffff0000Option already exists for: |r"..name)
 	else
@@ -11009,7 +11009,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		self.Options[name.."TColor"] = extraOption or 0
 		self.Options[name.."CVoice"] = extraOptionTwo or 0
 	end
-	if spellId then
+	if spellId and not noSpellGroup then
 		if optionType and optionType == "achievement" then
 			spellId = "at"..spellId--"at" for achievement timer
 		end
@@ -11022,7 +11022,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 	end
 end
 
-function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId, optionType)
+function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId, optionType, noSpellGroup)
 	if checkDuplicateObjects[name] then
 		DBM:Debug("|cffff0000Option already exists for: |r"..name)
 	else
@@ -11038,7 +11038,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.Options[name] = (default == nil) or default
 	self.Options[name.."SWSound"] = defaultSound or 1
 	self.Options[name.."SWNote"] = true
-	if spellId then
+	if spellId and not noSpellGroup then
 		self:GroupSpells(spellId, name)
 	end
 	self:SetOptionCategory(name, cat, optionType)
