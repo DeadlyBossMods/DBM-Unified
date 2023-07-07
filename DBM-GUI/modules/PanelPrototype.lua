@@ -20,7 +20,7 @@ local function parseDescription(name, usesHTML)
 		name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
 	end
 	if name:find("%$spell:") then
-		name = name:gsub("%$spell:(%d+)", function(id)
+		name = name:gsub("%$spell:(%-?%d+)", function(id)
 			local spellId = tonumber(id)
 			if spellId < 0 then
 			    return "$journal:" .. -spellId

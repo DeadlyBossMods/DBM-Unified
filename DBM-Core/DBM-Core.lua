@@ -931,22 +931,20 @@ local function stripServerName(cap)
 	return DBM:GetShortServerName(cap:sub(2, -2))
 end
 
-local function parseSpellIcon(icon, objectType, fallbackIcon)
+local function parseSpellIcon(spellId, objectType, fallbackIcon)
+	local icon
 	if objectType and objectType == "achievement" then
-		icon = select(10, GetAchievementInfo(icon))
-	elseif type(icon) == "string" and icon:match("ej%d+") then--Journal ID in old format
-		icon = select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))
-	elseif type(icon) == "number" then--SpellId or journal Id
-		if icon < 0 then--Journal ID in new format
-			icon = -icon
-			icon = select(4, DBM:EJ_GetSectionInfo(icon))
+		icon = select(10, GetAchievementInfo(spellId))
+	elseif type(spellId) == "string" and spellId:match("ej%d+") then--Journal ID in old format
+		icon = select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3)))
+	elseif type(spellId) == "number" then--SpellId or journal Id
+		if spellId < 0 then--Journal ID in new format
+			icon = select(4, DBM:EJ_GetSectionInfo(-spellId))
 		else--SpellId
-			icon = (icon or 0) >= 6 and GetSpellTexture(icon)
+			icon = (spellId or 0) >= 6 and GetSpellTexture(spellId)
 		end
-	else--Icon texture ID (encoded as string) or just genuinely nil so we give it generic gear icon
-		icon = tonumber(icon) or fallbackIcon or 136116
 	end
-	return icon
+	return icon or fallbackIcon or 136116
 end
 
 local function parseSpellName(spellId, objectType)
@@ -957,8 +955,7 @@ local function parseSpellName(spellId, objectType)
 		spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
 	elseif type(spellId) == "number" then
 		if spellId < 0 then--New Journal Format
-			spellId = -spellId
-			spellName = DBM:EJ_GetSectionInfo(spellId)
+			spellName = DBM:EJ_GetSectionInfo(-spellId)
 		else
 			spellName = DBM:GetSpellInfo(spellId)
 		end
