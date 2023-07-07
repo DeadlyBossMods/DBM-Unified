@@ -935,13 +935,17 @@ local function parseSpellIcon(spellId, objectType, fallbackIcon)
 	local icon
 	if objectType and objectType == "achievement" then
 		icon = select(10, GetAchievementInfo(spellId))
-	elseif type(spellId) == "string" and spellId:match("ej%d+") then--Journal ID in old format
-		icon = select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3)))
+	elseif type(spellId) == "string" then--Journal ID in old format
+		if spellId:match("ej%d+") then
+			icon = select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3)))
+		else--Icon texture ID (passed as string by module so core knows it's a FDID and not spellID
+			icon = spellId
+		end
 	elseif type(spellId) == "number" then--SpellId or journal Id
 		if spellId < 0 then--Journal ID in new format
 			icon = select(4, DBM:EJ_GetSectionInfo(-spellId))
 		else--SpellId
-			icon = (spellId or 0) >= 6 and GetSpellTexture(spellId)
+			icon = spellId >= 6 and GetSpellTexture(spellId)
 		end
 	end
 	return icon or fallbackIcon or 136116
