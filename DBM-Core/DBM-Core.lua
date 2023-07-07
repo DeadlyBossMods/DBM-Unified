@@ -939,7 +939,7 @@ local function parseSpellIcon(icon, objectType, fallbackIcon)
 	elseif type(icon) == "number" then--SpellId or journal Id
 		if icon < 0 then--Journal ID in new format
 			icon = -icon
-			icon = DBM:EJ_GetSectionInfo(icon)
+			icon = select(4, DBM:EJ_GetSectionInfo(icon))
 		else--SpellId
 			icon = (icon or 0) >= 6 and GetSpellTexture(icon)
 		end

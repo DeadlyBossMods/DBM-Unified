@@ -22,6 +22,9 @@ local function parseDescription(name, usesHTML)
 	if name:find("%$spell:") then
 		name = name:gsub("%$spell:(%d+)", function(id)
 			local spellId = tonumber(id)
+			if spellId < 0 then
+			    return "$journal:" .. -spellId
+			end
 			spellName = DBM:GetSpellInfo(spellId)
 			if not spellName then
 				spellName = CL.UNKNOWN
