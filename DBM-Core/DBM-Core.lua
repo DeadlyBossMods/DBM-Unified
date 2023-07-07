@@ -8489,7 +8489,7 @@ do
 		if customName then
 			spellName = customName
 		else
-			spellName = parseSpellName(spellId, announceType)
+			spellName = parseSpellName(spellId, announceType) or CL.UNKNOWN
 		end
 		local text
 		if announceType == "cast" then
@@ -9279,7 +9279,7 @@ do
 		if customName then
 			spellName = customName
 		else
-			spellName = parseSpellName(spellId, announceType)
+			spellName = parseSpellName(spellId, announceType) or CL.UNKNOWN
 		end
 		if announceType == "prewarn" then
 			if type(stacks) == "string" then
