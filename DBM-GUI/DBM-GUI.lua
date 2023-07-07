@@ -412,11 +412,16 @@ function DBM_GUI:CreateBossModPanel(mod)
 			else
 				local title, desc, _, icon
 				if tonumber(spellID) then
-					local _title = DBM:GetSpellInfo(spellID)
-					if _title then
-						title, desc, icon = _title, tonumber(spellID), GetSpellTexture(spellID)
-					else--Not a valid spellid (Such as a ptr/beta mod loaded on live
-						title, desc, icon = spellID, L.NoDescription, 136116
+					spellID = tonumber(spellID)
+					if spellID < 0 then
+					    title, desc, _, icon = DBM:EJ_GetSectionInfo(-spellID)
+					else
+						local _title = DBM:GetSpellInfo(spellID)
+						if _title then
+							title, desc, icon = _title, tonumber(spellID), GetSpellTexture(spellID)
+						else--Not a valid spellid (Such as a ptr/beta mod loaded on live
+							title, desc, icon = spellID, L.NoDescription, 136116
+						end
 					end
 				elseif spellID:find("^ej") then
 					title, desc, _, icon = DBM:EJ_GetSectionInfo(spellID:gsub("ej", ""))
