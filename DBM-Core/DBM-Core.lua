@@ -10723,9 +10723,9 @@ do
 			timer = tonumber(string.sub(timer, 2))
 		end
 		local spellName, icon
+		spellName = parseSpellName(spellId, timerType)
 		local unparsedId = spellId
 		if timerType == "achievement" then
-			spellName = parseSpellName(spellId, timerType)
 			icon = parseSpellIcon(texture or spellId, timerType)
 		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" then
 			icon = parseSpellIcon(texture or spellId, timerType)
@@ -10741,7 +10741,6 @@ do
 		else
 			icon = parseSpellIcon(texture, timerType)
 		end
-		--spellName = spellName or tostring(spellId)--this actually breaks stuff in 9.0 when spell info fails to return on first try
 		local timerTextValue
 		if timerText then
 			--If timertext is a number, accept it as a secondary auto translate spellid
