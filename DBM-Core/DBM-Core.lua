@@ -934,8 +934,12 @@ end
 local function parseSpellIcon(icon, objectType, fallbackIcon)
 	if objectType and objectType == "achievement" then
 		icon = select(10, GetAchievementInfo(icon))
-	elseif type(icon) == "string" and icon:match("ej%d+") then--Journal ID in old format
-		icon = select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))
+	elseif type(icon) == "string" then
+		if icon:match("ej%d+") then--Journal ID in old format
+			icon = select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))
+		else--Spell texture passed as string
+			icon = GetSpellTexture(icon) or fallbackIcon or 136116
+		end
 	elseif type(icon) == "number" then--SpellId or journal Id
 		if icon < 0 then--Journal ID in new format
 			icon = -icon
@@ -943,8 +947,8 @@ local function parseSpellIcon(icon, objectType, fallbackIcon)
 		else--SpellId
 			icon = (icon or 0) >= 6 and GetSpellTexture(icon)
 		end
-	else--Icon texture ID (encoded as string) or just genuinely nil so we give it generic gear icon
-		icon = tonumber(icon) or fallbackIcon or 136116
+	else
+		icon = fallbackIcon or 136116
 	end
 	return icon
 end
