@@ -412,6 +412,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 			else
 				local title, desc, _, icon
 				if tonumber(spellID) then
+					spellID = tonumber(spellID)
 					if spellID < 0 then
 					    title, desc, _, icon = DBM:EJ_GetSectionInfo(-spellID)
 					else
