@@ -931,6 +931,41 @@ local function stripServerName(cap)
 	return DBM:GetShortServerName(cap:sub(2, -2))
 end
 
+local function parseSpellIcon(icon, objectType, fallbackIcon)
+	if objectType and objectType == "achievement" then
+		icon = select(10, GetAchievementInfo(icon))
+	elseif type(icon) == "string" and icon:match("ej%d+") then--Journal ID in old format
+		icon = select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))
+	elseif type(icon) == "number" then--SpellId or journal Id
+		if icon < 0 then--Journal ID in new format
+			icon = -icon
+			icon = DBM:EJ_GetSectionInfo(icon)
+		else--SpellId
+			icon = (icon or 0) >= 6 and GetSpellTexture(icon)
+		end
+	else--Icon texture ID (encoded as string) or just genuinely nil so we give it generic gear icon
+		icon = tonumber(icon) or fallbackIcon or 136116
+	end
+	return icon
+end
+
+local function parseSpellName(spellId, objectType)
+	local spellName
+	if objectType and objectType == "achievement" then
+		spellName = select(2, GetAchievementInfo(spellId))
+	elseif type(spellId) == "string" and spellId:match("ej%d+") then--Old Journal Format
+		spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
+	else
+		if spellId < 0 then--New Journal Format
+			spellId = -spellId
+			spellName = DBM:EJ_GetSectionInfo(spellId)
+		else
+			spellName = DBM:GetSpellInfo(spellId)
+		end
+	end
+	return spellName
+end
+
 --------------
 --  Events  --
 --------------
@@ -8454,12 +8489,7 @@ do
 		if customName then
 			spellName = customName
 		else
-			if type(spellId) == "string" and spellId:match("ej%d+") then
-				spellId = string.sub(spellId, 3)
-				spellName = DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN
-			else
-				spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
-			end
+			spellName = parseSpellName(spellId, announceType)
 		end
 		local text
 		if announceType == "cast" then
@@ -8666,6 +8696,7 @@ do
 		if soundOption and type(soundOption) == "boolean" then
 			soundOption = 0--No Sound
 		end
+		icon = parseSpellIcon(icon)
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
@@ -8674,7 +8705,7 @@ do
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				sound = soundOption or 1,
 				mod = self,
-				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or tonumber(icon) or 136116,
+				icon = icon,
 				spellId = spellID,--For WeakAuras / other callbacks
 			},
 			mt
@@ -8711,7 +8742,7 @@ do
 			soundOption = 0--No Sound
 		end
 		local text, spellName = setText(announceType, alternateSpellId or spellId, castTime, preWarnTime, nil, spellId)
-		icon = icon or spellId
+		icon = parseSpellIcon(icon or spellId)
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
 				text = text,
@@ -8720,7 +8751,7 @@ do
 				announceType = announceType,
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				mod = self,
-				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or tonumber(icon) or 136116,
+				icon = icon,
 				sound = soundOption or 1,
 				type = announceType,
 				spellId = spellId,
@@ -8871,10 +8902,17 @@ do
 		end
 		local displayText
 		if not yellText then
-			if type(spellId) == "string" and spellId:match("ej%d+") then
+			if type(spellId) == "string" and spellId:match("ej%d+") then--Old Format Journal
 				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN)
+			elseif type(spellId) == "number" then
+				if spellId < 0 then--New format Journal
+					spellId = -spellId
+					displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:EJ_GetSectionInfo(spellId) or CL.UNKNOWN)
+				else
+					displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(spellId) or CL.UNKNOWN)
+				end
 			else
-				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(DBM:GetSpellInfo(spellId) or CL.UNKNOWN)
+				displayText = L.AUTO_YELL_ANNOUNCE_TEXT[yellType]:format(CL.UNKNOWN)
 			end
 		end
 		--Passed spellid as yellText.
@@ -9241,11 +9279,7 @@ do
 		if customName then
 			spellName = customName
 		else
-			if type(spellId) == "string" and spellId:match("ej%d+") then
-				spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or CL.UNKNOWN
-			else
-				spellName = (spellId or 0) >= 6 and DBM:GetSpellInfo(spellId) or CL.UNKNOWN
-			end
+			spellName = parseSpellName(spellId, announceType)
 		end
 		if announceType == "prewarn" then
 			if type(stacks) == "string" then
@@ -9574,7 +9608,7 @@ do
 		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, texture, spellID, noSpellGroup)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, icon, spellID, noSpellGroup)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -9591,10 +9625,7 @@ do
 		if hasVoice == true then--if not a number, set it to 2, old mods that don't use new numbered system
 			hasVoice = 2
 		end
-		local seticon
-		if texture then
-			seticon = (type(texture) == "string" and texture:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(texture, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(texture, 3)))) or (type(texture) == "number" and GetSpellTexture(texture)) or nil
-		end
+		icon = parseSpellIcon(icon)
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
@@ -9606,7 +9637,7 @@ do
 				hasVoice = hasVoice,
 				difficulty = difficulty,
 				spellId = spellID,--For WeakAuras / other callbacks
-				icon = seticon,
+				icon = icon,
 			},
 			mt
 		)
@@ -9641,6 +9672,7 @@ do
 			optionName = nil
 		end
 		local text, spellName = setText(announceType, alternateSpellId or spellId, stacks)
+		local icon = parseSpellIcon(spellId)
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
 				text = text,
@@ -9656,7 +9688,7 @@ do
 				spellId = spellId,
 				spellName = spellName,
 				stacks = stacks,
-				icon = (type(spellId) == "string" and spellId:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3)))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or nil
+				icon = icon,
 			},
 			mt
 		)
@@ -10239,7 +10271,7 @@ do
 			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 				guid = UnitGUID("boss1")
 			end
-			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
+			fireEvent("DBM_TimerStart", id, msg:sub(1, 1) == "~", timer, self.icon, self.type, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 			if guid and DBM.Options.DontShowTimersWithNameplates and Plater and Plater.db.profile.bossmod_support_bars_enabled and self.mod.isTrashMod then
@@ -10585,7 +10617,8 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
 		if bar then
-			return bar:SetIcon((type(icon) == "string" and icon:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and GetSpellTexture(icon)) or tonumber(icon) or 136116)
+			icon = parseSpellIcon(icon)
+			return bar:SetIcon(icon)
 		end
 	end
 
@@ -10630,7 +10663,7 @@ do
 	end
 
 	--If a new countdown default is added to a NewTimer object, change optionName of timer to reset a new default
-	function bossModPrototype:NewTimer(timer, name, texture, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, noSpellGroup)
+	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, noSpellGroup)
 		if r and type(r) == "string" then
 			DBM:Debug("|cffff0000r probably has inline icon in it and needs to be fixed for |r"..name..r)
 			r = nil--Fix it for users
@@ -10639,7 +10672,7 @@ do
 			DBM:Debug("|cffff0000spellID texture path or colorType is in inlineIcon field and needs to be fixed for |r"..name..inlineIcon)
 			inlineIcon = nil--Fix it for users
 		end
-		local icon = (type(texture) == "string" and texture:match("ej%d+") and select(4, DBM:EJ_GetSectionInfo(string.sub(texture, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(texture, 3)))) or (type(texture) == "number" and GetSpellTexture(texture)) or tonumber(texture) or "136116"
+		icon = parseSpellIcon(icon)
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name],
@@ -10692,30 +10725,21 @@ do
 		local spellName, icon
 		local unparsedId = spellId
 		if timerType == "achievement" then
-			spellName = select(2, GetAchievementInfo(spellId))
-			icon = type(texture) == "number" and select(10, GetAchievementInfo(texture)) or tonumber(texture) or spellId and select(10, GetAchievementInfo(spellId))
+			spellName = parseSpellName(spellId, timerType)
+			icon = parseSpellIcon(texture or spellId, timerType)
 		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" then
-			icon = type(texture) == "number" and GetSpellTexture(texture) or tonumber(texture) or type(spellId) == "string" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or 136116
+			icon = parseSpellIcon(texture or spellId, timerType)
 			if timerType == "stage" then
 				colorType = 6
 			end
 		elseif timerType == "roleplay" then
-			icon = type(texture) == "number" and GetSpellTexture(texture) or tonumber(texture) or type(spellId) == "string" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or isRetail and 237538 or 136106
+			icon = parseSpellIcon(texture or spellId, timerType, isRetail and 237538 or 136106)
 			colorType = 6
 		elseif timerType == "adds" or timerType == "addscustom" then
-			icon = type(texture) == "number" and GetSpellTexture(texture) or tonumber(texture) or type(spellId) == "string" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId)) or 136116
+			icon = parseSpellIcon(texture or spellId, timerType, 136116)
 			colorType = 1
 		else
-			if type(spellId) == "string" and spellId:match("ej%d+") then
-				spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3)) or ""
-			else
-				spellName = DBM:GetSpellInfo(spellId or 0)
-			end
-			if spellName then
-				icon = type(texture) == "number" and GetSpellTexture(texture) or tonumber(texture) or type(spellId) == "string" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, DBM:EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and GetSpellTexture(spellId))
-			else
-				icon = nil
-			end
+			icon = parseSpellIcon(texture, timerType)
 		end
 		--spellName = spellName or tostring(spellId)--this actually breaks stuff in 9.0 when spell info fails to return on first try
 		local timerTextValue
@@ -10895,13 +10919,7 @@ do
 			spellName = Name--Pull from name stored in object
 		elseif spellId then
 			DBM:Debug("|cffff0000GetLocalizedTimerText fallback, this should not happen and is a bug. this fallback should be deleted if this message is never seen after async code is live|r")
-			if timerType == "achievement" then
-				spellName = select(2, GetAchievementInfo(spellId))
-			elseif type(spellId) == "string" and spellId:match("ej%d+") then
-				spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
-			else
-				spellName = DBM:GetSpellInfo(spellId)
-			end
+			spellName = parseSpellName(spellId, timerType)
 			--Name wasn't provided, but we succeeded in getting a name, generate one into object now for caching purposes
 			--This would really only happen if GetSpellInfo failed to return spell name on first attempt (which now happens in 9.0)
 			if spellName then
