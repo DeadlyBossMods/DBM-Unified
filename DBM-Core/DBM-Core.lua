@@ -955,7 +955,7 @@ local function parseSpellName(spellId, objectType)
 		spellName = select(2, GetAchievementInfo(spellId))
 	elseif type(spellId) == "string" and spellId:match("ej%d+") then--Old Journal Format
 		spellName = DBM:EJ_GetSectionInfo(string.sub(spellId, 3))
-	else
+	elseif type(spellId) == "number" then
 		if spellId < 0 then--New Journal Format
 			spellId = -spellId
 			spellName = DBM:EJ_GetSectionInfo(spellId)
@@ -10739,7 +10739,7 @@ do
 			icon = parseSpellIcon(texture or spellId, timerType, 136116)
 			colorType = 1
 		else
-			icon = parseSpellIcon(texture, timerType)
+			icon = parseSpellIcon(texture or spellId, timerType)
 		end
 		local timerTextValue
 		if timerText then
