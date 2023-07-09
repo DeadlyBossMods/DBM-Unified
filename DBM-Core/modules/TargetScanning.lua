@@ -124,7 +124,7 @@ do
 		--Cache the filtered target if using a filter target fallback
 		--so when scan ends we can return that instead of tank when scan ends
 		--(because boss might have already swapped back to aggro target by then)
-		if filterFallback and targetFilter and targetFilter == targetname then
+		if targetname and targetname ~= CL.UNKNOWN and filterFallback and targetFilter and targetFilter == targetname then
 			filteredTargetCache[cidOrGuid] = targetname
 		end
 		if targetname and targetname ~= CL.UNKNOWN and (not targetFilter or (targetFilter and targetFilter ~= targetname)) or (filteredTargetCache[cidOrGuid] and isFinalScan) then
