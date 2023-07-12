@@ -5266,7 +5266,7 @@ do
 				self:StartLogging(0)
 			end
 			local trackedAchievements
-			if isClassic then
+			if isClassic or isBCC then
 				trackedAchievements = false
 			elseif isWrath then
 				trackedAchievements = (GetNumTrackedAchievements() > 0)
