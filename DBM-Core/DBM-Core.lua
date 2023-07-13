@@ -8527,6 +8527,15 @@ do
 		self.spellName = spellName
 	end
 
+	--Not to be confused with SetText, which only sets the text of object.
+	--This changes actual ID so announce callback also swaps ID for WAs
+	function announcePrototype:SetKey(altSpellId)
+		self.spellId = altSpellId
+		local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime)
+		self.text = text
+		self.spellName = spellName
+	end
+
 	-- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
@@ -9309,6 +9318,13 @@ do
 
 	function specialWarningPrototype:SetText(customName)
 		local text, spellName = setText(self.announceType, self.spellId, self.stacks, customName)
+		self.text = text
+		self.spellName = spellName
+	end
+
+	function specialWarningPrototype:SetKey(altSpellId)
+		self.spellId = altSpellId
+		local text, spellName = setText(self.announceType, self.spellId, self.stacks)
 		self.text = text
 		self.spellName = spellName
 	end
@@ -10628,6 +10644,25 @@ do
 		if bar then
 			icon = parseSpellIcon(icon)
 			return bar:SetIcon(icon)
+		end
+	end
+
+	--This function changes the spellname and callback key (but not option key) of timer object
+	--This is needed for faction bosses where we need to swap out a spell key/name on fly after a boss is engaged
+	function timerPrototype:UpdateKey(altSpellId, ...)
+		--Check if existing bar first,
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		local bar = DBT:GetBar(id)
+		self.spellId = altSpellId
+		self.name = nil--By wiping name, it becomes uncached and can get replaced by GetLocalizedTimerText in :Start
+		if bar then
+			--If a bar exists while updating key we"
+			--Get remainig, kill old timer, start new one with ID/name replacement applied
+			local remaining = bar.timer
+			self:Stop(...)
+			self:Unschedule(...)
+			DBM:Unschedule(playCountSound, id)
+			self:Start(remaining, ...)--Restart it
 		end
 	end
 
