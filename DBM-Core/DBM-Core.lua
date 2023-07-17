@@ -81,8 +81,8 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.17 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.1.18 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 7, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
@@ -8529,7 +8529,7 @@ do
 
 	--Not to be confused with SetText, which only sets the text of object.
 	--This changes actual ID so announce callback also swaps ID for WAs
-	function announcePrototype:SetKey(altSpellId)
+	function announcePrototype:UpdateKey(altSpellId)
 		self.spellId = altSpellId
 		local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime)
 		self.text = text
@@ -9322,7 +9322,7 @@ do
 		self.spellName = spellName
 	end
 
-	function specialWarningPrototype:SetKey(altSpellId)
+	function specialWarningPrototype:UpdateKey(altSpellId)
 		self.spellId = altSpellId
 		local text, spellName = setText(self.announceType, self.spellId, self.stacks)
 		self.text = text
