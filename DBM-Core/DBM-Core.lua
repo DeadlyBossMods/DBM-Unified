@@ -11051,7 +11051,7 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionType, noSpellGroup)
+function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, extraOptionTwo, spellId, optionType, waCustomName)
 	if checkDuplicateObjects[name] and name ~= "timer_berserk" then
 		DBM:Debug("|cffff0000Option already exists for: |r"..name)
 	else
@@ -11071,11 +11071,15 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 		self.Options[name.."TColor"] = extraOption or 0
 		self.Options[name.."CVoice"] = extraOptionTwo or 0
 	end
-	if spellId and not noSpellGroup then
-		if optionType and optionType == "achievement" then
-			spellId = "at"..spellId--"at" for achievement timer
+	if spellId then
+		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
+
+		else
+			if optionType and optionType == "achievement" then
+				spellId = "at"..spellId--"at" for achievement timer
+			end
+			self:GroupSpells(spellId, name)
 		end
-		self:GroupSpells(spellId, name)
 	end
 	self:SetOptionCategory(name, cat, optionType)
 	if func then
@@ -11084,7 +11088,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 	end
 end
 
-function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId, optionType, noSpellGroup)
+function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat, spellId, optionType, waCustomName)
 	if checkDuplicateObjects[name] then
 		DBM:Debug("|cffff0000Option already exists for: |r"..name)
 	else
@@ -11100,8 +11104,12 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.Options[name] = (default == nil) or default
 	self.Options[name.."SWSound"] = defaultSound or 1
 	self.Options[name.."SWNote"] = true
-	if spellId and not noSpellGroup then
-		self:GroupSpells(spellId, name)
+	if spellId then
+		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
+
+		else
+			self:GroupSpells(spellId, name)
+		end
 	end
 	self:SetOptionCategory(name, cat, optionType)
 end
