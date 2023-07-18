@@ -431,7 +431,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 				else
 					title = spellID
 				end
-				local catpanel = panel:CreateAbility(title, icon)
+				local catpanel = panel:CreateAbility(title, icon, spellID)
 				if desc then
 					catpanel:CreateSpellDesc(desc)
 				end
