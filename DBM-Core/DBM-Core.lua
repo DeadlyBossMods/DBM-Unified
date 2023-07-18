@@ -255,6 +255,7 @@ DBM.DefaultOptions = {
 	GroupOptionsBySpell = true,
 	GroupOptionsExcludeIcon = false,
 	AutoExpandSpellGroups = not isRetail,
+	ShowWAKeys = false,
 	--ShowSpellDescWhenExpanded = false,
 	RangeFrameFrames = "radar",
 	RangeFrameUpdates = "Average",

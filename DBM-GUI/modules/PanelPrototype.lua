@@ -528,7 +528,10 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID)
 		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 	end
 	local title = area:CreateFontString("$parentTitle", "BACKGROUND", "GameFontHighlightSmall")
-	local key = spellID and DBM_CORE_L.WEAKAURA_KEY:format(spellID) or ""
+	local key = ""
+	if DBM.Options.ShowWAKeys and spellID then
+		key = DBM_CORE_L.WEAKAURA_KEY:format(spellID)
+	end
 	if icon then
 		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
 		title:SetText(markup .. titleText .. key)
