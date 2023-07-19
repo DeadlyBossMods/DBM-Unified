@@ -11073,7 +11073,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 	end
 	if spellId then
 		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
-
+			self:GroupWASpells(waCustomName, spellId, name)
 		else
 			if optionType and optionType == "achievement" then
 				spellId = "at"..spellId--"at" for achievement timer
@@ -11106,7 +11106,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.Options[name.."SWNote"] = true
 	if spellId then
 		if waCustomName then--Do custom shit for options using invalid spellIds as weak auras keys
-
+			self:GroupWASpells(waCustomName, spellId, name)
 		else
 			self:GroupSpells(spellId, name)
 		end
@@ -11453,6 +11453,35 @@ function bossModPrototype:RemoveOption(name)
 	end
 end
 
+--Custom function for handling group spells where we want to group by ID, but not use that IDs name (basically a fake Id for purpose of a unified WA key)
+--This lets us group options up that aren't using valid IDs, and show the ID it is using for WA in the gui next to custom name
+function bossModPrototype:GroupWASpells(customName, ...)
+	local spells = {...}
+	local catSpell = tostring(tremove(spells, 1))
+	if not self.groupOptions[catSpell] then
+		self.groupOptions[catSpell] = {}
+		self.groupOptions[catSpell].title = customName
+	end
+	for _, spell in ipairs(spells) do
+		local sSpell = tostring(spell)
+		self.groupOptions[sSpell] = catSpell
+		if sSpell ~= catSpell and self.groupOptions[sSpell] then
+			if not self.groupOptions[catSpell] then
+				self.groupOptions[catSpell] = {}
+			end
+			if type(self.groupOptions[sSpell]) == "table" then
+				for _, spell2 in ipairs(self.groupOptions[sSpell]) do
+					tinsert(self.groupOptions[catSpell], spell2)
+				end
+				self.groupOptions[sSpell] = nil
+			else
+				print(self.groupOptions[sSpell])
+			end
+		end
+	end
+end
+
+--Base function is broken, so GroupWASpells is broken too. Whatever logic was intended by line 11498 fails cuase it expects self.groupOptions[sSpell] to be a table, but it's never made into one
 function bossModPrototype:GroupSpells(...)
 	local spells = {...}
 	local catSpell = tostring(tremove(spells, 1))
