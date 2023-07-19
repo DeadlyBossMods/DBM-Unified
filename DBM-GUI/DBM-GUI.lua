@@ -438,12 +438,8 @@ function DBM_GUI:CreateBossModPanel(mod)
 					catpanel:CreateSpellDesc(desc)
 				end
 				catbutton, lastButton, addSpacer = nil, nil, nil
-				if type(options) == "table" then
-					for _, v in ipairs(options) do
-						addOptions(mod, catpanel, v)
-					end
-				else
-					DBM:Debug(options)
+				for _, v in ipairs(options) do
+					addOptions(mod, catpanel, v)
 				end
 			end
 		end

@@ -8700,7 +8700,7 @@ do
 	end
 
 	-- old constructor (no auto-localize)
-	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption, spellID, noSpellGroup)
+	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption, spellID, waCustomName)
 		if not text then
 			error("NewAnnounce: you must provide announce text", 2)
 			return
@@ -8731,10 +8731,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, noSpellGroup)
+			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, waCustomName)
 		elseif optionName ~= false then
 			obj.option = text
-			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, noSpellGroup)
+			self:AddBoolOption(obj.option, optionDefault, "announce", nil, nil, nil, spellID, nil, waCustomName)
 		end
 		tinsert(self.announces, obj)
 		return obj
@@ -9634,7 +9634,7 @@ do
 		return DBMScheduler:Unschedule(self.Play, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, icon, spellID, noSpellGroup)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, icon, spellID, waCustomName)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
@@ -9671,7 +9671,7 @@ do
 		if optionId then
 			obj.voiceOptionId = hasVoice and "Voice"..optionId or nil
 			obj.option = optionId..(optionVersion or "")
-			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID, nil, noSpellGroup)
+			self:AddSpecialWarningOption(obj.option, optionDefault, runSound, self.NoSortAnnounce and "specialannounce" or "announce", spellID, nil, waCustomName)
 		end
 		tinsert(self.specwarns, obj)
 		return obj
@@ -10700,15 +10700,15 @@ do
 		end
 	end
 
-	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId, optionType, noSpellGroup)
+	function timerPrototype:AddOption(optionDefault, optionName, colorType, countdown, spellId, optionType, waCustomName)
 		if optionName ~= false then
 			self.option = optionName or self.id
-			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId, optionType, noSpellGroup)
+			self.mod:AddBoolOption(self.option, optionDefault, "timer", nil, colorType, countdown, spellId, optionType, waCustomName)
 		end
 	end
 
 	--If a new countdown default is added to a NewTimer object, change optionName of timer to reset a new default
-	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, noSpellGroup)
+	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName)
 		if r and type(r) == "string" then
 			DBM:Debug("|cffff0000r probably has inline icon in it and needs to be fixed for |r"..name..r)
 			r = nil--Fix it for users
@@ -10739,7 +10739,7 @@ do
 			},
 			mt
 		)
-		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId, nil, noSpellGroup)
+		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId, nil, waCustomName)
 		tinsert(self.timers, obj)
 		return obj
 	end
@@ -11081,7 +11081,7 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 			self:GroupSpells(spellId, name)
 		end
 	end
-	self:SetOptionCategory(name, cat, optionType)
+	self:SetOptionCategory(name, cat, optionType, waCustomName)
 	if func then
 		self.optionFuncs = self.optionFuncs or {}
 		self.optionFuncs[name] = func
@@ -11111,7 +11111,7 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 			self:GroupSpells(spellId, name)
 		end
 	end
-	self:SetOptionCategory(name, cat, optionType)
+	self:SetOptionCategory(name, cat, optionType, waCustomName)
 end
 
 --auraspellId must match debuff ID so EnablePrivateAuraSound function can call right option key and right debuff ID
@@ -11458,30 +11458,25 @@ end
 function bossModPrototype:GroupWASpells(customName, ...)
 	local spells = {...}
 	local catSpell = tostring(tremove(spells, 1))
-	if not self.groupOptions[catSpell] then
-		self.groupOptions[catSpell] = {}
-		self.groupOptions[catSpell].title = customName
+	if not self.groupSpells[catSpell] then
+		self.groupSpells[catSpell] = {}
 	end
 	for _, spell in ipairs(spells) do
 		local sSpell = tostring(spell)
-		self.groupOptions[sSpell] = catSpell
+		self.groupSpells[sSpell] = catSpell
 		if sSpell ~= catSpell and self.groupOptions[sSpell] then
 			if not self.groupOptions[catSpell] then
 				self.groupOptions[catSpell] = {}
+				self.groupOptions[catSpell].title = customName
 			end
-			if type(self.groupOptions[sSpell]) == "table" then
-				for _, spell2 in ipairs(self.groupOptions[sSpell]) do
-					tinsert(self.groupOptions[catSpell], spell2)
-				end
-				self.groupOptions[sSpell] = nil
-			else
-				DBM:Debug(self.groupOptions[sSpell])
+			for _, spell2 in ipairs(self.groupOptions[sSpell]) do
+				tinsert(self.groupOptions[catSpell], spell2)
 			end
+			self.groupOptions[sSpell] = nil
 		end
 	end
 end
 
---Base function is broken, so GroupWASpells is broken too. Whatever logic was intended by line 11498 fails cuase it expects self.groupOptions[sSpell] to be a table, but it's never made into one
 function bossModPrototype:GroupSpells(...)
 	local spells = {...}
 	local catSpell = tostring(tremove(spells, 1))
@@ -11503,7 +11498,7 @@ function bossModPrototype:GroupSpells(...)
 	end
 end
 
-function bossModPrototype:SetOptionCategory(name, cat, optionType)
+function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName)
 	optionType = optionType or ""
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
@@ -11512,6 +11507,9 @@ function bossModPrototype:SetOptionCategory(name, cat, optionType)
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
+			if waCustomName then
+				self.groupOptions[sSpell].title = waCustomName
+			end
 		end
 		tinsert(self.groupOptions[sSpell], name)
 	else
