@@ -11475,7 +11475,7 @@ function bossModPrototype:GroupWASpells(customName, ...)
 				end
 				self.groupOptions[sSpell] = nil
 			else
-				print(self.groupOptions[sSpell])
+				DBM:Debug(self.groupOptions[sSpell])
 			end
 		end
 	end
