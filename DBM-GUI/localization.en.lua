@@ -91,6 +91,7 @@ L.AutoExpandSpellGroups				= "Auto expand options that are grouped by spell"
 L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers (won't show keys for options that use mismatching key from a different spell, such as custom off localized alerts not actually tied to a spell or journal ID)"
 --L.ShowSpellDescWhenExpanded	= "Continue showing spell description when groups are expanded"--Might not be used
 L.NoDescription						= "This ability has no description"
+L.CustomOptions						= "This category contains custom options for an ability or event that has no spell or journal ID of it's. These options have been grouped together using a custom manual ID for the ease of creating WeakAuras"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures				= "Extra Features"

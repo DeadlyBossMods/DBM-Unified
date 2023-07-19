@@ -412,7 +412,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 			else
 				local title, desc, _, icon
 				if mod.groupOptions[spellID].title then--Custom title, it's a bogus spellId, so we completely ignore it and bundle with localized custom title
-					title, desc, icon = mod.groupOptions[spellID].title, L.NoDescription, 136116
+					title, desc, icon = mod.groupOptions[spellID].title, L.CustomOptions, 136116
 				elseif tonumber(spellID) then
 					spellID = tonumber(spellID)
 					if spellID < 0 then
