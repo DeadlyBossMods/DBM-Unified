@@ -516,7 +516,7 @@ function PanelPrototype:CreateArea(name)
 	})
 end
 
-function PanelPrototype:CreateAbility(titleText, icon)
+function PanelPrototype:CreateAbility(titleText, icon, spellID)
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "TooltipBorderBackdropTemplate")
 	area.mytype = "ability"
 	area.hidden = not DBM.Options.AutoExpandSpellGroups
@@ -528,11 +528,15 @@ function PanelPrototype:CreateAbility(titleText, icon)
 		area:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -20)
 	end
 	local title = area:CreateFontString("$parentTitle", "BACKGROUND", "GameFontHighlightSmall")
+	local key = ""
+	if DBM.Options.ShowWAKeys and spellID then
+		key = DBM_CORE_L.WEAKAURA_KEY:format(spellID)
+	end
 	if icon then
 		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
-		title:SetText(markup .. titleText)
+		title:SetText(markup .. titleText .. key)
 	else
-		title:SetText(titleText)
+		title:SetText(titleText .. key)
 	end
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)

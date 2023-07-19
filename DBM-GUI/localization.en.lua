@@ -88,8 +88,10 @@ L.UIGroupingOptions					= "UI Grouping Options (changing these require UI reload
 L.GroupOptionsBySpell				= "Group mod options by spell (for mods that support it)"
 L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon on' options from getting grouped by spell (they will be grouped together in 'icons' category like before)"
 L.AutoExpandSpellGroups				= "Auto expand options that are grouped by spell"
+L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers. Caveat is that this will not show correct key on faction fights who's IDs can change on pull based on faction of party leader"
 --L.ShowSpellDescWhenExpanded	= "Continue showing spell description when groups are expanded"--Might not be used
 L.NoDescription						= "This ability has no description"
+L.CustomOptions						= "This category contains custom options for an ability or event that has no spell or journal ID of it's own. These options have been grouped together using a custom manual ID for the ease of creating WeakAuras"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures				= "Extra Features"
