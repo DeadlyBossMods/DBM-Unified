@@ -2301,7 +2301,7 @@ do
 				end
 			end
 			for i = 1, GetNumGroupMembers() do
-				local name, rank, subgroup, _, _, className = GetRaidRosterInfo(i)
+				local name, rank, subgroup, _, _, className, _, isOnline = GetRaidRosterInfo(i)
 				-- Maybe GetNumGroupMembers() bug? Seems that GetNumGroupMembers() rarely returns bad value, causing GetRaidRosterInfo() returns to nil.
 				-- Filter name = nil to prevent nil table error.
 				if name then
@@ -2320,6 +2320,7 @@ do
 					raid[name].groupId = i
 					raid[name].guid = UnitGUID(id) or ""
 					raid[name].updated = true
+					raid[name].isOnline = isOnline
 					raidGuids[UnitGUID(id) or ""] = name
 					if rank == 2 then
 						lastGroupLeader = name
@@ -2337,7 +2338,7 @@ do
 					fireEvent("DBM_raidLeave", i)
 				else
 					v.updated = nil
-					if v.revision and v.rank > 0 and (v.enabledIcons or "") == "true" then
+					if v.revision and v.isOnline and v.rank > 0 and (v.enabledIcons or "") == "true" then
 						iconSeter[#iconSeter + 1] = v.revision.." "..v.name
 					end
 				end
@@ -2355,6 +2356,15 @@ do
 					if updateNotificationDisplayed == 0 and electedBackup and playerName == electedBackup:sub(elected:find(" ") + 1) then
 						private.enableIcons = true
 						DBM:Debug("You have been elected as one of 2 backup icon setters in raid that have assist/lead", 2)
+					end
+				end
+			end
+			--Recheck elected icon if group changed mid combat, so we don't end up in situation no icons are set because setter bounced
+			if #inCombat > 0 then--At least one boss is engaged
+				for i = #inCombat, 1, -1 do
+					local mod = inCombat[i]
+					if mod then
+						self:ElectIconSetter(mod)
 					end
 				end
 			end
@@ -2385,6 +2395,7 @@ do
 				local shortname = UnitName(id)
 				local rank = UnitIsGroupLeader(id) and 2 or 0
 				local _, className = UnitClass(id)
+				local isOnline = UnitIsConnected(id)
 				if (not raid[name]) and inRaid then
 					fireEvent("DBM_partyJoin", name)
 				end
@@ -2397,6 +2408,7 @@ do
 				raid[name].id = id
 				raid[name].groupId = i
 				raid[name].updated = true
+				raid[name].isOnline = isOnline
 				raidGuids[UnitGUID(id) or ""] = name
 				if rank >= 1 then
 					lastGroupLeader = name
@@ -2413,7 +2425,7 @@ do
 					fireEvent("DBM_partyLeave", k)
 				else
 					v.updated = nil
-					if v.revision and v.rank > 0 and (v.enabledIcons or "") == "true" then
+					if v.revision and v.isOnline and v.rank > 0 and (v.enabledIcons or "") == "true" then
 						iconSeter[#iconSeter + 1] = v.revision.." "..v.name
 					end
 				end
@@ -2423,6 +2435,15 @@ do
 				local elected = iconSeter[1]
 				if playerName == elected:sub(elected:find(" ") + 1) then
 					private.enableIcons = true
+				end
+			end
+			--Recheck elected icon if group changed mid combat, so we don't end up in situation no icons are set because setter bounced
+			if #inCombat > 0 then--At least one boss is engaged
+				for i = #inCombat, 1, -1 do
+					local mod = inCombat[i]
+					if mod then
+						self:ElectIconSetter(mod)
+					end
 				end
 			end
 		else
@@ -4651,7 +4672,7 @@ do
 					self:Unschedule(SendVersion)
 					self:Schedule(3, SendVersion)
 				elseif bwPrefix == "B" then--Boss Mod Sync
-					for i = 1, #inCombat do
+					for i = #inCombat, 1, -1 do
 						local mod = inCombat[i]
 						if mod and mod.OnBWSync then
 							mod:OnBWSync(bwMsg, extra, correctSender)
@@ -4667,7 +4688,7 @@ do
 			end
 		elseif prefix == "Transcriptor" and msg then
 			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			for i = 1, #inCombat do
+			for i = #inCombat, 1, -1 do
 				local mod = inCombat[i]
 				if mod and mod.OnTranscriptorSync then
 					mod:OnTranscriptorSync(msg, correctSender)
@@ -5333,24 +5354,8 @@ do
 				if mod.numBoss then
 					mod.vb.bossLeft = mod.numBoss
 				end
-				--elect icon person
-				if mod.findFastestComputer and not self.Options.DontSetIcons then
-					if self:GetRaidRank() > 0 then
-						for i = 1, #mod.findFastestComputer do
-							local option = mod.findFastestComputer[i]
-							if mod.Options[option] then
-								sendSync(DBMSyncProtocol, "IS", UnitGUID("player").."\t"..tostring(self.Revision).."\t"..option)
-							end
-						end
-					elseif not IsInGroup() then
-						for i = 1, #mod.findFastestComputer do
-							local option = mod.findFastestComputer[i]
-							if mod.Options[option] then
-								private.canSetIcons[option] = true
-							end
-						end
-					end
-				end
+				--Update Elected Icon Setter
+				self:ElectIconSetter(mod)
 				--call OnCombatStart
 				if mod.OnCombatStart then
 					local startEvent = syncedEvent or event
@@ -11891,6 +11896,27 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 do
+	function DBM:ElectIconSetter(mod)
+		--elect icon person
+		if mod.findFastestComputer and not self.Options.DontSetIcons then
+			if self:GetRaidRank() > 0 then
+				for i = 1, #mod.findFastestComputer do
+					local option = mod.findFastestComputer[i]
+					if mod.Options[option] then
+						sendSync(DBMSyncProtocol, "IS", UnitGUID("player").."\t"..tostring(self.Revision).."\t"..option)
+					end
+				end
+			elseif not IsInGroup() then
+				for i = 1, #mod.findFastestComputer do
+					local option = mod.findFastestComputer[i]
+					if mod.Options[option] then
+						private.canSetIcons[option] = true
+					end
+				end
+			end
+		end
+	end
+
 	local iconsModule = private:GetModule("Icons")
 
 	function bossModPrototype:SetIcon(...)
