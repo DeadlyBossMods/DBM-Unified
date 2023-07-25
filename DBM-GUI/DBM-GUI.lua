@@ -411,9 +411,9 @@ function DBM_GUI:CreateBossModPanel(mod)
 				panel:CreateLine(options)
 			else
 				local title, desc, _, icon
-				local usedSpellID = spellID
+				local usedSpellID = "|cff69ccf0"..spellID.."|r"--Color code spellId here
 				if mod.groupOptions[spellID] and mod.groupOptions[spellID].customKeys then
-					usedSpellID = mod.groupOptions[spellID].customKeys
+					usedSpellID = mod.groupOptions[spellID].customKeys--Color coding would be done in customKeys, not here
 				end
 				if mod.groupOptions[spellID].title then--Custom title, it's a bogus spellId, so we completely ignore it and bundle with localized custom title
 					title, desc, icon = mod.groupOptions[spellID].title, L.CustomOptions, 136116
