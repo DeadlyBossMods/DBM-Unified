@@ -11491,6 +11491,12 @@ end
 
 --This function, which will be called after all iterations of GroupWASpells/GroupSpells will just straight up say "ok now ignore keys these made and just use custom ones" for extremely niche cases
 function bossModPrototype:JustSetCustomKeys(catSpell, customKeys)
+	if not self.groupSpells[catSpell] then
+		self.groupSpells[catSpell] = {}
+	end
+	if not self.groupOptions[catSpell] then
+		self.groupOptions[catSpell] = {}
+	end
 	self.groupOptions[catSpell].customKeys = customKeys
 end
 
@@ -11548,9 +11554,9 @@ function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName)
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
-			if waCustomName then
-				self.groupOptions[sSpell].title = waCustomName
-			end
+		end
+		if waCustomName and not self.groupOptions[sSpell].title then
+			self.groupOptions[sSpell].title = waCustomName
 		end
 		tinsert(self.groupOptions[sSpell], name)
 	else
