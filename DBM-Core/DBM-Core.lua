@@ -11491,6 +11491,7 @@ end
 
 --This function, which will be called after all iterations of GroupWASpells/GroupSpells will just straight up say "ok now ignore keys these made and just use custom ones" for extremely niche cases
 function bossModPrototype:JustSetCustomKeys(catSpell, customKeys)
+	catSpell = tostring(catSpell)
 	if not self.groupSpells[catSpell] then
 		self.groupSpells[catSpell] = {}
 	end

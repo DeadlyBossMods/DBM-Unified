@@ -411,6 +411,10 @@ function DBM_GUI:CreateBossModPanel(mod)
 				panel:CreateLine(options)
 			else
 				local title, desc, _, icon
+				local usedSpellID = spellID
+				if mod.groupOptions[spellID] and mod.groupOptions[spellID].customKeys then
+					usedSpellID = mod.groupOptions[spellID].customKeys
+				end
 				if mod.groupOptions[spellID].title then--Custom title, it's a bogus spellId, so we completely ignore it and bundle with localized custom title
 					title, desc, icon = mod.groupOptions[spellID].title, L.CustomOptions, 136116
 				elseif tonumber(spellID) then
@@ -433,7 +437,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 				else
 					title = spellID
 				end
-				local catpanel = panel:CreateAbility(title, icon, mod.groupOptions[spellID].customKeys or spellID)
+				local catpanel = panel:CreateAbility(title, icon, usedSpellID)
 				if desc then
 					catpanel:CreateSpellDesc(desc)
 				end
