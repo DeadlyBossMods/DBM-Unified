@@ -11491,7 +11491,7 @@ end
 
 --This function, which will be called after all iterations of GroupWASpells/GroupSpells will just straight up say "ok now ignore keys these made and just use custom ones" for extremely niche cases
 function bossModPrototype:JustSetCustomKeys(catSpell, customKeys)
-	self.groupOptions[catSpell].customKeys
+	self.groupOptions[catSpell].customKeys = customKeys
 end
 
 --Custom function for handling group spells where we want to group by ID, but not use that IDs name (basically a fake Id for purpose of a unified WA key)
