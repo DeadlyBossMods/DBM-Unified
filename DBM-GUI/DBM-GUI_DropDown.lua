@@ -4,7 +4,7 @@ local pairs, next, type, ipairs, setmetatable, mfloor, mmax = pairs, next, type,
 local CreateFrame, GameFontNormalSmall = CreateFrame, GameFontNormalSmall
 local DBM = DBM
 
-local isModernAPI = DBM:GetTOC() > 30400
+local isModernAPI = DBM:GetTOC() > 11403
 
 local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
 
@@ -234,7 +234,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 	local dropdownButton = _G[dropdown:GetName() .. "Button"]
 	dropdownButton:SetScript("OnMouseDown", nil)
 	dropdownButton:SetScript("OnClick", function(self)
-		DBM:PlaySound(856)
+		DBM:PlaySoundFile(567407)
 		if tabFrame1:IsShown() then
 			tabFrame1:Hide()
 			tabFrame1.dropdown = nil
