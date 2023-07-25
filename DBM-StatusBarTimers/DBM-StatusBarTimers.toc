@@ -9,7 +9,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0상태 바 타이머|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0狀態條計時器|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0状态条计时器|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Core|r|cffffe00a>|r |cff69ccf0Таймеры|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Ядро|r|cffffe00a>|r |cff69ccf0Таймеры|r
 ## Notes: DBM - status bar timer library
 ## Notes-esES: DBM - librería de temporizadores de estado
 ## Notes-esMX: DBM - librería de temporizadores de estado
