@@ -87,8 +87,10 @@ L.UIGroupingOptions			= "UI 그룹 설정 (이미 로딩이 된 모드는 UI 재
 L.GroupOptionsBySpell		= "주문별로 설정 그룹 형성 (지원하는 모드만)"
 L.GroupOptionsExcludeIcon	= "주문별로 형성된 그룹에서 '공격대 징표 설정'은 제외 (이전처럼 관련 설정은 '공격대 징표' 카테고리에 배치됩니다)"
 L.AutoExpandSpellGroups		= "주문별로 그룹이 형성된 설정들을 자동으로 펼치기"
+L.ShowWAKeys				= "보스 모드 활성 조건 사용에 쓰이는 WeakAuras 제작용 키를 주문 이름 옆에 표시합니다. 파티장의 진영에 따라 ID가 바뀔 수 있는 진영 관련 전투에선 정확한 키가 표시되지 않으니 주의하세요"
 --L.ShowSpellDescWhenExpanded	= "설정 그룹이 펼쳐진 상태에서도 주문 설명 계속 표시"--Might not be used
 L.NoDescription				= "이 능력에 대한 설명이 없습니다"
+L.CustomOptions				= "이 항목에는 주문이나 도감 ID가 없는 능력이나 이벤트에 대한 사용자 정의 설정이 있습니다. WeakAuras 제작에 활용할 사용자 정의 ID 사용에 관한 설정들이 분류되어 있습니다"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "기타 기능"
@@ -410,7 +412,7 @@ L.SpamBlockNoIconRestore	= "아이콘 설정 상태를 저장하지 않고 전�
 L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 설정 상태로 거리 창 복구 안함"
 
 L.Area_PullTimer			= "풀링, 휴식, 전투, 사용자 지정 바 관련 필터 설정"
-L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 DBM 풀링 타이머 차단 (지역의 ID가 포함되지 않은 상태로 전송된 BigWigs 타이머는 절대 차단하지 않음)"
+L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 DBM 풀링 타이머 차단 (지역 ID 없이 전송된 BigWigs 타이머는 차단하지 않습니다)"
 L.DontShowPT				= "풀링/휴식 타이머 표시 안함"
 L.DontShowPTText			= "풀링/휴식 알림 텍스트 표시 안함"
 L.DontShowPTCountdownText	= "풀링 초읽기 숫자 표시 안함"
