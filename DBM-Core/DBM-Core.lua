@@ -81,13 +81,13 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.18 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.1.19 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 7, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.41 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.42 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 7, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isBCC then
@@ -96,8 +96,8 @@ elseif isBCC then
 	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.45 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 11) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.46 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 7, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 end
@@ -11489,6 +11489,18 @@ function bossModPrototype:RemoveOption(name)
 	end
 end
 
+--This function, which will be called after all iterations of GroupWASpells/GroupSpells will just straight up say "ok now ignore keys these made and just use custom ones" for extremely niche cases
+function bossModPrototype:JustSetCustomKeys(catSpell, customKeys)
+	catSpell = tostring(catSpell)
+	if not self.groupSpells[catSpell] then
+		self.groupSpells[catSpell] = {}
+	end
+	if not self.groupOptions[catSpell] then
+		self.groupOptions[catSpell] = {}
+	end
+	self.groupOptions[catSpell].customKeys = customKeys
+end
+
 --Custom function for handling group spells where we want to group by ID, but not use that IDs name (basically a fake Id for purpose of a unified WA key)
 --This lets us group options up that aren't using valid IDs, and show the ID it is using for WA in the gui next to custom name
 function bossModPrototype:GroupWASpells(customName, ...)
@@ -11543,9 +11555,9 @@ function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName)
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}
-			if waCustomName then
-				self.groupOptions[sSpell].title = waCustomName
-			end
+		end
+		if waCustomName and not self.groupOptions[sSpell].title then
+			self.groupOptions[sSpell].title = waCustomName
 		end
 		tinsert(self.groupOptions[sSpell], name)
 	else

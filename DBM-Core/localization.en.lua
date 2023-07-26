@@ -182,7 +182,7 @@ L.VOICE_MISSING							= "You have a " .. L.DBM .. " voice pack selected that cou
 L.VOICE_DISABLED						= "You currently have at least one " .. L.DBM .. " voice pack installed but none enabled. If you intend to use a voice pack, make sure it's chosen in 'Spoken Alerts', else uninstall unused voice packs to hide this message"
 L.VOICE_COUNT_MISSING					= "Countdown voice %d is set to a voice/count pack that could not be found. It has been reset to default setting: %s."
 L.BIG_WIGS								= "BigWigs"
-L.WEAKAURA_KEY							= " (WA Key: %s)"
+L.WEAKAURA_KEY							= " (|cff308530WA Key:|r %s)"
 
 L.UPDATEREMINDER_HEADER					= "Your version of " .. L.DEADLY_BOSS_MODS.. " is out-of-date.\n Version %s (%s) is available for download through Curse, Wago, WoWI, or from GitHub Releases page"
 L.UPDATEREMINDER_FOOTER					= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the download link to your clipboard."

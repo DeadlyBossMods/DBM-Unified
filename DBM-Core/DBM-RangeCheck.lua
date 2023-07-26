@@ -970,7 +970,7 @@ function rangeCheck:GetDistanceAll(checkrange)
 end
 
 do
-	local function UpdateRangeFrame(r, reverse)
+	local function UpdateLocalRangeFrame(r, reverse)
 		if rangeCheck:IsShown() then
 			rangeCheck:Hide(true)
 		else
@@ -985,9 +985,9 @@ do
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
-		UpdateRangeFrame(tonumber(msg), false)
+		UpdateLocalRangeFrame(tonumber(msg), false)
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
-		UpdateRangeFrame(tonumber(msg), true)
+		UpdateLocalRangeFrame(tonumber(msg), true)
 	end
 end
