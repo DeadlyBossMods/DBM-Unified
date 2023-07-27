@@ -8545,7 +8545,7 @@ do
 			self.text = text
 			self.spellName = spellName
 		else--Just regenerating spellName not message text because it's likely a custom text object such as NewSpecialWarning
-			self.spellName = parseSpellName(spellId)
+			self.spellName = parseSpellName(altSpellId)
 		end
 	end
 
@@ -9344,7 +9344,7 @@ do
 			self.text = text
 			self.spellName = spellName
 		else--Just regenerating spellName not message text because it's likely a custom text object such as NewSpecialWarning
-			self.spellName = parseSpellName(spellId)
+			self.spellName = parseSpellName(altSpellId)
 		end
 	end
 
