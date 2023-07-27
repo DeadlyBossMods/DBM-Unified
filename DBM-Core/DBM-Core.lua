@@ -81,13 +81,13 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.19 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.1.19"
+	DBM.ReleaseRevision = releaseDate(2023, 7, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.42 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.42"
+	DBM.ReleaseRevision = releaseDate(2023, 7, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isBCC then
@@ -96,8 +96,8 @@ elseif isBCC then
 	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.46 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 25) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.46"
+	DBM.ReleaseRevision = releaseDate(2023, 7, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 end
@@ -8538,9 +8538,15 @@ do
 	--This changes actual ID so announce callback also swaps ID for WAs
 	function announcePrototype:UpdateKey(altSpellId)
 		self.spellId = altSpellId
-		local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime)
-		self.text = text
-		self.spellName = spellName
+		self.icon = parseSpellIcon(altSpellId, self.announceType, self.icon)
+		if self.announceType then
+			--Regenerate auto localized text if it's an auto localized alert
+			local text, spellName = setText(self.announceType, self.spellId, self.castTime, self.preWarnTime)
+			self.text = text
+			self.spellName = spellName
+		else--Just regenerating spellName not message text because it's likely a custom text object such as NewSpecialWarning
+			self.spellName = parseSpellName(spellId)
+		end
 	end
 
 	-- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
@@ -9331,9 +9337,15 @@ do
 
 	function specialWarningPrototype:UpdateKey(altSpellId)
 		self.spellId = altSpellId
-		local text, spellName = setText(self.announceType, self.spellId, self.stacks)
-		self.text = text
-		self.spellName = spellName
+		self.icon = parseSpellIcon(altSpellId, self.announceType, self.icon)
+		if self.announceType then
+			--Regenerate auto localized text if it's an auto localized alert
+			local text, spellName = setText(self.announceType, self.spellId, self.stacks)
+			self.text = text
+			self.spellName = spellName
+		else--Just regenerating spellName not message text because it's likely a custom text object such as NewSpecialWarning
+			self.spellName = parseSpellName(spellId)
+		end
 	end
 
 	local function canVoiceReplace(self, soundId)
@@ -10689,6 +10701,7 @@ do
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
 		self.spellId = altSpellId
+		self.icon = parseSpellIcon(altSpellId, self.type, self.icon)
 		self.name = nil--By wiping name, it becomes uncached and can get replaced by GetLocalizedTimerText in :Start
 		if bar then
 			--If a bar exists while updating key we"
