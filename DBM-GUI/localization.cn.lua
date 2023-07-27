@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20230208
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20230727
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -94,8 +94,10 @@ L.UIGroupingOptions			= "界面分组选项 (更改这些需要输入 /reload �
 L.GroupOptionsBySpell		= "按照技能分组 (只支持有效的模块)"
 L.GroupOptionsExcludeIcon	= "按照技能分组排除“设置标记图标”选项 (它们将像以前一样在“图标”类中显示)"
 L.AutoExpandSpellGroups		= "按照技能分组自动扩展选项"
+L.ShowWAKeys				= "在技能名称旁边显示 WeakAuras 键，以便使用DBM触发器编写WeakAuras脚本。 需要注意的是，在分阵营的对战中，技能的ID可能会因为队长的阵营而变动"
 --L.ShowSpellDescWhenExpanded	= "分组扩展时显示技能描述"
 L.NoDescription				= "此技能无描述说明"
+L.CustomOptions				= "此类别包含针对没有自己的技能或事件ID的事件的自定义选项。 这些选项已使用自定义手动 ID 分组在一起，以便于创建 WeakAuras"
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "其他功能"
@@ -261,6 +263,7 @@ L.ReplacesSA1				= "替换特殊警报提示声音 1 (个人的 'pvp拔旗') "
 L.ReplacesSA2				= "替换特殊警报提示声音 2 (每个人 '当心')"
 L.ReplacesSA3				= "替换特殊警报提示声音 3 (高优先级的 '汽笛')"
 L.ReplacesSA4				= "替换特殊警报提示声音 4 (高优先级的 '快跑')"
+L.ReplacesGTFO				= "替换特殊警告的行为提示声音"
 L.ReplacesCustom			= "替换特殊警报提示声音 自定义使用设置(每个警报) 声音 (不建议)"
 L.Area_VoicePackAdvOptions	= "语音包选项（第三方语音包）"
 L.SpecWarn_AlwaysVoice		= "总是播放所有语音警报(即使已禁用特殊警报，对团队领队是有用的，除此以外不建议使用)"
@@ -372,7 +375,7 @@ L.BarSkin					= "计时条外观"
 L.TabCategory_Filters	 	= "禁用及过滤选项"
 L.Area_DBMFiltersSetup		= "DBM 信息过滤指南"
 L.Area_BlizzFiltersSetup	= "暴雪信息过滤指南"
--- Panel: DBM Features
+-- Panel: Toggle DBM Features
 L.Panel_SpamFilter			= "DBM 全局过滤选项"
 
 L.Area_SpamFilter_SpecFeatures		= "通告功能"
@@ -382,17 +385,25 @@ L.SpamBlockNoSpecWarnFlash			= "特殊警报时不闪烁屏幕"
 L.SpamBlockNoSpecWarnVibrate		= "特殊警报时不振动"
 L.SpamBlockNoSpecWarnSound			= "不播放特殊团队警报的声音（如果在“语音警报”面板中启用了语音包，则仍然允许语音包）"
 
-L.Area_SpamFilter_Timers	= "计时器过滤选项"
-L.SpamBlockNoShowTimers		= "不显示 DBM 原装计时条"
-L.SpamBlockNoShowUTimers	= "不显示用户自定义生成的计时条(Custom/Pull/Break)"
-L.SpamBlockNoCountdowns		= "不要播放倒计时语音"
+L.Area_SpamFilter_Timers			= "计时器过滤选项"
+L.SpamBlockNoShowBossTimers			= "不为Boss显示计时条"
+L.SpamBlockNoShowTrashTimers		= "不为小怪显示计时条（同时关闭姓名版CD）"
+L.SpamBlockNoShowEventTimers		= "不显示事件计时条（角色扮演，Boss刷新）"
+L.SpamBlockNoShowUTimers			= "不显示用户自定义生成的计时条(Custom/Pull/Break)"
+L.SpamBlockNoCountdowns				= "不要播放倒计时语音"
+
+L.Area_SpamFilter_Nameplates		= "姓名版全局开启与过滤选项"
+L.SpamBlockNoNameplate				= "不显示姓名面板光环"
+L.SpamBlockNoBossGUIDs				= "不要在Plater姓名版上显示主Boss的姓名版光环\n(若在Plater中启动了该功能，您仍然可以看到小怪和Boss的计时条)"
+L.SpamBlockTimersWithNameplates		= "如果在 Plater 选项中启用了 Plater Nameplate Aura CD，不显示小怪的计时器条（Boss战中始终显示计时条）"
+L.NameplateFooter					= "如果Plater Nameplates开启，会提供更多功能"
 
 L.Area_SpamFilter_Misc		= "其他全局过滤设置"
 L.SpamBlockNoSetIcon		= "不在目标上设定标记"
 L.SpamBlockNoRangeFrame		= "不显示距离雷达框体"
 L.SpamBlockNoInfoFrame		= "不显示信息框体"
 L.SpamBlockNoHudMap			= "不显示 HudMap"
-L.SpamBlockNoNameplate		= "不显示姓名面板高亮"
+
 L.SpamBlockNoYells			= "不在战斗中大喊"
 L.SpamBlockNoNoteSync		= "不接受别人分享的自定义备注"
 L.SpamBlockAutoGossip 		= "不自动密聊回复状态"
@@ -423,14 +434,16 @@ L.FilterVoidFormSay					= "当在虚无状态下，不播发位置或报数喊�
 
 L.Area_SpecFilter					= "角色过滤选项"
 L.FilterTankSpec					= "当非坦克专精时，过滤掉给予坦克的专用信息"
-L.FilterInterruptsHeader			= "基于行为偏好的打断技能提示过滤。"
-L.SWFNever							= "从不"
-L.FilterInterrupts					= "如果被打断对象不是当前目标/焦点(总是)"
-L.FilterInterrupts2					= "如果被打断对象不是当前目标/焦点(总是)或者打断技能正在冷却(限Boss)"
-L.FilterInterrupts3					= "如果被打断对象不是当前目标/焦点(总是)或者打断技能正在冷却(Boss和小怪)"
-L.FilterInterruptNoteName			= "当自定义注记内没有包含你的名字的时候，过滤掉打断提示 (带计数)"
 L.FilterDispels						= "当驱散技能在冷却时, 过滤掉驱散提示"
-L.FilterTrashWarnings				= "当进入普通或英雄副本时，过滤掉所有小怪警报"
+L.FilterTrashWarnings				= "当进入低等级、普通或英雄副本时，过滤掉所有小怪警报"
+
+L.Area_BInterruptFilter				= "Boss打断过滤选项"
+L.FilterTargetFocus					= "过滤掉不是你选中目标的打断提示"
+L.FilterInterruptCooldown			= "当打断技能在冷却时, 过滤掉打断提示"
+L.FilterInterruptHealer				= "当你在治疗专精时，过滤掉打断提示"
+L.FilterInterruptNoteName			= "当自定义注记内没有包含你的名字的时候，过滤掉打断提示"--Only used on bosses, trash mods don't assign counts
+L.Area_BInterruptFilterFooter		= "如果没有选择过滤器，则会显示所有打断（可能会有很多提示）。\n如果一些技能很重要，某些模组可能会完全忽略这些过滤器。"
+L.Area_TInterruptFilter				= "小怪打断过滤选项"--Reuses above 3 strings
 
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "减少DBM的辅助"
