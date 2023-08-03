@@ -412,7 +412,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 			else
 				local title, desc, _, icon
 				--local usedSpellID = "|cff69ccf0"..spellID.."|r"--Color code spellId here
-				local usedSpellID = "|Hgarrmission:DBM:wacopy:"..spellID.."|h|cff69ccf0["..spellID.."]|r|h"
+				local usedSpellID = "|Hgarrmission:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
 				if mod.groupOptions[spellID] and mod.groupOptions[spellID].customKeys then
 					usedSpellID = mod.groupOptions[spellID].customKeys--Color coding would be done in customKeys, not here
 				end

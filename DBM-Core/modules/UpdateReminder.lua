@@ -9,7 +9,7 @@ local function CreateOurFrame()
 	frame:SetHeight(140)
 	frame:SetPoint("TOP", 0, -230)
 	frame.backdropInfo = {
-		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background", -- 131071
+		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- ????
 		edgeFile	= "Interface\\DialogFrame\\UI-DialogBox-Border", -- 131072
 		tile		= true,
 		tileSize	= 32,
