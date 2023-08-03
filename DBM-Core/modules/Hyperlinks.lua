@@ -84,7 +84,7 @@ local function LinkHook(self, link)
 			DBM:Debug("Bad note share, mod not valid")
 		end
 	elseif arg1 == "wacopy" then
-		DBM:ShowUpdateReminder(nil, nil, CL.COPY_WA_DIALOG, arg2)
+		DBM:ShowUpdateReminder(nil, nil, L.COPY_WA_DIALOG, arg2)
 	end
 end
 
