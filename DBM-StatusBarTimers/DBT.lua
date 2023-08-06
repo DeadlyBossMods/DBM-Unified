@@ -744,6 +744,7 @@ local colorVariables = {
 	[7] = "UI",--Important 1
 	[8] = "I2",--Important 2
 }
+DBT.colorVariables = colorVariables
 
 local function stringFromTimer(t)
 	if t <= DBT.Options.TDecimal then
