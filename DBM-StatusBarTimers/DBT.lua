@@ -750,7 +750,7 @@ function DBT:GetColorForType(colorType)
 		return nil
 	end
 	local colorVar = colorVariables[colorType]
-	return barOptions["StartColor"..colorVar.."R"], barOptions["StartColor"..colorVar.."G"], barOptions["StartColor"..colorVar.."B"]
+	return DBT.Options["StartColor"..colorVar.."R"], DBT.Options["StartColor"..colorVar.."G"], DBT.Options["StartColor"..colorVar.."B"]
 end
 
 local function stringFromTimer(t)
