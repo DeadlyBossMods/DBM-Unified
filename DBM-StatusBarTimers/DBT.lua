@@ -745,10 +745,11 @@ local colorVariables = {
 	[8] = "I2",--Important 2
 }
 
-function DBT:GetColorForType(colorVar)
+function DBT:GetColorForType(colorType)
 	if not colorVariables[colorType] then
 		return nil
 	end
+	local colorVar = colorVariables[colorType]
 	return barOptions["StartColor"..colorVar.."R"], barOptions["StartColor"..colorVar.."G"], barOptions["StartColor"..colorVar.."B"]
 end
 
