@@ -22,6 +22,7 @@ L.LOAD_MOD_DISABLED			= "%s|1이;가; 설치는 돼있지만 켜져있질 않습
 L.LOAD_MOD_DISABLED_PLURAL	= "%s|1이;가; 설치는 돼있지만 켜져있질 않습니다. 직접 켜기 전까진 모드들이 로딩되지 않습니다."
 
 L.COPY_URL_DIALOG					= "URL 복사"
+L.COPY_WA_DIALOG						= "WA 키 복사"
 
 --Post Patch 7.1
 L.NO_RANGE					= "거리 레이더를 인스턴스 던전에서 사용할 수 없습니다. 예전의 텍스트 방식 거리창으로 대체됩니다."
@@ -175,8 +176,8 @@ L.VOICE_COUNT_MISSING		= "초읽기 음성중 %d초로 설정된 음성/초읽�
 L.WEAKAURA_KEY							= " (|cff308530WA 키:|r %s)"
 
 L.UPDATEREMINDER_HEADER			= "사용중인 " .. L.DEADLY_BOSS_MODS .. " 버전의 사용 기한이 지났습니다.\n Curse, Wago, WoWI, GitHub 릴리즈 페이지 등에서 %s (%s) 버전을 다운로드 할 수 있습니다."
-L.UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
-L.UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 주소를 복사할 수 있습니다."
+L.UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 다운로드 링크를 클립보드로 복사합니다."
+L.UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. "를 누르면 클립보드로 복사합니다."
 L.UPDATEREMINDER_DISABLE			= "경고: " .. L.DEADLY_BOSS_MODS .. "의 버전이 오래되어 새로운 "..L.DBM.." 버전과 호환되지 않아 강제로 비활성화되며 업데이트 전까진 사용할 수 없습니다. 이는 구버전 모드가 당신과 파티/공대원의 플레이에 악영향을 미치지 않게 하기 위함입니다."
 L.UPDATEREMINDER_DISABLETEST			= "경고: " .. L.DEADLY_BOSS_MODS.. "의 버전이 오래되었고 테스트/베타 서버이기 때문에 강제로 비활성화되며 업데이트 전까진 사용할 수 없습니다. 이는 구버전 모드가 테스트 피드백에 사용되지 않게 하기 위함입니다."
 L.UPDATEREMINDER_HOTFIX			= "지금 사용하는 " .. L.DBM .. " 버전은 이 보스 전투에서 알려진 오류를 가지고 있습니다. 이 오류는 최신 버전으로 업데이트하면 수정됩니다."
