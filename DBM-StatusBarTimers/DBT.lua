@@ -745,6 +745,14 @@ local colorVariables = {
 	[8] = "I2",--Important 2
 }
 
+function DBT:GetColorForType(colorType)
+	if not colorVariables[colorType] then
+		return nil
+	end
+	local colorVar = colorVariables[colorType]
+	return DBT.Options["StartColor"..colorVar.."R"], DBT.Options["StartColor"..colorVar.."G"], DBT.Options["StartColor"..colorVar.."B"]
+end
+
 local function stringFromTimer(t)
 	if t <= DBT.Options.TDecimal then
 		return ("%.1f"):format(t)
