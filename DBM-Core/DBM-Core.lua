@@ -10546,6 +10546,7 @@ do
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		DBM:Unschedule(playCountSound, id)
 		local bar = DBT:GetBar(id)
 		if not bar then
 			bar = self:Start(totalTime, ...)
@@ -10561,7 +10562,6 @@ do
 			if self.option then
 				local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 				if (type(countVoice) == "string" or countVoice > 0) then
-					DBM:Unschedule(playCountSound, id)
 					if not bar.fade then--Don't start countdown voice if it's faded bar
 						if newRemaining > 2 then
 							playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
@@ -10578,6 +10578,7 @@ do
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		DBM:Unschedule(playCountSound, id)
 		local bar = DBT:GetBar(id)
 		if not bar then
 			return self:Start(extendAmount, ...)
@@ -10593,7 +10594,6 @@ do
 				if self.option then
 					local countVoice = self.mod.Options[self.option .. "CVoice"] or 0
 					if (type(countVoice) == "string" or countVoice > 0) then
-						DBM:Unschedule(playCountSound, id)
 						if not bar.fade then--Don't start countdown voice if it's faded bar
 							playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 							DBM:Debug("Updating a countdown after a timer AddTime call for timer ID:"..id)
@@ -10610,6 +10610,7 @@ do
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		DBM:Unschedule(playCountSound, id)--Needs to be unscheduled here, or countdown might not be canceled if removing time made it cease to have a > 0 value
 		local bar = DBT:GetBar(id)
 		if not bar then
 			return--Do nothing
@@ -10617,7 +10618,6 @@ do
 			if not bar.keep then
 				self.mod:Unschedule(removeEntry, self.startedTimers, id)--Needs to be unscheduled here, or the entry might just get left in table until original expire time, if new expire time is less than 0
 			end
-			DBM:Unschedule(playCountSound, id)--Needs to be unscheduled here,or countdown might not be canceled if removing time made it cease to have a > 0 value
 			local elapsed, total = (bar.totalTime - bar.timer), bar.totalTime
 			if elapsed and total then
 				local newRemaining = (total-reduceAmount) - elapsed
@@ -10651,8 +10651,8 @@ do
 	function timerPrototype:Pause(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBT:GetBar(id)
+		DBM:Unschedule(playCountSound, id)--Kill countdown on pause
 		if bar then
-			DBM:Unschedule(playCountSound, id)--Kill countdown on pause
 			if not bar.keep then
 				self.mod:Unschedule(removeEntry, self.startedTimers, id)--Prevent removal from startedTimers table while bar is paused
 			end
