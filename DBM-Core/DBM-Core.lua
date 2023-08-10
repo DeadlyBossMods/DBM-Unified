@@ -10202,6 +10202,7 @@ do
 						end
 					end
 					DBT:CancelBar(self.startedTimers[i])
+					DBM:Unschedule(playCountSound, self.startedTimers[i])
 					fireEvent("DBM_TimerStop", self.startedTimers[i])
 					tremove(self.startedTimers, i)
 				end
