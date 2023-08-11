@@ -1124,7 +1124,7 @@ do
 	end
 
 	function DBT:SetSkin(id)
-		if not skins[id] then
+		if not skins[id] and id ~= 'DBM' then
 			error("Skin '" .. id .. "' doesn't exist", 2)
 		end
 		local DBM_UsedProfile = DBM_UsedProfile or "Default"
@@ -1141,8 +1141,10 @@ do
 			end
 		end
 		self:ApplyProfile(id, true)
-		for option, value in pairs(skins[id].Options) do
-			self:SetOption(option, value, true)
+		if id ~= 'DBM' then
+			for option, value in pairs(skins[id].Options) do
+				self:SetOption(option, value, true)
+			end
 		end
 		self:SetOption("Skin", id) -- Forces an UpdateBars and ApplyStyle
 	end
