@@ -11237,14 +11237,14 @@ end
 --Any time extended icons is used, option must be OFF by default
 --Option must be hidden from GUI if extended icoins not enabled
 --If extended icons are disabled, then on mod load, users option is reset to default (off) to prevent their mod from still executing SetIcon functions (this is because even if it's hidden from GUI, if option was created and enabled, it'd still run)
-function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning)
+function bossModPrototype:AddSetIconOption(name, spellId, default, iconType, iconsUsed, conflictWarning, groupSpellId)
 	self.DefaultOptions[name] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
 	end
 	self.Options[name] = (default == nil) or default
-	if spellId and not DBM.Options.GroupOptionsExcludeIcon then
-		self:GroupSpells(spellId, name)
+	if (groupSpellId or spellId) and not DBM.Options.GroupOptionsExcludeIcon then
+		self:GroupSpells(groupSpellId or spellId, name)
 	end
 	self:SetOptionCategory(name, "icon")
 	--Legacy bool and nil support
