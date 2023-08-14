@@ -542,9 +542,7 @@ do
 	local dummyBars = 0
 	local function dummyCancel(self)
 		self.timer = self.totalTime
-		self.flashing = nil
 		self:Update(0)
-		self.flashing = nil
 		_G[self.frame:GetName() .. "BarSpark"]:SetAlpha(1)
 	end
 
@@ -785,8 +783,8 @@ function barPrototype:Update(elapsed)
 	local isEnlarged = self.enlarged and not paused
 	local fillUpBars = isEnlarged and barOptions.FillUpLargeBars or not isEnlarged and barOptions.FillUpBars
 	local ExpandUpwards = isEnlarged and barOptions.ExpandUpwardsLarge or not isEnlarged and barOptions.ExpandUpwards
+	local r, g, b
 	if barOptions.DynamicColor and not self.color then
-		local r, g, b
 		local colorVar = colorVariables[colorCount]
 		if barOptions.NoBarFade then
 			r = isEnlarged and barOptions["EndColor"..colorVar.."R"] or barOptions["StartColor"..colorVar.."R"]
@@ -839,6 +837,10 @@ function barPrototype:Update(elapsed)
 	elseif self.flashing and timerValue > 7.75 then
 		self.flashing = nil
 		self.ftimer = nil
+		bar:SetStatusBarColor(r, g, b, 1)
+		if sparkEnabled then
+			spark:SetAlpha(1)
+		end
 	end
 	if sparkEnabled then
 		spark:ClearAllPoints()
@@ -848,7 +850,6 @@ function barPrototype:Update(elapsed)
 		spark:SetAlpha(0)
 	end
 	if self.flashing then
-		local r, g, b = bar:GetStatusBarColor()
 		local ftime = self.ftimer % 1.25
 		if ftime >= 0.5 then
 			bar:SetStatusBarColor(r, g, b, 1)
