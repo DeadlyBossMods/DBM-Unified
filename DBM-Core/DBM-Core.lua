@@ -33,7 +33,6 @@ local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
 
-local DBMOldPrefix = isRetail and "D4" or isClassic and "D4C" or isBCC and "D4BC" or isWrath and "D4WC"
 local DBMPrefix = isRetail and "D5" or isClassic and "D5C" or isBCC and "D5BC" or isWrath and "D5WC"
 local DBMSyncProtocol = 1
 private.DBMPrefix = DBMPrefix
@@ -81,24 +80,24 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.22 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 8, 8) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.1.22"
+	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.43 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
+	DBM.DisplayVersion = "1.14.43"
+	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
-	DBM.ReleaseRevision = releaseDate(2023, 6, 6) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
+	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.47 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 7, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 1--When this is incremented, trigger force disable regardless of major patch
+	DBM.DisplayVersion = "3.4.47"
+	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -467,6 +466,14 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
     "DBM-Coliseum",--Combined into DBM-Raids-WoTLK
     "DBM-EyeOfEternity",--Combined into DBM-Raids-WoTLK
 
+	"DBM-Onyxia",--Combined into DBM-Raids-WoTLK
+	"DBM-Naxx",--Combined into DBM-Raids-WoTLK
+	"DBM-ZG", -- Part of Cataclysm party mods on retail, and part on DBM-Raids-BC on classic
+	"DBM-AQ20",--Combined into DBM-Raids-Vanilla
+	"DBM-AQ40",--Combined into DBM-Raids-Vanilla
+	"DBM-BWL",--Combined into DBM-Raids-Vanilla
+	"DBM-MC",--Combined into DBM-Raids-Vanilla
+
 	"DBM-Karazhan",--Combined into DBM-Raids-BC
 	"DBM-BlackTemple",--Combined into DBM-Raids-BC
 	"DBM-Hyjal",--Combined into DBM-Raids-BC
@@ -513,16 +520,6 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 if isRetail then
 	--Retail doesn't use this folder, classic era, bc, and wrath still do
 	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
-end
-if not isClassic then
-	--The Culling (classic era still uses split modules, BC and later use unified)
-	table.insert(bannedMods, "DBM-Onyxia")--Combined into DBM-Raids-WoTLK
-	table.insert(bannedMods, "DBM-Naxx")--Combined into DBM-Raids-WoTLK
-	table.insert(bannedMods, "DBM-ZG") -- Part of Cataclysm party mods on retail, and part on DBM-Raids-BC on classic
-	table.insert(bannedMods, "DBM-AQ20")--Combined into DBM-Raids-Vanilla
-	table.insert(bannedMods, "DBM-AQ40")--Combined into DBM-Raids-Vanilla
-	table.insert(bannedMods, "DBM-BWL")--Combined into DBM-Raids-Vanilla
-	table.insert(bannedMods, "DBM-MC")--Combined into DBM-Raids-Vanilla
 end
 
 --[InstanceID]={level,zoneType}
@@ -2304,7 +2301,7 @@ do
 				twipe(forceDisablePerson)
 				inRaid = true
 				--sendSync(DBMSyncProtocol, "H")
-				SendAddonMessage("D4", "H", IsInGroup(2) and "INSTANCE_CHAT" or "RAID")--Purposely sent on old protocol to get all versions
+				SendAddonMessage(DBMPrefix, "H", IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 				end
@@ -2392,7 +2389,7 @@ do
 				twipe(forceDisablePerson)
 				inRaid = true
 				--sendSync(DBMSyncProtocol, "H")
-				SendAddonMessage("D4", "H", IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
+				SendAddonMessage(DBMPrefix, "H", IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				end
@@ -4669,9 +4666,6 @@ do
 			else
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
-		elseif prefix == DBMOldPrefix and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" or channel == "GUILD") then
-			local correctSender = GetCorrectSender(senderOne, senderTwo)
-			handleSync(channel, correctSender, nil, 1, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
@@ -4725,8 +4719,6 @@ do
 	function DBM:BN_CHAT_MSG_ADDON(prefix, msg, _, sender)
 		if prefix == DBMPrefix and msg then
 			handleSync("BN_WHISPER", sender, nil, strsplit("\t", msg))
-		elseif prefix == DBMOldPrefix and msg then
-			handleSync("BN_WHISPER", sender, nil, 0, strsplit("\t", msg))
 		end
 	end
 end
@@ -6510,9 +6502,6 @@ do
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
-			end
-			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMOldPrefix) then -- old main prefix for DBM4
-				self:AddMsg("Error: unable to register old DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
 			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
 				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
