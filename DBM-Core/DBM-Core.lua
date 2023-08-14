@@ -80,12 +80,12 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.22"
+	DBM.DisplayVersion = "10.1.23 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.43"
+	DBM.DisplayVersion = "1.14.44 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
@@ -95,7 +95,7 @@ elseif isBCC then
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.47"
+	DBM.DisplayVersion = "3.4.48 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
