@@ -984,6 +984,23 @@ do
 		return tIndexOf({...}, args.spellId) ~= nil
 	end
 
+	--Function exclusively used in classic era to make it a little cleaner to mass unifiy modules to auto check spellid or spellName based on game flavor
+	function argsMT.__index:IsSpell(...)
+		if isClassic then
+			--ugly ass performance wasting checks that have to first convert Ids to names because #nochanges
+			for _, spellId in ipairs({...}) do
+				local spellName = DBM:GetSpellInfo(spellId)
+				if spellName and spellName = args.spellName then
+					return true
+				end
+			end
+			return false
+		else
+			--Just simple table comoparison
+			return tIndexOf({...}, args.spellId) ~= nil
+		end
+	end
+
 	function argsMT.__index:IsPlayer()
 		-- If blizzard ever removes sourceFlags, this will automatically switch to fallback
 		if args.destFlags and COMBATLOG_OBJECT_AFFILIATION_MINE then
