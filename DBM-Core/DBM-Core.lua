@@ -990,7 +990,7 @@ do
 			--ugly ass performance wasting checks that have to first convert Ids to names because #nochanges
 			for _, spellId in ipairs({...}) do
 				local spellName = DBM:GetSpellInfo(spellId)
-				if spellName and spellName = args.spellName then
+				if spellName and spellName == args.spellName then
 					return true
 				end
 			end
