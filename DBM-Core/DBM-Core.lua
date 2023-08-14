@@ -80,23 +80,23 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.23 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.1.24 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 8, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 278, "6d6db52"
 elseif isClassic then
-	DBM.DisplayVersion = "1.14.44 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.14.45 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 8, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
-	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2023, 8, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.48 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 8, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.49 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 8, 14) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 	fakeBWVersion, fakeBWHash = 48, "9581348"
 end
@@ -2300,8 +2300,7 @@ do
 				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				twipe(forceDisablePerson)
 				inRaid = true
-				--sendSync(DBMSyncProtocol, "H")
-				SendAddonMessage(DBMPrefix, "H", IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
+				sendSync(DBMSyncProtocol, "H")
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 				end
@@ -2388,8 +2387,7 @@ do
 				twipe(newerVersionPerson)--Wipe guild syncs on group join so we trigger a new out of date notice on raid join even if one triggered on login
 				twipe(forceDisablePerson)
 				inRaid = true
-				--sendSync(DBMSyncProtocol, "H")
-				SendAddonMessage(DBMPrefix, "H", IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
+				sendSync(DBMSyncProtocol, "H")
 				if dbmIsEnabled then
 					SendAddonMessage("BigWigs", bwVersionQueryString:format(0, fakeBWHash), IsInGroup(2) and "INSTANCE_CHAT" or "PARTY")
 				end
@@ -4617,6 +4615,9 @@ do
 
 	handleSync = function(channel, sender, _, protocol, prefix, ...)--dbmSender unused for now
 		protocol = tonumber(protocol)
+		if not protocol then
+			return
+		end
 		if protocol < DBMSyncProtocol then
 			return
 		end
