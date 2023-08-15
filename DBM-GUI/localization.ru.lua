@@ -162,6 +162,9 @@ L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://disco
 L.WebsiteButton				= "Форумы"
 
 L.OTabBosses				= "Боссы"
+L.OTabRaids					= "Рейд"
+L.OTabDungeons				= "Группа/Соло"
+L.OTabPlugins				= "Основные плагины"
 L.OTabOptions				= "Настройки"
 
 L.TabCategory_Options	 	= "Общие параметры"
