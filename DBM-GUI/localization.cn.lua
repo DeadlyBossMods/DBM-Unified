@@ -91,7 +91,6 @@ L.Editbox_WindowWidth		= "GUI窗口宽度"
 L.Editbox_WindowHeight		= "GUI窗口高度"
 
 L.UIGroupingOptions			= "界面分组选项 (更改这些需要输入 /reload 来重载界面)"
-L.GroupOptionsBySpell		= "按照技能分组 (只支持有效的模块)"
 L.GroupOptionsExcludeIcon	= "按照技能分组排除“设置标记图标”选项 (它们将像以前一样在“图标”类中显示)"
 L.AutoExpandSpellGroups		= "按照技能分组自动扩展选项"
 L.ShowWAKeys				= "在技能名称旁边显示 WeakAuras 键，以便使用DBM触发器编写WeakAuras脚本。 需要注意的是，在分阵营的对战中，技能的ID可能会因为队长的阵营而变动"
