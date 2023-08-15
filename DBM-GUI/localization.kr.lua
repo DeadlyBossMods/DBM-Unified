@@ -84,7 +84,6 @@ L.Editbox_WindowWidth		= "설정 창 너비"
 L.Editbox_WindowHeight		= "설정 창 높이"
 
 L.UIGroupingOptions			= "UI 그룹 설정 (이미 로딩이 된 모드는 UI 재시작을 해야 변경됩니다)"
-L.GroupOptionsBySpell		= "주문별로 설정 그룹 형성 (지원하는 모드만)"
 L.GroupOptionsExcludeIcon	= "주문별로 형성된 그룹에서 '공격대 징표 설정'은 제외 (이전처럼 관련 설정은 '공격대 징표' 카테고리에 배치됩니다)"
 L.AutoExpandSpellGroups		= "주문별로 그룹이 형성된 설정들을 자동으로 펼치기"
 L.ShowWAKeys				= "보스 모드 활성 조건 사용에 쓰이는 WeakAuras 제작용 키를 주문 이름 옆에 표시합니다. 파티장의 진영에 따라 ID가 바뀔 수 있는 진영 관련 전투에선 정확한 키가 표시되지 않으니 주의하세요"
