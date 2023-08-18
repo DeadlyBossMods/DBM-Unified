@@ -136,6 +136,13 @@ if not _G["BigWigs"] then
 	SlashCmdList["DEADLYBOSSMODSBREAK"] = function(msg)
 		Break(tonumber(msg) or 10)
 	end
+	if C_PartyInfo then
+		C_PartyInfo.DoCountdown = function(msg)
+			if SlashCmdList.SLASH_DEADLYBOSSMODSPULL1 then
+				SlashCmdList.SLASH_DEADLYBOSSMODSPULL1(msg)
+			end
+		end
+	end
 end
 
 SLASH_DEADLYBOSSMODSRPULL1 = "/rpull"

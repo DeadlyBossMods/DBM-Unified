@@ -7,6 +7,7 @@ exclude_files = {
 ignore = {
 	"11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
 	"11./BINDING_.*", -- Setting an undefined (Keybinding header) global variable
+	"11[23]/C_PartyInfo",
 	"212/self", -- Unused argument
 	"43.", -- Shadowing an upvalue, an upvalue argument, an upvalue loop variable.
 	"542", -- An empty if branch
@@ -196,6 +197,7 @@ globals = {
 	"C_ModifiedInstance.GetModifiedInstanceInfoFromMapID",
 	"C_NamePlate.GetNamePlateForUnit",
 	"C_NamePlate.GetNamePlates",
+	"C_PartyInfo",
 	"C_PlayerInfo.IsPlayerInChromieTime",
 	"C_QuestLog.IsQuestFlaggedCompleted",
 	"C_Scenario.GetCriteriaInfo",
