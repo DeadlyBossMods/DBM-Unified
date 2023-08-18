@@ -39,7 +39,7 @@ local function clearIconTable(scanId)
 end
 
 --Primary icon methods
-function module:SetIcon(mod, target, icon, timer)
+function module:SetIcon(mod, target, icon, timer, ignoreOld)
 	if not target then return end--Fix a rare bug where target becomes nil at last second (end combat fires and clears targets)
 	if DBM.Options.DontSetIcons or not private.enableIcons or private.raidIconsDisabled or DBM:GetRaidRank(playerName) == 0 then
 		return
@@ -59,11 +59,13 @@ function module:SetIcon(mod, target, icon, timer)
 		uId = uId or target
 		--save previous icon into a table.
 		local oldIcon = self:GetIcon(uId) or 0
-		if not mod.iconRestore[uId] then
+		if not mod.iconRestore[uId] and not ignoreOld then
 			mod.iconRestore[uId] = oldIcon
 		end
 		--set icon
-		if oldIcon ~= icon then--Don't set icon if it's already set to what we're setting it to
+		if ignoreOld then
+			SetRaidTarget(uId, icon)
+		elseif (oldIcon ~= icon) then--Don't set icon if it's already set to what we're setting it to
 			SetRaidTarget(uId, mod.iconRestore[uId] and icon == 0 and mod.iconRestore[uId] or icon)
 		end
 		--schedule restoring old icon if timer enabled.
