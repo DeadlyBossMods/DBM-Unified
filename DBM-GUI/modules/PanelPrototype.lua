@@ -569,7 +569,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID)
 		button.toggle:SetPushedTexture(area.hidden and 130836 or 130820) -- "Interface\\Buttons\\UI-PlusButton-DOWN", "Interface\\Buttons\\UI-MinusButton-DOWN"
 		_G["DBM_GUI_OptionsFrame"]:DisplayFrame(DBM_GUI.currentViewing)
 	end
-	if not isModernAPI then
+	if not isModernAPI then--TODO, see if this work around is needed anymore in 1.14.4
 		button:RegisterForClicks('')
 	end
 	--
