@@ -1,7 +1,7 @@
 local L = DBM_GUI_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isModernAPI = DBM:GetTOC() > 100000--Purposely left this way, wrath 3.4.1 doesn't like changes in THIS file
+local isModernAPI = DBM:GetTOC() > 100000--Purposely left this way, wrath 3.4.1 doesn't like changes in THIS file (TODO, see if same problem exists in 1.14.4)
 
 local DDM = _G["LibStub"]:GetLibrary("LibDropDownMenu")
 
