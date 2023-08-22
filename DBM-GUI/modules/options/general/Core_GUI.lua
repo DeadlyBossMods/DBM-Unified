@@ -128,13 +128,7 @@ resetbutton2:SetScript("OnClick", function()
 	optionsFrame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 end)
 
-local minWidth, minHeight, maxWidth, maxHeight
-if DBM:GetTOC() < 11404 then -- Is Legacy API
-	minWidth, minHeight = optionsFrame:GetMinResize()
-	maxWidth, maxHeight = optionsFrame:GetMaxResize()
-else -- Is Modern API
-	minWidth, minHeight, maxWidth, maxHeight = optionsFrame:GetResizeBounds()
-end
+local minWidth, minHeight, maxWidth, maxHeight = optionsFrame:GetResizeBounds()
 
 local resizeWidth = resizeOptions:CreateEditBox(L.Editbox_WindowWidth, math.floor(DBM.Options.GUIWidth * 10 ^ 2 + 0.5) / 10 ^ 2)
 resizeWidth:SetPoint("TOPLEFT", 20, -40)
