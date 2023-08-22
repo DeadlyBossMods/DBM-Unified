@@ -81,7 +81,7 @@ DBT.DefaultOptions = {
 	EndColorI2G = 0.5058823823928833,
 	EndColorI2B = 0,
 	--Important bars options
-	Bar7ForceLarge = false,
+	Bar7ForceLarge = true,
 	Bar7CustomInline = true,
 	-- Small bar
 	BarXOffset = 0,
