@@ -83,7 +83,7 @@ if isRetail then
 	DBM.DisplayVersion = "10.1.25 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 8, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
-	fakeBWVersion, fakeBWHash = 278, "6d6db52"
+	fakeBWVersion, fakeBWHash = 290, "894cc27"
 elseif isClassic then
 	DBM.DisplayVersion = "1.14.46 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 8, 21) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
