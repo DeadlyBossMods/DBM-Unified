@@ -138,8 +138,8 @@ if not _G["BigWigs"] then
 	end
 	if C_PartyInfo then
 		C_PartyInfo.DoCountdown = function(msg)
-			if SlashCmdList.SLASH_DEADLYBOSSMODSPULL1 then
-				SlashCmdList.SLASH_DEADLYBOSSMODSPULL1(msg)
+			if SlashCmdList.DEADLYBOSSMODSPULL then
+				SlashCmdList.DEADLYBOSSMODSPULL(msg)
 			end
 		end
 	end
