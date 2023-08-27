@@ -464,14 +464,17 @@ L.AUTO_TIMER_TEXTS = {
 	active								= "%s ends",--Buff/Debuff/event on boss
 	fades								= "%s fades",--Buff/Debuff on players
 	ai									= "%s AI",
-	cd									= "~%s",
-	cdcount								= "~%s (%%s)",
-	cdsource							= "~%s: >%%s<",
-	cdspecial							= "~Special",
+
+	cd									= "%s",--Now same as next, as the ~ was moved to timer number
+	cdcount								= "%s (%%s)",--Now same as next, as the ~ was moved to timer number
+	cdsource							= "%s: >%%s<",--Now same as next, as the ~ was moved to timer number
+	cdspecial							= "Special",--Now same as next, as the ~ was moved to timer number
+
 	next								= "%s",
 	nextcount							= "%s (%%s)",
-	nextsource							= "%s: %%s",
+	nextsource							= "%s: >%%s<",
 	nextspecial							= "Special",
+
 	achievement							= "%s",
 	stage								= "Stage",
 	adds								= "Adds",
