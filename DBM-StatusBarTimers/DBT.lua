@@ -253,7 +253,7 @@ do
 
 	local mt = {__index = barPrototype}
 
-	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, simpType)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy, colorType, inlineIcon, keep, fade, countdown, countdownMax, isCooldown)
 		if (not timer or type(timer) == "string" or timer <= 0) or (self.numBars >= 15 and not isDummy) then
 			return
 		end
@@ -298,7 +298,7 @@ do
 				newBar.fade = fade
 				newBar.countdown = countdown
 				newBar.countdownMax = countdownMax
-				newBar.simpType = simpType
+				newBar.isCooldown = isCooldown
 			else -- Duplicate code ;(
 				local newFrame = createBarFrame(self)
 				newBar = setmetatable({
@@ -319,7 +319,7 @@ do
 					fade = fade,
 					countdown = countdown,
 					countdownMax = countdownMax,
-					simpType = simpType
+					isCooldown = isCooldown,
 					lastUpdate = GetTime()
 				}, mt)
 				newFrame.obj = newBar
@@ -823,7 +823,7 @@ function barPrototype:Update(elapsed)
 				bar:SetValue(timerValue/totaltimeValue)
 			end
 		end
-		if self.simpType and self.simpType == "cd" then--inprecise CD bar, signify it with ~ in timer
+		if self.isCooldown then--inprecise CD bar, signify it with ~ in timer
 			timer:SetText("~" .. stringFromTimer(timerValue))
 		else
 			timer:SetText(stringFromTimer(timerValue))
