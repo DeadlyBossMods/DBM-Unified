@@ -3534,17 +3534,17 @@ do
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
 				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-WoTLK") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
-				elseif cataZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Firelands") then
+				elseif cataZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-Cata") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
-				elseif mopZones[LastInstanceMapID] and not GetAddOnInfo("DBM-SiegeOfOrgrimmarV2") then
+				elseif mopZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-MoP") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
-				elseif wodZones[LastInstanceMapID] and not GetAddOnInfo("DBM-HellfireCitadel") then
+				elseif wodZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-WoD") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
 				elseif legionZones[LastInstanceMapID] and not GetAddOnInfo("DBM-AntorusBurningThrone") then--Technically 45 level with quish, but because of tuning you need need mods even at 50
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"))
-				elseif bfaZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Nyalotha") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
+				elseif bfaZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-BfA") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Battle for Azeroth mods"))
-				elseif shadowlandsZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Sepulcher") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
+				elseif shadowlandsZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-Shadowlands") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Shadowlands mods"))
 				end
 			elseif challengeScenarios[LastInstanceMapID] and not GetAddOnInfo("DBM-Challenges") then--No trivial check on challenge scenarios
