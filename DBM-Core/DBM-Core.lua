@@ -510,6 +510,8 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-CastleNathria",--Combined into DBM-Raids-Shadowlands
 	"DBM-Sepulcher",--Combined into DBM-Raids-Shadowlands
 
+	"DBM-VaultoftheIncarnates",--Combined into DBM-Raids-Dragonflight
+
 	"DBM-DMF",--Combined into DBM-WorldEvents
 }
 if isRetail then
