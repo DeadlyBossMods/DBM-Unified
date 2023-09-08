@@ -3540,7 +3540,7 @@ do
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
 				elseif wodZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-WoD") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
-				elseif legionZones[LastInstanceMapID] and not GetAddOnInfo("DBM-AntorusBurningThrone") then--Technically 45 level with quish, but because of tuning you need need mods even at 50
+				elseif legionZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-Legion") then--Technically 45 level with quish, but because of tuning you need need mods even at 50
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"))
 				elseif bfaZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-BfA") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Battle for Azeroth mods"))
