@@ -510,6 +510,8 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-CastleNathria",--Combined into DBM-Raids-Shadowlands
 	"DBM-Sepulcher",--Combined into DBM-Raids-Shadowlands
 
+	"DBM-VaultoftheIncarnates",--Combined into DBM-Raids-Dragonflight
+
 	"DBM-DMF",--Combined into DBM-WorldEvents
 }
 if isRetail then
@@ -530,7 +532,7 @@ if isRetail then
 		[1220]={45, 1},[1779]={45, 1},--Legion World bosses
 		[1643]={50, 1},[1642]={50, 1},[1718]={50, 1},[1943]={50, 1},[1876]={50, 1},[2105]={50, 1},[2111]={50, 1},[2275]={50, 1},--Bfa World bosses and warfronts
 		[2222]={60, 1},[2374]={60, 1},--Shadowlands World Bosses
-		[2444]={70, 1},[2512]={70, 1},[2574]={70, 1},[2454]={70, 1},--Dragonflight World Bosses
+		[2444]={70, 1},[2512]={70, 1},[2574]={70, 1},[2454]={70, 1},[2548]={70, 1},--Dragonflight World Bosses
 		--Raids
 		[509]={30, 3},[531]={30, 3},[469]={30, 3},[409]={30, 3},--Classic Raids
 		[564]={30, 3},[534]={30, 3},[532]={30, 3},[565]={30, 3},[544]={30, 3},[548]={30, 3},[580]={30, 3},[550]={30, 3},--BC Raids
@@ -541,7 +543,7 @@ if isRetail then
 		[1712]={50, 3},[1520]={50, 3},[1530]={50, 3},[1676]={50, 3},[1648]={50, 3},--Legion Raids (Set to 50 because 45 tuning makes them difficult even at 50)
 		[1861]={50, 3},[2070]={50, 3},[2096]={50, 3},[2164]={50, 3},[2217]={50, 3},--BfA Raids
 		[2296]={60, 3},[2450]={60, 3},[2481]={60, 3},--Shadowlands Raids (yes, only 3 kekw, seconded)
-		[2522]={70, 3},[2569]={70, 3},--Dragonflight Raids
+		[2522]={70, 3},[2569]={70, 3},[2549]={70, 3},--Dragonflight Raids
 		--Dungeons
 		[48]={30, 2},[230]={30, 2},[429]={30, 2},[389]={30, 2},[34]={30, 2},--Classic Dungeons
 		[540]={30, 2},[558]={30, 2},[556]={30, 2},[555]={30, 2},[542]={30, 2},[546]={30, 2},[545]={30, 2},[547]={30, 2},[553]={30, 2},[554]={30, 2},[552]={30, 2},[557]={30, 2},[269]={30, 2},[560]={30, 2},[543]={30, 2},[585]={30, 2},--BC Dungeons
@@ -3532,17 +3534,17 @@ do
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
 				elseif wrathZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-WoTLK") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
-				elseif cataZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Firelands") then
+				elseif cataZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-Cata") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
-				elseif mopZones[LastInstanceMapID] and not GetAddOnInfo("DBM-SiegeOfOrgrimmarV2") then
+				elseif mopZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-MoP") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
-				elseif wodZones[LastInstanceMapID] and not GetAddOnInfo("DBM-HellfireCitadel") then
+				elseif wodZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-WoD") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Warlords of Draenor mods"))
-				elseif legionZones[LastInstanceMapID] and not GetAddOnInfo("DBM-AntorusBurningThrone") then--Technically 45 level with quish, but because of tuning you need need mods even at 50
+				elseif legionZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-Legion") then--Technically 45 level with quish, but because of tuning you need need mods even at 50
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Legion mods"))
-				elseif bfaZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Nyalotha") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
+				elseif bfaZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-BfA") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Battle for Azeroth mods"))
-				elseif shadowlandsZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Sepulcher") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
+				elseif shadowlandsZones[LastInstanceMapID] and not GetAddOnInfo("DBM-Raids-Shadowlands") then--Technically 50, but tuning and huge loss of player power, zones are even HARDER at 60
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Shadowlands mods"))
 				end
 			elseif challengeScenarios[LastInstanceMapID] and not GetAddOnInfo("DBM-Challenges") then--No trivial check on challenge scenarios
