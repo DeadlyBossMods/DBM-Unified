@@ -413,6 +413,7 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["RemoveMagic"] = true,
 				["RemovePoison"] = true,--Auto known
+				["HasInterrupt"] = IsSpellKnown(351338),--Quell
 				["RemoveCurse"] = IsSpellKnown(374251),--Cauterizing Flame
 				["RemoveDisease"] = IsSpellKnown(374251),--Cauterizing Flame
 				["RemoveEnrage"] = IsSpellKnown(374346),--Overawe
