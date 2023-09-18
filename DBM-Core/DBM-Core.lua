@@ -460,6 +460,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
     "DBM-ChamberOfAspects",--Combined into DBM-Raids-WoTLK
     "DBM-Coliseum",--Combined into DBM-Raids-WoTLK
     "DBM-EyeOfEternity",--Combined into DBM-Raids-WoTLK
+    "DBM-Icecrown",--Combined into DBM-Raids-WoTLK
 
 	"DBM-Onyxia",--Combined into DBM-Raids-WoTLK
 	"DBM-Naxx",--Combined into DBM-Raids-WoTLK
