@@ -373,16 +373,16 @@ L.Area_BrowseOtherCT		= "Посмотреть пакеты обратного о
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
 -- Tab: Event Sounds
-L.Panel_EventSounds			= "Звуки событий"
+L.Panel_EventSounds			= "Звуковые события"
 L.Area_SoundSelection		= "Выбор звука (прокрутите меню выбора колесом мыши)"
 L.EventVictorySound			= "Установить звук при победе в бою"
 L.EventWipeSound			= "Установить звук при поражении в бою"
 L.EventEngageSound			= "Установить звук при вступлении в бой"
 L.EventDungeonMusic			= "Установить музыку в подземельях/рейдах"
 L.EventEngageMusic			= "Установить музыку во время боя"
-L.Area_EventSoundsExtras	= "Настройки звуков событий"
-L.EventMusicCombined		= "Разрешить все варианты выбора музыки для подземелий и боя (изменение этой настройки требует перезагрузки интерфейса, чтобы увидеть изменения)"
-L.Area_EventSoundsFilters	= "Условия фильтра звуков событий"
+L.Area_EventSoundsExtras	= "Настройки звуковых событий"
+L.EventMusicCombined		= "Разрешить все варианты выбора музыки для подземелий и боя (требуется перезагрузка интерфейса, чтобы изменения вступили в силу)"
+L.Area_EventSoundsFilters	= "Условия фильтров звуковых событий"
 L.EventFilterDungMythicMusic= "Не проигрывать музыку подземелья на эпохальной/эпохальной+ сложности"
 L.EventFilterMythicMusic	= "Не проигрывать музыку боя на эпохальной/эпохальной+ сложности"
 
