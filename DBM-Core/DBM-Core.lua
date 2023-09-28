@@ -1801,8 +1801,8 @@ do
 				"READY_CHECK",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"PLAY_MOVIE",
-				"CINEMATIC_START",
-				"CINEMATIC_STOP",
+--				"CINEMATIC_START",
+--				"CINEMATIC_STOP",
 				"PLAYER_LEVEL_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
@@ -6898,7 +6898,7 @@ do
 		end
 		self:TransitionToDungeonBGM(false, true)
 	end
-
+--[[
 	function DBM:CINEMATIC_START()
 		self:Debug("CINEMATIC_START fired", 2)
 		self.HudMap:SupressCanvas()
@@ -6919,6 +6919,7 @@ do
 		self:Debug("CINEMATIC_STOP fired", 2)
 		self.HudMap:UnSupressCanvas()
 	end
+	--]]
 end
 
 ----------------------------
