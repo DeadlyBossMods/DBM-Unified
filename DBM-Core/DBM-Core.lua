@@ -1801,8 +1801,8 @@ do
 				"READY_CHECK",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"PLAY_MOVIE",
---				"CINEMATIC_START",
---				"CINEMATIC_STOP",
+				"CINEMATIC_START",
+				"CINEMATIC_STOP",
 				"PLAYER_LEVEL_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
@@ -6898,7 +6898,7 @@ do
 		end
 		self:TransitionToDungeonBGM(false, true)
 	end
---[[
+
 	function DBM:CINEMATIC_START()
 		self:Debug("CINEMATIC_START fired", 2)
 		self.HudMap:SupressCanvas()
@@ -6908,8 +6908,9 @@ do
 		local currentSubZone = GetSubZoneText() or ""
 		if not currentMapID then return end--Protection from map failures in zones that have no maps yet
 		if self.Options.MovieFilter2 == "Block" or (self.Options.MovieFilter2 == "AfterFirst" or self.Options.MovieFilter2 == "OnlyFight") and self.Options.MoviesSeen[currentMapID..currentSubZone] then
-			CinematicFrame_CancelCinematic()
-			self:AddMsg(L.MOVIE_SKIPPED)
+--			CinematicFrame_CancelCinematic()
+--			self:AddMsg(L.MOVIE_SKIPPED)
+			self:AddMsg(L.MOVIE_NOTSKIPPED)
 		else
 			self.Options.MoviesSeen[currentMapID..currentSubZone] = true
 		end
@@ -6919,7 +6920,6 @@ do
 		self:Debug("CINEMATIC_STOP fired", 2)
 		self.HudMap:UnSupressCanvas()
 	end
-	--]]
 end
 
 ----------------------------
