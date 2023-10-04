@@ -11151,10 +11151,11 @@ end
 --auraspellId: Private aura spellId
 --voice: voice pack media path
 --voiceVersion: Required voice pack verion (if not met, falls back to airhorn
-function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion)
-	if self.Options["PrivateAuraSound"..auraspellId] then
+function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion, altOptionId)
+	local optionId = altOptionId or auraspellId
+	if self.Options["PrivateAuraSound"..optionId] then
 		if not self.paSounds then self.paSounds = {} end
-		local soundId = self.Options["PrivateAuraSound"..auraspellId.."SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
+		local soundId = self.Options["PrivateAuraSound"..optionId.."SWSound"] or DBM.Options.SpecialWarningSound--Shouldn't be nil value, but just in case options fail to load, fallback to default SW1 sound
 		local mediaPath
 		--Check valid voice pack sound
 		local chosenVoice = DBM.Options.ChosenVoicePack2
