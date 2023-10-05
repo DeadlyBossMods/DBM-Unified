@@ -66,6 +66,7 @@ L.TRANSCRIPTOR_LOG_START		= "Transcriptor 기록이 시작됐습니다."
 L.TRANSCRIPTOR_LOG_END		= "Transcriptor 기록이 종료됐습니다."
 
 L.MOVIE_SKIPPED				= L.DBM .. "이 동영상 자동 생략 기능을 작동시켰습니다."
+L.MOVIE_NOTSKIPPED				= L.DBM .. "이 생략할 수 있는 동영상을 감지했으나 블리자드 버그로 인해 생략하지 못했습니다. 버그가 고쳐지면 생략 기능은 다시 활성화될 예정입니다."
 L.BONUS_SKIPPED				= L.DBM .. "이 자동으로 추가 전리품 주사위 굴림 창을 닫았습니다. 창을 열고 싶으면 3분 안에 /dbmbonusroll 명령어를 입력하세요"
 L.BONUS_EXPIRED				= "/dbmbonusroll 명령어를 사용해 추가 전리품 주사위 굴림 창을 열려고 했으나 현재 굴릴 수 있는 추가 전리품 주사위가 없습니다."
 
