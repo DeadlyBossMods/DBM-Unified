@@ -478,6 +478,7 @@ L.AUTO_TIMER_TEXTS = {
 
 	achievement							= "%s",
 	stage								= "Stage",
+	stagecount							= "Stage (%%s)",
 	adds								= "Adds",
 	addscustom							= "Adds (%%s)",
 	roleplay							= GUILD_INTEREST_RP or "Roleplay"
@@ -512,6 +513,7 @@ L.AUTO_TIMER_OPTIONS = {
 	nextspecial							= "Show timer for next special ability",
 	achievement							= "Show timer for %s",
 	stage								= "Show timer for next stage",
+	stagecount							= "Show timer (with count) for next stage",
 	adds								= "Show timer for incoming adds",
 	addscustom							= "Show timer for incoming adds",
 	roleplay							= "Show timer for roleplay duration"--This does need localizing though.
