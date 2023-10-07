@@ -10806,7 +10806,7 @@ do
 			if DBM.Options.ShortTimerText and type(timerText) == "number" then
 				timerTextValue = timerText
 				spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
-			else
+			else--Flaw here is that we can't really tell shorttext from just a timer object who only has text here, so short text is always applied regarldessof option
 				timerTextValue = self.localization.timers[timerText] or timerText--Check timers table first, otherwise accept it as literal timer text
 			end
 		end

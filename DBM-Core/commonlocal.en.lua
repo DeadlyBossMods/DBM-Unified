@@ -65,6 +65,7 @@ CL.GROUPSOAKS						= "Soaks"
 CL.POOL								= "Pool"
 CL.POOLS							= "Pools"
 CL.DEBUFFS							= "Debuffs"
+CL.PUSHBACK							= "Pushback"
 
 --Journal Icons should not be copied to non english locals, do not include this section
 local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
