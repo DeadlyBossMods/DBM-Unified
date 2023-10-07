@@ -18,32 +18,41 @@ CL.CLEAR							= "Clear"
 CL.SAFE								= "Safe"
 CL.NOTSAFE							= "Not Safe"
 CL.SEASONAL							= "Seasonal"--Used for option headers to label options that apply to seasonal mechanics (Such as season of mastery on classic era)
+CL.FULLENERGY						= "Full Energy"
 --Movements/Places
+CL.UP								= "Up"
+CL.DOWN								= "Down"
 CL.LEFT								= "Left"
 CL.RIGHT							= "Right"
 CL.BOTH								= "Both"
 CL.BEHIND							= "Behind"
 CL.BACK								= "Back"--Back as in back of the room, not back as in body part
 CL.SIDE								= "Side"--Side as in move to the side
-CL.TOP								= "Top"--Top as in up top, not BDSM
-CL.BOTTOM							= "Bottom"--Bottom as in at the bottom, not BDSM
+CL.TOP								= "Top"
+CL.BOTTOM							= "Bottom"
 CL.MIDDLE							= "Middle"
 CL.FRONT							= "Front"
 CL.EAST								= "East"
 CL.WEST								= "West"
 CL.NORTH							= "North"
 CL.SOUTH							= "South"
-CL.SHIELD							= "Shield"
+CL.NORTHEAST						= "North-East"
+CL.SOUTHEAST						= "South-East"
+CL.SOUTHWEST						= "South-West"
+CL.NORTHWEST						= "North-West"
+CL.SHIELD							= "Shield"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.PILLAR							= "Pillar"
 CL.SHELTER							= "Shelter"
 CL.EDGE								= "Room Edge"
 CL.FAR_AWAY							= "Far Away"
 CL.PIT								= "Pit"--Pit, as in hole in ground
+CL.TOTEM							= "Totem"
+CL.TOTEMS							= "Totems"
 --Mechanics
-CL.BOMB								= "Bomb"
-CL.BOMBS							= "Bombs"
-CL.ORB								= "Orb"
-CL.ORBS								= "Orbs"
+CL.BOMB								= "Bomb"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
+CL.BOMBS							= "Bombs"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
+CL.ORB								= "Orb"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
+CL.ORBS								= "Orbs"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
 CL.RING								= "Ring"
 CL.RINGS							= "Rings"
 CL.CHEST							= "Chest"--As in Treasure 'Chest'. Not Chest as in body part.
@@ -67,6 +76,14 @@ CL.POOLS							= "Pools"
 CL.DEBUFFS							= "Debuffs"
 CL.PUSHBACK							= "Pushback"
 CL.FRONTAL							= "Frontal"
+CL.LASER							= "Laser"
+CL.LASERS							= "Lasers"
+CL.RIFT								= "Rift"--Often has auto localized alternatives, but still translated for BW aura matching when needed
+CL.RIFTS							= "Rifts"--Often has auto localized alternatives, but still translated for BW aura matching when needed
+CL.TRAPS							= "Traps"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
+--NOTE, many common locals are auto localized:
+--Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)
+--Fixate (12021), Trap (181341), Meteor (28884), Shield (151702), Teleport (4801), Fear (5782), Roar (140459), Leap (47482), Orb (265315)
 
 --Journal Icons should not be copied to non english locals, do not include this section
 local EJIconPath = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1) and "EncounterJournal" or "AddOns\\DBM-Core\\textures"
