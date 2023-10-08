@@ -69,7 +69,8 @@ L.COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
 L.TRANSCRIPTOR_LOG_START		= "Transcriptor 记录开启。"
 L.TRANSCRIPTOR_LOG_END		= "Transcriptor 记录关闭。"
 
-L.MOVIE_SKIPPED				= "该场景已被跳过。"
+L.MOVIE_SKIPPED				= "该场景动画已被跳过。"
+L.MOVIE_NOTSKIPPED 			= L.DBM .. "检测到一个可以跳过的场景动画，但因暴雪的bug失败了。当bug被修复时，该场景动画能被正常跳过。"
 L.BONUS_SKIPPED				= L.DBM.."已经自动关闭奖励拾取窗口。如果需要的话，3分钟内输入 /dbmbonusroll "
 
 L.AFK_WARNING				= "你在战斗中暂离(百分之%d生命值)。如果你真的没有暂离，动一下或者在'其他功能'中关闭本设置。"
@@ -470,6 +471,8 @@ L.AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 L.AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.achievement			= "计时条：成就-%s"
 L.AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
+L.AUTO_TIMER_OPTIONS.intermission		= "计时条：下一转阶段(带计数)",
+L.AUTO_TIMER_OPTIONS.intermissioncount	= "计时条：下一转阶段",
 L.AUTO_TIMER_OPTIONS.adds				= "计时条：下一波小怪"
 L.AUTO_TIMER_OPTIONS.addscustom			= "计时条：下一波小怪"
 L.AUTO_TIMER_OPTIONS.roleplay			= "计时条：剧情"
