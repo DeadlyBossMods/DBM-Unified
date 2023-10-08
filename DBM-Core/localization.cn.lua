@@ -474,10 +474,10 @@ L.AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 L.AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.achievement			= "计时条：成就-%s"
 L.AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
-L.AUTO_TIMER_OPTIONS.intermission		= "计时条：下一转阶段(带计数)",
-L.AUTO_TIMER_OPTIONS.intermissioncount	= "计时条：下一转阶段",
+L.AUTO_TIMER_OPTIONS.intermission		= "计时条：下一转阶段(带计数)"
+L.AUTO_TIMER_OPTIONS.intermissioncount	= "计时条：下一转阶段"
 L.AUTO_TIMER_OPTIONS.adds				= "计时条：下一波小怪"
-L.AUTO_TIMER_OPTIONS.addscustom			= "计时条：下一波小怪"
+L.AUTO_TIMER_OPTIONS.addscustom			= "计时条：下一波小怪(自定义)"
 L.AUTO_TIMER_OPTIONS.roleplay			= "计时条：剧情"
 
 L.AUTO_ICONS_OPTION_TARGETS				= "为$spell:%s的目标添加团队标记"
