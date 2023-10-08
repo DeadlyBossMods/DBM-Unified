@@ -10947,6 +10947,14 @@ do
 		return newTimer(self, "stagecount", ...)
 	end
 
+	function bossModPrototype:NewIntermissionTimer(...)
+		return newTimer(self, "intermission", ...)
+	end
+
+	function bossModPrototype:NewIntermissionCountTimer(...)
+		return newTimer(self, "intermissioncount", ...)
+	end
+
 	function bossModPrototype:NewRPTimer(...)
 		return newTimer(self, "roleplay", ...)
 	end
