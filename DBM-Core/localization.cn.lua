@@ -1,7 +1,7 @@
 -- L.Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20230727
+-- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20231008
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_CORE_L then DBM_CORE_L = {} end
@@ -27,6 +27,7 @@ L.LOAD_MOD_DISABLED			= "%s 模块已安装但被禁用。该模块不会被载�
 L.LOAD_MOD_DISABLED_PLURAL	= "%s 模块已安装但被禁用。这些模块不会被载入除非启用它们。"
 
 L.COPY_URL_DIALOG					= "复制网址"
+L.COPY_WA_DIALOG					= "复制WA代码"
 
 --Post Patch 7.1
 L.NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
@@ -69,8 +70,9 @@ L.COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
 L.TRANSCRIPTOR_LOG_START		= "Transcriptor 记录开启。"
 L.TRANSCRIPTOR_LOG_END		= "Transcriptor 记录关闭。"
 
-L.MOVIE_SKIPPED				= "该场景已被跳过。"
-L.BONUS_SKIPPED				= L.DBM.."已经自动关闭奖励拾取窗口。如果需要的话，3分钟内输入 /dbmbonusroll "
+L.MOVIE_SKIPPED				= "该场景动画已被" .. L.DBM .. "跳过。"
+L.MOVIE_NOTSKIPPED 			= L.DBM .. "检测到一个可以跳过的场景动画，但因暴雪的bug失败了。当bug被修复时，该场景动画能被正常跳过。"
+L.BONUS_SKIPPED				= L.DBM .. "已经自动关闭奖励拾取窗口。如果需要的话，3分钟内输入 /dbmbonusroll "
 
 L.AFK_WARNING				= "你在战斗中暂离(百分之%d生命值)。如果你真的没有暂离，动一下或者在'其他功能'中关闭本设置。"
 
@@ -138,6 +140,7 @@ L.OPTION_TIMER_COMBAT		= "显示战斗开始倒计时"
 L.BAD						= "必杀技"
 
 L.OPTION_CATEGORY_TIMERS		= "计时条"
+--Sub cats for "announce" object
 L.OPTION_CATEGORY_WARNINGS	= "警报"
 L.OPTION_CATEGORY_WARNINGS_YOU	= "个人警报"
 L.OPTION_CATEGORY_WARNINGS_OTHER	= "目标警报"
@@ -145,6 +148,7 @@ L.OPTION_CATEGORY_WARNINGS_ROLE	= "角色警报"
 L.OPTION_CATEGORY_SPECWARNINGS		= "特殊警报"
 
 L.OPTION_CATEGORY_SOUNDS		= "声音"
+--Misc object broken down into sub cats
 L.OPTION_CATEGORY_DROPDOWNS		= "下拉"
 L.OPTION_CATEGORY_YELLS			= "大喊"
 L.OPTION_CATEGORY_NAMEPLATES		= "姓名版"
@@ -177,7 +181,7 @@ L.VOICE_MISSING				= L.DBM .. "找不到你当前选择的语音包。语音包�
 L.VOICE_DISABLED				= "你安装了语音包但是没有启动它。请在选项中的语音报警菜单中开启语音包。如果不需要语音报警请卸载语音包。"
 L.VOICE_COUNT_MISSING		= "在 %d 语音包中找不到倒计时语音。倒计时已恢复为默认值"
 L.BIG_WIGS								= "BigWigs"
-L.WEAKAURA_KEY							= " (|cff308530WA 按键:|r %s)"
+L.WEAKAURA_KEY							= " (|cff308530WA 代码:|r %s)"
 
 L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期。\n您可以在Curse, Wago, WOWI或者到GitHub Releases页面下载到新版本：%s（%s）。如果您使用整合包，请使用更新器更新。"
 L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制下载地址到剪切板。"
@@ -470,8 +474,10 @@ L.AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 L.AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.achievement			= "计时条：成就-%s"
 L.AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
+L.AUTO_TIMER_OPTIONS.intermission		= "计时条：下一转阶段(带计数)"
+L.AUTO_TIMER_OPTIONS.intermissioncount	= "计时条：下一转阶段"
 L.AUTO_TIMER_OPTIONS.adds				= "计时条：下一波小怪"
-L.AUTO_TIMER_OPTIONS.addscustom			= "计时条：下一波小怪"
+L.AUTO_TIMER_OPTIONS.addscustom			= "计时条：下一波小怪(自定义)"
 L.AUTO_TIMER_OPTIONS.roleplay			= "计时条：剧情"
 
 L.AUTO_ICONS_OPTION_TARGETS				= "为$spell:%s的目标添加团队标记"

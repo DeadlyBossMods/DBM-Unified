@@ -10123,6 +10123,9 @@ do
 		--Stages, Warmup/Combatstart, RPs all map to "stage"
 		["roleplay"] = "stage",
 		["achievement"] = "stage",
+		["stagecount"] = "stage",
+		["intermission"] = "stage",
+		["intermissioncount"] = "stage",
 
 		--Target Bars such as buff/debuff on another player, on self, or on the boss, RPs all map to "target"
 		["targetcount"] = "target",
@@ -10144,7 +10147,7 @@ do
 		end
 		if not self.option or self.mod.Options[self.option] then
 			local isCountTimer = false
-			if self.type and (self.type == "cdcount" or self.type == "nextcount") then
+			if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "intermissioncount") then
 				isCountTimer = true
 			end
 			if isCountTimer and not self.allowdouble then--remove previous timer.
@@ -10786,9 +10789,9 @@ do
 		local unparsedId = spellId
 		if timerType == "achievement" then
 			icon = parseSpellIcon(texture or spellId, timerType)
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" then
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "intermission" or timerType == "intermissioncount" then
 			icon = parseSpellIcon(texture or spellId, timerType)
-			if timerType == "stage" then
+			if timerType == "stage" or timerType == "stagecount" or timerType == "intermission" or timerType == "intermissioncount" then
 				colorType = 6
 			end
 		elseif timerType == "roleplay" then
@@ -10806,7 +10809,7 @@ do
 			if DBM.Options.ShortTimerText and type(timerText) == "number" then
 				timerTextValue = timerText
 				spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
-			else
+			else--Flaw here is that we can't really tell shorttext from just a timer object who only has text here, so short text is always applied regarldessof option
 				timerTextValue = self.localization.timers[timerText] or timerText--Check timers table first, otherwise accept it as literal timer text
 			end
 		end
@@ -10842,7 +10845,7 @@ do
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "roleplay" then--Timers without spellid, generic
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "intermission" or timerType == "intermissioncount" or timerType == "roleplay" then--Timers without spellid, generic
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]--Using more than 1 stage timer or more than 1 special timer will break this, fortunately you should NEVER use more than 1 of either in a mod
 		else
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(unparsedId)
@@ -10937,8 +10940,21 @@ do
 		return newTimer(self, "nextspecial", ...)
 	end
 
-	function bossModPrototype:NewPhaseTimer(...)
+	function bossModPrototype:NewStageTimer(...)
 		return newTimer(self, "stage", ...)
+	end
+	bossModPrototype.NewPhaseTimer = bossModPrototype.NewStageTimer--Deprecated naming, once all mods are converted over, NewPhaseTimer will be wiped out for NewStageTimer
+
+	function bossModPrototype:NewStageCountTimer(...)
+		return newTimer(self, "stagecount", ...)
+	end
+
+	function bossModPrototype:NewIntermissionTimer(...)
+		return newTimer(self, "intermission", ...)
+	end
+
+	function bossModPrototype:NewIntermissionCountTimer(...)
+		return newTimer(self, "intermissioncount", ...)
 	end
 
 	function bossModPrototype:NewRPTimer(...)
