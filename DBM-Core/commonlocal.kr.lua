@@ -72,6 +72,7 @@ CL.TANKCOMBO					= "탱커 연속 공격"
 CL.AOEDAMAGE						= "광역 데미지"
 CL.GROUPSOAK						= "같이 맞기"
 CL.GROUPSOAKS						= "같이 맞기"
+CL.DODGES							= "피하기"
 CL.POOL								= "바닥"
 CL.POOLS							= "바닥"
 CL.DEBUFFS							= "디버프"
@@ -82,6 +83,7 @@ CL.LASERS							= "레이저"
 CL.RIFT								= "균열"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.RIFTS							= "균열"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS							= "함정"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
+CL.ROOTS							= "이동 불가"
 --NOTE, many common locals are auto localized:
 --Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)
---Fixate (12021), Trap (181341), Meteor (28884), Shield (151702), Teleport (4801), Fear (5782), Roar (140459), Leap (47482), Orb (265315)
+--Fixate (12021), Trap (181341), Meteor (28884), Shield (151702), Teleport (4801), Fear (5782), Roar (140459), Leap (47482), Orb (265315), Tornados (86189)
