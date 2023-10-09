@@ -10806,11 +10806,22 @@ do
 		local timerTextValue
 		if timerText then
 			--If timertext is a number, accept it as a secondary auto translate spellid
-			if DBM.Options.ShortTimerText and type(timerText) == "number" then
-				timerTextValue = timerText
-				spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
-			else--Flaw here is that we can't really tell shorttext from just a timer object who only has text here, so short text is always applied regarldessof option
-				timerTextValue = self.localization.timers[timerText] or timerText--Check timers table first, otherwise accept it as literal timer text
+			--First check if it's shorttext
+			if DBM.Options.ShortTimerText then
+				if type(timerText) == "number" then
+					timerTextValue = timerText
+					spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
+				else
+					timerTextValue = self.localization.timers[timerText] or timerText--Check timers table first, otherwise accept it as literal timer text
+				end
+			else--Short text is off, we want to be more aggressive in non setting short text if auto localize non short text available
+				if spellId and type(spellId) == "number" then
+					--Still use fully localized timer object text if there, cause that's not short text
+					timerTextValue = self.localization.timers[timerText]
+				else
+					--if spellId isn't valid, we need to accept timerText in any form as fallback
+					timerTextValue = self.localization.timers[timerText] or timerText
+				end
 			end
 		end
 		local id = "Timer"..(spellId or 0)..timerType..(optionVersion or "")
