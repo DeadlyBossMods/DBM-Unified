@@ -4,7 +4,9 @@ local panel = DBM_GUI.Cat_Frames:CreateNewPanel(L.Panel_Nameplates, "option")
 local general = panel:CreateArea(L.Area_General)
 
 general:CreateCheckButton(L.SpamBlockNoNameplate, true, nil, "DontShowNameplateIcons")
-general:CreateCheckButton(L.UseNameplateHandoff, true, nil, "UseNameplateHandoff")
+general:CreateCheckButton(L.SpamBlockNoNameplateCD, true, nil, "DontShowNameplateIconsCD")
+general:CreateCheckButton(L.SpamBlockNoBossGUIDs, true, nil, "DontSendBossGUIDs")
+general:CreateCheckButton(L.SpamBlockTimersWithNameplates, true, nil, "DontShowTimersWithNameplates")
 
 local style = panel:CreateArea(L.Area_Style)
 
@@ -14,6 +16,22 @@ auraSizeSlider:SetValue(DBM.Options.NPAuraSize)
 auraSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPAuraSize = self:GetValue()
 end)
+
+local iconOffsetXSlider = BarSetupSmall:CreateSlider(L.NPIcon_BarOffSetX, -50, 50, 1, 200)
+iconOffsetXSlider:SetPoint("TOPLEFT", auraSizeSlider, "BOTTOMLEFT", 0, -10)
+iconOffsetXSlider:SetValue(DBM.Options.NPIconXOffset)
+iconOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("NPIconXOffset"))
+iconOffsetXSlider.myheight = 0
+
+local iconOffsetYSlider = BarSetupSmall:CreateSlider(L.NPIcon_BarOffSetY, -50, 50, 1, 200)
+iconOffsetYSlider:SetPoint("TOPLEFT", iconOffsetXSlider, "BOTTOMLEFT", 0, -10)
+iconOffsetYSlider:SetValue(DBM.Options.NPIconYOffset)
+iconOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("NPIconYOffset"))
+iconOffsetYSlider.myheight = 0
+
+--Just self note
+--L.Slider_BarOffSetX 				= "Offset X: %d"
+--L.Slider_BarOffSetY 				= "Offset Y: %d"
 
 local resetbutton = general:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)

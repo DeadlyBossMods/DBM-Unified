@@ -353,11 +353,14 @@ DBM.DefaultOptions = {
 	DontRestoreRange = false,
 	DontShowInfoFrame = false,
 	DontShowHudMap2 = false,
+	UseNameplateHandoff = true,--Power user setting, no longer shown in GUI
 	DontShowNameplateIcons = false,
+	DontShowNameplateIconsCD = false,
 	DontSendBossGUIDs = false,
 	DontShowTimersWithNameplates = true,
-	UseNameplateHandoff = true,
 	NPAuraSize = 40,
+	NPIconXOffset = 0,
+	NPIconYOffset = 0,
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
@@ -1579,6 +1582,10 @@ do
 					self:Schedule(15, infniteLoopNotice, self, L.OUTDATEDSPELLTIMERS)
 					return
 				end
+			end
+			--DBM plater nameplate cooldown icons are enabled, but platers are not. Inform user feature is not fully enabled or fully disabled
+			if Plater and not Plater.db.profile.bossmod_support_bars_enabled and not DBM.Options.DontShowNameplateIconsCD then
+				C_TimerAfter(15, function() AddMsg(self, L.PLATER_NP_AURAS_MSG) end)
 			end
 			if GetAddOnEnableState(playerName, "DPMCore") >= 1 then
 				self:Disable(true)
@@ -10316,7 +10323,7 @@ do
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
-			if guid and DBM.Options.DontShowTimersWithNameplates and Plater and Plater.db.profile.bossmod_support_bars_enabled and self.mod.isTrashMod then
+			if guid and (not DBM.Options.DontShowNameplateIconsCD and DBM.Options.DontShowTimersWithNameplates) and Plater and Plater.db.profile.bossmod_support_bars_enabled and self.mod.isTrashMod then
 				DBT:CancelBar(id)--Cancel bar without stop callback
 				return false, "disabled"
 			end

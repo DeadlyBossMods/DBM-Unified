@@ -402,7 +402,6 @@ L.Area_SpamFilter_Nameplates		= "名條通用禁止 & 過濾選項"
 L.SpamBlockNoNameplate				= "不要顯示名條光環"
 L.SpamBlockNoBossGUIDs				= "不要在plater名條上顯示主要首領(首領1)計時器作為名條光環\n(如果在Plater中啟用了功能，您仍然會看到小怪/首領計時器）"
 L.SpamBlockTimersWithNameplates		= "如果在Plater選項中啟用了Plaster名條光環 CD，不要顯示小怪的計時條(不適用於首領戰，這將始終顯示計時條）"
-L.NameplateFooter					= "可用的其他功能，如果啟用了Plater名條"
 
 L.Area_SpamFilter_Misc				= "全局其他禁用及過濾選項"
 L.SpamBlockNoSetIcon				= "不設置標記在目標上"
