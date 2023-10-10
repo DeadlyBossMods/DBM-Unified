@@ -20,7 +20,7 @@ end)
 local iconOffsetXSlider = style:CreateSlider(L.NPIcon_BarOffSetX, -50, 50, 1, 200)
 iconOffsetXSlider:SetPoint("TOPLEFT", auraSizeSlider, "BOTTOMLEFT", 0, -10)
 iconOffsetXSlider:SetValue(DBM.Options.NPIconXOffset)
-latencySlider:HookScript("OnValueChanged", function(self)
+iconOffsetXSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconXOffset = self:GetValue()
 end)
 iconOffsetXSlider.myheight = 0
@@ -28,7 +28,7 @@ iconOffsetXSlider.myheight = 0
 local iconOffsetYSlider = style:CreateSlider(L.NPIcon_BarOffSetY, -50, 50, 1, 200)
 iconOffsetYSlider:SetPoint("TOPLEFT", iconOffsetXSlider, "BOTTOMLEFT", 0, -10)
 iconOffsetYSlider:SetValue(DBM.Options.NPIconYOffset)
-latencySlider:HookScript("OnValueChanged", function(self)
+iconOffsetYSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconYOffset = self:GetValue()
 end)
 iconOffsetYSlider.myheight = 0
