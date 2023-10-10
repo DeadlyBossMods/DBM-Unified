@@ -9,10 +9,10 @@ local nameplateTimerBars = {}
 local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
-local twipe, floor = table.wipe, math.floor
-local CooldownFrame_Set = CooldownFrame_Set
+local twipe, floor, strsub= table.wipe, math.floor, strsub
+local CooldownFrame_Set = _G.CooldownFrame_Set
 --function locals
-local NameplateIcon_Hide,Nameplate_UnitAdded,Nameplate_AutoHide,CreateAuraFrame
+local NameplateIcon_Hide,Nameplate_UnitAdded,CreateAuraFrame
 
 --------------------
 --  Create Frame  --
@@ -272,7 +272,7 @@ end
 -----------------------------------------
 -- handling both: Icon CDs and static nameplate icons
 --Add more nameplate mods as they gain support
-function SupportedNPMod()
+local function SupportedNPMod()
 	if not DBM.Options.UseNameplateHandoff then return false end
 	if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or _G["Plater"] then return true end
 	return false
@@ -299,7 +299,7 @@ local function NameplateIcon_UpdateUnitAuras(isGUID,unit)
 	end
 end
 
-local function NameplateIcon_Show(isGUID, unit, aura_tbl, forceDBM)
+local function NameplateIcon_Show(isGUID, unit, aura_tbl)
 
 	-- ensure integrity
 	if not unit or not aura_tbl then return end
@@ -339,7 +339,7 @@ local function NameplateIcon_Show(isGUID, unit, aura_tbl, forceDBM)
 end
 
 --Friendly is still being kept around for world bosses, for now anyways, but args being swapped.
-function NameplateIcon_Hide(isGUID, unit, index, forceDBM)
+function NameplateIcon_Hide(isGUID, unit, index, forceDBM, force)
 	-- ensure integrity
 	if not unit or not index then return end
 
@@ -354,28 +354,6 @@ function NameplateIcon_Hide(isGUID, unit, index, forceDBM)
 				end
 			end
 		end
-	end
-
-	if SupportedNPMod() and not forceDBM then --aura icon handling
-		local auraType = t_index and units[unit][t_index].auraType
-
-		if auraType == 1 then
-			--Not running supported NP Mod, internal handling
-			DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 3)
-
-			if force then
-				if isFriendly then
-					DBM:FireEvent("BossMod_DisableFriendlyNameplates")
-				end
-				if isHostile then
-					DBM:FireEvent("BossMod_DisableHostileNameplates")
-				end
-			elseif unit then
-				DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit, index)
-			end
-		end
-
-		return
 	end
 
 	-- need to remove the entry
@@ -442,10 +420,6 @@ local function HookNameplate(frame)
 	frame:HookScript('OnHide',Nameplate_OnHide)
 end
 
-function Nameplate_AutoHide(self, isGUID, unit, index)
-	NameplateIcon_Hide(isGUID, unit, index, false)
-end
-
 function Nameplate_UnitAdded(frame,unit)
 	if not frame or not unit then return end
 
@@ -485,7 +459,7 @@ end)
 --------------------------------------
 --  Nameplate Timer Icons Registry  --
 --------------------------------------
-function getAllShownGUIDs() -- for testing
+local function getAllShownGUIDs() -- for testing
 	local guids = {}
 	for _, plateFrame in ipairs (GetNamePlates()) do
 		if plateFrame then
@@ -496,7 +470,7 @@ function getAllShownGUIDs() -- for testing
 end
 
 --register callbacks for aura icon CDs
---local barsTestMode = true
+local barsTestMode = false --this is to handle the "non-guid" test bars. just turn on for testing.
 do
 	--timer start
 	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid)
@@ -535,7 +509,7 @@ do
 				index = id,
 			}
 			nameplateTimerBars[id] = aura_tbl
-			NameplateIcon_Show(true, guid, aura_tbl, false)
+			NameplateIcon_Show(true, guid, aura_tbl)
 
 		elseif id and not guid and barsTestMode then
 			for _, guid in pairs(getAllShownGUIDs()) do
@@ -571,7 +545,7 @@ do
 					index = tmpId,
 				}
 				nameplateTimerBars[id] = aura_tbl
-				NameplateIcon_Show(true, guid, aura_tbl, false)
+				NameplateIcon_Show(true, guid, aura_tbl)
 			end
 		end
 	end
@@ -639,18 +613,18 @@ do
 		if not id then return end
 		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
 		if guid then
-			for i,aura_tbl in ipairs(units[guid]) do
+			for _,aura_tbl in ipairs(units[guid]) do
 				if aura_tbl.id == id then
-					NameplateIcon_Hide(true, guid, aura_tbl.index, false)
+					NameplateIcon_Hide(true, guid, aura_tbl.index, false, false)
 					break
 				end
 			end
 
 		elseif not guid and barsTestMode then
 			for _, guid in pairs(getAllShownGUIDs()) do
-				for i,aura_tbl in ipairs(units[guid]) do
+				for _,aura_tbl in ipairs(units[guid]) do
 					if aura_tbl.id == id then
-						NameplateIcon_Hide(true, guid, aura_tbl.index, false)
+						NameplateIcon_Hide(true, guid, aura_tbl.index, false, false)
 						break
 					end
 				end
@@ -727,7 +701,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 	end
 
 	--call internal show function
-	NameplateIcon_Show(isGUID, unit, aura_tbl, forceDBM)
+	NameplateIcon_Show(isGUID, unit, aura_tbl)
 end
 
 function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, isFriendly, forceDBM)
@@ -746,14 +720,14 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, i
 				DBM:FireEvent("BossMod_DisableHostileNameplates")
 			end
 		elseif unit then
-			DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit, index)
+			DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit, texture)
 		end
 
 		return
 	end
 
 	--call internal hide function
-	NameplateIcon_Hide(isGUID, unit, currentTexture, forceDBM)
+	NameplateIcon_Hide(isGUID, unit, currentTexture, forceDBM, force)
 end
 
 function nameplateFrame:IsShown()
