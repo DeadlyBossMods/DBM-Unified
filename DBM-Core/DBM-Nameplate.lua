@@ -9,7 +9,7 @@ local nameplateTimerBars = {}
 local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
-local twipe, floor, strsub= table.wipe, math.floor, strsub
+local twipe, floor, strsub= table.wipe, math.floor, _G.strsub
 local CooldownFrame_Set = _G.CooldownFrame_Set
 --function locals
 local NameplateIcon_Hide,Nameplate_UnitAdded,CreateAuraFrame
@@ -221,7 +221,7 @@ do
 		frame:ArrangeIcons()
 		twipe(frame.texture_index)
 	end
-	local function AuraFrame_UpdateTimerText (self, deltaTime)
+	local function AuraFrame_UpdateTimerText (self) --has deltaTime as second parameter, not needed here.
 		local now = GetTime()
 		local aura_tbl = self.aura_tbl
 		if ((self.lastUpdateCooldown or 0) + 0.09) <= now then --throttle a bit
@@ -339,7 +339,7 @@ local function NameplateIcon_Show(isGUID, unit, aura_tbl)
 end
 
 --Friendly is still being kept around for world bosses, for now anyways, but args being swapped.
-function NameplateIcon_Hide(isGUID, unit, index, forceDBM, force)
+function NameplateIcon_Hide(isGUID, unit, index, force)
 	-- ensure integrity
 	if not unit or not index then return end
 
@@ -474,6 +474,7 @@ local barsTestMode = false --this is to handle the "non-guid" test bars. just tu
 do
 	--timer start
 	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid)
+		if event ~= "DBM_TimerStart" then return end
 		if (id and guid) then
 			-- Supported by nameplate mod, passing to their handler
 			if SupportedNPMod() then return end
@@ -512,15 +513,15 @@ do
 			NameplateIcon_Show(true, guid, aura_tbl)
 
 		elseif id and not guid and barsTestMode then
-			for _, guid in pairs(getAllShownGUIDs()) do
-				local tmpId = id .. guid
+			for _, curGuid in pairs(getAllShownGUIDs()) do
+				local tmpId = id .. curGuid
 				local color = {DBT:GetColorForType(colorType)}
 				local display = strsub(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, 7)
 				--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
 				local curTime =  GetTime()
 
-				if not units[guid] then
-					units[guid] = {}
+				if not units[curGuid] then
+					units[curGuid] = {}
 					num_units = num_units + 1
 				end
 
@@ -539,19 +540,21 @@ do
 					modId = modId,
 					keep = keep,
 					name = name,
-					guid = guid,
+					guid = curGuid,
 					paused = false,
 					auraType = 2, -- 1 = nameplate aura; 2 = nameplate CD timers
 					index = tmpId,
 				}
 				nameplateTimerBars[id] = aura_tbl
-				NameplateIcon_Show(true, guid, aura_tbl)
+				NameplateIcon_Show(true, curGuid, aura_tbl)
 			end
 		end
 	end
 	DBM:RegisterCallback("DBM_TimerStart", timerStartCallback)
 
 	local timerUpdateCallback = function(event, id, elapsed, totalTime)
+		if event ~= "DBM_TimerUpdate" then return end
+
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPMod() then return end
 
@@ -572,6 +575,8 @@ do
 	DBM:RegisterCallback("DBM_TimerUpdate", timerUpdateCallback)
 
 	local timerPauseCallback = function(event, id)
+		if event ~= "DBM_TimerPause" then return end
+
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPMod() then return end
 
@@ -589,6 +594,8 @@ do
 	DBM:RegisterCallback("DBM_TimerPause", timerPauseCallback)
 
 	local timerResumeCallback = function(event, id)
+		if event ~= "DBM_TimerResume" then return end
+
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPMod() then return end
 
@@ -607,6 +614,8 @@ do
 
 	--timer stop
 	local timerEndCallback = function (event, id)
+		if event ~= "DBM_TimerStop" then return end
+
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPMod() then return end
 
@@ -615,16 +624,16 @@ do
 		if guid then
 			for _,aura_tbl in ipairs(units[guid]) do
 				if aura_tbl.id == id then
-					NameplateIcon_Hide(true, guid, aura_tbl.index, false, false)
+					NameplateIcon_Hide(true, guid, aura_tbl.index, false)
 					break
 				end
 			end
 
 		elseif not guid and barsTestMode then
-			for _, guid in pairs(getAllShownGUIDs()) do
-				for _,aura_tbl in ipairs(units[guid]) do
+			for _, curGuid in pairs(getAllShownGUIDs()) do
+				for _,aura_tbl in ipairs(units[curGuid]) do
 					if aura_tbl.id == id then
-						NameplateIcon_Hide(true, guid, aura_tbl.index, false, false)
+						NameplateIcon_Hide(true, curGuid, aura_tbl.index, false)
 						break
 					end
 				end
@@ -639,7 +648,6 @@ function DBM.PauseTestTimer(text)
 	for _, guid in pairs(getAllShownGUIDs()) do
 		for _, aura_tbl in ipairs(units[guid]) do
 			if aura_tbl.id:find(text) then
-				local guid = aura_tbl.guid
 				if aura_tbl.paused and guid then
 					aura_tbl.paused = false
 					aura_tbl.startTime = aura_tbl.startTime + (GetTime() - aura_tbl.pauseStartTime)
@@ -727,7 +735,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, i
 	end
 
 	--call internal hide function
-	NameplateIcon_Hide(isGUID, unit, currentTexture, forceDBM, force)
+	NameplateIcon_Hide(isGUID, unit, currentTexture, force)
 end
 
 function nameplateFrame:IsShown()
