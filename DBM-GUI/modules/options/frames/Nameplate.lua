@@ -17,21 +17,21 @@ auraSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPAuraSize = self:GetValue()
 end)
 
-local iconOffsetXSlider = BarSetupSmall:CreateSlider(L.NPIcon_BarOffSetX, -50, 50, 1, 200)
+local iconOffsetXSlider = style:CreateSlider(L.NPIcon_BarOffSetX, -50, 50, 1, 200)
 iconOffsetXSlider:SetPoint("TOPLEFT", auraSizeSlider, "BOTTOMLEFT", 0, -10)
 iconOffsetXSlider:SetValue(DBM.Options.NPIconXOffset)
-iconOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("NPIconXOffset"))
+latencySlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconXOffset = self:GetValue()
+end)
 iconOffsetXSlider.myheight = 0
 
-local iconOffsetYSlider = BarSetupSmall:CreateSlider(L.NPIcon_BarOffSetY, -50, 50, 1, 200)
+local iconOffsetYSlider = style:CreateSlider(L.NPIcon_BarOffSetY, -50, 50, 1, 200)
 iconOffsetYSlider:SetPoint("TOPLEFT", iconOffsetXSlider, "BOTTOMLEFT", 0, -10)
 iconOffsetYSlider:SetValue(DBM.Options.NPIconYOffset)
-iconOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("NPIconYOffset"))
+latencySlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconYOffset = self:GetValue()
+end)
 iconOffsetYSlider.myheight = 0
-
---Just self note
---L.Slider_BarOffSetX 				= "Offset X: %d"
---L.Slider_BarOffSetY 				= "Offset Y: %d"
 
 local resetbutton = general:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)
