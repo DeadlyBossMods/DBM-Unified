@@ -358,6 +358,7 @@ DBM.DefaultOptions = {
 	DontShowNameplateIconsCD = false,
 	DontSendBossGUIDs = false,
 	DontShowTimersWithNameplates = true,
+	NPAuraText = true,
 	NPAuraSize = 40,
 	NPIconXOffset = 0,
 	NPIconYOffset = 0,
