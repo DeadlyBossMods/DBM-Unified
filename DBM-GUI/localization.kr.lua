@@ -405,10 +405,11 @@ L.SpamBlockNoShowEventTimers		= "이벤트나 알림 타이머 표시 안함 (�
 L.SpamBlockNoShowUTimers	= "사용자 전송 타이머 표시 안함 (사용자 지정/풀링/휴식)"
 L.SpamBlockNoCountdowns		= "초읽기 음성 재생 안함"
 
-L.Area_SpamFilter_Nameplates		= "이름표 애드온 전체적인 기능 끄기 및 필터 설정"
-L.SpamBlockNoNameplate		= "이름표 오라 표시 안함"
-L.SpamBlockNoBossGUIDs			= "메인 보스 (boss1)의 타이머를 Plater 이름표 오라로 표시 안함\n(Plater에서 해당 기능을 활성화 했다면 일반몹/보스 쫄의 타이머는 볼 수 있습니다)"
-L.SpamBlockTimersWithNameplates		= "Plater에서 오라 쿨타임 설정을 활성화 했을 때 일반몹에선 DBM 타이머 바 보지 않음 (보스 전투에는 적용되지 않고 항상 타이머 바가 표시됩니다)"
+L.Area_SpamFilter_Nameplates		= "이름표 전체적인 기능 끄기 및 필터 설정"
+L.SpamBlockNoNameplate				= "특수한 보스 패턴에선 이름표 아이콘을 표시 안함"
+L.SpamBlockNoNameplateCD			= "스킬 쿨타임 타이머의 이름표 아이콘을 표시 안함"
+L.SpamBlockNoBossGUIDs				= "단일 보스 전투시엔 스킬 쿨타임 타이머의 이름표 아이콘을 표시 안함\n(이 기능을 활성화 했어도 일반몹이나 다중 대상 보스 전투에선 아이콘이 표시됩니다)"
+L.SpamBlockTimersWithNameplates		= "'스킬 쿨타임 이름표 아이콘'을 활성화하면 일반몹 타이머 바는 표시 안함 (보스 전투에선 적용되지 않으며 항상 타이머 바가 표시됩니다)"
 
 L.Area_SpamFilter_Misc		= "기타 여러 기능 끄기 및 필터 설정"
 L.SpamBlockNoSetIcon		= "대상에 공격대 징표를 설정하지 않음"
@@ -538,9 +539,11 @@ L.Panel_Range				= "거리 창"
 
 -- Panel: Nameplate
 L.Panel_Nameplates			= "이름표"
-L.UseNameplateHandoff		= "이름표 오라에 대한 요청이 발생하면 DBM 내부에서 처리하지 않고 지원되는 이름표 애드온으로 넘깁니다. (KuiNameplates, Threat Plates, Plater) 이름표 애드온을 통해 보다 발전된 기능과 설정이 가능하므로 권장하는 설정입니다"
-L.Area_NPStyle				= "외형 (알림: DBM이 이름표를 관리할 때만 설정하세요.)"
-L.NPAuraSize				= "오라 픽셀 크기 (정사각형): %d"
+L.Area_NPStyle				= "외형 (알림: DBM이 이름표를 관리할 때만 적용됩니다)"
+L.NPAuraText					= "이름표 아이콘에 타이머 텍스트 표시"
+L.NPAuraSize				= "아이콘 픽셀 크기 (정사각형): %d"
+L.NPIcon_BarOffSetX 				= "아이콘 위치 조정 X: %d"
+L.NPIcon_BarOffSetY 				= "아이콘 위치 조정 Y: %d"
 
 -- Misc
 L.Area_General				= "일반"
