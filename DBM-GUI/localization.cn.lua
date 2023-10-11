@@ -395,7 +395,6 @@ L.Area_SpamFilter_Nameplates		= "姓名版全局开启与过滤选项"
 L.SpamBlockNoNameplate				= "不显示姓名面板光环"
 L.SpamBlockNoBossGUIDs				= "不要在Plater姓名版上显示主Boss的姓名版光环\n(若在Plater中启动了该功能，您仍然可以看到小怪和Boss的计时条)"
 L.SpamBlockTimersWithNameplates		= "如果在 Plater 选项中启用了 Plater Nameplate Aura CD，不显示小怪的计时器条（Boss战中始终显示计时条）"
-L.NameplateFooter					= "如果Plater Nameplates开启，会提供更多功能"
 
 L.Area_SpamFilter_Misc		= "其他全局过滤设置"
 L.SpamBlockNoSetIcon		= "不在目标上设定标记"
