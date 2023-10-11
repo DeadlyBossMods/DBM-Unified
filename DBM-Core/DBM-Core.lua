@@ -7238,10 +7238,16 @@ function DBM:IsFated()
 end
 bossModPrototype.IsFated = DBM.IsFated
 
---Catch all to basically allow encounter mods to use pre retail changes within mods
-function bossModPrototype:IsClassic()
+--Catch alls to basically allow encounter mods to use pre retail changes within mods
+function DBM:IsClassic()
 	return not isRetail
 end
+bossModPrototype.IsClassic = DBM.IsClassic
+
+function DBM:IsRetail()
+	return isRetail
+end
+bossModPrototype.IsRetail = DBM.IsRetail
 
 --Pretty much ANYTHING that has a heroic mode
 function bossModPrototype:IsHeroic()
