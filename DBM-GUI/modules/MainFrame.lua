@@ -185,6 +185,15 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	button:SetScript("OnClick", function(self)
 		frame:ClearSelection()
 		frame.tabs[frame.tab].selection = self.element
+		if frame.tab == 1 and not self.element.hasInit then
+			for _, mod in ipairs(DBM.Mods) do
+				if mod.localization.general.name == self.element.displayName then
+					DBM_GUI:CreateBossModPanel(mod)
+					self.element.hasInit = true
+					break
+				end
+			end
+		end
 		self:LockHighlight()
 		frame:DisplayFrame(self.element)
 	end)

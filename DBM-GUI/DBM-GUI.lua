@@ -845,7 +845,6 @@ do
 						else
 							mod.panel = addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.optionsTab, nil, nil, mod.localization.general.name)
 						end
-						DBM_GUI:CreateBossModPanel(mod)
 					end
 				end
 			end
