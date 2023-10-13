@@ -228,6 +228,7 @@ function frame:DisplayFrame(targetFrame)
 				elseif mod.modelSoundLong and DBM.Options.ModelSoundValue == "Long" then
 					DBM:PlaySoundFile(mod.modelSoundLong)
 				end
+				break
 			end
 		end
 	end
