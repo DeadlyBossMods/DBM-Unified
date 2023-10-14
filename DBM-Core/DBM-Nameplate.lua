@@ -272,9 +272,14 @@ end
 -----------------------------------------
 -- handling both: Icon CDs and static nameplate icons
 --Add more nameplate mods as they gain support
-local function SupportedNPMod()
+local function SupportedNPModIcons()
 	if not DBM.Options.UseNameplateHandoff then return false end
-	if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or _G["Plater"] then return true end
+	if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or (_G["Plater"] and Plater.db.profile.bossmod_support_enabled) then return true end
+	return false
+end
+local function SupportedNPModBars()
+	if not DBM.Options.UseNameplateHandoff then return false end
+	if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or (_G["Plater"] and Plater.db.profile.bossmod_support_bars_enabled) then return true end
 	return false
 end
 
@@ -477,7 +482,7 @@ do
 		if event ~= "DBM_TimerStart" then return end
 		if (id and guid) then
 			-- Supported by nameplate mod, passing to their handler
-			if SupportedNPMod() then return end
+			if SupportedNPModBars() then return end
 
 			local color = {DBT:GetColorForType(colorType)}
 			local display = strsub(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, 7)
@@ -556,7 +561,7 @@ do
 		if event ~= "DBM_TimerUpdate" then return end
 
 		-- Supported by nameplate mod, passing to their handler
-		if SupportedNPMod() then return end
+		if SupportedNPModBars() then return end
 
 		if not id or not elapsed or not totalTime then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -578,7 +583,7 @@ do
 		if event ~= "DBM_TimerPause" then return end
 
 		-- Supported by nameplate mod, passing to their handler
-		if SupportedNPMod() then return end
+		if SupportedNPModBars() then return end
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -597,7 +602,7 @@ do
 		if event ~= "DBM_TimerResume" then return end
 
 		-- Supported by nameplate mod, passing to their handler
-		if SupportedNPMod() then return end
+		if SupportedNPModBars() then return end
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -617,7 +622,7 @@ do
 		if event ~= "DBM_TimerStop" then return end
 
 		-- Supported by nameplate mod, passing to their handler
-		if SupportedNPMod() then return end
+		if SupportedNPModBars() then return end
 
 		if not id then return end
 		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
@@ -701,7 +706,7 @@ function nameplateFrame:Show(isGUID, unit, spellId, texture, duration, desaturat
 	}
 
 	-- Supported by nameplate mod, passing to their handler
-	if SupportedNPMod() and not forceDBM then
+	if SupportedNPModIcons() and not forceDBM then
 		DBM:FireEvent("BossMod_EnableHostileNameplates") --TODO: is this needed?
 		DBM:FireEvent("BossMod_ShowNameplateAura", isGUID, unit, aura_tbl.texture, aura_tbl.duration, aura_tbl.desaturate)
 		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Show callbacks", 3)
@@ -716,7 +721,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, i
 	--Texture Id passed as string so as not to get confused with spellID for GetSpellTexture
 	local currentTexture = tonumber(texture) or texture or GetSpellTexture(spellId)
 
-	if SupportedNPMod() and not forceDBM then --aura icon handling
+	if SupportedNPModIcons() and not forceDBM then --aura icon handling
 		--Not running supported NP Mod, internal handling
 		DBM:Debug("DBM.Nameplate Found supported NP mod, only sending Hide callbacks", 3)
 
