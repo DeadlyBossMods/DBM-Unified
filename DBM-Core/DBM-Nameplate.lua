@@ -154,7 +154,7 @@ do
 				if not prev then
 					total_width = 0
 					first_icon = iconFrame
-					iconFrame:SetPoint('BOTTOM',frame.parent,'TOP')
+					iconFrame:SetPoint('BOTTOM',frame.parent,'TOP', DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
 				else
 					local xOffset = (prev.aura_tbl.auraType ~= iconFrame.aura_tbl.auraType) and typeOffset or 0
 					total_width = total_width + iconFrame:GetWidth() + xOffset
