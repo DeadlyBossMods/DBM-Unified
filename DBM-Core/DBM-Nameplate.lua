@@ -274,12 +274,12 @@ end
 --Add more nameplate mods as they gain support
 local function SupportedNPModIcons()
 	if not DBM.Options.UseNameplateHandoff then return false end
-	if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or (_G["Plater"] and Plater.db.profile.bossmod_support_enabled) then return true end
+	if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or _G["Plater"] then return true end
 	return false
 end
 local function SupportedNPModBars()
 	if not DBM.Options.UseNameplateHandoff then return false end
-	if _G["KuiNameplates"] or _G["TidyPlatesThreatDBM"] or (_G["Plater"] and Plater.db.profile.bossmod_support_bars_enabled) then return true end
+	if _G["Plater"] then return true end
 	return false
 end
 
