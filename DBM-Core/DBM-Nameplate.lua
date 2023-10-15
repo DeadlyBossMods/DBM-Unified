@@ -168,7 +168,7 @@ do
 		if first_icon and total_width and total_width > 0 then
 			-- shift first icon back to centre visible row
 			first_icon:SetPoint('BOTTOM',frame.parent,'TOP',
-				-floor(total_width/2),0)
+				-floor(total_width/2) + DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
 		end
 	end
 	local function AuraFrame_AddAura(frame,aura_tbl,batch)
