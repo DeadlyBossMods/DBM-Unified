@@ -8675,7 +8675,7 @@ do
 		if total == #self.combinedtext then--All targets gathered, show immediately
 			self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
 		else
-			DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
+			DBMScheduler:Schedule(1, self.Show, self.mod, self, ...)
 		end
 	end
 
@@ -9592,7 +9592,7 @@ do
 		if total == #self.combinedtext then--All targets gathered, show immediately
 			self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
 		else
-			DBMScheduler:Schedule(delay or 0.5, self.Show, self.mod, self, ...)
+			DBMScheduler:Schedule(1, self.Show, self.mod, self, ...)
 		end
 	end
 
