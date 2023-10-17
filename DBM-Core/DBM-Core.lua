@@ -8655,7 +8655,7 @@ do
 	end
 
 	--New object that allows defining count instead of scheduling for more efficient and immediate warnings when precise count is known
-	function announcePrototype:PreciseShow(total, ...)
+	function announcePrototype:PreciseShow(maxTotal, ...)
 		if self.option and not self.mod.Options[self.option] then return end
 		if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
 		if DBM.Options.DontShowTargetAnnouncements and (self.announceType == "target" or self.announceType == "targetcount") and not self.noFilter then return end--don't show announces that are generic target announces
@@ -8671,11 +8671,9 @@ do
 				end
 			end
 		end
-		DBMScheduler:Unschedule(self.Show, self.mod, self)
-		if total == #self.combinedtext then--All targets gathered, show immediately
+		local viableTotal = DBM:NumRealAlivePlayers()
+		if (maxTotal == #self.combinedtext) or (viableTotal == #self.combinedtext) then--All targets gathered, show immediately
 			self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
-		else
-			DBMScheduler:Schedule(1, self.Show, self.mod, self, ...)
 		end
 	end
 
@@ -9569,7 +9567,7 @@ do
 	end
 
 	--New object that allows defining count instead of scheduling for more efficient and immediate warnings when precise count is known
-	function specialWarningPrototype:PreciseShow(total, ...)
+	function specialWarningPrototype:PreciseShow(maxTotal, ...)
 		--Check if option for this warning is even enabled
 		if self.option and not self.mod.Options[self.option] then return end
 		--Now, check if all special warning filters are enabled to save cpu and abort immediately if true.
@@ -9588,11 +9586,9 @@ do
 				end
 			end
 		end
-		DBMScheduler:Unschedule(self.Show, self.mod, self)
-		if total == #self.combinedtext then--All targets gathered, show immediately
+		local viableTotal = DBM:NumRealAlivePlayers()
+		if (maxTotal == #self.combinedtext) or (viableTotal == #self.combinedtext) then--All targets gathered, show immediately
 			self:Show(...)--Does this need self or mod? will it have this bug? https://github.com/DeadlyBossMods/DBM-Unified/issues/153
-		else
-			DBMScheduler:Schedule(1, self.Show, self.mod, self, ...)
 		end
 	end
 
