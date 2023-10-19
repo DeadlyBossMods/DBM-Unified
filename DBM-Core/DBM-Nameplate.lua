@@ -136,6 +136,26 @@ do
 
 		local typeOffset = DBM.Options.NPAuraSize/4
 		local prev,total_width,first_icon
+		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --center is default
+		local centered,vertical = false,false,true
+		if DBM.Options.NPIconGrowthDirection == "UP" then
+			mainAnchor, mainAnchorRel = 'BOTTOM','TOP'
+			anchor, anchorRel = 'BOTTOM','TOP'
+			vertical = true
+		elseif DBM.Options.NPIconGrowthDirection == "DOWN" then
+			mainAnchor, mainAnchorRel = 'TOP','BOTTOM'
+			anchor, anchorRel = 'TOP','BOTTOM'
+			vertical = true
+		elseif DBM.Options.NPIconGrowthDirection == "LEFT" then
+			mainAnchor, mainAnchorRel = 'RIGHT','LEFT'
+			anchor, anchorRel = 'RIGHT','LEFT'
+		elseif DBM.Options.NPIconGrowthDirection == "RIGHT" then
+			mainAnchor, mainAnchorRel = 'LEFT','RIGHT'
+			anchor, anchorRel = 'LEFT','RIGHT'
+		else --centered
+			centered = true
+		end
+
 		for _, iconFrame in ipairs(sortedIcons) do
 			if iconFrame:IsShown() then
 				--easiest to hanlde here: paused timer icons
@@ -154,11 +174,11 @@ do
 				if not prev then
 					total_width = 0
 					first_icon = iconFrame
-					iconFrame:SetPoint('BOTTOM',frame.parent,'TOP', DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
+					iconFrame:SetPoint(mainAnchor,frame.parent,mainAnchorRel, DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
 				else
 					local xOffset = (prev.aura_tbl.auraType ~= iconFrame.aura_tbl.auraType) and typeOffset or 0
-					total_width = total_width + iconFrame:GetWidth() + xOffset
-					iconFrame:SetPoint('LEFT',prev,'RIGHT', xOffset, 0)
+					total_width = total_width + iconFrame:GetWidth() + xOffset --width equals height, so we're fine
+					iconFrame:SetPoint(anchor,prev,anchorRel, xOffset, 0)
 				end
 
 				prev = iconFrame
@@ -166,9 +186,9 @@ do
 		end
 
 		if first_icon and total_width and total_width > 0 then
-			-- shift first icon back to centre visible row
-			first_icon:SetPoint('BOTTOM',frame.parent,'TOP',
-				-floor(total_width/2) + DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
+			-- shift first icon to match anchor point
+			first_icon:SetPoint(mainAnchor,frame.parent,mainAnchorRel,
+				-floor((centered and total_width or 0)/2) + DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
 		end
 	end
 	local function AuraFrame_AddAura(frame,aura_tbl,batch)
