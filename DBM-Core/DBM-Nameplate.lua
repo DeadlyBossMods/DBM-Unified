@@ -733,7 +733,7 @@ function nameplateFrame:Hide(isGUID, unit, spellId, texture, force, isHostile, i
 				DBM:FireEvent("BossMod_DisableHostileNameplates")
 			end
 		elseif unit then
-			DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit, texture)
+			DBM:FireEvent("BossMod_HideNameplateAura", isGUID, unit, currentTexture)
 		end
 
 		return
