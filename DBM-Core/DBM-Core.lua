@@ -6922,9 +6922,9 @@ do
 		local currentSubZone = GetSubZoneText() or ""
 		if not currentMapID then return end--Protection from map failures in zones that have no maps yet
 		if self.Options.MovieFilter2 == "Block" or (self.Options.MovieFilter2 == "AfterFirst" or self.Options.MovieFilter2 == "OnlyFight") and self.Options.MoviesSeen[currentMapID..currentSubZone] then
---			CinematicFrame_CancelCinematic()
---			self:AddMsg(L.MOVIE_SKIPPED)
-			self:AddMsg(L.MOVIE_NOTSKIPPED)
+			CinematicFrame_CancelCinematic()
+			self:AddMsg(L.MOVIE_SKIPPED)
+--			self:AddMsg(L.MOVIE_NOTSKIPPED)
 		else
 			self.Options.MoviesSeen[currentMapID..currentSubZone] = true
 		end
