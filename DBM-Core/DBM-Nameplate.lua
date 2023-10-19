@@ -363,29 +363,25 @@ local function NameplateIcon_Show(isGUID, unit, aura_tbl)
 	end
 end
 
---Friendly is still being kept around for world bosses, for now anyways, but args being swapped.
-function NameplateIcon_Hide(isGUID, unit, index, force)
-	-- ensure integrity
-	if not unit or not index then return end
 
-	-- get info
-	local t_index
-	if units[unit] then
-		if index then
-			for i,aura_tbl in ipairs(units[unit]) do
-				if aura_tbl.index == index then
-					t_index = i
-					break
-				end
+function NameplateIcon_Hide(isGUID, unit, index, force)
+
+	-- need to remove the entry
+	if unit and units[unit] and index then
+		local t_index
+		for i,aura_tbl in ipairs(units[unit]) do
+			if aura_tbl.index == index then
+				t_index = i
+				break
 			end
+		end
+		if t_index then
+			tremove(units[unit],t_index)
 		end
 	end
 
-	-- need to remove the entry
-	if t_index then
-		tremove(units[unit],t_index)
-	end
-	if not index or #units[unit] == 0 then
+	-- cleanup
+	if unit and (not index or #units[unit] == 0) then
 		units[unit] = nil
 		num_units = num_units - 1
 	end
