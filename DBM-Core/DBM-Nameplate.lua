@@ -137,15 +137,13 @@ do
 		local typeOffset = DBM.Options.NPAuraSize/4
 		local prev,total_width,first_icon
 		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --center is default
-		local centered,vertical = false,false,true
+		local centered = false
 		if DBM.Options.NPIconGrowthDirection == "UP" then
 			mainAnchor, mainAnchorRel = 'BOTTOM','TOP'
 			anchor, anchorRel = 'BOTTOM','TOP'
-			vertical = true
 		elseif DBM.Options.NPIconGrowthDirection == "DOWN" then
 			mainAnchor, mainAnchorRel = 'TOP','BOTTOM'
 			anchor, anchorRel = 'TOP','BOTTOM'
-			vertical = true
 		elseif DBM.Options.NPIconGrowthDirection == "LEFT" then
 			mainAnchor, mainAnchorRel = 'RIGHT','LEFT'
 			anchor, anchorRel = 'RIGHT','LEFT'
