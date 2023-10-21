@@ -332,6 +332,7 @@ DBM.DefaultOptions = {
 	DontShowSpecialWarningFlash = false,
 	DontDoSpecialWarningVibrate = false,
 	DontPlaySpecialWarningSound = false,
+	DontPlayPrivateAuraSound = false,
 	DontPlayTrivialSpecialWarningSound = true,
 	SpamSpecInformationalOnly = false,
 	SpamSpecRoledispel = false,
@@ -11261,6 +11262,7 @@ end
 --voice: voice pack media path
 --voiceVersion: Required voice pack verion (if not met, falls back to airhorn
 function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersion, altOptionId)
+	if DBM.Options.DontPlayPrivateAuraSound then return end
 	local optionId = altOptionId or auraspellId
 	if self.Options["PrivateAuraSound"..optionId] then
 		if not self.paSounds then self.paSounds = {} end
@@ -11304,6 +11306,7 @@ function bossModPrototype:EnablePrivateAuraSound(auraspellId, voice, voiceVersio
 end
 
 function bossModPrototype:DisablePrivateAuraSounds()
+	if DBM.Options.DontPlayPrivateAuraSound then return end
 	for _, id in next, self.paSounds do
 		C_UnitAuras.RemovePrivateAuraAppliedSound(id)
 	end
