@@ -10558,13 +10558,11 @@ do
 		if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 			guid = UnitGUID("boss1")
 		end
-		if select("#", ...) == 0 then
-			for i = #self.startedTimers, 1, -1 do
-				fireEvent("DBM_TimerStop", self.startedTimers[i], guid)
-				DBT:CancelBar(self.startedTimers[i])
-				DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
-				tremove(self.startedTimers, i)
-			end
+		for i = #self.startedTimers, 1, -1 do
+			fireEvent("DBM_TimerStop", self.startedTimers[i], guid)
+			DBT:CancelBar(self.startedTimers[i])
+			DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
+			tremove(self.startedTimers, i)
 		end
 	end
 
