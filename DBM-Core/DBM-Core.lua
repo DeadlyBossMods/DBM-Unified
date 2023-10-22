@@ -10549,6 +10549,23 @@ do
 		end
 	end
 
+	--HardStop is a method used when you want to force stop all varients of a timer by ID, period, but still pass a GUID for callbacks
+	--This is especially useful for count timers where guid is 2nd arg and count is 1st
+	--where Stop(guid) would mismatch object and not stop a bar and calling stop on every possible count is silly and stop without args wouldn't send GUID
+	function timerPrototype:HardStop(guid)
+		--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
+		--This check is performed secondary to args scan so that no adds guids are overwritten
+		if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
+			guid = UnitGUID("boss1")
+		end
+		for i = #self.startedTimers, 1, -1 do
+			fireEvent("DBM_TimerStop", self.startedTimers[i], guid)
+			DBT:CancelBar(self.startedTimers[i])
+			DBM:Unschedule(playCountSound, self.startedTimers[i])--Unschedule countdown by timerId
+			tremove(self.startedTimers, i)
+		end
+	end
+
 	--In past boss mods have always had to manually call Stop just to restart a timer, to avoid triggering false debug messages
 	--This function should simplify boss mod creation by allowing you to "Restart" a timer with one call in mod instead of 2
 	function timerPrototype:Restart(timer, ...)
