@@ -2853,12 +2853,12 @@ function DBM:SelectMatchingGossip(confirm, ...)
 		if table[i].gossipOptionID then
 			local tindex = tIndexOf(requestedIds, table[i].gossipOptionID)
 			if tindex then
-				self:SelectGossip(requestIds[tindex], confirm)
+				self:SelectGossip(requestedIds[tindex], confirm)
 			end
 		elseif table[i].orderIndex then
 			local tindex = tIndexOf(requestedIds, table[i].orderIndex)
 			if tindex then
-				self:SelectGossip(requestIds[tindex], confirm)
+				self:SelectGossip(requestedIds[tindex], confirm)
 			end
 		end
 	end
