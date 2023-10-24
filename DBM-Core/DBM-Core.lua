@@ -2819,18 +2819,53 @@ function DBM:IsTrivial(customLevel)
 	return false
 end
 
+--Ugly, Needs improvement in code style to just dump all numeric values as args
+--it's not meant to just wrap C_GossipInfo.GetOptions() but to dump out the meaningful values from it
 function DBM:GetGossipID(force)
 	if self.Options.DontAutoGossip and not force then return false end
 	local table = C_GossipInfo.GetOptions()
-	if table[1] then
-		if table[1].gossipOptionID then
-			return table[1].gossipOptionID
-		elseif table[1].orderIndex then
-			return table[1].orderIndex
+	local tempTable = {}
+	if table then
+		for i = 1, #table do
+			if table[i].gossipOptionID then
+				tempTable[#tempTable+1] = table[i].gossipOptionID
+			elseif table[i].orderIndex then
+				tempTable[#tempTable+1] = table[i].orderIndex
+			end
 		end
-	else
+		if tempTable[4] then
+			return tempTable[1], tempTable[2], tempTable[3], tempTable[4]
+		elseif tempTable[3] then
+			return tempTable[1], tempTable[2], tempTable[3]
+		elseif tempTable[2] then
+			return tempTable[1], tempTable[2]
+		elseif tempTable[1] then
+			return tempTable[1]
+		end
 		return false
 	end
+	return false
+end
+
+--Alternative to GetGossipID for specific matching all in one call
+function DBM:GetMatchingGossip(requestedID)
+	if self.Options.DontAutoGossip and not force then return false end
+	local table = C_GossipInfo.GetOptions()
+	if table then
+		for i = 1, #table do
+			if table[i].gossipOptionID then
+				if requestedID == table[i].gossipOptionID then
+					return true
+				end
+			elseif table[i].orderIndex then
+				if requestedID == table[i].orderIndex then
+					return true
+				end
+			end
+		end
+		return false
+	end
+	return false
 end
 
 function DBM:SelectGossip(gossipOptionID, confirm)
@@ -4864,10 +4899,10 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.noEEDetection then return end
-			if (isRetail or v.respawnTime) and success == 0 and self.Options.ShowRespawn and not self.Options.DontShowEventTimers then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
+			if v.respawnTime and success == 0 and self.Options.ShowRespawn and not self.Options.DontShowEventTimers then--No special hacks needed for bad wrath ENCOUNTER_END. Only mods that define respawnTime have a timer, since variable per boss.
 				name = string.split(",", name)
-				DBT:CreateBar(v.respawnTime or 29, L.TIMER_RESPAWN:format(name), isRetail and 237538 or 136106)--Interface\\Icons\\Spell_Holy_BorrowedTime, Spell_nature_timestop
-				fireEvent("DBM_TimerStart", "DBMRespawnTimer", L.TIMER_RESPAWN:format(name), v.respawnTime or 29, isRetail and "237538" or "136106", "extratimer", nil, 0, v.id)
+				DBT:CreateBar(v.respawnTime, L.TIMER_RESPAWN:format(name), isRetail and 237538 or 136106)--Interface\\Icons\\Spell_Holy_BorrowedTime, Spell_nature_timestop
+				fireEvent("DBM_TimerStart", "DBMRespawnTimer", L.TIMER_RESPAWN:format(name), v.respawnTime, isRetail and "237538" or "136106", "extratimer", nil, 0, v.id)
 			end
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
@@ -5015,9 +5050,9 @@ do
 	function DBM:GOSSIP_SHOW()
 		if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
 		local cid = self:GetUnitCreatureId("npc") or 0
-		local gossipOptionID = self:GetGossipID(true)
-		if gossipOptionID then
-			self:Debug("GOSSIP_SHOW triggered with a gossip ID of "..gossipOptionID.." on creatureID "..cid)
+		local gossipOptionID, gossipOptionID2, gossipOptionIS3, gossipOptionID4 = self:GetGossipID(true)
+		if gossipOptionID then--At least one must return for debug
+			self:Debug("GOSSIP_SHOW triggered with gossip ID(s) of "..gossipOptionID..", "..(gossipOptionID2 or "nil"..", "..(gossipOptionID3 or "nil"..", "..(gossipOptionID4 or "nil".." on creatureID "..cid)
 		end
 	end
 
@@ -7347,6 +7382,7 @@ bossModPrototype.GetUnitIdFromGUID = DBM.GetUnitIdFromGUID
 bossModPrototype.CheckNearby = DBM.CheckNearby
 bossModPrototype.IsTrivial = DBM.IsTrivial
 bossModPrototype.GetGossipID = DBM.GetGossipID
+bossModPrototype.GetMatchingGossip = DBM.GetMatchingGossip
 bossModPrototype.SelectGossip = DBM.SelectGossip
 
 do
