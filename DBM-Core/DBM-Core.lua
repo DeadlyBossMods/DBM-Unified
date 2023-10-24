@@ -2842,38 +2842,25 @@ function DBM:GetGossipID(force)
 end
 
 --Hybrid all in one object to auto check and confirm multiple gossip IDs at once
-function DBM:SelectMatchingGossip(confirm, requestedID, requestedID2, requestedID3, requestedID4, requestedID5)
+function DBM:SelectMatchingGossip(confirm, ...)
 	if self.Options.DontAutoGossip then return false end
+	local requestedIds = {...}
 	local table = C_GossipInfo.GetOptions()
-	if table then
-		for i = 1, #table do
-			if table[i].gossipOptionID then
-				if requestedID == table[i].gossipOptionID then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID2 == table[i].gossipOptionID then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID3 == table[i].gossipOptionID then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID4 == table[i].gossipOptionID then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID5 == table[i].gossipOptionID then
-					self:SelectGossip(requestedID, confirm)
-				end
-			elseif table[i].orderIndex then
-				if requestedID == table[i].orderIndex then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID2 == table[i].orderIndex then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID3 == table[i].orderIndex then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID4 == table[i].orderIndex then
-					self:SelectGossip(requestedID, confirm)
-				elseif requestedID5 == table[i].orderIndex then
-					self:SelectGossip(requestedID, confirm)
-				end
+	if not table then
+		return false
+	end
+	for i = 1, #table do
+		if table[i].gossipOptionID then
+			local tindex = tIndexOf(requestedIds, table[i].gossipOptionID)
+			if tindex then
+				self:SelectGossip(requestIds[tindex], confirm)
+			end
+		elseif table[i].orderIndex then
+			local tindex = tIndexOf(requestedIds, table[i].orderIndex)
+			if tindex then
+				self:SelectGossip(requestIds[tindex], confirm)
 			end
 		end
-		return false
 	end
 	return false
 end
