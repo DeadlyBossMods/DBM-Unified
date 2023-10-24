@@ -2841,19 +2841,35 @@ function DBM:GetGossipID(force)
 	return false
 end
 
---Alternative to GetGossipID for specific matching all in one call
-function DBM:GetMatchingGossip(requestedID, requestedID2, requestedID3, requestedID4, requestedID5)
+--Hybrid all in one object to auto check and confirm multiple gossip IDs at once
+function DBM:SelectMatchingGossip(confirm, requestedID, requestedID2, requestedID3, requestedID4, requestedID5)
 	if self.Options.DontAutoGossip then return false end
 	local table = C_GossipInfo.GetOptions()
 	if table then
 		for i = 1, #table do
 			if table[i].gossipOptionID then
-				if requestedID == table[i].gossipOptionID or requestedID2 == table[i].gossipOptionID or requestedID3 == table[i].gossipOptionID or requestedID4 == table[i].gossipOptionID or requestedID5 == table[i].gossipOptionID then
-					return true
+				if requestedID == table[i].gossipOptionID then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID2 == table[i].gossipOptionID then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID3 == table[i].gossipOptionID then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID4 == table[i].gossipOptionID then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID5 == table[i].gossipOptionID then
+					self:SelectGossip(requestedID, confirm)
 				end
 			elseif table[i].orderIndex then
-				if requestedID == table[i].orderIndex or requestedID2 == table[i].orderIndex or requestedID3 == table[i].orderIndex or requestedID4 == table[i].orderIndex or requestedID5 == table[i].orderIndex then
-					return true
+				if requestedID == table[i].orderIndex then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID2 == table[i].orderIndex then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID3 == table[i].orderIndex then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID4 == table[i].orderIndex then
+					self:SelectGossip(requestedID, confirm)
+				elseif requestedID5 == table[i].orderIndex then
+					self:SelectGossip(requestedID, confirm)
 				end
 			end
 		end
