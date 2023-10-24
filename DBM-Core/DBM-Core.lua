@@ -2842,17 +2842,17 @@ function DBM:GetGossipID(force)
 end
 
 --Alternative to GetGossipID for specific matching all in one call
-function DBM:GetMatchingGossip(requestedID)
+function DBM:GetMatchingGossip(requestedID, requestedID2, requestedID3, requestedID4, requestedID5)
 	if self.Options.DontAutoGossip then return false end
 	local table = C_GossipInfo.GetOptions()
 	if table then
 		for i = 1, #table do
 			if table[i].gossipOptionID then
-				if requestedID == table[i].gossipOptionID then
+				if requestedID == table[i].gossipOptionID or requestedID2 == table[i].gossipOptionID or requestedID3 == table[i].gossipOptionID or requestedID4 == table[i].gossipOptionID or requestedID5 == table[i].gossipOptionID then
 					return true
 				end
 			elseif table[i].orderIndex then
-				if requestedID == table[i].orderIndex then
+				if requestedID == table[i].orderIndex or requestedID2 == table[i].orderIndex or requestedID3 == table[i].orderIndex or requestedID4 == table[i].orderIndex or requestedID5 == table[i].orderIndex then
 					return true
 				end
 			end
