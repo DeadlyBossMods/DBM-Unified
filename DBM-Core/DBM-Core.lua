@@ -2833,14 +2833,8 @@ function DBM:GetGossipID(force)
 				tempTable[#tempTable+1] = table[i].orderIndex
 			end
 		end
-		if tempTable[4] then
-			return tempTable[1], tempTable[2], tempTable[3], tempTable[4]
-		elseif tempTable[3] then
-			return tempTable[1], tempTable[2], tempTable[3]
-		elseif tempTable[2] then
-			return tempTable[1], tempTable[2]
-		elseif tempTable[1] then
-			return tempTable[1]
+		if tempTable[1] then
+			return unpack(tempTable)
 		end
 		return false
 	end
@@ -2849,7 +2843,7 @@ end
 
 --Alternative to GetGossipID for specific matching all in one call
 function DBM:GetMatchingGossip(requestedID)
-	if self.Options.DontAutoGossip and not force then return false end
+	if self.Options.DontAutoGossip then return false end
 	local table = C_GossipInfo.GetOptions()
 	if table then
 		for i = 1, #table do
@@ -5052,7 +5046,7 @@ do
 		local cid = self:GetUnitCreatureId("npc") or 0
 		local gossipOptionID, gossipOptionID2, gossipOptionID3, gossipOptionID4 = self:GetGossipID(true)
 		if gossipOptionID then--At least one must return for debug
-			gossipOptionID2, gossipOptionIS3, gossipOptionID4 = gossipOptionID2 or "nil", gossipOptionID3 or "nil", gossipOptionID4 or "nil"
+			gossipOptionID2, gossipOptionID3, gossipOptionID4 = gossipOptionID2 or "nil", gossipOptionID3 or "nil", gossipOptionID4 or "nil"
 			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of "..gossipOptionID..", "..gossipOptionID2..", "..gossipOptionID3..", "..gossipOptionID4.." on creatureID "..cid)
 		end
 	end
