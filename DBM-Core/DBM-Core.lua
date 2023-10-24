@@ -5047,10 +5047,9 @@ do
 	function DBM:GOSSIP_SHOW()
 		if not IsInInstance() then return end--Don't really care about it if not in a dungeon or raid
 		local cid = self:GetUnitCreatureId("npc") or 0
-		local gossipOptionID, gossipOptionID2, gossipOptionID3, gossipOptionID4 = self:GetGossipID(true)
+		local gossipOptionID = self:GetGossipID(true)
 		if gossipOptionID then--At least one must return for debug
-			gossipOptionID2, gossipOptionID3, gossipOptionID4 = gossipOptionID2 or "nil", gossipOptionID3 or "nil", gossipOptionID4 or "nil"
-			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of "..gossipOptionID..", "..gossipOptionID2..", "..gossipOptionID3..", "..gossipOptionID4.." on creatureID "..cid)
+			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of "..strjoin(",", self:GetGossipID(true)).." on creatureID "..cid)
 		end
 	end
 
