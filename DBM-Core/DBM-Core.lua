@@ -5052,8 +5052,8 @@ do
 		local cid = self:GetUnitCreatureId("npc") or 0
 		local gossipOptionID, gossipOptionID2, gossipOptionIS3, gossipOptionID4 = self:GetGossipID(true)
 		if gossipOptionID then--At least one must return for debug
-			self:Debug("GOSSIP_SHOW triggered with gossip ID(s) of "..gossipOptionID..", "..(gossipOptionID2 or "nil"..", "..(gossipOptionID3 or "nil"..", "..(gossipOptionID4 or "nil".." on creatureID "..cid)
-		end
+			self:Debug("GOSSIP_SHOW triggered with gossip ID(s) of "..gossipOptionID..", "..(gossipOptionID2 or "nil")..", "..(gossipOptionID3 or "nil")..", "..(gossipOptionID4 or "nil").." on creatureID "..cid)
+		end)
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
