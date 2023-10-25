@@ -895,10 +895,10 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 		createRadarFrame()
 	end
 	local restrictionsActive = DBM:HasMapRestrictions()
+	if restrictionsActive then
+		range = setCompatibleRestrictedRange(range)
+	end
 	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame:IsShown() then
-		if restrictionsActive then
-			range = setCompatibleRestrictedRange(range)
-		end
 		textFrame:Show()
 	end
 	-- TODO, add check for restricted area here so we can prevent radar frame loading.
