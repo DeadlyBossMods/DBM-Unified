@@ -52,7 +52,7 @@ local dirs = {
 		value	= "RIGHT",
 	},
 	{
-		text	= "Center",
+		text	= CL.CENTER,
 		value	= "CENTER",
 	},
 }
