@@ -541,6 +541,7 @@ L.NPAuraText						= "Show timer text on nameplate icons"
 L.NPAuraSize						= "Icon Pixel size (squared): %d"
 L.NPIcon_BarOffSetX 				= "Icon Offset X: %d"
 L.NPIcon_BarOffSetY 				= "Icon Offset Y: %d"
+L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
 
 -- Misc
 L.Area_General						= "General"
