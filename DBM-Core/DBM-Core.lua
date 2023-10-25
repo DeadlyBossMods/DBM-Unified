@@ -363,6 +363,7 @@ DBM.DefaultOptions = {
 	NPAuraSize = 40,
 	NPIconXOffset = 0,
 	NPIconYOffset = 0,
+	NPIconGrowthDirection = "CENTER",
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
