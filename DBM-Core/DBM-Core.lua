@@ -5049,7 +5049,7 @@ do
 		local cid = self:GetUnitCreatureId("npc") or 0
 		local gossipOptionID = self:GetGossipID(true)
 		if gossipOptionID then--At least one must return for debug
-			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of "..strjoin(",", self:GetGossipID(true)).." on creatureID "..cid)
+			self:Debug("GOSSIP_SHOW triggered with a gossip ID(s) of "..strjoin(", ", self:GetGossipID(true)).." on creatureID "..cid)
 		end
 	end
 
