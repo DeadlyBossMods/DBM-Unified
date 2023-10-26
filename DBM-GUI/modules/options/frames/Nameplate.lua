@@ -63,6 +63,14 @@ end)
 iconGrowthDirection:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", -20, -25)
 iconGrowthDirection.myheight = 85
 
+local testbutton = general:CreateButton(L.NPDemo, 100, 16)
+testbutton:SetPoint("TOPRIGHT", style.frame, "TOPRIGHT", -2, -4)
+testbutton:SetNormalFontObject(GameFontNormalSmall)
+testbutton:SetHighlightFontObject(GameFontNormalSmall)
+testbutton:SetScript("OnClick", function()
+	DBM:DemoMode()
+end)
+
 local resetbutton = general:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)
 resetbutton:SetNormalFontObject(GameFontNormalSmall)
@@ -70,6 +78,11 @@ resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton:SetScript("OnClick", function()
 	-- Set Options
 	DBM.Options.NPAuraSize = DBM.DefaultOptions.NPAuraSize
+	DBM.Options.NPIconXOffset = DBM.DefaultOptions.NPIconXOffset
+	DBM.Options.NPIconYOffset = DBM.DefaultOptions.NPIconYOffset
+	DBM.Options.NPIconGrowthDirection = DBM.DefaultOptions.NPIconGrowthDirection
 	-- Set UI visuals
 	auraSizeSlider:SetValue(DBM.DefaultOptions.NPAuraSize)
+	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
+	iconOffsetYSlider:SetValue(DBM.DefaultOptions.NPIconYOffset)
 end)
