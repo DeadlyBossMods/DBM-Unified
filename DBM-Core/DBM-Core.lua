@@ -6762,6 +6762,7 @@ do
 	local testTimer1, testTimer2, testTimer3, testTimer4, testTimer5, testTimer6, testTimer7, testTimer8
 	local testSpecialWarning1, testSpecialWarning2, testSpecialWarning3
 	function DBM:DemoMode()
+		fireEvent("DBM_TestModStarted")
 		if not testMod then
 			testMod = self:NewMod("TestMod")
 			self:GetModLocalization("TestMod"):SetGeneralLocalization{ name = "Test Mod" }
@@ -6818,7 +6819,6 @@ do
 		testSpecialWarning2:ScheduleVoice(43, "fearsoon")
 		testSpecialWarning3:Schedule(60, "Boom!")
 		testSpecialWarning3:ScheduleVoice(60, "defensive")
-		fireEvent("DBM_TestModStarted")
 	end
 end
 
