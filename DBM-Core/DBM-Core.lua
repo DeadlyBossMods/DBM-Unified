@@ -10423,13 +10423,15 @@ do
 			end
 			--Mods that have specifically flagged that it's safe to assume all timers from that boss mod belong to boss1
 			--This check is performed secondary to args scan so that no adds guids are overwritten
+			local isBossGUID = false
 			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 				guid = UnitGUID("boss1")
+				isBossGUID = true
 			end
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
-			if guid and (self.type == "cdnp" or self.type ==  "nextnp") then
+			if guid and (isBossGUID or self.type == "cdnp" or self.type ==  "nextnp") then
 				DBT:CancelBar(id)--Cancel bar without stop callback
 				return false, "disabled"
 			end
