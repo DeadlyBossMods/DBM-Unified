@@ -1,4 +1,5 @@
 local L = DBM_GUI_L
+local CL = DBM_COMMON_L
 local panel = DBM_GUI.Cat_Frames:CreateNewPanel(L.Panel_Nameplates, "option")
 
 local general = panel:CreateArea(L.Area_General)
@@ -32,6 +33,35 @@ iconOffsetYSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconYOffset = self:GetValue()
 end)
 iconOffsetYSlider.myheight = 0
+
+local dirs = {
+	{
+		text	= CL.UP,
+		value	= "UP",
+	},
+	{
+		text	= CL.DOWN,
+		value	= "DOWN",
+	},
+	{
+		text	= CL.LEFT,
+		value	= "LEFT",
+	},
+	{
+		text	= CL.RIGHT,
+		value	= "RIGHT",
+	},
+	{
+		text	= CL.CENTER,
+		value	= "CENTER",
+	},
+}
+
+local iconGrowthDirection = style:CreateDropdown(L.NPIcon_GrowthDirection, dirs, "DBM", "NPIconGrowthDirection", function(value)
+	DBM.Options.NPIconGrowthDirection = value
+end)
+iconGrowthDirection:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", -20, -25)
+iconGrowthDirection.myheight = 85
 
 local resetbutton = general:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)

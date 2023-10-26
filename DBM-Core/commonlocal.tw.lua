@@ -23,6 +23,7 @@ CL.UP						= "上"
 CL.DOWN						= "下"
 CL.LEFT						= "左"
 CL.RIGHT					= "右"
+CL.CENTER					= "中央"
 CL.BOTH						= "兩邊"
 CL.BEHIND					= "背後"
 CL.BACK						= "後"--Back as in back of the room, not back as in body part

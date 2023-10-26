@@ -24,6 +24,7 @@ CL.UP								= "Up"
 CL.DOWN								= "Down"
 CL.LEFT								= "Left"
 CL.RIGHT							= "Right"
+CL.CENTER							= "Center"
 CL.BOTH								= "Both"
 CL.BEHIND							= "Behind"
 CL.BACK								= "Back"--Back as in back of the room, not back as in body part

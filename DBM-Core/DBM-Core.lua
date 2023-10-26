@@ -363,6 +363,7 @@ DBM.DefaultOptions = {
 	NPAuraSize = 40,
 	NPIconXOffset = 0,
 	NPIconYOffset = 0,
+	NPIconGrowthDirection = "CENTER",
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,
@@ -6818,6 +6819,7 @@ do
 		testSpecialWarning2:ScheduleVoice(43, "fearsoon")
 		testSpecialWarning3:Schedule(60, "Boom!")
 		testSpecialWarning3:ScheduleVoice(60, "defensive")
+		fireEvent("DBM_TestModStarted")
 	end
 end
 
