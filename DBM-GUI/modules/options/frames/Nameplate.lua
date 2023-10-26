@@ -12,9 +12,9 @@ local style = panel:CreateArea(L.Area_Style)
 
 local auraSizeSlider = style:CreateSlider(L.NPAuraSize, 20, 80, 1, 200)
 auraSizeSlider:SetPoint("TOPLEFT", style.frame, "TOPLEFT", 20, -25)
-auraSizeSlider:SetValue(DBM.Options.NPAuraSize)
+auraSizeSlider:SetValue(DBM.Options.NPIconSize)
 auraSizeSlider:HookScript("OnValueChanged", function(self)
-	DBM.Options.NPAuraSize = self:GetValue()
+	DBM.Options.NPIconSize = self:GetValue()
 end)
 
 local iconOffsetXSlider = style:CreateSlider(L.NPIcon_BarOffSetX, -50, 50, 1, 200)
@@ -76,12 +76,12 @@ resetbutton:SetNormalFontObject(GameFontNormalSmall)
 resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 resetbutton:SetScript("OnClick", function()
 	-- Set Options
-	DBM.Options.NPAuraSize = DBM.DefaultOptions.NPAuraSize
+	DBM.Options.NPIconSize = DBM.DefaultOptions.NPIconSize
 	DBM.Options.NPIconXOffset = DBM.DefaultOptions.NPIconXOffset
 	DBM.Options.NPIconYOffset = DBM.DefaultOptions.NPIconYOffset
 	DBM.Options.NPIconGrowthDirection = DBM.DefaultOptions.NPIconGrowthDirection
 	-- Set UI visuals
-	auraSizeSlider:SetValue(DBM.DefaultOptions.NPAuraSize)
+	auraSizeSlider:SetValue(DBM.DefaultOptions.NPIconSize)
 	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
 	iconOffsetYSlider:SetValue(DBM.DefaultOptions.NPIconYOffset)
 end)
