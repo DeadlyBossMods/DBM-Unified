@@ -405,8 +405,7 @@ L.SpamBlockNoCountdowns				= "Do not play countdown sounds"
 L.Area_SpamFilter_Nameplates		= "Nameplate Global Disable & Filter Options"
 L.SpamBlockNoNameplate				= "Do not show nameplate icons for special boss mechanics"
 L.SpamBlockNoNameplateCD			= "Do not show nameplate icons for ability cooldown timers"
-L.SpamBlockNoBossGUIDs				= "Do not show nameplate icons for ability cooldowns for one enemy bosses\n(you will still see icons for trash or multi target bosses if feature is enabled)"
-L.SpamBlockTimersWithNameplates		= "Do not show timer bars for trash mods if 'nameplate icons for ability cooldowns' is enabled (does not apply to boss fights, which will always show timer bars)"
+L.SpamBlockNoBossGUIDs				= "Do not show nameplate icons for ability cooldowns for one enemy bosses\n(you will still see icons for trash or multi target bosses if this checkbox is enabled)"
 
 L.Area_SpamFilter_Misc				= "Misc Global Disable & Filter Options"
 L.SpamBlockNoSetIcon				= "Do not set icons on targets"
@@ -542,6 +541,7 @@ L.NPAuraSize						= "Icon Pixel size (squared): %d"
 L.NPIcon_BarOffSetX 				= "Icon Offset X: %d"
 L.NPIcon_BarOffSetY 				= "Icon Offset Y: %d"
 L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
+L.NPDemo							= "Test (Be near nameplates)"
 
 -- Misc
 L.Area_General						= "General"
