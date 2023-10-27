@@ -409,8 +409,7 @@ L.SpamBlockNoCountdowns		= "초읽기 음성 재생 안함"
 L.Area_SpamFilter_Nameplates		= "이름표 전체적인 기능 끄기 및 필터 설정"
 L.SpamBlockNoNameplate				= "특수한 보스 패턴에선 이름표 아이콘을 표시 안함"
 L.SpamBlockNoNameplateCD			= "스킬 쿨타임 타이머의 이름표 아이콘을 표시 안함"
-L.SpamBlockNoBossGUIDs				= "단일 보스 전투시엔 스킬 쿨타임 타이머의 이름표 아이콘을 표시 안함\n(이 기능을 활성화 했어도 일반몹이나 다중 대상 보스 전투에선 아이콘이 표시됩니다)"
-L.SpamBlockTimersWithNameplates		= "'스킬 쿨타임 이름표 아이콘'을 활성화하면 일반몹 타이머 바는 표시 안함 (보스 전투에선 적용되지 않으며 항상 타이머 바가 표시됩니다)"
+L.SpamBlockNoBossGUIDs				= "단일 보스 전투시엔 스킬 쿨타임 이름표 아이콘을 표시 안함\n(이 설정을 활성화했어도 일반몹이나 다중 대상 보스 전투에선 아이콘이 표시됩니다)"
 
 L.Area_SpamFilter_Misc		= "기타 여러 기능 끄기 및 필터 설정"
 L.SpamBlockNoSetIcon		= "대상에 공격대 징표를 설정하지 않음"
@@ -546,6 +545,7 @@ L.NPAuraSize				= "아이콘 픽셀 크기 (정사각형): %d"
 L.NPIcon_BarOffSetX 				= "아이콘 위치 조정 X: %d"
 L.NPIcon_BarOffSetY 				= "아이콘 위치 조정 Y: %d"
 L.NPIcon_GrowthDirection 			= "아이콘 생성 방향"
+L.NPDemo							= "테스트 (이름표 근처에서 실행)"
 
 -- Misc
 L.Area_General				= "일반"
