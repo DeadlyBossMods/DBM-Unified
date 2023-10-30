@@ -379,7 +379,7 @@ function NameplateIcon_Hide(isGUID, unit, index, force)
 	end
 
 	-- cleanup
-	if unit and (not index or #units[unit] == 0) then
+	if unit and units[unit] and (not index or #units[unit] == 0) then
 		units[unit] = nil
 		num_units = num_units - 1
 	end
