@@ -491,6 +491,14 @@ end
 --register callbacks for aura icon CDs
 local barsTestMode = false --this is to handle the "non-guid" test bars. just turn on for testing.
 do
+	--test mode start
+	local testModeStartCallback = function(event, timer)
+		if event ~= "DBM_TestModStarted" then return end
+		barsTestMode = true
+		C_Timer.After (tonumber(timer) or 10, function() barsTestMode = false end)
+	end
+	DBM:RegisterCallback("DBM_TestModStarted", testModeStartCallback)
+
 	--timer start
 	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid)
 		if event ~= "DBM_TimerStart" then return end
