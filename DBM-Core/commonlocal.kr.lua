@@ -25,6 +25,7 @@ CL.UP								= "위쪽"
 CL.DOWN								= "아래쪽"
 CL.LEFT						= "왼쪽"
 CL.RIGHT						= "오른쪽"
+CL.CENTER							= "가운데"
 CL.BOTH						= "양쪽"
 CL.BEHIND					= "뒤쪽"
 CL.BACK						= "뒤쪽"--Back as in back of the room, not back as in body part

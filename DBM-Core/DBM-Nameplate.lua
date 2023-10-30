@@ -30,12 +30,12 @@ do
 		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame, BackdropTemplateMixin and "BackdropTemplate")
 		iconFrame:SetBackdrop ({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
 		--local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame)
-		iconFrame:SetSize(DBM.Options.NPAuraSize+2, DBM.Options.NPAuraSize+2)
+		iconFrame:SetSize(DBM.Options.NPIconSize+2, DBM.Options.NPIconSize+2)
 		iconFrame:Hide()
 
 		-- texture icon
 		iconFrame.icon = iconFrame:CreateTexture(nil,'BORDER')
-		iconFrame.icon:SetSize(DBM.Options.NPAuraSize, DBM.Options.NPAuraSize)
+		iconFrame.icon:SetSize(DBM.Options.NPIconSize, DBM.Options.NPIconSize)
 		iconFrame.icon:SetPoint ("center")
 
 		-- CD swipe
@@ -134,7 +134,7 @@ do
 			end
 		end)
 
-		local typeOffset = DBM.Options.NPAuraSize/4
+		local typeOffset = DBM.Options.NPIconSize/4
 		local prev,total_width,first_icon
 		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --center is default
 		local centered = false
@@ -379,7 +379,7 @@ function NameplateIcon_Hide(isGUID, unit, index, force)
 	end
 
 	-- cleanup
-	if unit and (not index or #units[unit] == 0) then
+	if unit and units[unit] and (not index or #units[unit] == 0) then
 		units[unit] = nil
 		num_units = num_units - 1
 	end
