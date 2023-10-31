@@ -379,7 +379,7 @@ function NameplateIcon_Hide(isGUID, unit, index, force)
 	end
 
 	-- cleanup
-	if unit and (not index or #units[unit] == 0) then
+	if unit and units[unit] and (not index or #units[unit] == 0) then
 		units[unit] = nil
 		num_units = num_units - 1
 	end
@@ -491,13 +491,24 @@ end
 --register callbacks for aura icon CDs
 local barsTestMode = false --this is to handle the "non-guid" test bars. just turn on for testing.
 do
+	--test mode start
+	local testModeStartCallback = function(event, timer)
+		if event ~= "DBM_TestModStarted" then return end
+		-- Supported by nameplate mod, passing to their handler
+		if SupportedNPModBars() then return end
+
+		barsTestMode = true
+		C_Timer.After (tonumber(timer) or 10, function() barsTestMode = false end)
+	end
+	DBM:RegisterCallback("DBM_TestModStarted", testModeStartCallback)
+
 	--timer start
 	local timerStartCallback = function(event, id, msg, timer, icon, barType, spellId, colorType, modId, keep, fade, name, guid)
 		if event ~= "DBM_TimerStart" then return end
-		if (id and guid) then
-			-- Supported by nameplate mod, passing to their handler
-			if SupportedNPModBars() then return end
+		-- Supported by nameplate mod, passing to their handler
+		if SupportedNPModBars() then return end
 
+		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
 			local display = strsub(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, 7)
 			--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
