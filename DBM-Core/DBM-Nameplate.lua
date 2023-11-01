@@ -126,8 +126,8 @@ do
 			elseif a_aura_tbl.auraType == 2 and b_aura_tbl.auraType == 2 then
 				local at, bt = a_aura_tbl.duration or 0, b_aura_tbl.duration or 0
 				local as, bs = a_aura_tbl.startTime or 0, b_aura_tbl.startTime or 0
-				local ar = at - (curTime - (a_aura_tbl.paused and (curTime - (a_aura_tbl.pauseStartTime - a_aura_tbl.start)) or as))
-				local br = bt - (curTime - (b_aura_tbl.paused and (curTime - (b_aura_tbl.pauseStartTime - b_aura_tbl.start)) or bs))
+				local ar = at - (curTime - (a_aura_tbl.paused and (curTime - (a_aura_tbl.pauseStartTime - as)) or as))
+				local br = bt - (curTime - (b_aura_tbl.paused and (curTime - (b_aura_tbl.pauseStartTime - bs)) or bs))
 				return br > ar
 			elseif (a_aura_tbl.startTime + a_aura_tbl.duration) < (b_aura_tbl.startTime + b_aura_tbl.duration) then
 				return true
