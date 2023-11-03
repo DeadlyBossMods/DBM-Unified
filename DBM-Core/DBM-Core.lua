@@ -11161,8 +11161,6 @@ do
 	local mt = {__index = enragePrototype}
 
 	function enragePrototype:Start(timer)
-		--User only has timer object exposed to to them, so link the other dummy objects like warning_berserk to said object
-		if not self.Options.timer_berserk then return end
 		timer = timer or self.timer or 600
 		timer = timer <= 0 and self.timer - mabs(timer) or timer
 		self.bar:SetTimer(timer)
