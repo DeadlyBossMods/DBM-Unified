@@ -156,6 +156,7 @@ L.OPTION_CATEGORY_DROPDOWNS				= "Dropdowns"--Still put in MISC sub grooup, just
 L.OPTION_CATEGORY_YELLS					= "Yells"
 L.OPTION_CATEGORY_NAMEPLATES			= "Nameplates"
 L.OPTION_CATEGORY_ICONS					= "Icons"
+L.OPTION_CATEGORY_PAURAS				= "Private Auras"
 
 L.AUTO_RESPONDED						= "Auto-responded."
 L.STATUS_WHISPER						= "%s: %s, %d/%d people alive"
