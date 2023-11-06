@@ -174,6 +174,7 @@ end)
 
 local UIGroupingOptions = coreoptions:CreateArea(L.UIGroupingOptions)
 UIGroupingOptions:CreateCheckButton(L.GroupOptionsExcludeIcon, true, nil, "GroupOptionsExcludeIcon")
+UIGroupingOptions:CreateCheckButton(L.GroupOptionsExcludePAura, true, nil, "GroupOptionsExcludePAura")
 UIGroupingOptions:CreateCheckButton(L.AutoExpandSpellGroups, true, nil, "AutoExpandSpellGroups")
 UIGroupingOptions:CreateCheckButton(L.ShowWAKeys, true, nil, "ShowWAKeys")
 --UIGroupingOptions:CreateCheckButton(L.ShowSpellDescWhenExpanded, true, nil, "ShowSpellDescWhenExpanded")

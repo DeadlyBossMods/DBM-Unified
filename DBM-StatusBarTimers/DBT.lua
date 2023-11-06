@@ -804,6 +804,10 @@ function barPrototype:Update(elapsed)
 		if sparkEnabled then
 			spark:SetVertexColor(r, g, b)
 		end
+	elseif self.color then
+		r = self.color.r
+		g = self.color.g
+		b = self.color.b
 	end
 	if timerValue <= 0 and not (barOptions.KeepBars and self.keep) then
 		return self:Cancel()
