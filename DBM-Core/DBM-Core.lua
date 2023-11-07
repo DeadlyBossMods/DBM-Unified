@@ -10241,6 +10241,8 @@ do
 		["achievement"] = "stage",
 		["stagecount"] = "stage",
 		["stagecountcycle"] = "stage",
+		["stagecontext"] = "stage",
+		["stagecontextcount"] = "stage",
 		["intermission"] = "stage",
 		["intermissioncount"] = "stage",
 
@@ -10264,7 +10266,7 @@ do
 		end
 		if not self.option or self.mod.Options[self.option] then
 			local isCountTimer = false
-			if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecountcycle" or self.type == "intermissioncount") then
+			if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecontextcount" or self.type == "stagecountcycle" or self.type == "intermissioncount") then
 				isCountTimer = true
 			end
 			if isCountTimer and not self.allowdouble then--remove previous timer.
@@ -10929,9 +10931,9 @@ do
 		local unparsedId = spellId
 		if timerType == "achievement" then
 			icon = parseSpellIcon(texture or spellId, timerType)
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" then
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "stagecontext" or timerType == "stagecontextcount" or timerType == "intermission" or timerType == "intermissioncount" then
 			icon = parseSpellIcon(texture or spellId, timerType)
-			if timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" then
+			if timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "stagecontext" or timerType == "stagecontextcount" or timerType == "intermission" or timerType == "intermissioncount" then
 				colorType = 6
 			end
 		elseif timerType == "roleplay" then
@@ -10996,7 +10998,7 @@ do
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" or timerType == "roleplay" then--Timers without spellid, generic
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" or timerType == "roleplay" then--Timers without spellid, generic (do not add stagecontext here, it has spellname parsing)
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]--Using more than 1 stage timer or more than 1 special timer will break this, fortunately you should NEVER use more than 1 of either in a mod
 		else
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(unparsedId)
@@ -11098,6 +11100,17 @@ do
 
 	function bossModPrototype:NewStageCountTimer(...)
 		return newTimer(self, "stagecount", ...)
+	end
+
+	--Used mainly for compat with BW/LW timers where they use "stages" but then use the spell/journal descriptor instead of "stage d"
+	--Basically, it's a generic spellName timer for "stages" callback
+	function bossModPrototype:NewStageContextTimer(...)
+		return newTimer(self, "stagecontext", ...)
+	end
+
+	--Same as above, with count
+	function bossModPrototype:NewStageContextCountTimer(...)
+		return newTimer(self, "stagecontextcount", ...)
 	end
 
 	function bossModPrototype:NewStageCountCycleTimer(...)
