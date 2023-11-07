@@ -496,6 +496,7 @@ do
 		if event ~= "DBM_TestModStarted" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		barsTestMode = true
 		C_Timer.After (tonumber(timer) or 10, function() barsTestMode = false end)
