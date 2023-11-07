@@ -107,6 +107,7 @@ L.TimerGeneral 						= "Timer Options"
 L.SKT_Enabled						= "Show record victory timer for current fight if available"
 L.ShowRespawn						= "Show boss respawn timer after a wipe"
 L.ShowQueuePop						= "Show time remaining to accept a queue pop (LFG,BG,etc)"
+L.ShowBerserkWarnings				= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
 --
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging					= "Auto Logging Toggles"
