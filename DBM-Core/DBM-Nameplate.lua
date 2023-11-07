@@ -507,6 +507,7 @@ do
 		if event ~= "DBM_TimerStart" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
@@ -587,6 +588,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id or not elapsed or not totalTime then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -609,6 +611,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -628,6 +631,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -648,6 +652,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
