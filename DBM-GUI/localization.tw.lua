@@ -106,6 +106,7 @@ L.TimerGeneral 				= "計時器選項"
 L.SKT_Enabled				= "顯示目前戰鬥的最佳紀錄勝利計時器"
 L.ShowRespawn				= "顯示下一次首領重生計時器"
 L.ShowQueuePop				= "顯示接受彈出佇列的剩餘時間(尋求組隊、戰場..等)"
+L.ShowBerserkWarnings		= "在10/5/3/1分鐘顯示通告並且在 $spell:26662 計時器剩餘30/10秒時"
 --
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging			= "自動記錄切換"
