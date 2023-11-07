@@ -10236,8 +10236,11 @@ do
 		["cdnp"] = "cd",
 		["nextnp"] = "cd",
 
-		--Stages, Warmup/Combatstart, RPs all map to "stage"
-		["roleplay"] = "stage",
+		--Combatstart, RPs all map to "warmup"
+		["combat"] = "warmup",
+		["roleplay"] = "warmup",
+
+		--all stage types will map to "stage"
 		["achievement"] = "stage",
 		["stagecount"] = "stage",
 		["stagecountcycle"] = "stage",
@@ -10254,6 +10257,19 @@ do
 		["active"] = "cast",--Active bars are usually things like Whirlwind is active on the boss, or a channeled cast is being done. so effectively it's for channeled casts, as upposed to regular casts
 		["castsource"] = "cast",
 		["castcount"] = "cast",
+	}
+
+	--Very similar to above but more specific to key replacement and not type replacement, to match BW behavior for unification of WAs
+	local waKeyOverrides = {
+		["combat"] = "warmup",
+		["roleplay"] = "warmup",
+		["achievement"] = "stage",
+		["stagecount"] = "stages",
+		["stagecountcycle"] = "stages",
+		["stagecontext"] = "stages",
+		["stagecontextcount"] = "stages",
+		["intermission"] = "stages",
+		["intermissioncount"] = "stages",
 	}
 
 	function timerPrototype:Start(timer, ...)
@@ -10430,13 +10446,7 @@ do
 			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 				guid = UnitGUID("boss1")
 			end
-			local callbackSpellId
-			if self.simpType and self.simpType == "stage" then
-				callbackSpellId = "stages"
-			else
-				callbackSpellId = self.spellId
-			end
-			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, callbackSpellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
+			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 			if guid and (self.type == "cdnp" or self.type ==  "nextnp") then
@@ -10968,11 +10978,13 @@ do
 		end
 		local id = "Timer"..(spellId or 0)..timerType..(optionVersion or "")
 		local simpType = timerTypeSimplification[timerType] or timerType
+		local waSpecialKey = waKeyOverrides[timerType]
 		local obj = setmetatable(
 			{
 				text = timerTextValue,
 				type = timerType,
 				simpType = simpType,
+				waSpecialKey = waSpecialKey,--Not same as simpType, this overrides option key
 				spellId = spellId,
 				name = spellName,--If name gets stored as nil, it'll be corrected later in Timer start, if spell name returns in a later attempt
 				timer = timer,
@@ -11238,7 +11250,7 @@ do
 	function bossModPrototype:NewCombatTimer(timer, _, barText, barIcon) -- timer, text, barText, barIcon
 		timer = timer or 10
 		--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5, nil, nil, nil, nil, nil, nil, "stage")
+		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5, nil, nil, nil, nil, nil, nil, "combat")
 
 		local obj = setmetatable(
 			{
