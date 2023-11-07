@@ -10263,7 +10263,7 @@ do
 	local waKeyOverrides = {
 		["combat"] = "warmup",
 		["roleplay"] = "warmup",
-		["achievement"] = "stage",
+		["achievement"] = "stages",
 		["stagecount"] = "stages",
 		["stagecountcycle"] = "stages",
 		["stagecontext"] = "stages",
@@ -10885,11 +10885,17 @@ do
 			inlineIcon = nil--Fix it for users
 		end
 		icon = parseSpellIcon(icon)
+		local waSpecialKey, simpType
+		if customType then
+			simpType = timerTypeSimplification[customType] or customType
+			waSpecialKey = waKeyOverrides[customType]
+		end
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name],
 				type = customType or "cd",--Auto assign
-				simpType = customType or "cd",
+				simpType = simpType or "cd",
+				waSpecialKey = waSpecialKey,
 				spellId = spellId,--Allows Localized timer text to still have a spellId arg weak auras can latch onto
 				timer = timer,
 				id = name,
