@@ -81,7 +81,7 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.32 alpha"
+	DBM.DisplayVersion = "10.2.0 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 10, 18) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
@@ -10071,7 +10071,7 @@ do
 	end
 
 	do
-		local minVoicePackVersion = isRetail and 14 or 10
+		local minVoicePackVersion = isRetail and 15 or 10
 
 		function DBM:CheckVoicePackVersion(value)
 			local activeVP = self.Options.ChosenVoicePack2
