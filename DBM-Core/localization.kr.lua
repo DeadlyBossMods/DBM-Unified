@@ -149,6 +149,7 @@ L.OPTION_CATEGORY_DROPDOWNS		= "드롭다운 옵션"
 L.OPTION_CATEGORY_YELLS			= "말풍선"
 L.OPTION_CATEGORY_NAMEPLATES		= "이름표"
 L.OPTION_CATEGORY_ICONS			= "공격대 징표"
+L.OPTION_CATEGORY_PAURAS				= "비공개 오라"
 
 L.AUTO_RESPONDED						= "귓속말에 자동응답 메시지를 보냈습니다."
 L.STATUS_WHISPER						= "%s: %s, %d/%d 생존"

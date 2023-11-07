@@ -85,7 +85,8 @@ L.Editbox_WindowWidth				= "GUI window width"
 L.Editbox_WindowHeight				= "GUI window height"
 
 L.UIGroupingOptions					= "UI Grouping Options (changing these require UI reload for any mod that's already loaded)"
-L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon on' options from getting grouped by spell (they will be grouped together in 'icons' category like before)"
+L.GroupOptionsExcludeIcon			= "Exclude 'Set Icon on' options from getting grouped by spell (they will be grouped together in their own 'Icons' category instead)"
+L.GroupOptionsExcludePAura			= "Exclude 'Play Private Aura Sound' options from getting grouped by spell (they will be grouped together in their own 'Private Auras' category instead)"
 L.AutoExpandSpellGroups				= "Auto expand options that are grouped by spell"
 L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writing WeakAuras using Boss Mod triggers."
 --L.ShowSpellDescWhenExpanded	= "Continue showing spell description when groups are expanded"--Might not be used
@@ -106,6 +107,7 @@ L.TimerGeneral 						= "Timer Options"
 L.SKT_Enabled						= "Show record victory timer for current fight if available"
 L.ShowRespawn						= "Show boss respawn timer after a wipe"
 L.ShowQueuePop						= "Show time remaining to accept a queue pop (LFG,BG,etc)"
+L.ShowBerserkWarnings				= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
 --
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging					= "Auto Logging Toggles"

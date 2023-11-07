@@ -127,8 +127,8 @@ do
 			elseif a_aura_tbl.auraType == 2 and b_aura_tbl.auraType == 2 then
 				local at, bt = a_aura_tbl.duration or 0, b_aura_tbl.duration or 0
 				local as, bs = a_aura_tbl.startTime or 0, b_aura_tbl.startTime or 0
-				local ar = at - (curTime - (a_aura_tbl.paused and (curTime - (a_aura_tbl.pauseStartTime - a_aura_tbl.start)) or as))
-				local br = bt - (curTime - (b_aura_tbl.paused and (curTime - (b_aura_tbl.pauseStartTime - b_aura_tbl.start)) or bs))
+				local ar = at - (a_aura_tbl.paused and (a_aura_tbl.pauseStartTime - as) or (curTime - as))
+				local br = bt - (b_aura_tbl.paused and (b_aura_tbl.pauseStartTime - bs) or (curTime - bs))
 				return br > ar
 			elseif (a_aura_tbl.startTime + a_aura_tbl.duration) < (b_aura_tbl.startTime + b_aura_tbl.duration) then
 				return true
@@ -497,6 +497,7 @@ do
 		if event ~= "DBM_TestModStarted" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		barsTestMode = true
 		C_Timer.After (tonumber(timer) or 10, function() barsTestMode = false end)
@@ -508,6 +509,7 @@ do
 		if event ~= "DBM_TimerStart" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
@@ -588,6 +590,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id or not elapsed or not totalTime then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -610,6 +613,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -629,6 +633,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -649,6 +654,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid

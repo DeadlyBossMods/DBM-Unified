@@ -17,6 +17,7 @@ local defaultCatLocalization = {
 		sound				= L.OPTION_CATEGORY_SOUNDS,
 		yell				= L.OPTION_CATEGORY_YELLS,
 		icon				= L.OPTION_CATEGORY_ICONS,
+		paura				= L.OPTION_CATEGORY_PAURAS,
 		nameplate			= L.OPTION_CATEGORY_NAMEPLATES,
 		misc				= MISCELLANEOUS
 	}, returnKey)
@@ -31,7 +32,6 @@ local defaultTimerLocalization = {
 
 local defaultAnnounceLocalization = {
 	__index = setmetatable({
-		warning_berserk = L.GENERIC_WARNING_BERSERK
 	}, returnKey)
 }
 
