@@ -381,6 +381,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
+	ShowBerserkWarnings = true,
 	HelpMessageVersion = 3,
 	MoviesSeen = {},
 	MovieFilter2 = "Never",
@@ -11168,10 +11169,13 @@ do
 	local mt = {__index = enragePrototype}
 
 	function enragePrototype:Start(timer)
+		--User only has timer object exposed in mod options, check that here to also prevent the warnings.
+		if not self.owner.Options.timer_berserk then return end
 		timer = timer or self.timer or 600
 		timer = timer <= 0 and self.timer - mabs(timer) or timer
 		self.bar:SetTimer(timer)
 		self.bar:Start()
+		if not DBM.Options.ShowBerserkWarnings then return end
 		if self.warning1 then
 			if timer > 660 then self.warning1:Schedule(timer - 600, 10, L.MIN) end
 			if timer > 300 then self.warning1:Schedule(timer - 300, 5, L.MIN) end
@@ -11202,8 +11206,8 @@ do
 
 	function bossModPrototype:NewBerserkTimer(timer, text, barText, barIcon)
 		timer = timer or 600
-		local warning1 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 1, nil, "warning_berserk", false)
-		local warning2 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 4, nil, "warning_berserk", false)
+		local warning1 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 1, nil, nil, false)
+		local warning2 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 4, nil, nil, false)
 		--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
 		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_BERSERK, barIcon or 28131, nil, "timer_berserk", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, "berserk")
 		local obj = setmetatable(
