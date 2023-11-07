@@ -1,6 +1,5 @@
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
-local isModernAPI = DBM:GetTOC() > 11403
 
 local L		= DBM_GUI_L
 local CL	= DBM_COMMON_L
@@ -572,9 +571,6 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID)
 		button.toggle:SetNormalTexture(area.hidden and 130838 or 130821) -- "Interface\\Buttons\\UI-PlusButton-UP", "Interface\\Buttons\\UI-MinusButton-UP"
 		button.toggle:SetPushedTexture(area.hidden and 130836 or 130820) -- "Interface\\Buttons\\UI-PlusButton-DOWN", "Interface\\Buttons\\UI-MinusButton-DOWN"
 		_G["DBM_GUI_OptionsFrame"]:DisplayFrame(DBM_GUI.currentViewing)
-	end
-	if not isModernAPI then--TODO, see if this work around is needed anymore in 1.14.4
-		button:RegisterForClicks('')
 	end
 	--
 	self:SetLastObj(area)
