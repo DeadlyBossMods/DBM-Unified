@@ -85,7 +85,7 @@ L.Editbox_WindowWidth		= "GUI視窗寬度"
 L.Editbox_WindowHeight		= "GUI視窗高度"
 
 L.UIGroupingOptions			= "界面分組選項 (更改這些需要輸入 /reload 來重載界面)"
-L.GroupOptionsExcludeIcon	= "按照技能分組排除“設置標記圖示”選項 (它們將像以前一樣在“圖示”類中顯示)"
+L.GroupOptionsExcludeIcon	= "按照技能分組排除“設置標記圖示”選項 (它們將一起分類為為自己的“圖示”類別)"
 L.AutoExpandSpellGroups		= "按照技能分組自動擴展選項"
 L.ShowWAKeys				= "在法術名稱旁顯示WeakAuras鍵來使用首領模組觸發器協助編寫WeakAuras。"
 --L.ShowSpellDescWhenExpanded	= "分組擴展時繼續顯示技能描述"
@@ -106,6 +106,7 @@ L.TimerGeneral 				= "計時器選項"
 L.SKT_Enabled				= "顯示目前戰鬥的最佳紀錄勝利計時器"
 L.ShowRespawn				= "顯示下一次首領重生計時器"
 L.ShowQueuePop				= "顯示接受彈出佇列的剩餘時間(尋求組隊、戰場..等)"
+L.ShowBerserkWarnings		= "在10/5/3/1分鐘顯示通告並且在 $spell:26662 計時器剩餘30/10秒時"
 --
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging			= "自動記錄切換"
@@ -404,6 +405,7 @@ L.SpamBlockNoCountdowns				= "不播放倒數音效"
 
 L.Area_SpamFilter_Nameplates		= "名條通用禁止 & 過濾選項"
 L.SpamBlockNoNameplate				= "不要顯示名條光環"
+L.SpamBlockNoNameplateCD			= "不要顯示技能冷卻計時的名條圖示"
 L.SpamBlockNoBossGUIDs				= "不要在plater名條上顯示主要首領(首領1)計時器作為名條光環\n(如果在Plater中啟用了功能，您仍然會看到小怪/首領計時器）"
 
 L.Area_SpamFilter_Misc				= "全局其他禁用及過濾選項"

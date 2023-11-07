@@ -14,6 +14,7 @@ local generaltimeroptions	= extraFeaturesPanel:CreateArea(L.TimerGeneral)
 generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer2")
 generaltimeroptions:CreateCheckButton(L.ShowRespawn, true, nil, "ShowRespawn")
 generaltimeroptions:CreateCheckButton(L.ShowQueuePop, true, nil, "ShowQueuePop")
+generaltimeroptions:CreateCheckButton(L.ShowBerserkWarnings, true, nil, "ShowBerserkWarnings")
 
 local bossLoggingArea		= extraFeaturesPanel:CreateArea(L.Area_AutoLogging)
 bossLoggingArea:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")

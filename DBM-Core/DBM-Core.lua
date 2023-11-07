@@ -81,7 +81,7 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.1.32 alpha"
+	DBM.DisplayVersion = "10.2.0 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 10, 18) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
@@ -381,6 +381,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer2 = false,
 	ShowRespawn = true,
 	ShowQueuePop = true,
+	ShowBerserkWarnings = true,
 	HelpMessageVersion = 3,
 	MoviesSeen = {},
 	MovieFilter2 = "Never",
@@ -10070,7 +10071,7 @@ do
 	end
 
 	do
-		local minVoicePackVersion = isRetail and 14 or 10
+		local minVoicePackVersion = isRetail and 15 or 10
 
 		function DBM:CheckVoicePackVersion(value)
 			local activeVP = self.Options.ChosenVoicePack2
@@ -10235,11 +10236,16 @@ do
 		["cdnp"] = "cd",
 		["nextnp"] = "cd",
 
-		--Stages, Warmup/Combatstart, RPs all map to "stage"
-		["roleplay"] = "stage",
+		--Combatstart, RPs all map to "warmup"
+		["combat"] = "warmup",
+		["roleplay"] = "warmup",
+
+		--all stage types will map to "stage"
 		["achievement"] = "stage",
 		["stagecount"] = "stage",
 		["stagecountcycle"] = "stage",
+		["stagecontext"] = "stage",
+		["stagecontextcount"] = "stage",
 		["intermission"] = "stage",
 		["intermissioncount"] = "stage",
 
@@ -10253,6 +10259,19 @@ do
 		["castcount"] = "cast",
 	}
 
+	--Very similar to above but more specific to key replacement and not type replacement, to match BW behavior for unification of WAs
+	local waKeyOverrides = {
+		["combat"] = "warmup",
+		["roleplay"] = "warmup",
+		["achievement"] = "stages",
+		["stagecount"] = "stages",
+		["stagecountcycle"] = "stages",
+		["stagecontext"] = "stages",
+		["stagecontextcount"] = "stages",
+		["intermission"] = "stages",
+		["intermissioncount"] = "stages",
+	}
+
 	function timerPrototype:Start(timer, ...)
 		if not self.mod.isDummyMod then--Don't apply following rulesets to pull timers and such
 			if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
@@ -10263,7 +10282,7 @@ do
 		end
 		if not self.option or self.mod.Options[self.option] then
 			local isCountTimer = false
-			if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecountcycle" or self.type == "intermissioncount") then
+			if self.type and (self.type == "cdcount" or self.type == "nextcount" or self.type == "stagecount" or self.type == "stagecontextcount" or self.type == "stagecountcycle" or self.type == "intermissioncount") then
 				isCountTimer = true
 			end
 			if isCountTimer and not self.allowdouble then--remove previous timer.
@@ -10427,7 +10446,7 @@ do
 			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 				guid = UnitGUID("boss1")
 			end
-			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
+			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 			if guid and (self.type == "cdnp" or self.type ==  "nextnp") then
@@ -10866,11 +10885,17 @@ do
 			inlineIcon = nil--Fix it for users
 		end
 		icon = parseSpellIcon(icon)
+		local waSpecialKey, simpType
+		if customType then
+			simpType = timerTypeSimplification[customType] or customType
+			waSpecialKey = waKeyOverrides[customType]
+		end
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name],
 				type = customType or "cd",--Auto assign
-				simpType = customType or "cd",
+				simpType = simpType or "cd",
+				waSpecialKey = waSpecialKey,
 				spellId = spellId,--Allows Localized timer text to still have a spellId arg weak auras can latch onto
 				timer = timer,
 				id = name,
@@ -10922,9 +10947,9 @@ do
 		local unparsedId = spellId
 		if timerType == "achievement" then
 			icon = parseSpellIcon(texture or spellId, timerType)
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" then
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "stagecontext" or timerType == "stagecontextcount" or timerType == "intermission" or timerType == "intermissioncount" then
 			icon = parseSpellIcon(texture or spellId, timerType)
-			if timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" then
+			if timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "stagecontext" or timerType == "stagecontextcount" or timerType == "intermission" or timerType == "intermissioncount" then
 				colorType = 6
 			end
 		elseif timerType == "roleplay" then
@@ -10959,11 +10984,13 @@ do
 		end
 		local id = "Timer"..(spellId or 0)..timerType..(optionVersion or "")
 		local simpType = timerTypeSimplification[timerType] or timerType
+		local waSpecialKey = waKeyOverrides[timerType]
 		local obj = setmetatable(
 			{
 				text = timerTextValue,
 				type = timerType,
 				simpType = simpType,
+				waSpecialKey = waSpecialKey,--Not same as simpType, this overrides option key
 				spellId = spellId,
 				name = spellName,--If name gets stored as nil, it'll be corrected later in Timer start, if spell name returns in a later attempt
 				timer = timer,
@@ -10989,7 +11016,7 @@ do
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" or timerType == "roleplay" then--Timers without spellid, generic
+		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" or timerType == "roleplay" then--Timers without spellid, generic (do not add stagecontext here, it has spellname parsing)
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]--Using more than 1 stage timer or more than 1 special timer will break this, fortunately you should NEVER use more than 1 of either in a mod
 		else
 			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(unparsedId)
@@ -11093,6 +11120,17 @@ do
 		return newTimer(self, "stagecount", ...)
 	end
 
+	--Used mainly for compat with BW/LW timers where they use "stages" but then use the spell/journal descriptor instead of "stage d"
+	--Basically, it's a generic spellName timer for "stages" callback
+	function bossModPrototype:NewStageContextTimer(...)
+		return newTimer(self, "stagecontext", ...)
+	end
+
+	--Same as above, with count
+	function bossModPrototype:NewStageContextCountTimer(...)
+		return newTimer(self, "stagecontextcount", ...)
+	end
+
 	function bossModPrototype:NewStageCountCycleTimer(...)
 		return newTimer(self, "stagecountcycle", ...)
 	end
@@ -11162,10 +11200,13 @@ do
 	local mt = {__index = enragePrototype}
 
 	function enragePrototype:Start(timer)
+		--User only has timer object exposed in mod options, check that here to also prevent the warnings.
+		if not self.owner.Options.timer_berserk then return end
 		timer = timer or self.timer or 600
 		timer = timer <= 0 and self.timer - mabs(timer) or timer
 		self.bar:SetTimer(timer)
 		self.bar:Start()
+		if not DBM.Options.ShowBerserkWarnings then return end
 		if self.warning1 then
 			if timer > 660 then self.warning1:Schedule(timer - 600, 10, L.MIN) end
 			if timer > 300 then self.warning1:Schedule(timer - 300, 5, L.MIN) end
@@ -11196,8 +11237,8 @@ do
 
 	function bossModPrototype:NewBerserkTimer(timer, text, barText, barIcon)
 		timer = timer or 600
-		local warning1 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 1, nil, "warning_berserk", false)
-		local warning2 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 4, nil, "warning_berserk", false)
+		local warning1 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 1, nil, nil, false)
+		local warning2 = self:NewAnnounce(text or L.GENERIC_WARNING_BERSERK, 4, nil, nil, false)
 		--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
 		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_BERSERK, barIcon or 28131, nil, "timer_berserk", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, "berserk")
 		local obj = setmetatable(
@@ -11215,7 +11256,7 @@ do
 	function bossModPrototype:NewCombatTimer(timer, _, barText, barIcon) -- timer, text, barText, barIcon
 		timer = timer or 10
 		--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5, nil, nil, nil, nil, nil, nil, "stage")
+		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5, nil, nil, nil, nil, nil, nil, "combat")
 
 		local obj = setmetatable(
 			{
@@ -11259,7 +11300,10 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 			if optionType and optionType == "achievement" then
 				spellId = "at"..spellId--"at" for achievement timer
 			end
-			self:GroupSpells(spellId, name)
+			local optionTypeMatch = optionType or ""
+			if not optionTypeMatch:find("stage") then
+				self:GroupSpells(spellId, name)
+			end
 		end
 	end
 	self:SetOptionCategory(name, cat, optionType, waCustomName)

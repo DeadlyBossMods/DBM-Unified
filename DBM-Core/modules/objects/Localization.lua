@@ -32,7 +32,6 @@ local defaultTimerLocalization = {
 
 local defaultAnnounceLocalization = {
 	__index = setmetatable({
-		warning_berserk = L.GENERIC_WARNING_BERSERK
 	}, returnKey)
 }
 
