@@ -10427,7 +10427,13 @@ do
 			if not guid and self.mod.sendMainBossGUID and not DBM.Options.DontSendBossGUIDs and (self.type == "cd" or self.type == "next" or self.type == "cdcount" or self.type == "nextcount" or self.type == "cdspecial" or self.type == "ai") then
 				guid = UnitGUID("boss1")
 			end
-			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
+			local callbackSpellId
+			if self.simpType and self.simpType == "stage" then
+				callbackSpellId = "stages"
+			else
+				callbackSpellId = self.spellId
+			end
+			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, callbackSpellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
 			if guid and (self.type == "cdnp" or self.type ==  "nextnp") then
@@ -11259,7 +11265,10 @@ function bossModPrototype:AddBoolOption(name, default, cat, func, extraOption, e
 			if optionType and optionType == "achievement" then
 				spellId = "at"..spellId--"at" for achievement timer
 			end
-			self:GroupSpells(spellId, name)
+			local optionTypeMatch = optionType or ""
+			if not optionTypeMatch:find("stage") then
+				self:GroupSpells(spellId, name)
+			end
 		end
 	end
 	self:SetOptionCategory(name, cat, optionType, waCustomName)
