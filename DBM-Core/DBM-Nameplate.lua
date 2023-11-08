@@ -46,6 +46,7 @@ do
 		if iconFrame.cooldown.EnableMouseMotion then
 			iconFrame.cooldown:EnableMouseMotion(false)
 		end
+		iconFrame.cooldown:SetHideCountdownNumbers (true) -- disable blizzard timers as we are using our own.
 		--iconFrame.cooldown.noCooldownCount = true --OmniCC override flag
 
 		-- CD text
@@ -481,8 +482,8 @@ end)
 local function getAllShownGUIDs() -- for testing
 	local guids = {}
 	for _, plateFrame in ipairs (GetNamePlates()) do
-		if plateFrame then
-			tinsert(guids, plateFrame.namePlateUnitGUID)
+		if plateFrame and plateFrame.UnitFrame and plateFrame.UnitFrame.unit then
+			tinsert(guids,  UnitGUID(plateFrame.UnitFrame.unit))
 		end
 	end
 	return guids
@@ -496,6 +497,7 @@ do
 		if event ~= "DBM_TestModStarted" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		barsTestMode = true
 		C_Timer.After (tonumber(timer) or 10, function() barsTestMode = false end)
@@ -507,6 +509,7 @@ do
 		if event ~= "DBM_TimerStart" then return end
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
@@ -587,6 +590,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id or not elapsed or not totalTime then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -609,6 +613,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -628,6 +633,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local entry = id and nameplateTimerBars[id] or nil
@@ -648,6 +654,7 @@ do
 
 		-- Supported by nameplate mod, passing to their handler
 		if SupportedNPModBars() then return end
+		if DBM.Options.DontShowNameplateIconsCD then return end--Globally disabled
 
 		if not id then return end
 		local guid = nameplateTimerBars[id] and nameplateTimerBars[id].guid
