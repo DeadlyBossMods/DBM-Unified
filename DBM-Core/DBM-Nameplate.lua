@@ -46,6 +46,7 @@ do
 		if iconFrame.cooldown.EnableMouseMotion then
 			iconFrame.cooldown:EnableMouseMotion(false)
 		end
+		iconFrame.cooldown:SetHideCountdownNumbers (true) -- disable blizzard timers as we are using our own.
 		--iconFrame.cooldown.noCooldownCount = true --OmniCC override flag
 
 		-- CD text
