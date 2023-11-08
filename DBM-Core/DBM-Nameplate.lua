@@ -482,8 +482,8 @@ end)
 local function getAllShownGUIDs() -- for testing
 	local guids = {}
 	for _, plateFrame in ipairs (GetNamePlates()) do
-		if plateFrame then
-			tinsert(guids, plateFrame.namePlateUnitGUID)
+		if plateFrame and plateFrame.UnitFrame and plateFrame.UnitFrame.unit then
+			tinsert(guids,  UnitGUID(plateFrame.UnitFrame.unit))
 		end
 	end
 	return guids
