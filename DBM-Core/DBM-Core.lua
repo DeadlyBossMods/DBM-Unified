@@ -10449,7 +10449,7 @@ do
 			fireEvent("DBM_TimerStart", id, msg, timer, self.icon, self.simpType, self.waSpecialKey or self.spellId, colorId, self.mod.id, self.keep, self.fade, self.name, guid, timerCount)
 			--Bssically tops bar from starting if it's being put on a plater nameplate, to give plater users option to have nameplate CDs without actually using the bars
 			--This filter will only apply to trash mods though, boss timers will always be shown due to need to have them exist for Pause, Resume, Update, and GetTime/GetRemaining methods
-			if guid and (self.type == "cdnp" or self.type ==  "nextnp") then
+			if guid and (self.type == "cdnp" or self.type ==  "nextnp") and not (DBM.Options.DebugMode and DBM.Options.DebugLevel > 1) then
 				DBT:CancelBar(id)--Cancel bar without stop callback
 				return false, "disabled"
 			end
