@@ -107,7 +107,6 @@ L.TimerGeneral 				= "타이머 설정"
 L.SKT_Enabled				= "가능할 경우 현재 전투의 최고 승리 기록 타이머 표시"
 L.ShowRespawn				= "전멸 후 보스 재생성 타이머 표시"
 L.ShowQueuePop				= "입장 수락 남은 시간 타이머 표시 (공격대 찾기,전장 등)"
-L.ShowBerserkWarnings				= "$spell:26662 타이머가 10/5/3/1분 30/10초 남았을 때 알림"
 --
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging			= "자동 전투 기록 켜기/끄기"
