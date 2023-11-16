@@ -881,50 +881,49 @@ end
 local restoreRange, restoreFilter, restoreThreshold, restoreReverse
 
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary)
-	return
-	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
-		return
-	end
-	if type(range) == "function" then -- The first argument is optional
-		return self:Show(nil, range)
-	end
-	range = range or 10
-	redCircleNumPlayers = redCircleNumPlayers or 1
-	if not textFrame then
-		createTextFrame()
-	end
-	if not radarFrame then
-		createRadarFrame()
-	end
-	local restrictionsActive = DBM:HasMapRestrictions()
-	if restrictionsActive then
-		range = setCompatibleRestrictedRange(range)
-	end
-	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame:IsShown() then
-		textFrame:Show()
-	end
-	-- TODO, add check for restricted area here so we can prevent radar frame loading.
-	if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame:IsShown() then
-		radarFrame:Show()
-	end
-	mainFrame.range = range
-	mainFrame.filter = filter
-	mainFrame.redCircleNumPlayers = redCircleNumPlayers
-	mainFrame.reverse = reverse
-	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
-	mainFrame.restrictions = restrictionsActive
-	mainFrame.onlySummary = onlySummary
-	if not mainFrame.eventRegistered then
-		mainFrame.eventRegistered = true
-		updateIcon()
-		mainFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
-		mainFrame:RegisterEvent("RAID_TARGET_UPDATE")
-	end
-	updater:SetScript("OnLoop", updateRangeFrame)
-	updater:Play()
-	if forceshow and not DBM.Options.DontRestoreRange then -- Force means user activated range frame, store user value for restore function
-		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
-	end
+	--if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
+	--	return
+	--end
+	--if type(range) == "function" then -- The first argument is optional
+	--	return self:Show(nil, range)
+	--end
+	--range = range or 10
+	--redCircleNumPlayers = redCircleNumPlayers or 1
+	--if not textFrame then
+	--	createTextFrame()
+	--end
+	--if not radarFrame then
+	--	createRadarFrame()
+	--end
+	--local restrictionsActive = DBM:HasMapRestrictions()
+	--if restrictionsActive then
+	--	range = setCompatibleRestrictedRange(range)
+	--end
+	--if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame:IsShown() then
+	--	textFrame:Show()
+	--end
+	---- TODO, add check for restricted area here so we can prevent radar frame loading.
+	--if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame:IsShown() then
+	--	radarFrame:Show()
+	--end
+	--mainFrame.range = range
+	--mainFrame.filter = filter
+	--mainFrame.redCircleNumPlayers = redCircleNumPlayers
+	--mainFrame.reverse = reverse
+	--mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
+	--mainFrame.restrictions = restrictionsActive
+	--mainFrame.onlySummary = onlySummary
+	--if not mainFrame.eventRegistered then
+	--	mainFrame.eventRegistered = true
+	--	updateIcon()
+	--	mainFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+	--	mainFrame:RegisterEvent("RAID_TARGET_UPDATE")
+	--end
+	--updater:SetScript("OnLoop", updateRangeFrame)
+	--updater:Play()
+	--if forceshow and not DBM.Options.DontRestoreRange then -- Force means user activated range frame, store user value for restore function
+	--	restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
+	--end
 end
 
 function rangeCheck:Hide(force)
