@@ -102,37 +102,37 @@ do
 	end
 
 	function itsBCAgain(uId, checkrange)
-		if checkrange then -- Specified range, this check only cares whether unit is within specific range
-			return 1000--Just exit with 1000 right away, below is all restricted now
-			if not isRetail and checkrange == 43 then -- Only classic/BCC uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
-				return UnitInRange(uId) and checkrange or 1000
-			elseif itemRanges[checkrange] then -- Only query item range for requested active range check
-				return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
-			elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
-				return CheckInteractDistance(uId, apiRanges[checkrange]) and checkrange or 1000
-			else
-				return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
-			end
-		else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
-			if isRetail and IsItemInRange(90175, uId) then return 4
-			elseif not isClassic and IsItemInRange(16114, uId) then return 6
-			elseif IsItemInRange(8149, uId) then return 8
-			elseif CheckInteractDistance(uId, 3) then return 10
-			elseif CheckInteractDistance(uId, 2) then return 11
-			elseif IsItemInRange(isClassic and 17626 or 32321 , uId) then return 13
-			elseif IsItemInRange(6450, uId) then return 18
-			elseif IsItemInRange(21519, uId) then return 23
-			elseif IsItemInRange(13289, uId) then return 28
-			elseif isRetail and CheckInteractDistance(uId, 1) then return 30
-			elseif IsItemInRange(1180, uId) then return 33
-			elseif not isClassic and UnitInRange(uId) then return 43
-			elseif not isClassic and IsItemInRange(32698, uId) then return 48
-			elseif isRetail and IsItemInRange(116139, uId) then return 53
-			elseif not isClassic and IsItemInRange(32825, uId) then return 60
-			elseif not isClassic and IsItemInRange(35278, uId) then return 80
-			elseif not isClassic and IsItemInRange(41058, uId) then return 100
-			else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
-		end
+		return 1000--Just exit with 1000 right away, below is all restricted now
+		--if checkrange then -- Specified range, this check only cares whether unit is within specific range
+		--	if not isRetail and checkrange == 43 then -- Only classic/BCC uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
+		--		return UnitInRange(uId) and checkrange or 1000
+		--	elseif itemRanges[checkrange] then -- Only query item range for requested active range check
+		--		return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
+		--	elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
+		--		return CheckInteractDistance(uId, apiRanges[checkrange]) and checkrange or 1000
+		--	else
+		--		return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
+		--	end
+		--else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
+		--	if isRetail and IsItemInRange(90175, uId) then return 4
+		--	elseif not isClassic and IsItemInRange(16114, uId) then return 6
+		--	elseif IsItemInRange(8149, uId) then return 8
+		--	elseif CheckInteractDistance(uId, 3) then return 10
+		--	elseif CheckInteractDistance(uId, 2) then return 11
+		--	elseif IsItemInRange(isClassic and 17626 or 32321 , uId) then return 13
+		--	elseif IsItemInRange(6450, uId) then return 18
+		--	elseif IsItemInRange(21519, uId) then return 23
+		--	elseif IsItemInRange(13289, uId) then return 28
+		--	elseif isRetail and CheckInteractDistance(uId, 1) then return 30
+		--	elseif IsItemInRange(1180, uId) then return 33
+		--	elseif not isClassic and UnitInRange(uId) then return 43
+		--	elseif not isClassic and IsItemInRange(32698, uId) then return 48
+		--	elseif isRetail and IsItemInRange(116139, uId) then return 53
+		--	elseif not isClassic and IsItemInRange(32825, uId) then return 60
+		--	elseif not isClassic and IsItemInRange(35278, uId) then return 80
+		--	elseif not isClassic and IsItemInRange(41058, uId) then return 100
+		--	else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
+		--end
 	end
 end
 

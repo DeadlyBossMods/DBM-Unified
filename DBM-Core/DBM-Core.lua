@@ -2786,7 +2786,7 @@ function DBM:GetUnitIdFromCID(creatureID, bossOnly)
 end
 
 --To be removed when cleaned up out of all mods using it
-function DBM:CheckNearby(range, targetname)
+function DBM:CheckNearby()--range, targetname
 	return false
 	--if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
 	--	return true--No target name means check if anyone is near self, period
@@ -7463,7 +7463,7 @@ do
 	local rangeCache = {}
 	local rangeUpdated = {}
 
-	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
+	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, _, distance, defaultReturn)--itemId
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		cidOrGuid = cidOrGuid or self.creatureId
 		local uId
@@ -11512,7 +11512,7 @@ function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	end
 end
 
-function bossModPrototype:AddRangeFrameOption(range, spellId, default)
+function bossModPrototype:AddRangeFrameOption()--range, spellId, default
 	return
 	--self.DefaultOptions["RangeFrame"] = (default == nil) or default
 	--if default and type(default) == "string" then
