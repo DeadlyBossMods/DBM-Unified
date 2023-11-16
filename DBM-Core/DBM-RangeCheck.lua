@@ -69,70 +69,72 @@ end
 local itsBCAgain
 
 do
---	local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, IsItemInRange, UnitInRange
+	local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, IsItemInRange, UnitInRange
 	-- All ranges are tested and compared against UnitDistanceSquared.
 	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
-	--local itemRanges = {
-	--	[8] = 8149, -- Voodoo Charm
-	--	[13] = isClassic and 17626 or 32321, -- Sparrowhawk Net / Frostwolf Muzzle
-	--	[18] = 6450, -- Silk Bandage
-	--	[23] = 21519, -- Mistletoe
-	--	[28] = 13289,--Egan's Blaster
-	--	[33] = 1180, -- Scroll of Stamina
-	--}
-	--if isRetail then
-	--	itemRanges[4] = 90175 -- Gin-Ji Knife Set (MoP)
-	--	itemRanges[53] = 116139 -- Haunting Memento (WoD)
-	--end
-	--if not isClassic then -- Exists in Wrath/BCC but not vanilla/era
-	--	itemRanges[6] = 16114 -- Foremans Blackjack (TBC)
-	--	itemRanges[43] = 34471 -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
-	--	itemRanges[48] = 32698 -- Wrangling Rope
-	--	itemRanges[60] = 32825 -- Soul Cannon
-	--	itemRanges[80] = 35278 -- Reinforced Net (WotLK)
-	--	itemRanges[100] = 41058 -- Hyldnir Harpoon (WotLK)
-	--end
---
-	--local apiRanges = {
-	--	[10] = 3, -- CheckInteractDistance (Duel)
-	--	[11] = 2, -- CheckInteractDistance (Trade)
-	--}
-	--if isRetail then
-	--	apiRanges[30] = 1 -- CheckInteractDistance (Inspect), Classic: Inspect range is 10
-	--end
+	local itemRanges = {
+		[8] = 8149, -- Voodoo Charm
+		[13] = isClassic and 17626 or 32321, -- Sparrowhawk Net / Frostwolf Muzzle
+		[18] = 6450, -- Silk Bandage
+		[23] = 21519, -- Mistletoe
+		[28] = 13289,--Egan's Blaster
+		[33] = 1180, -- Scroll of Stamina
+	}
+	if isRetail then
+		itemRanges[4] = 90175 -- Gin-Ji Knife Set (MoP)
+		itemRanges[53] = 116139 -- Haunting Memento (WoD)
+	end
+	if not isClassic then -- Exists in Wrath/BCC but not vanilla/era
+		itemRanges[6] = 16114 -- Foremans Blackjack (TBC)
+		itemRanges[43] = 34471 -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
+		itemRanges[48] = 32698 -- Wrangling Rope
+		itemRanges[60] = 32825 -- Soul Cannon
+		itemRanges[80] = 35278 -- Reinforced Net (WotLK)
+		itemRanges[100] = 41058 -- Hyldnir Harpoon (WotLK)
+	end
 
-	function itsBCAgain()--uId, checkrange
-		return 1000--Just exit with 1000 right away, below is all restricted now
-		--if checkrange then -- Specified range, this check only cares whether unit is within specific range
-		--	if not isRetail and checkrange == 43 then -- Only classic/BCC uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
-		--		return UnitInRange(uId) and checkrange or 1000
-		--	elseif itemRanges[checkrange] then -- Only query item range for requested active range check
-		--		return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
-		--	elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
-		--		return CheckInteractDistance(uId, apiRanges[checkrange]) and checkrange or 1000
-		--	else
-		--		return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
-		--	end
-		--else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
-		--	if isRetail and IsItemInRange(90175, uId) then return 4
-		--	elseif not isClassic and IsItemInRange(16114, uId) then return 6
-		--	elseif IsItemInRange(8149, uId) then return 8
-		--	elseif CheckInteractDistance(uId, 3) then return 10
-		--	elseif CheckInteractDistance(uId, 2) then return 11
-		--	elseif IsItemInRange(isClassic and 17626 or 32321 , uId) then return 13
-		--	elseif IsItemInRange(6450, uId) then return 18
-		--	elseif IsItemInRange(21519, uId) then return 23
-		--	elseif IsItemInRange(13289, uId) then return 28
-		--	elseif isRetail and CheckInteractDistance(uId, 1) then return 30
-		--	elseif IsItemInRange(1180, uId) then return 33
-		--	elseif not isClassic and UnitInRange(uId) then return 43
-		--	elseif not isClassic and IsItemInRange(32698, uId) then return 48
-		--	elseif isRetail and IsItemInRange(116139, uId) then return 53
-		--	elseif not isClassic and IsItemInRange(32825, uId) then return 60
-		--	elseif not isClassic and IsItemInRange(35278, uId) then return 80
-		--	elseif not isClassic and IsItemInRange(41058, uId) then return 100
-		--	else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
-		--end
+	local apiRanges = {
+		[10] = 3, -- CheckInteractDistance (Duel)
+		[11] = 2, -- CheckInteractDistance (Trade)
+	}
+	if isRetail then
+		apiRanges[30] = 1 -- CheckInteractDistance (Inspect), Classic: Inspect range is 10
+	end
+
+	function itsBCAgain(uId, checkrange)
+		if 1 + 1 == 2 then
+			return 1000
+		end
+		if checkrange then -- Specified range, this check only cares whether unit is within specific range
+			if not isRetail and checkrange == 43 then -- Only classic/BCC uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
+				return UnitInRange(uId) and checkrange or 1000
+			elseif itemRanges[checkrange] then -- Only query item range for requested active range check
+				return IsItemInRange(itemRanges[checkrange], uId) and checkrange or 1000
+			elseif apiRanges[checkrange] then -- Only query item range for requested active range if no item found for it
+				return CheckInteractDistance(uId, apiRanges[checkrange]) and checkrange or 1000
+			else
+				return 1000 -- Just so it has a numeric value, even if it's unknown to protect from nil errors
+			end
+		else -- No range passed, this is being used by a getDistanceBetween function that needs to calculate precise distances of members of raid (well as precise as possible with a crappy api)
+			if isRetail and IsItemInRange(90175, uId) then return 4
+			elseif not isClassic and IsItemInRange(16114, uId) then return 6
+			elseif IsItemInRange(8149, uId) then return 8
+			elseif CheckInteractDistance(uId, 3) then return 10
+			elseif CheckInteractDistance(uId, 2) then return 11
+			elseif IsItemInRange(isClassic and 17626 or 32321 , uId) then return 13
+			elseif IsItemInRange(6450, uId) then return 18
+			elseif IsItemInRange(21519, uId) then return 23
+			elseif IsItemInRange(13289, uId) then return 28
+			elseif isRetail and CheckInteractDistance(uId, 1) then return 30
+			elseif IsItemInRange(1180, uId) then return 33
+			elseif not isClassic and UnitInRange(uId) then return 43
+			elseif not isClassic and IsItemInRange(32698, uId) then return 48
+			elseif isRetail and IsItemInRange(116139, uId) then return 53
+			elseif not isClassic and IsItemInRange(32825, uId) then return 60
+			elseif not isClassic and IsItemInRange(35278, uId) then return 80
+			elseif not isClassic and IsItemInRange(41058, uId) then return 100
+			else return 1000 end -- Just so it has a numeric value, even if it's unknown to protect from nil errors
+		end
 	end
 end
 
@@ -443,152 +445,152 @@ end
 ------------------------
 --  Create the frame  --
 ------------------------
---local function createTextFrame()
---	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, "BackdropTemplate")
---	textFrame:SetFrameStrata("DIALOG")
---	textFrame.backdropInfo = {
---		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
---		tile		= true,
---		tileSize	= 16
---	}
---	textFrame:ApplyBackdrop()
---	textFrame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
---	textFrame:SetSize(128, 12)
---	textFrame:SetClampedToScreen(true)
---	textFrame:EnableMouse(true)
---	textFrame:SetToplevel(true)
---	textFrame:SetMovable(true)
---	textFrame:RegisterForDrag("LeftButton")
---	textFrame:SetScript("OnDragStart", function(self)
---		if not DBM.Options.RangeFrameLocked then
---			self:StartMoving()
---		end
---	end)
---	textFrame:SetScript("OnDragStop", function(self)
---		self:StopMovingOrSizing()
---		local point, _, _, x, y = self:GetPoint(1)
---		DBM.Options.RangeFrameX = x
---		DBM.Options.RangeFrameY = y
---		DBM.Options.RangeFramePoint = point
---	end)
---	textFrame:SetScript("OnMouseDown", function(_, button)
---		if button == "RightButton" then
---			local dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", UIParent)
---			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
---			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
---		end
---	end)
---
---	local text = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
---	text:SetSize(128, 15)
---	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
---	text:SetTextColor(1, 1, 1, 1)
---	text:Show()
---	text.OldSetText = text.SetText
---	text.SetText = function(self, text)
---		self:OldSetText(text)
---		self:SetWidth(0) -- Set the text width to 0, so the system can auto-calculate the size
---	end
---	textFrame.text = text
---
---	local inRangeText = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
---	inRangeText:SetSize(128, 15)
---	inRangeText:SetPoint("TOPLEFT", textFrame, "BOTTOMLEFT")
---	inRangeText:SetTextColor(1, 1, 1, 1)
---	inRangeText:Hide()
---	textFrame.inRangeText = inRangeText
---
---	textFrame.lines = {}
---	for i = 1, 5 do
---		local line = textFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
---		line:SetSize(128, 12)
---		line:SetJustifyH("LEFT")
---		if i == 1 then
---			line:SetPoint("TOPLEFT", textFrame, "TOPLEFT", 6, -6)
---		else
---			line:SetPoint("TOPLEFT", textFrame.lines[i - 1], "LEFT", 0, -6)
---		end
---		textFrame.lines[i] = line
---	end
---
---	textFrame:Hide()
---end
---
---local function createRadarFrame()
---	radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
---	radarFrame:SetFrameStrata("DIALOG")
---	radarFrame:SetPoint(DBM.Options.RangeFrameRadarPoint, UIParent, DBM.Options.RangeFrameRadarPoint, DBM.Options.RangeFrameRadarX, DBM.Options.RangeFrameRadarY)
---	radarFrame:SetSize(128, 128)
---	radarFrame:SetClampedToScreen(true)
---	radarFrame:EnableMouse(true)
---	radarFrame:SetToplevel(true)
---	radarFrame:SetMovable(true)
---	radarFrame:RegisterForDrag("LeftButton")
---	radarFrame:SetScript("OnDragStart", function(self)
---		if not DBM.Options.RangeFrameLocked then
---			self:StartMoving()
---		end
---	end)
---	radarFrame:SetScript("OnDragStop", function(self)
---		self:StopMovingOrSizing()
---		local point, _, _, x, y = self:GetPoint(1)
---		DBM.Options.RangeFrameRadarX = x
---		DBM.Options.RangeFrameRadarY = y
---		DBM.Options.RangeFrameRadarPoint = point
---	end)
---	radarFrame:SetScript("OnMouseDown", function(_, button)
---		if button == "RightButton" then
---			local dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", UIParent)
---			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
---			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
---		end
---	end)
---
---	local bg = radarFrame:CreateTexture(nil, "BACKGROUND")
---	bg:SetAllPoints(radarFrame)
---	bg:SetBlendMode("BLEND")
---	bg:SetColorTexture(0, 0, 0, 0.3)
---	radarFrame.background = bg
---
---	local circle = radarFrame:CreateTexture(nil, "ARTWORK")
---	circle:SetSize(85, 85)
---	circle:SetPoint("CENTER")
---	circle:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\radar_circle.blp")
---	circle:SetVertexColor(0, 1, 0)
---	circle:SetBlendMode("ADD")
---	radarFrame.circle = circle
---
---	local player = radarFrame:CreateTexture(nil, "OVERLAY")
---	player:SetSize(32, 32)
---	player:SetTexture(136431) -- "Interface\\Minimap\\MinimapArrow.blp"
---	player:SetBlendMode("ADD")
---	player:SetPoint("CENTER")
---
---	local text = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
---	text:SetSize(128, 15)
---	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT")
---	text:SetTextColor(1, 1, 1, 1)
---	text:Show()
---	radarFrame.text = text
---
---	local inRangeText = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
---	inRangeText:SetSize(128, 15)
---	inRangeText:SetPoint("TOPLEFT", radarFrame, "BOTTOMLEFT")
---	inRangeText:SetTextColor(1, 1, 1, 1)
---	inRangeText:Hide()
---	radarFrame.inRangeText = inRangeText
---
---	radarFrame.dots = {}
---	for i = 1, 40 do
---		local dot = radarFrame:CreateTexture(nil, "OVERLAY")
---		dot:SetSize(24, 24)
---		dot:SetTexture(249183) -- "Interface\\Minimap\\PartyRaidBlips"
---		dot:Hide()
---		radarFrame.dots[i] = dot
---	end
---
---	radarFrame:Hide()
---end
+local function createTextFrame()
+	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, "BackdropTemplate")
+	textFrame:SetFrameStrata("DIALOG")
+	textFrame.backdropInfo = {
+		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background",--131071
+		tile		= true,
+		tileSize	= 16
+	}
+	textFrame:ApplyBackdrop()
+	textFrame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
+	textFrame:SetSize(128, 12)
+	textFrame:SetClampedToScreen(true)
+	textFrame:EnableMouse(true)
+	textFrame:SetToplevel(true)
+	textFrame:SetMovable(true)
+	textFrame:RegisterForDrag("LeftButton")
+	textFrame:SetScript("OnDragStart", function(self)
+		if not DBM.Options.RangeFrameLocked then
+			self:StartMoving()
+		end
+	end)
+	textFrame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		local point, _, _, x, y = self:GetPoint(1)
+		DBM.Options.RangeFrameX = x
+		DBM.Options.RangeFrameY = y
+		DBM.Options.RangeFramePoint = point
+	end)
+	textFrame:SetScript("OnMouseDown", function(_, button)
+		if button == "RightButton" then
+			local dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", UIParent)
+			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
+			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
+		end
+	end)
+
+	local text = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	text:SetSize(128, 15)
+	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
+	text:SetTextColor(1, 1, 1, 1)
+	text:Show()
+	text.OldSetText = text.SetText
+	text.SetText = function(self, text)
+		self:OldSetText(text)
+		self:SetWidth(0) -- Set the text width to 0, so the system can auto-calculate the size
+	end
+	textFrame.text = text
+
+	local inRangeText = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	inRangeText:SetSize(128, 15)
+	inRangeText:SetPoint("TOPLEFT", textFrame, "BOTTOMLEFT")
+	inRangeText:SetTextColor(1, 1, 1, 1)
+	inRangeText:Hide()
+	textFrame.inRangeText = inRangeText
+
+	textFrame.lines = {}
+	for i = 1, 5 do
+		local line = textFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		line:SetSize(128, 12)
+		line:SetJustifyH("LEFT")
+		if i == 1 then
+			line:SetPoint("TOPLEFT", textFrame, "TOPLEFT", 6, -6)
+		else
+			line:SetPoint("TOPLEFT", textFrame.lines[i - 1], "LEFT", 0, -6)
+		end
+		textFrame.lines[i] = line
+	end
+
+	textFrame:Hide()
+end
+
+local function createRadarFrame()
+	radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
+	radarFrame:SetFrameStrata("DIALOG")
+	radarFrame:SetPoint(DBM.Options.RangeFrameRadarPoint, UIParent, DBM.Options.RangeFrameRadarPoint, DBM.Options.RangeFrameRadarX, DBM.Options.RangeFrameRadarY)
+	radarFrame:SetSize(128, 128)
+	radarFrame:SetClampedToScreen(true)
+	radarFrame:EnableMouse(true)
+	radarFrame:SetToplevel(true)
+	radarFrame:SetMovable(true)
+	radarFrame:RegisterForDrag("LeftButton")
+	radarFrame:SetScript("OnDragStart", function(self)
+		if not DBM.Options.RangeFrameLocked then
+			self:StartMoving()
+		end
+	end)
+	radarFrame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		local point, _, _, x, y = self:GetPoint(1)
+		DBM.Options.RangeFrameRadarX = x
+		DBM.Options.RangeFrameRadarY = y
+		DBM.Options.RangeFrameRadarPoint = point
+	end)
+	radarFrame:SetScript("OnMouseDown", function(_, button)
+		if button == "RightButton" then
+			local dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", UIParent)
+			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
+			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
+		end
+	end)
+
+	local bg = radarFrame:CreateTexture(nil, "BACKGROUND")
+	bg:SetAllPoints(radarFrame)
+	bg:SetBlendMode("BLEND")
+	bg:SetColorTexture(0, 0, 0, 0.3)
+	radarFrame.background = bg
+
+	local circle = radarFrame:CreateTexture(nil, "ARTWORK")
+	circle:SetSize(85, 85)
+	circle:SetPoint("CENTER")
+	circle:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\radar_circle.blp")
+	circle:SetVertexColor(0, 1, 0)
+	circle:SetBlendMode("ADD")
+	radarFrame.circle = circle
+
+	local player = radarFrame:CreateTexture(nil, "OVERLAY")
+	player:SetSize(32, 32)
+	player:SetTexture(136431) -- "Interface\\Minimap\\MinimapArrow.blp"
+	player:SetBlendMode("ADD")
+	player:SetPoint("CENTER")
+
+	local text = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	text:SetSize(128, 15)
+	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT")
+	text:SetTextColor(1, 1, 1, 1)
+	text:Show()
+	radarFrame.text = text
+
+	local inRangeText = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	inRangeText:SetSize(128, 15)
+	inRangeText:SetPoint("TOPLEFT", radarFrame, "BOTTOMLEFT")
+	inRangeText:SetTextColor(1, 1, 1, 1)
+	inRangeText:Hide()
+	radarFrame.inRangeText = inRangeText
+
+	radarFrame.dots = {}
+	for i = 1, 40 do
+		local dot = radarFrame:CreateTexture(nil, "OVERLAY")
+		dot:SetSize(24, 24)
+		dot:SetTexture(249183) -- "Interface\\Minimap\\PartyRaidBlips"
+		dot:Hide()
+		radarFrame.dots[i] = dot
+	end
+
+	radarFrame:Hide()
+end
 
 ----------------
 --  OnUpdate  --
@@ -878,59 +880,62 @@ end
 ---------------
 --  Methods  --
 ---------------
---local restoreRange, restoreFilter, restoreThreshold, restoreReverse
+local restoreRange, restoreFilter, restoreThreshold, restoreReverse
 
-function rangeCheck:Show()--range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary
-	--if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
-	--	return
-	--end
-	--if type(range) == "function" then -- The first argument is optional
-	--	return self:Show(nil, range)
-	--end
-	--range = range or 10
-	--redCircleNumPlayers = redCircleNumPlayers or 1
-	--if not textFrame then
-	--	createTextFrame()
-	--end
-	--if not radarFrame then
-	--	createRadarFrame()
-	--end
-	--local restrictionsActive = DBM:HasMapRestrictions()
-	--if restrictionsActive then
-	--	range = setCompatibleRestrictedRange(range)
-	--end
-	--if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame:IsShown() then
-	--	textFrame:Show()
-	--end
-	---- TODO, add check for restricted area here so we can prevent radar frame loading.
-	--if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame:IsShown() then
-	--	radarFrame:Show()
-	--end
-	--mainFrame.range = range
-	--mainFrame.filter = filter
-	--mainFrame.redCircleNumPlayers = redCircleNumPlayers
-	--mainFrame.reverse = reverse
-	--mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
-	--mainFrame.restrictions = restrictionsActive
-	--mainFrame.onlySummary = onlySummary
-	--if not mainFrame.eventRegistered then
-	--	mainFrame.eventRegistered = true
-	--	updateIcon()
-	--	mainFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
-	--	mainFrame:RegisterEvent("RAID_TARGET_UPDATE")
-	--end
-	--updater:SetScript("OnLoop", updateRangeFrame)
-	--updater:Play()
-	--if forceshow and not DBM.Options.DontRestoreRange then -- Force means user activated range frame, store user value for restore function
-	--	restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
-	--end
+function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary)
+	if 1 + 1 == 2 then
+		return
+	end
+	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
+		return
+	end
+	if type(range) == "function" then -- The first argument is optional
+		return self:Show(nil, range)
+	end
+	range = range or 10
+	redCircleNumPlayers = redCircleNumPlayers or 1
+	if not textFrame then
+		createTextFrame()
+	end
+	if not radarFrame then
+		createRadarFrame()
+	end
+	local restrictionsActive = DBM:HasMapRestrictions()
+	if restrictionsActive then
+		range = setCompatibleRestrictedRange(range)
+	end
+	if (DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or restrictionsActive) and not textFrame:IsShown() then
+		textFrame:Show()
+	end
+	-- TODO, add check for restricted area here so we can prevent radar frame loading.
+	if not restrictionsActive and (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and not radarFrame:IsShown() then
+		radarFrame:Show()
+	end
+	mainFrame.range = range
+	mainFrame.filter = filter
+	mainFrame.redCircleNumPlayers = redCircleNumPlayers
+	mainFrame.reverse = reverse
+	mainFrame.hideTime = hideTime and (GetTime() + hideTime) or 0
+	mainFrame.restrictions = restrictionsActive
+	mainFrame.onlySummary = onlySummary
+	if not mainFrame.eventRegistered then
+		mainFrame.eventRegistered = true
+		updateIcon()
+		mainFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+		mainFrame:RegisterEvent("RAID_TARGET_UPDATE")
+	end
+	updater:SetScript("OnLoop", updateRangeFrame)
+	updater:Play()
+	if forceshow and not DBM.Options.DontRestoreRange then -- Force means user activated range frame, store user value for restore function
+		restoreRange, restoreFilter, restoreThreshold, restoreReverse = mainFrame.range, mainFrame.filter, mainFrame.redCircleNumPlayers, mainFrame.reverse
+	end
 end
 
-function rangeCheck:Hide()--force
-	--if restoreRange and not force then -- Restore range frame to way it was when boss mod is done with it
-	--	rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
-	--else
---		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
+function rangeCheck:Hide(force)
+	if restoreRange and not force then -- Restore range frame to way it was when boss mod is done with it
+		rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
+	else
+		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
 		updater:Stop()
 		if mainFrame.eventRegistered then
 			mainFrame.eventRegistered = nil
@@ -942,7 +947,7 @@ function rangeCheck:Hide()--force
 		if radarFrame then
 			radarFrame:Hide()
 		end
-	--end
+	end
 end
 
 function rangeCheck:IsShown()
@@ -989,10 +994,10 @@ do
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function()--msg
 --		UpdateLocalRangeFrame(tonumber(msg), false)
-		DBM:AddMsg("Rangecheck feature has been removed from DBM and will no longer be available going forward. The APIs it used have been restricted from use by blizzard. This slash command and message will be deleted soon")
+		DBM:AddMsg("Range finder is no longer available and this command will be removed in a future update")
 	end
 	SlashCmdList["DBMRRANGE"] = function()--msg
 --		UpdateLocalRangeFrame(tonumber(msg), true)
-		DBM:AddMsg("Rangecheck feature has been removed from DBM and will no longer be available going forward. The APIs it used have been restricted from use by blizzard. This slash command and message will be deleted soon")
+		DBM:AddMsg("Range finder is no longer available and this command will be removed in a future update")
 	end
 end
