@@ -72,34 +72,34 @@ do
 	local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance, IsItemInRange, UnitInRange
 	-- All ranges are tested and compared against UnitDistanceSquared.
 	-- Example: Worgsaw has a tooltip of 6 but doesn't factor in hitboxes/etc. It doesn't return false until UnitDistanceSquared of 8.
-	local itemRanges = {
-		[8] = 8149, -- Voodoo Charm
-		[13] = isClassic and 17626 or 32321, -- Sparrowhawk Net / Frostwolf Muzzle
-		[18] = 6450, -- Silk Bandage
-		[23] = 21519, -- Mistletoe
-		[28] = 13289,--Egan's Blaster
-		[33] = 1180, -- Scroll of Stamina
-	}
-	if isRetail then
-		itemRanges[4] = 90175 -- Gin-Ji Knife Set (MoP)
-		itemRanges[53] = 116139 -- Haunting Memento (WoD)
-	end
-	if not isClassic then -- Exists in Wrath/BCC but not vanilla/era
-		itemRanges[6] = 16114 -- Foremans Blackjack (TBC)
-		itemRanges[43] = 34471 -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
-		itemRanges[48] = 32698 -- Wrangling Rope
-		itemRanges[60] = 32825 -- Soul Cannon
-		itemRanges[80] = 35278 -- Reinforced Net (WotLK)
-		itemRanges[100] = 41058 -- Hyldnir Harpoon (WotLK)
-	end
-
-	local apiRanges = {
-		[10] = 3, -- CheckInteractDistance (Duel)
-		[11] = 2, -- CheckInteractDistance (Trade)
-	}
-	if isRetail then
-		apiRanges[30] = 1 -- CheckInteractDistance (Inspect), Classic: Inspect range is 10
-	end
+	--local itemRanges = {
+	--	[8] = 8149, -- Voodoo Charm
+	--	[13] = isClassic and 17626 or 32321, -- Sparrowhawk Net / Frostwolf Muzzle
+	--	[18] = 6450, -- Silk Bandage
+	--	[23] = 21519, -- Mistletoe
+	--	[28] = 13289,--Egan's Blaster
+	--	[33] = 1180, -- Scroll of Stamina
+	--}
+	--if isRetail then
+	--	itemRanges[4] = 90175 -- Gin-Ji Knife Set (MoP)
+	--	itemRanges[53] = 116139 -- Haunting Memento (WoD)
+	--end
+	--if not isClassic then -- Exists in Wrath/BCC but not vanilla/era
+	--	itemRanges[6] = 16114 -- Foremans Blackjack (TBC)
+	--	itemRanges[43] = 34471 -- Vial of the Sunwell (UnitInRange api alternate if item checks break)
+	--	itemRanges[48] = 32698 -- Wrangling Rope
+	--	itemRanges[60] = 32825 -- Soul Cannon
+	--	itemRanges[80] = 35278 -- Reinforced Net (WotLK)
+	--	itemRanges[100] = 41058 -- Hyldnir Harpoon (WotLK)
+	--end
+--
+	--local apiRanges = {
+	--	[10] = 3, -- CheckInteractDistance (Duel)
+	--	[11] = 2, -- CheckInteractDistance (Trade)
+	--}
+	--if isRetail then
+	--	apiRanges[30] = 1 -- CheckInteractDistance (Inspect), Classic: Inspect range is 10
+	--end
 
 	function itsBCAgain(uId, checkrange)
 		return 1000--Just exit with 1000 right away, below is all restricted now
@@ -878,9 +878,9 @@ end
 ---------------
 --  Methods  --
 ---------------
-local restoreRange, restoreFilter, restoreThreshold, restoreReverse
+--local restoreRange, restoreFilter, restoreThreshold, restoreReverse
 
-function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary)
+function rangeCheck:Show()--range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary
 	--if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
 	--	return
 	--end
@@ -930,7 +930,7 @@ function rangeCheck:Hide(force)
 	--if restoreRange and not force then -- Restore range frame to way it was when boss mod is done with it
 	--	rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
 	--else
-		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
+--		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
 		updater:Stop()
 		if mainFrame.eventRegistered then
 			mainFrame.eventRegistered = nil
