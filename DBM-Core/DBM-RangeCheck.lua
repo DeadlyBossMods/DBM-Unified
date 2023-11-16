@@ -103,6 +103,7 @@ do
 
 	function itsBCAgain(uId, checkrange)
 		if checkrange then -- Specified range, this check only cares whether unit is within specific range
+			return 1000--Just exit with 1000 right away, below is all restricted now
 			if not isRetail and checkrange == 43 then -- Only classic/BCC uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
 				return UnitInRange(uId) and checkrange or 1000
 			elseif itemRanges[checkrange] then -- Only query item range for requested active range check
@@ -880,6 +881,7 @@ end
 local restoreRange, restoreFilter, restoreThreshold, restoreReverse
 
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary)
+	return end
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
 		return
 	end
@@ -926,9 +928,9 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse,
 end
 
 function rangeCheck:Hide(force)
-	if restoreRange and not force then -- Restore range frame to way it was when boss mod is done with it
-		rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
-	else
+	--if restoreRange and not force then -- Restore range frame to way it was when boss mod is done with it
+	--	rangeCheck:Show(restoreRange, restoreFilter, true, restoreThreshold, restoreReverse)
+	--else
 		restoreRange, restoreFilter, restoreThreshold, restoreReverse = nil, nil, nil, nil
 		updater:Stop()
 		if mainFrame.eventRegistered then
@@ -941,7 +943,7 @@ function rangeCheck:Hide(force)
 		if radarFrame then
 			radarFrame:Hide()
 		end
-	end
+	--end
 end
 
 function rangeCheck:IsShown()
@@ -987,9 +989,11 @@ do
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
 	SlashCmdList["DBMRANGE"] = function(msg)
-		UpdateLocalRangeFrame(tonumber(msg), false)
+--		UpdateLocalRangeFrame(tonumber(msg), false)
+		DBM:AddMsg("Rangecheck feature has been removed from DBM and will no longer be available going forward. The APIs it used have been restricted from use by blizzard. This slash command and message will be deleted soon")
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
-		UpdateLocalRangeFrame(tonumber(msg), true)
+--		UpdateLocalRangeFrame(tonumber(msg), true)
+		DBM:AddMsg("Rangecheck feature has been removed from DBM and will no longer be available going forward. The APIs it used have been restricted from use by blizzard. This slash command and message will be deleted soon")
 	end
 end
