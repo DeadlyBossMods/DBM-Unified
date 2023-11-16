@@ -881,7 +881,7 @@ end
 local restoreRange, restoreFilter, restoreThreshold, restoreReverse
 
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary)
-	return end
+	return
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
 		return
 	end

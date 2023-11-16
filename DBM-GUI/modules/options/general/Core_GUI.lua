@@ -54,7 +54,7 @@ end)
 
 local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 120, 30)
 bmtestmode.myheight = 0
-bmtestmode:SetPoint("TOP", bmrange, "BOTTOM", 2, 0)
+bmtestmode:SetPoint("TOP", bminfo, "BOTTOM", 2, 0)--bmrange
 bmtestmode:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
@@ -66,7 +66,7 @@ moveme:SetScript("OnClick", function()
 end)
 
 local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)
-latencySlider:SetPoint("BOTTOMLEFT", bmrange, "BOTTOMLEFT", 10, -70)
+latencySlider:SetPoint("BOTTOMLEFT", bminfo, "BOTTOMLEFT", 10, -70)--bmrange
 latencySlider:SetValue(DBM.Options.LatencyThreshold)
 latencySlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.LatencyThreshold = self:GetValue()
