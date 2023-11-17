@@ -41,7 +41,7 @@ do
 		checkrange = restrictionsActive and 43 or checkrange
 		for uId in DBM:GetGroupMembers() do
 			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitPhaseReasonHack(uId) then
-				range = DBM:HasMapRestrictions() and itsBCAgain(uId) or UnitDistanceSquared(uId) * 0.5
+				local range = DBM:HasMapRestrictions() and itsBCAgain(uId) or UnitDistanceSquared(uId) * 0.5
 				if checkrange < (range + 0.5) then
 					return true
 				end
