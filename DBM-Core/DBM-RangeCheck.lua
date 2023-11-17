@@ -7,10 +7,6 @@ DBM.RangeCheck = {}
 --  Locals  --
 --------------
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
-
-local DDM = _G["LibStub"]:GetLibrary("LibDropDownMenu")
-local UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu = DDM.UIDropDownMenu_AddButton, DDM.UIDropDownMenu_Initialize, DDM.ToggleDropDownMenu
 
 local function UnitPhaseReasonHack(uId)
 	if isRetail then
@@ -30,7 +26,7 @@ local getDistanceBetween, getDistanceBetweenAll
 do
 	local UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected = UnitPosition, UnitExists, UnitIsUnit, UnitIsDeadOrGhost, UnitIsConnected
 
-	function itsBCAgain(uId)
+	local function itsBCAgain(uId)
 		local inRange, checkedRange = UnitInRange(uId)
 		if inRange and checkedRange then--Range checked and api was successful
 			return 43
@@ -42,7 +38,7 @@ do
 	--Scope is now limited to just being a wrapper for returning true or false for being within 43 yard (40+hitbox)
 	function getDistanceBetweenAll(checkrange)
 		local restrictionsActive = DBM:HasMapRestrictions()
-		local range = restrictionsActive and 43 or checkrange
+		checkrange = restrictionsActive and 43 or checkrange
 		for uId in DBM:GetGroupMembers() do
 			if UnitExists(uId) and not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and UnitIsConnected(uId) and UnitPhaseReasonHack(uId) then
 				range = DBM:HasMapRestrictions() and itsBCAgain(uId) or UnitDistanceSquared(uId) * 0.5
