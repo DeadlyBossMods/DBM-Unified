@@ -81,7 +81,7 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.5 alpha"
+	DBM.DisplayVersion = "10.2.6 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 11, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 8--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
@@ -2015,16 +2015,16 @@ function DBM:RepositionFrames()
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
 	self.Arrow:LoadPosition()
-	local rangeCheck = _G["DBMRangeCheck"]
-	if rangeCheck then
-		rangeCheck:ClearAllPoints()
-		rangeCheck:SetPoint(self.Options.RangeFramePoint, UIParent, self.Options.RangeFramePoint, self.Options.RangeFrameX, self.Options.RangeFrameY)
-	end
-	local rangeCheckRadar = _G["DBMRangeCheckRadar"]
-	if rangeCheckRadar then
-		rangeCheckRadar:ClearAllPoints()
-		rangeCheckRadar:SetPoint(self.Options.RangeFrameRadarPoint, UIParent, self.Options.RangeFrameRadarPoint, self.Options.RangeFrameRadarX, self.Options.RangeFrameRadarY)
-	end
+	--local rangeCheck = _G["DBMRangeCheck"]
+	--if rangeCheck then
+	--	rangeCheck:ClearAllPoints()
+	--	rangeCheck:SetPoint(self.Options.RangeFramePoint, UIParent, self.Options.RangeFramePoint, self.Options.RangeFrameX, self.Options.RangeFrameY)
+	--end
+	--local rangeCheckRadar = _G["DBMRangeCheckRadar"]
+	--if rangeCheckRadar then
+	--	rangeCheckRadar:ClearAllPoints()
+	--	rangeCheckRadar:SetPoint(self.Options.RangeFrameRadarPoint, UIParent, self.Options.RangeFrameRadarPoint, self.Options.RangeFrameRadarX, self.Options.RangeFrameRadarY)
+	--end
 	local infoFrame = _G["DBMInfoFrame"]
 	if infoFrame then
 		infoFrame:ClearAllPoints()
@@ -2785,19 +2785,21 @@ function DBM:GetUnitIdFromCID(creatureID, bossOnly)
 	return returnUnitID
 end
 
-function DBM:CheckNearby(range, targetname)
-	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
-		return true--No target name means check if anyone is near self, period
-	else
-		local uId = DBM:GetRaidUnitId(targetname)--Do not use self on this function, because self might be bossModPrototype
-		if uId and not UnitIsUnit("player", uId) then
-			local inRange = DBM.RangeCheck:GetDistance(uId)--Do not use self on this function, because self might be bossModPrototype
-			if inRange and inRange < range+0.5 then
-				return true
-			end
-		end
-	end
+--To be removed when cleaned up out of all mods using it
+function DBM:CheckNearby()--range, targetname
 	return false
+	--if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
+	--	return true--No target name means check if anyone is near self, period
+	--else
+	--	local uId = DBM:GetRaidUnitId(targetname)--Do not use self on this function, because self might be bossModPrototype
+	--	if uId and not UnitIsUnit("player", uId) then
+	--		local inRange = DBM.RangeCheck:GetDistance(uId)--Do not use self on this function, because self might be bossModPrototype
+	--		if inRange and inRange < range+0.5 then
+	--			return true
+	--		end
+	--	end
+	--end
+	--return false
 end
 
 function DBM:IsTrivial(customLevel)
@@ -3701,9 +3703,9 @@ do
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
-			if self.RangeCheck:IsRadarShown() then
-				self.RangeCheck:Hide(true)
-			end
+			--if self.RangeCheck:IsRadarShown() then
+			--	self.RangeCheck:Hide(true)
+			--end
 		end
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
@@ -3722,9 +3724,9 @@ do
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
-			if self.RangeCheck:IsRadarShown() then
-				self.RangeCheck:Hide(true)
-			end
+			--if self.RangeCheck:IsRadarShown() then
+			--	self.RangeCheck:Hide(true)
+			--end
 		end
 	end
 
@@ -3962,8 +3964,8 @@ do
 			local _, _, _, playerZone = UnitPosition("player")
 			local _, _, _, senderZone = UnitPosition(senderuId)
 			if playerZone ~= senderZone then return end--not same zone
-			local range = DBM.RangeCheck:GetDistance("player", senderuId)--Same zone, so check range
-			if not range or range > 120 then return end
+			--local range = DBM.RangeCheck:GetDistance("player", senderuId)--Same zone, so check range
+			--if not range or range > 120 then return end
 		end
 		if not cSyncSender[sender] then
 			cSyncSender[sender] = true
@@ -7461,7 +7463,7 @@ do
 	local rangeCache = {}
 	local rangeUpdated = {}
 
-	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
+	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, _, distance, defaultReturn)--itemId
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		cidOrGuid = cidOrGuid or self.creatureId
 		local uId
@@ -7471,14 +7473,14 @@ do
 			uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
 		end
 		if uId then
-			itemId = itemId or 32698
-			local inRange = IsItemInRange(itemId, uId)
-			if inRange then--IsItemInRange was a success
-				return inRange
-			else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
-				DBM:Debug("CheckBossDistance failed on IsItemInRange for: "..cidOrGuid, 2)
+			--itemId = itemId or 32698
+			--local inRange = IsItemInRange(itemId, uId)
+			--if inRange then--IsItemInRange was a success
+			--	return inRange
+			--else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
+			--	DBM:Debug("CheckBossDistance failed on IsItemInRange for: "..cidOrGuid, 2)
 				return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
-			end
+			--end
 		end
 		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
 		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
@@ -7518,12 +7520,12 @@ do
 						return true
 					end
 				end
-				local inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
-				rangeCache[cidOrGuid] = inRange
-				rangeUpdated[cidOrGuid] = GetTime()
-				if inRange and (inRange > distance) then--You are not near the person tanking boss
-					return false
-				end
+				--local inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
+				--rangeCache[cidOrGuid] = inRange
+				--rangeUpdated[cidOrGuid] = GetTime()
+				--if inRange and (inRange > distance) then--You are not near the person tanking boss
+				--	return false
+				--end
 				--Tank in range, return true.
 				return true
 			end
@@ -11510,19 +11512,20 @@ function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	end
 end
 
-function bossModPrototype:AddRangeFrameOption(range, spellId, default)
-	self.DefaultOptions["RangeFrame"] = (default == nil) or default
-	if default and type(default) == "string" then
-		default = self:GetRoleFlagValue(default)
-	end
-	self.Options["RangeFrame"] = (default == nil) or default
-	if spellId then
-		self:GroupSpells(spellId, "RangeFrame")
-		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT:format(range, spellId)
-	else
-		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT_SHORT:format(range)
-	end
-	self:SetOptionCategory("RangeFrame", "misc")
+function bossModPrototype:AddRangeFrameOption()--range, spellId, default
+	return
+	--self.DefaultOptions["RangeFrame"] = (default == nil) or default
+	--if default and type(default) == "string" then
+	--	default = self:GetRoleFlagValue(default)
+	--end
+	--self.Options["RangeFrame"] = (default == nil) or default
+	--if spellId then
+	--	self:GroupSpells(spellId, "RangeFrame")
+	--	self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT:format(range, spellId)
+	--else
+	--	self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT_SHORT:format(range)
+	--end
+	--self:SetOptionCategory("RangeFrame", "misc")
 end
 
 function bossModPrototype:AddHudMapOption(name, spellId, default)

@@ -494,7 +494,7 @@ do
 		DBM.Options.InfoFrameLocked = oldInfoFrameLocked
 		DBM.InfoFrame:Hide()
 		DBM.Options.RangeFrameLocked = oldRangeFrameLocked
-		DBM.RangeCheck:Hide(true)
+--		DBM.RangeCheck:Hide(true)
 	end
 
 	function DBT:ShowMovableBar(small, large)
@@ -513,7 +513,7 @@ do
 		DBM.InfoFrame:Show(5, "test")
 		oldRangeFrameLocked = DBM.Options.RangeFrameLocked
 		DBM.Options.RangeFrameLocked = false
-		DBM.RangeCheck:Show(nil, nil, true)
+--		DBM.RangeCheck:Show(nil, nil, true)
 	end
 
 	function DBT:SetOption(option, value, noUpdate)

@@ -102,6 +102,9 @@ do
 	end
 
 	function itsBCAgain(uId, checkrange)
+		if 1 + 1 == 2 then
+			return 1000
+		end
 		if checkrange then -- Specified range, this check only cares whether unit is within specific range
 			if not isRetail and checkrange == 43 then -- Only classic/BCC uses UnitInRange so only classic has this check, TBC+ can use Vial of the Sunwell
 				return UnitInRange(uId) and checkrange or 1000
@@ -880,6 +883,9 @@ end
 local restoreRange, restoreFilter, restoreThreshold, restoreReverse
 
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers, reverse, hideTime, onlySummary)
+	if 1 + 1 == 2 then
+		return
+	end
 	if (DBM:GetNumRealGroupMembers() < 2 or DBM.Options.DontShowRangeFrame or DBM.Options.SpamSpecInformationalOnly) and not forceshow then
 		return
 	end
@@ -972,24 +978,26 @@ function rangeCheck:GetDistanceAll(checkrange)
 end
 
 do
-	local function UpdateLocalRangeFrame(r, reverse)
-		if rangeCheck:IsShown() then
-			rangeCheck:Hide(true)
-		else
-			if DBM:HasMapRestrictions() then
-				DBM:AddMsg(L.NO_RANGE)
-			end
-			rangeCheck:Show((r and r < 201) and r or 10 , nil, true, nil, reverse)
-		end
-	end
+	--local function UpdateLocalRangeFrame(r, reverse)
+	--	if rangeCheck:IsShown() then
+	--		rangeCheck:Hide(true)
+	--	else
+	--		if DBM:HasMapRestrictions() then
+	--			DBM:AddMsg(L.NO_RANGE)
+	--		end
+	--		rangeCheck:Show((r and r < 201) and r or 10 , nil, true, nil, reverse)
+	--	end
+	--end
 	SLASH_DBMRANGE1 = "/range"
 	SLASH_DBMRANGE2 = "/distance"
 	SLASH_DBMRRANGE1 = "/rrange"
 	SLASH_DBMRRANGE2 = "/rdistance"
-	SlashCmdList["DBMRANGE"] = function(msg)
-		UpdateLocalRangeFrame(tonumber(msg), false)
+	SlashCmdList["DBMRANGE"] = function()--msg
+--		UpdateLocalRangeFrame(tonumber(msg), false)
+		DBM:AddMsg("Range finder is no longer available and this command will be removed in a future update")
 	end
-	SlashCmdList["DBMRRANGE"] = function(msg)
-		UpdateLocalRangeFrame(tonumber(msg), true)
+	SlashCmdList["DBMRRANGE"] = function()--msg
+--		UpdateLocalRangeFrame(tonumber(msg), true)
+		DBM:AddMsg("Range finder is no longer available and this command will be removed in a future update")
 	end
 end
