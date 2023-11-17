@@ -33,7 +33,7 @@ L.COPY_URL_DIALOG						= "Copy URL"
 L.COPY_WA_DIALOG						= "Copy WA Key"
 
 --Post Patch 7.1
-L.NO_RANGE								= "Range Radar can not be used in instances. Legacy text range frame used instead"
+L.NO_RANGE								= "Range frame can no longer be used. This command will be removed in a future update"
 L.NO_ARROW								= "Arrow can not be used in instances"
 L.NO_HUD								= "HUDMap can not be used in instances"
 

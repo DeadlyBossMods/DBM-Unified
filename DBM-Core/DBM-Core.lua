@@ -2015,16 +2015,6 @@ function DBM:RepositionFrames()
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
 	self.Arrow:LoadPosition()
-	--local rangeCheck = _G["DBMRangeCheck"]
-	--if rangeCheck then
-	--	rangeCheck:ClearAllPoints()
-	--	rangeCheck:SetPoint(self.Options.RangeFramePoint, UIParent, self.Options.RangeFramePoint, self.Options.RangeFrameX, self.Options.RangeFrameY)
-	--end
-	--local rangeCheckRadar = _G["DBMRangeCheckRadar"]
-	--if rangeCheckRadar then
-	--	rangeCheckRadar:ClearAllPoints()
-	--	rangeCheckRadar:SetPoint(self.Options.RangeFrameRadarPoint, UIParent, self.Options.RangeFrameRadarPoint, self.Options.RangeFrameRadarX, self.Options.RangeFrameRadarY)
-	--end
 	local infoFrame = _G["DBMInfoFrame"]
 	if infoFrame then
 		infoFrame:ClearAllPoints()
@@ -2785,21 +2775,21 @@ function DBM:GetUnitIdFromCID(creatureID, bossOnly)
 	return returnUnitID
 end
 
---To be removed when cleaned up out of all mods using it
-function DBM:CheckNearby()--range, targetname
+--Scope, will only check if a unit is within 43 yards now
+function DBM:CheckNearby(range, targetname)
+	if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
+		return true--No target name means check if anyone is near self, period
+	else
+		local uId = DBM:GetRaidUnitId(targetname)--Do not use self on this function, because self might be bossModPrototype
+		if uId and not UnitIsUnit("player", uId) then
+			local restrictionsActive = DBM:HasMapRestrictions()
+			local inRange = DBM.RangeCheck:GetDistance(uId)--Do not use self on this function, because self might be bossModPrototype
+			if inRange and inRange < (restrictionsActive and 43 or range)+0.5 then
+				return true
+			end
+		end
+	end
 	return false
-	--if not targetname and DBM.RangeCheck:GetDistanceAll(range) then--Do not use self on this function, because self might be bossModPrototype
-	--	return true--No target name means check if anyone is near self, period
-	--else
-	--	local uId = DBM:GetRaidUnitId(targetname)--Do not use self on this function, because self might be bossModPrototype
-	--	if uId and not UnitIsUnit("player", uId) then
-	--		local inRange = DBM.RangeCheck:GetDistance(uId)--Do not use self on this function, because self might be bossModPrototype
-	--		if inRange and inRange < range+0.5 then
-	--			return true
-	--		end
-	--	end
-	--end
-	--return false
 end
 
 function DBM:IsTrivial(customLevel)
@@ -3703,9 +3693,6 @@ do
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
-			--if self.RangeCheck:IsRadarShown() then
-			--	self.RangeCheck:Hide(true)
-			--end
 		end
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
@@ -3724,9 +3711,6 @@ do
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
-			--if self.RangeCheck:IsRadarShown() then
-			--	self.RangeCheck:Hide(true)
-			--end
 		end
 	end
 
@@ -3964,8 +3948,6 @@ do
 			local _, _, _, playerZone = UnitPosition("player")
 			local _, _, _, senderZone = UnitPosition(senderuId)
 			if playerZone ~= senderZone then return end--not same zone
-			--local range = DBM.RangeCheck:GetDistance("player", senderuId)--Same zone, so check range
-			--if not range or range > 120 then return end
 		end
 		if not cSyncSender[sender] then
 			cSyncSender[sender] = true
@@ -7463,6 +7445,8 @@ do
 	local rangeCache = {}
 	local rangeUpdated = {}
 
+	--No current apis possible for checking boss distance directly anymore, this will basically just forward request to CheckTankDistance backup
+	--This is being left in for two reasons. Many mods use it, and I've requested to blizzard to give a concession just for checking boss (only) directly
 	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, _, distance, defaultReturn)--itemId
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		cidOrGuid = cidOrGuid or self.creatureId
@@ -7473,24 +7457,19 @@ do
 			uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
 		end
 		if uId then
-			--itemId = itemId or 32698
-			--local inRange = IsItemInRange(itemId, uId)
-			--if inRange then--IsItemInRange was a success
-			--	return inRange
-			--else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
-			--	DBM:Debug("CheckBossDistance failed on IsItemInRange for: "..cidOrGuid, 2)
-				return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
-			--end
+			--TODO, future use to get boss distance directly again?
+			--Meanwhile, forward to CheckTankDistance
+			return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
 		end
 		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
 		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
 	end
 
-	function bossModPrototype:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)
+	function bossModPrototype:CheckTankDistance(cidOrGuid, _, onlyBoss, defaultReturn)--distance
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		distance = distance or 43
+		--distance = distance or 43--Basically unused
 		if rangeCache[cidOrGuid] and (GetTime() - (rangeUpdated[cidOrGuid] or 0)) < 2 then -- return same range within 2 sec call
-			return rangeCache[cidOrGuid] < distance
+			return rangeCache[cidOrGuid]
 		else
 			cidOrGuid = cidOrGuid or self.creatureId--GetBossTarget supports GUID or CID and it will automatically return correct values with EITHER ONE
 			local uId
@@ -7515,18 +7494,15 @@ do
 				if not UnitIsPlayer(uId) then
 					local inRange2, checkedRange = UnitInRange(uId)--43
 					if checkedRange then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
+						rangeCache[cidOrGuid] = inRange2
 						return inRange2
 					else--Its probably a totem or just something we can't assess. Fall back to no filtering
+						rangeCache[cidOrGuid] = true
 						return true
 					end
 				end
-				--local inRange = DBM.RangeCheck:GetDistance("player", uId)--We check how far we are from the tank who has that boss
-				--rangeCache[cidOrGuid] = inRange
-				--rangeUpdated[cidOrGuid] = GetTime()
-				--if inRange and (inRange > distance) then--You are not near the person tanking boss
-				--	return false
-				--end
-				--Tank in range, return true.
+				--Return true as safety
+				rangeCache[cidOrGuid] = true
 				return true
 			end
 			DBM:Debug("CheckTankDistance failed on uId for: "..cidOrGuid, 2)
