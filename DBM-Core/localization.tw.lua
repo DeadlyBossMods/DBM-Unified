@@ -24,6 +24,7 @@ L.LOAD_MOD_DISABLED_PLURAL		= "%s已安裝但目前停用中。這些模組不�
 L.COPY_URL_DIALOG				= "複製網址"
 
 --Post Patch 7.1
+L.TEXT_ONLY_RANGE				= "範圍框架受限於該區域的API限制，只限於文字。"
 L.NO_RANGE						= "距離雷達不能在副本中使用，使用傳統文字距離框架取代"
 L.NO_ARROW						= "箭頭不能在副本中使用"
 L.NO_HUD						= "HUDMap不能在副本中使用"
