@@ -33,6 +33,7 @@ L.COPY_URL_DIALOG						= "Copy URL"
 L.COPY_WA_DIALOG						= "Copy WA Key"
 
 --Post Patch 7.1
+L.TEXT_ONLY_RANGE						= "Range frame is limited to text only due to API restrictions in this area."
 L.NO_RANGE								= "Range frame can not be used due to API restrictions in this area."
 L.NO_ARROW								= "Arrow can not be used in instances"
 L.NO_HUD								= "HUDMap can not be used in instances"

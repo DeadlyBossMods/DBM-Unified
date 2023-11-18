@@ -957,7 +957,7 @@ do
 			rangeCheck:Hide(true)
 		else
 			if DBM:HasMapRestrictions() then
-				DBM:AddMsg(L.NO_RANGE)
+				DBM:AddMsg(L.TEXT_ONLY_RANGE)
 			end
 			rangeCheck:Show((r and r < 201) and r or 10 , nil, true, nil, reverse)
 		end
@@ -970,7 +970,7 @@ do
 		if isRetail and DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_RANGE)
 		else
-			UpdateLocalRangeFrame(tonumber(msg), true)
+			UpdateLocalRangeFrame(tonumber(msg))
 		end
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
