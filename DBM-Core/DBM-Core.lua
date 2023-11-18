@@ -2015,6 +2015,16 @@ function DBM:RepositionFrames()
 	self:UpdateWarningOptions()
 	self:UpdateSpecialWarningOptions()
 	self.Arrow:LoadPosition()
+	local rangeCheck = _G["DBMRangeCheck"]
+	if rangeCheck then
+		rangeCheck:ClearAllPoints()
+		rangeCheck:SetPoint(self.Options.RangeFramePoint, UIParent, self.Options.RangeFramePoint, self.Options.RangeFrameX, self.Options.RangeFrameY)
+	end
+	local rangeCheckRadar = _G["DBMRangeCheckRadar"]
+	if rangeCheckRadar then
+		rangeCheckRadar:ClearAllPoints()
+		rangeCheckRadar:SetPoint(self.Options.RangeFrameRadarPoint, UIParent, self.Options.RangeFrameRadarPoint, self.Options.RangeFrameRadarX, self.Options.RangeFrameRadarY)
+	end
 	local infoFrame = _G["DBMInfoFrame"]
 	if infoFrame then
 		infoFrame:ClearAllPoints()
@@ -2782,7 +2792,7 @@ function DBM:CheckNearby(range, targetname)
 	else
 		local uId = DBM:GetRaidUnitId(targetname)--Do not use self on this function, because self might be bossModPrototype
 		if uId and not UnitIsUnit("player", uId) then
-			local restrictionsActive = DBM:HasMapRestrictions()
+			local restrictionsActive = isRetail and DBM:HasMapRestrictions()
 			local inRange = DBM.RangeCheck:GetDistance(uId)--Do not use self on this function, because self might be bossModPrototype
 			if inRange and inRange < (restrictionsActive and 43 or range)+0.5 then
 				return true
@@ -3693,6 +3703,9 @@ do
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
+			if (isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
+				self.RangeCheck:Hide(true)
+			end
 		end
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
@@ -3711,6 +3724,9 @@ do
 		if self:HasMapRestrictions() then
 			self.Arrow:Hide()
 			self.HudMap:Disable()
+			if (isRetail and self.RangeCheck:IsShown()) or self.RangeCheck:IsRadarShown() then
+				self.RangeCheck:Hide(true)
+			end
 		end
 	end
 
@@ -11490,18 +11506,18 @@ end
 
 function bossModPrototype:AddRangeFrameOption()--range, spellId, default
 	return
-	--self.DefaultOptions["RangeFrame"] = (default == nil) or default
-	--if default and type(default) == "string" then
-	--	default = self:GetRoleFlagValue(default)
-	--end
-	--self.Options["RangeFrame"] = (default == nil) or default
-	--if spellId then
-	--	self:GroupSpells(spellId, "RangeFrame")
-	--	self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT:format(range, spellId)
-	--else
-	--	self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT_SHORT:format(range)
-	--end
-	--self:SetOptionCategory("RangeFrame", "misc")
+	self.DefaultOptions["RangeFrame"] = (default == nil) or default
+	if default and type(default) == "string" then
+		default = self:GetRoleFlagValue(default)
+	end
+	self.Options["RangeFrame"] = (default == nil) or default
+	if spellId then
+		self:GroupSpells(spellId, "RangeFrame")
+		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT:format(range, spellId)
+	else
+		self.localization.options["RangeFrame"] = L.AUTO_RANGE_OPTION_TEXT_SHORT:format(range)
+	end
+	self:SetOptionCategory("RangeFrame", "misc")
 end
 
 function bossModPrototype:AddHudMapOption(name, spellId, default)
