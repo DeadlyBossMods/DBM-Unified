@@ -11504,7 +11504,7 @@ function bossModPrototype:AddArrowOption(name, spellId, default, isRunTo)
 	end
 end
 
-function bossModPrototype:AddRangeFrameOption()--range, spellId, default
+function bossModPrototype:AddRangeFrameOption(range, spellId, default)
 	self.DefaultOptions["RangeFrame"] = (default == nil) or default
 	if default and type(default) == "string" then
 		default = self:GetRoleFlagValue(default)
