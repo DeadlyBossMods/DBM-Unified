@@ -970,7 +970,7 @@ do
 		if isRetail and DBM:HasMapRestrictions() then
 			DBM:AddMsg(L.NO_RANGE)
 		else
-			UpdateLocalRangeFrame(tonumber(msg), true)
+			UpdateLocalRangeFrame(tonumber(msg))
 		end
 	end
 	SlashCmdList["DBMRRANGE"] = function(msg)
