@@ -30,20 +30,19 @@ local SoundChannelDropdown = generaloptions:CreateDropdown(L.UseSoundChannel, so
 end)
 SoundChannelDropdown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -55)
 
---local bmrange = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
---bmrange:SetPoint("TOPLEFT", SoundChannelDropdown, "BOTTOMLEFT", 15, -5)
---bmrange:SetScript("OnClick", function()
---	if DBM.RangeCheck:IsShown() then
---		DBM.RangeCheck:Hide(true)
---	else
---		DBM.RangeCheck:Show(nil, nil, true)
---	end
---end)
+local bmrange = generaloptions:CreateButton(L.Button_RangeFrame, 120, 30)
+bmrange:SetPoint("TOPLEFT", SoundChannelDropdown, "BOTTOMLEFT", 15, -5)
+bmrange:SetScript("OnClick", function()
+	if DBM.RangeCheck:IsShown() then
+		DBM.RangeCheck:Hide(true)
+	else
+		DBM.RangeCheck:Show(nil, nil, true)
+	end
+end)
 
 local bminfo = generaloptions:CreateButton(L.Button_InfoFrame, 120, 30)
 bminfo.myheight = 0
---bminfo:SetPoint("LEFT", bmrange, "RIGHT", 2, 0)
-bminfo:SetPoint("TOPLEFT", SoundChannelDropdown, "BOTTOMLEFT", 15, -5)
+bminfo:SetPoint("LEFT", bmrange, "RIGHT", 2, 0)
 bminfo:SetScript("OnClick", function()
 	if DBM.InfoFrame:IsShown() then
 		DBM.InfoFrame:Hide()
