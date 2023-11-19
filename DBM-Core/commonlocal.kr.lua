@@ -77,6 +77,7 @@ CL.DODGES							= "피하기"
 CL.POOL								= "바닥"
 CL.POOLS							= "바닥"
 CL.DEBUFFS							= "디버프"
+CL.DISPELS							= "해제"
 CL.PUSHBACK							= "밀어내기"
 CL.FRONTAL							= "전방 시전"
 CL.LASER							= "레이저"
@@ -88,3 +89,4 @@ CL.ROOTS							= "이동 불가"
 --NOTE, many common locals are auto localized:
 --Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)
 --Fixate (12021), Trap (181341), Meteor (28884), Shield (151702), Teleport (4801), Fear (5782), Roar (140459), Leap (47482), Orb (265315), Tornados (86189)
+--Pull (193997), Push (359132)
