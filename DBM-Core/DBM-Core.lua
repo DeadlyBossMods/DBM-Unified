@@ -7463,22 +7463,10 @@ do
 
 	--No current apis possible for checking boss distance directly anymore, this will basically just forward request to CheckTankDistance backup
 	--This is being left in for two reasons. Many mods use it, and I've requested to blizzard to give a concession just for checking boss (only) directly
-	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, _, distance, defaultReturn)--itemId
+	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, _, _, defaultReturn)--itemId, distance
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		cidOrGuid = cidOrGuid or self.creatureId
-		local uId
-		if type(cidOrGuid) == "number" then--CID passed
-			uId = DBM:GetUnitIdFromCID(cidOrGuid, onlyBoss)
-		else--GUID
-			uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
-		end
-		if uId then
-			--TODO, future use to get boss distance directly again?
-			--Meanwhile, forward to CheckTankDistance
-			return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
-		end
-		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
-		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
+		--Just forward to CheckTankDistance now, at least until such a time there is something more to do here
+		return self:CheckTankDistance(cidOrGuid, nil, onlyBoss, defaultReturn)--Return tank distance check fallback
 	end
 
 	function bossModPrototype:CheckTankDistance(cidOrGuid, _, onlyBoss, defaultReturn)--distance
