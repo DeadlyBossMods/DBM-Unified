@@ -662,7 +662,7 @@ do
 		area.frame:SetPoint("TOPLEFT", 10, modProfileArea and -260 or -25)
 
 		local statOrder = {
-			"lfr", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
+			"lfr", "follower", "normal", "normal25", "heroic", "heroic25", "mythic", "challenge", "timewalker"
 		}
 
 		for _, mod in ipairs(DBM.Mods) do
@@ -729,6 +729,7 @@ do
 				end
 
 				local statTypes = {
+					follower	= "Follower",--no PLAYER_DIFFICULTY entry yet
 					lfr25		= PLAYER_DIFFICULTY3,
 					normal		= mod.addon.minExpansion < 5 and RAID_DIFFICULTY1 or PLAYER_DIFFICULTY1,
 					normal25	= RAID_DIFFICULTY2,

@@ -81,8 +81,8 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.6 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 11, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.2.7 alpha"
+	DBM.ReleaseRevision = releaseDate(2023, 11, 20) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 8--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
 	DBM.DisplayVersion = "1.15.1 alpha"
@@ -520,6 +520,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Sepulcher",--Combined into DBM-Raids-Shadowlands
 
 	"DBM-VaultoftheIncarnates",--Combined into DBM-Raids-Dragonflight
+	"DBM-Aberrus",--Combined into DBM-Raids-Dragonflight
 
 	"DBM-DMF",--Combined into DBM-WorldEvents
 }
@@ -5174,6 +5175,7 @@ do
 		["event5"] = "normal",
 		["event20"] = "lfr25",
 		["event40"] = "lfr25",
+		["follower"] = "follower",
 		["normal5"] = "normal",
 		["heroic5"] = "heroic",
 		["challenge5"] = "challenge",
@@ -6054,6 +6056,10 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "wisdomscenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	elseif difficulty == 171 then--Path of Ascention (Shadowlands)
 		return "humilityscenario", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 192 then--Non Instanced Challenge 1 (Likely Delves base difficulty)
+		return "delve1", difficultyName.." - ",difficulty, instanceGroupSize, 0
+	elseif difficulty == 205 then--Follower Dungeon (Dragonflight 10.2.5+)
+		return "follower", difficultyName.." - ",difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end
@@ -7226,16 +7232,16 @@ function bossModPrototype:IsLFR()
 	return diff == "lfr" or diff == "lfr25"
 end
 
---Dungeons: normal, heroic. (Raids excluded)
+--Dungeons: follower, normal, heroic. (Raids excluded)
 function bossModPrototype:IsEasyDungeon()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "heroic5" or diff == "normal5"
+	return diff == "heroic5" or diff == "normal5" or diff == "follower5"
 end
 
---Dungeons: normal, heroic. Raids: LFR, normal
+--Dungeons: follower, normal, heroic. Raids: LFR, normal
 function bossModPrototype:IsEasy()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5"
+	return diff == "normal" or diff == "lfr" or diff == "lfr25" or diff == "heroic5" or diff == "normal5" or diff == "follower5"
 end
 
 --Dungeons: mythic, mythic+. Raids: heroic, mythic
@@ -7290,6 +7296,11 @@ function DBM:IsRetail()
 end
 bossModPrototype.IsRetail = DBM.IsRetail
 
+function bossModPrototype:IsFollower()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "follower"
+end
+
 --Pretty much ANYTHING that has a heroic mode
 function bossModPrototype:IsHeroic()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
@@ -7325,6 +7336,11 @@ end
 function bossModPrototype:IsScenario()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	return diff == "normalscenario" or diff == "heroicscenario" or diff == "couragescenario" or diff == "loyaltyscenario" or diff == "wisdomscenario" or diff == "humilityscenario"
+end
+
+function bossModPrototype:IsDelve()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "delve1"
 end
 
 function bossModPrototype:IsValidWarning(sourceGUID, customunitID, loose, allowFriendly)
