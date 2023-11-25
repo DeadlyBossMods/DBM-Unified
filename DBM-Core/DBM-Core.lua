@@ -10970,15 +10970,15 @@ do
 					spellName = DBM:GetSpellInfo(timerText or 0)--Override Cached spell Name
 				--Interpret it literal with no restrictions, first checking mod local table, then just taking timerText directly
 				else
-					timerTextValue = self.localization.timers[timerText] or timerText--Check timers table first, otherwise accept it as literal timer text
+					timerTextValue = self.localization.timers[timerText]--Check timers table first, otherwise accept it as literal timer text
 				end
 			else--Short text is off, we want to be more aggressive in NOT setting short text if we can help it
 				--Short text is off, and spellId does exist, only accept timerText if it's in mods localization tables, cause then it's not short text, it's hard localization
 				if spellId and type(spellId) == "number" then
 					--Only use timerText if it's full localized, cause that's not shorttext
-					timerTextValue = self.localization.timers[timerText]
+					timerTextValue = rawget(self.localization.timers, timerText)
 				else--If no spellID, then we allow hard setting timerText because it's only translation timer object has
-					timerTextValue = self.localization.timers[timerText] or timerText
+					timerTextValue = self.localization.timers[timerText]
 				end
 			end
 		end
