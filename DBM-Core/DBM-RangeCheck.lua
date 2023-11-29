@@ -151,7 +151,7 @@ do
 	function getDistanceBetween(uId, x, y)
 		local restrictionsActive = DBM:HasMapRestrictions()
 		if not x then -- If only one arg then 2nd arg is always assumed to be player
-			return restrictionsActive and itsBCAgain(uId) or UnitDistanceSquared(uId) ^ 0.5
+			return restrictionsActive and (isRetail and itsDFBaby(uId) or itsBCAgain(uId)) or UnitDistanceSquared(uId) ^ 0.5
 		end
 		if type(x) == "string" and UnitExists(x) then -- arguments: uId, uId2
 			-- First attempt to avoid UnitPosition if any of args is player UnitDistanceSquared should work

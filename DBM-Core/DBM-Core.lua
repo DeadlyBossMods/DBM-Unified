@@ -7477,14 +7477,35 @@ do
 	local rangeCache = {}
 	local rangeUpdated = {}
 
-	--No current apis possible for checking boss distance directly anymore, this will basically just forward request to CheckTankDistance backup
-	--This is being left in for two reasons. Many mods use it, and I've requested to blizzard to give a concession just for checking boss (only) directly
-	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, _, _, defaultReturn)--itemId, distance
+	function bossModPrototype:CheckBossDistance(cidOrGuid, onlyBoss, itemId, distance, defaultReturn)
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
-		--Just forward to CheckTankDistance now, at least until such a time there is something more to do here
-		return self:CheckTankDistance(cidOrGuid, nil, onlyBoss, defaultReturn)--Return tank distance check fallback
+		cidOrGuid = cidOrGuid or self.creatureId
+		local uId
+		if type(cidOrGuid) == "number" then--CID passed
+			uId = DBM:GetUnitIdFromCID(cidOrGuid, onlyBoss)
+		else--GUID
+			uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
+		end
+		if uId then
+			if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
+				itemId = itemId or 32698
+				local inRange = IsItemInRange(itemId, uId)
+				if inRange then--IsItemInRange was a success
+					return inRange
+				else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
+					DBM:Debug("CheckBossDistance failed on IsItemInRange due to bad check/unitId: "..cidOrGuid, 2)
+					return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
+				end
+			else--Non hostile, immediately forward to very gimped TankDistance check (43 yards within tank target)
+				DBM:Debug("CheckBossDistance failed on IsItemInRange due to friendly unit: "..cidOrGuid, 2)
+				return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
+			end
+		end
+		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
+		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
 	end
 
+	--This is still restricted because it uses friendly api, which isn't available to us in combat
 	function bossModPrototype:CheckTankDistance(cidOrGuid, _, onlyBoss, defaultReturn)--distance
 		if not DBM.Options.DontShowFarWarnings then return true end--Global disable.
 		--distance = distance or 43--Basically unused
