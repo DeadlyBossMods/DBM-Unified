@@ -28,6 +28,7 @@ do
 	local function AuraFrame_CreateIcon(frame)
 		-- base frame
 		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame, BackdropTemplateMixin and "BackdropTemplate")
+		iconFrame:EnableMouse(false)
 		iconFrame:SetBackdrop ({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
 		--local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame)
 		iconFrame:SetSize(DBM.Options.NPIconSize+2, DBM.Options.NPIconSize+2)
