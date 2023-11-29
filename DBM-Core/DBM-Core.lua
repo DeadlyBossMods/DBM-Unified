@@ -76,7 +76,7 @@ DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
 }
 
-local fakeBWVersion, fakeBWHash = 302, "1837480"--302.1
+local fakeBWVersion, fakeBWHash = 303, "479937c"--303.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
