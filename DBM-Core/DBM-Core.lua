@@ -85,7 +85,7 @@ if isRetail then
 	DBM.ReleaseRevision = releaseDate(2023, 11, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 8--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
-	DBM.DisplayVersion = "1.15.1"
+	DBM.DisplayVersion = "1.15.2 alpha"
 	DBM.ReleaseRevision = releaseDate(2023, 11, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 4--When this is incremented, trigger force disable regardless of major patch
 elseif isBCC then
@@ -7487,19 +7487,19 @@ do
 			uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
 		end
 		if uId then
-			if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
-				itemId = itemId or 32698
-				local inRange = IsItemInRange(itemId, uId)
-				if inRange then--IsItemInRange was a success
-					return inRange
-				else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
-					DBM:Debug("CheckBossDistance failed on IsItemInRange due to bad check/unitId: "..cidOrGuid, 2)
-					return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
-				end
-			else--Non hostile, immediately forward to very gimped TankDistance check (43 yards within tank target)
+			--if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
+			--	itemId = itemId or 32698
+			--	local inRange = IsItemInRange(itemId, uId)
+			--	if inRange then--IsItemInRange was a success
+			--		return inRange
+			--	else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
+			--		DBM:Debug("CheckBossDistance failed on IsItemInRange due to bad check/unitId: "..cidOrGuid, 2)
+			--		return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
+			--	end
+			--else--Non hostile, immediately forward to very gimped TankDistance check (43 yards within tank target)
 				DBM:Debug("CheckBossDistance failed on IsItemInRange due to friendly unit: "..cidOrGuid, 2)
 				return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
-			end
+			--end
 		end
 		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
 		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
