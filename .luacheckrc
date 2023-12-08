@@ -207,6 +207,7 @@ globals = {
 	"C_Scenario.GetStepInfo",
 	"C_Scenario.IsInScenario",
 	"C_Seasons",
+	"C_Seasons.GetActiveSeason",
 	"C_Seasons.HasActiveSeason",
 	"C_Timer.After",
 	"C_Timer.NewTicker",
