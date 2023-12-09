@@ -299,6 +299,7 @@ do
 				newBar.countdown = countdown
 				newBar.countdownMax = countdownMax
 				newBar.isCooldown = isCooldown
+				newBar.alwaysHuge = nil
 			else -- Duplicate code ;(
 				local newFrame = createBarFrame(self)
 				newBar = setmetatable({
@@ -309,6 +310,7 @@ do
 					owner = self,
 					moving = nil,
 					enlarged = nil,
+					alwaysHuge = nil,
 					fadingIn = 0,
 					small = small,
 					color = color,
@@ -325,7 +327,13 @@ do
 				newFrame.obj = newBar
 			end
 			self.numBars = self.numBars + 1
-			if ((colorType and colorType >= 7 and self.Options.Bar7ForceLarge) or (timer <= (self.Options.EnlargeBarTime or 11) or huge)) and self.Options.HugeBarsEnabled then -- Start enlarged
+			-- Bars that start huge by config (important color type or huge flag)
+			-- These are never resized to small
+			if ((colorType and colorType >= 7 and self.Options.Bar7ForceLarge) or huge) and self.Options.HugeBarsEnabled then
+				newBar.alwaysHuge = true
+			end
+			-- Bars that start huge either by config (above) or because they happen to be short timers
+			if (newBar.alwaysHuge or timer <= (self.Options.EnlargeBarTime or 11)) and self.Options.HugeBarsEnabled then
 				newBar.enlarged = true
 				newBar.huge = true
 				tinsert(largeBars, newBar)
@@ -664,7 +672,7 @@ end
 function barPrototype:ResetAnimations(makeBig)
 	self:RemoveFromList()
 	self.moving = nil
-	if DBT.Options.HugeBarsEnabled and makeBig then
+	if DBT.Options.HugeBarsEnabled and (makeBig or self.alwaysHuge) then
 		self.enlarged = true
 		tinsert(largeBars, self)
 	else
