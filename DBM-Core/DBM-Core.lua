@@ -5018,7 +5018,7 @@ do
 				SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t49\t4")
 				DBM:Debug("L.WORLD_BUFFS.zgHeartBooty detected")
 			elseif msg:find(L.WORLD_BUFFS.blackfathomBoon) then
-				SendWorldSync(self, 4, "WBA", "Blackfathom\tBoth\t430947\t6\t4")
+				--SendWorldSync(self, 4, "WBA", "Blackfathom\tBoth\t430947\t6\t4")
 				DBM:Debug("L.WORLD_BUFFS.blackfathomBoon detected")
 			end
 		end
