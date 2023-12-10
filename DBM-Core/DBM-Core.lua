@@ -5017,6 +5017,9 @@ do
 				-- 48.7, 49.76, 50.64, 49.42, 49.8, 50.67, 50.94, 51.06
 				SendWorldSync(self, 4, "WBA", "Zandalar\tBoth\t24425\t49\t4")
 				DBM:Debug("L.WORLD_BUFFS.zgHeartBooty detected")
+			elseif msg:find(L.WORLD_BUFFS.blackfathomBoon) then
+				SendWorldSync(self, 4, "WBA", "Blackfathom\tBoth\t430947\t6\t4")
+				DBM:Debug("L.WORLD_BUFFS.blackfathomBoon detected")
 			end
 		end
 		return onMonsterMessage(self, "yell", msg)
