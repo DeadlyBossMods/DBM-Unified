@@ -449,6 +449,9 @@ do
 			end
 		else
 			DBM:Debug("Not elected to set icons for "..(optionName or "nil"), 2)
+			if wipeGUID then
+				addsGUIDs[scanId] = nil
+			end
 		end
 	end
 end
