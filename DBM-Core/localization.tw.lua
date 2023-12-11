@@ -195,7 +195,7 @@ L.DPMCORE							= "警告: Deadly PvP 模組已經停止更新而且不相容此
 L.DBMLDB							= "警告: DBM-LDB已內建在"..L.DBM.."-核心。雖然它不會造成任何傷害，但建議從addons資料夾中刪除“DBM-LDB”"
 L.DBMLOOTREMINDER					= "警告：已安裝第三方模組 DBM-LootReminder。 此附加插件不再與正式版WOW客戶端相容，並且將導致"..L.DBM.."中斷並且無法發送請求計時器。 建議卸載此插件。"
 L.UPDATE_REQUIRES_RELAUNCH			= "警告: 如果你沒有重啟你的遊戲，這次"..L.DBM.."更新可能無法正確運作。這次更新包含了新的檔案或是.toc檔更新而不能使用ReloadUI載入。如果沒有將遊戲完全重啟可能會導致錯誤或功能不完整。"
-L.OUT_OF_DATE_NAG					= "你的"..L.DEADLY_BOSS_MODS.."版本已經過期，新版本針對特定的首領戰鬥增加新的功能和錯誤的修復。建議您進行更新來改善您的游戲體驗。"
+L.OUT_OF_DATE_NAG					= "你的"..L.DEADLY_BOSS_MODS.."版本已經過期，新版本針對特定的首領戰鬥增加新的功能和錯誤的修復。建議您進行更新來改善您的遊戲體驗。"
 L.PLATER_NP_AURAS_MSG					= "DBM包含一個進階功能，用於使用名條上的圖示顯示敵人冷卻時間。 對於大多數用戶而言，預設情況下是這樣的，但是對於Plater用戶而言，除非您啟用它，否則預設情況下它會在Plater選項中關閉。 為了充分利用DBM（和Plater），建議您在“ Buff Special”部分的Plater中啟用此功能。 如果您不想再次看到此訊息，也可以在DBM全局禁用或名條選項面板中的“名條上的冷卻圖標”選項中禁用。"
 
 L.MOVABLE_BAR					= "拖動我!"
