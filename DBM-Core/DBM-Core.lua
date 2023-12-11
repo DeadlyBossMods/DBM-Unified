@@ -7325,7 +7325,7 @@ end
 --Pretty much ANYTHING that has mythic mode, with mythic+ included
 function bossModPrototype:IsMythic()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "mythic" or diff == "challenge5" or diff == "mythicisland"
+	return diff == "mythic" or diff == "challenge5" or diff == "mythicisland" or diff == "mythic5"
 end
 
 function bossModPrototype:IsMythicPlus()
