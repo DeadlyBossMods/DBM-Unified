@@ -5190,9 +5190,11 @@ do
 		["normal"] = "normal",
 		["heroic"] = "heroic",
 		["mythic"] = "mythic",
+		["mythic5"] = "mythic",
 		["worldboss"] = "normal",
 		["timewalker"] = "timewalker",
 		["progressivechallenges"] = "normal",
+		["delve1"] = "normal",
 		--BFA
 		["normalwarfront"] = "normal",
 		["heroicwarfront"] = "heroic",
@@ -6036,7 +6038,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 20 then--Special event 20 player LFR Queue (never used yet)
 		return "event20", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 23 then--Mythic 5 man Dungeon
-		return "mythic", difficultyName.." - ", difficulty, instanceGroupSize, 0
+		return "mythic5", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 24 or difficulty == 33 then--Timewalking Dungeon, Timewalking Raid
 		return "timewalker", difficultyName.." - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 38 then--Normal BfA Island expedition
@@ -7245,6 +7247,12 @@ function bossModPrototype:IsEasyDungeon()
 	return diff == "heroic5" or diff == "normal5" or diff == "follower5"
 end
 
+--Dungeons: Any 5 man dungeon
+function bossModPrototype:IsDungeon()
+	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
+	return diff == "heroic5" or diff == "mythic5" or diff == "challenge5" or diff == "normal5"
+end
+
 --Dungeons: follower, normal, heroic. Raids: LFR, normal
 function bossModPrototype:IsEasy()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
@@ -7254,7 +7262,7 @@ end
 --Dungeons: mythic, mythic+. Raids: heroic, mythic
 function bossModPrototype:IsHard()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "mythic" or diff == "challenge5" or diff == "heroic" or diff == "humilityscenario"
+	return diff == "mythic" or diff == "mythic5" or diff == "challenge5" or diff == "heroic" or diff == "humilityscenario"
 end
 
 --Pretty much ANYTHING that has a normal mode
@@ -12134,7 +12142,7 @@ do
 	function DBM:ElectIconSetter(mod)
 		--elect icon person
 		if mod.findFastestComputer and not self.Options.DontSetIcons then
-			if self:GetRaidRank() > 0 then
+			if mod:IsDungeon() or self:GetRaidRank() > 0 then
 				for i = 1, #mod.findFastestComputer do
 					local option = mod.findFastestComputer[i]
 					if mod.Options[option] then
