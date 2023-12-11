@@ -72,9 +72,10 @@ local function showRealDate(curseDate)
 	end
 end
 
-DBM = {
+local DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
 }
+_G.DBM = DBM
 
 local fakeBWVersion, fakeBWHash = 303, "479937c"--303.0
 local bwVersionResponseString = "V^%d^%s"
@@ -620,7 +621,6 @@ end
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
 --------------------------------------------------------
-local DBM = DBM
 -- these global functions are accessed all the time by the event handler
 -- so caching them is worth the effort
 local ipairs, pairs, next = ipairs, pairs, next
@@ -7016,7 +7016,7 @@ do
 
 	function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
-		if name == "DBM-ProfilesDummy" then return end
+		if name == "DBM-ProfilesDummy" then return {} end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
@@ -8828,7 +8828,6 @@ do
 	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, soundOption, spellID, waCustomName)
 		if not text then
 			error("NewAnnounce: you must provide announce text", 2)
-			return
 		end
 		if type(text) == "number" then
 			DBM:Debug("|cffff0000NewAnnounce: Non auto localized text cannot be numbers, fix this for |r"..text)
@@ -9798,11 +9797,9 @@ do
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty, icon, spellID, waCustomName)
 		if not text then
 			error("NewSpecialWarning: you must provide special warning text", 2)
-			return
 		end
 		if type(text) == "string" and text:match("OptionVersion") then
 			error("NewSpecialWarning: you must provide remove optionversion hack for "..optionDefault)
-			return
 		end
 		if runSound == true then
 			runSound = 2
@@ -10988,8 +10985,7 @@ do
 	-- If a new countdown is added to an existing timer that didn't have one before, use optionName (number) to force timer to reset defaults by assigning it a new variable
 	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, inlineIcon, keep, countdown, countdownMax, r, g, b, requiresCombat)
 		if type(timer) == "string" and timer:match("OptionVersion") then
-			DBM:Debug("|cffff0000OptionVersion hack depricated, remove it from: |r"..spellId)
-			return
+			error("OptionVersion hack deprecated, remove it from: "..spellId)
 		end
 		if type(colorType) == "number" and colorType > 7 then
 			DBM:Debug("|cffff0000texture is in the colorType arg for: |r"..spellId)
