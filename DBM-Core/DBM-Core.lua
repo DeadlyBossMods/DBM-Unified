@@ -1645,12 +1645,29 @@ do
 								minToc = tonumber(GetAddOnMetadata(i, "X-Min-Interface-Wrath") or minToc)
 							end
 
+							local firstMapId = mapIdTable[1]
+							local firstMapName
+							if tonumber(firstMapId) then
+								firstMapName = GetRealZoneText(tonumber(firstMapId))
+							elseif firstMapId:sub(1, 1) == "m" then
+								firstMapName = C_Map.GetMapInfo(tonumber(firstMapId:sub(2)))
+								firstMapName = firstMapName and firstMapName.name
+							end
+							for j = #mapIdTable, 1, -1 do
+								local id = tonumber(mapIdTable[j])
+								if id then
+									mapIdTable[j] = id
+								elseif not (mapIdTable[j]:sub(1, 1) == "m" and tonumber(mapIdTable[j]:sub(2))) then
+									tremove(mapIdTable, j)
+								end
+							end
+
 							tinsert(self.AddOns, {
 								sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
 								type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 								category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 								statTypes		= isWrath and GetAddOnMetadata(i, "X-DBM-StatTypes-Wrath") or GetAddOnMetadata(i, "X-DBM-StatTypes") or "",
-								name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or CL.UNKNOWN,
+								name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or firstMapName or CL.UNKNOWN,
 								mapId			= mapIdTable,
 								subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 								oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1, -- Deprecated
@@ -1667,14 +1684,6 @@ do
 								minToc			= minToc,
 								modId			= addonName,
 							})
-							for j = #self.AddOns[#self.AddOns].mapId, 1, -1 do
-								local id = tonumber(self.AddOns[#self.AddOns].mapId[j])
-								if id then
-									self.AddOns[#self.AddOns].mapId[j] = id
-								else
-									tremove(self.AddOns[#self.AddOns].mapId, j)
-								end
-							end
 							if self.AddOns[#self.AddOns].subTabs then
 								local subTabs = self.AddOns[#self.AddOns].subTabs
 								for k, _ in ipairs(subTabs) do
@@ -1824,7 +1833,8 @@ do
 				"PLAYER_LEVEL_CHANGED",
 				"PARTY_INVITE_REQUEST",
 				"LOADING_SCREEN_DISABLED",
-				"LOADING_SCREEN_ENABLED"
+				"LOADING_SCREEN_ENABLED",
+				"ZONE_CHANGED_NEW_AREA"
 			)
 			if not isClassic then -- Retail, WoTLKC, and BCC
 				self:RegisterEvents(
@@ -1865,6 +1875,7 @@ do
 				healthCombatInitialized = true
 			end)
 			self:Schedule(10, runDelayedFunctions, self)
+			self:ZONE_CHANGED_NEW_AREA()
 		end
 	end
 end
@@ -3735,6 +3746,14 @@ do
 		end
 	end
 
+	-- Load based on MapIDs
+	function DBM:ZONE_CHANGED_NEW_AREA()
+		local mapID = C_Map.GetBestMapForUnit("player")
+		if mapID then
+			self:LoadModsOnDemand("mapId", "m" .. mapID)
+		end
+	end
+
 	function DBM:CHALLENGE_MODE_RESET()
 		difficultyIndex = 8
 		self:CheckAvailableMods()
@@ -3758,7 +3777,7 @@ do
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
-		self:Debug("LoadModsOnDemand fired")
+		self:Debug("LoadModsOnDemand fired for table " .. checkTable .. " value " .. tostring(checkValue))
 		for _, v in ipairs(self.AddOns) do
 			local modTable = v[checkTable]
 			local enabled = GetAddOnEnableState(playerName, v.modId)
@@ -7048,6 +7067,16 @@ do
 			obj.modelId = select(4, EJ_GetCreatureInfo(1, tonumber(name)))
 		elseif name:match("z%d+") then
 			local t = GetRealZoneText(string.sub(name, 2))
+			if type(nameModifier) == "number" then--do nothing
+			elseif type(nameModifier) == "function" then--custom name modify function
+				t = nameModifier(t or name)
+			else--default name modify
+				t = string.split(",", t or name)
+			end
+			obj.localization.general.name = t or name
+		elseif name:match("m%d+") then
+			local t = C_Map.GetMapInfo(tonumber(name:sub(2)))
+			t = t and t.name
 			if type(nameModifier) == "number" then--do nothing
 			elseif type(nameModifier) == "function" then--custom name modify function
 				t = nameModifier(t or name)
