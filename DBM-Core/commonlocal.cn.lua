@@ -1,7 +1,7 @@
 -- CL.Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
--- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20231008
+-- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20231212
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_COMMON_L then DBM_COMMON_L = {} end
@@ -30,6 +30,7 @@ CL.UP								= "上"
 CL.DOWN								= "下"
 CL.LEFT								= "左"
 CL.RIGHT							= "右"
+CL.CENTER							= "中间"
 CL.BOTH								= "两边"
 CL.BEHIND							= "后面"
 CL.BACK								= "背后"
@@ -77,9 +78,11 @@ CL.TANKCOMBO						= "坦克连击"
 CL.AOEDAMAGE						= "AOE 伤害"
 CL.GROUPSOAK						= "群体吸收"
 CL.GROUPSOAKS						= "群体吸收"
+CL.DODGES							= "躲闪"
 CL.POOL								= "池子"
 CL.POOLS							= "池子"
 CL.DEBUFFS							= "Debuffs"
+CL.DISPELS 							= "驱散"
 CL.PUSHBACK							= "推回"
 CL.FRONTAL							= "正面"
 CL.LASER							= "射线"
@@ -87,3 +90,4 @@ CL.LASERS							= "射线"
 CL.RIFT								= "裂隙"
 CL.RIFTS							= "裂隙"
 CL.TRAPS							= "陷阱"
+CL.ROOTS							= "树根"
