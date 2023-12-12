@@ -7531,19 +7531,19 @@ do
 			uId = DBM:GetUnitIdFromGUID(cidOrGuid, onlyBoss)
 		end
 		if uId then
-			--if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
-			--	itemId = itemId or 32698
-			--	local inRange = IsItemInRange(itemId, uId)
-			--	if inRange then--IsItemInRange was a success
-			--		return inRange
-			--	else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
-			--		DBM:Debug("CheckBossDistance failed on IsItemInRange due to bad check/unitId: "..cidOrGuid, 2)
-			--		return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
-			--	end
-			--else--Non hostile, immediately forward to very gimped TankDistance check (43 yards within tank target)
+			if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
+				itemId = itemId or 32698
+				local inRange = IsItemInRange(itemId, uId)
+				if inRange then--IsItemInRange was a success
+					return inRange
+				else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
+					DBM:Debug("CheckBossDistance failed on IsItemInRange due to bad check/unitId: "..cidOrGuid, 2)
+					return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
+				end
+			else--Non hostile, immediately forward to very gimped TankDistance check (43 yards within tank target)
 				DBM:Debug("CheckBossDistance failed on IsItemInRange due to friendly unit: "..cidOrGuid, 2)
 				return self:CheckTankDistance(cidOrGuid, distance, onlyBoss, defaultReturn)--Return tank distance check fallback
-			--end
+			end
 		end
 		DBM:Debug("CheckBossDistance failed on uId for: "..cidOrGuid, 2)
 		return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire
