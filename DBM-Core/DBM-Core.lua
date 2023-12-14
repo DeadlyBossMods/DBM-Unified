@@ -959,7 +959,12 @@ do
 	local args = setmetatable({}, argsMT)
 
 	function argsMT.__index:IsSpellID(...)
-		return tIndexOf({...}, args.spellId) ~= nil
+		for i = 1, select('#', ...) do
+			if args.spellId == select(i, ...) then
+				return true
+			end
+		end
+		return false
 	end
 
 	--Function exclusively used in classic era to make it a little cleaner to mass unifiy modules to auto check spellid or spellName based on game flavor
@@ -967,8 +972,8 @@ do
 	function argsMT.__index:IsSpell(...)
 	--	if isClassic then
 	--		--ugly ass performance wasting checks that have to first convert Ids to names because #nochanges
-	--		for _, spellId in ipairs({...}) do
-	--			local spellName = DBM:GetSpellInfo(spellId)
+	--		for i = 1, select('#', ...) do
+	--			local spellName = DBM:GetSpellInfo(select(i, ...))
 	--			if spellName and spellName == args.spellName then
 	--				return true
 	--			end
@@ -976,7 +981,12 @@ do
 	--		return false
 	--	else
 			--Just simple table comoparison
-			return tIndexOf({...}, args.spellId) ~= nil
+			for i = 1, select('#', ...) do
+				if args.spellId == select(i, ...) then
+					return true
+				end
+			end
+			return false
 	--	end
 	end
 
@@ -1232,7 +1242,8 @@ do
 
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss2" which only trigger the event for the given unit ids
 	function DBM:RegisterEvents(...)
-		for _, event in ipairs({...}) do
+		for i = 1, select('#', ...) do
+			local event = select(i, ...)
 			-- spell events with special care.
 			if event:sub(0, 6) == "SPELL_" and event ~= "SPELL_NAME_UPDATE" or event:sub(0, 6) == "RANGE_" or event:sub(0, 6) == "SWING_" or event == "UNIT_DIED" or event == "UNIT_DESTROYED" or event == "PARTY_KILL" then
 				registerCLEUEvent(self, event)
