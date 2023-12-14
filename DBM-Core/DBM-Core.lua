@@ -77,7 +77,7 @@ local DBM = {
 }
 _G.DBM = DBM
 
-local fakeBWVersion, fakeBWHash = 303, "479937c"--303.0
+local fakeBWVersion, fakeBWHash = 308, "ca844a7"--308.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
