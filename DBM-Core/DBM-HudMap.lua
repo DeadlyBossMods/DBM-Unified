@@ -27,7 +27,7 @@ local UnitExists, UnitIsUnit, UnitPosition, UnitIsConnected, GetPlayerFacing = U
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS
 
 -- TAXIROUTE_LINEFACTOR_2 global is removed in legion, but TAXIROUTE_LINEFACTOR still exists, so we create our own
-local TAXIROUTE_LINEFACTOR_2 = TAXIROUTE_LINEFACTOR_2 or TAXIROUTE_LINEFACTOR / 2
+local TAXIROUTE_LINEFACTOR_2 = TAXIROUTE_LINEFACTOR / 2
 
 -- Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont
