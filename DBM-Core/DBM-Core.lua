@@ -3658,6 +3658,17 @@ do
 			pvpShown = true
 		end
 	end
+
+	function DBM:CheckAvailableModsByMap()
+		local mapId = C_Map.GetBestMapForUnit("player")
+		if mapId and C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder then -- SoD
+			if mapId == 1440 and not pvpShown then
+				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
+				pvpShown = true
+			end
+		end
+	end
+
 	function DBM:TransitionToDungeonBGM(force, cleanup)
 		if cleanup then--Runs on zone change/cinematic Start (first load delay) and combat end
 			self:Unschedule(self.TransitionToDungeonBGM)
@@ -3786,6 +3797,7 @@ do
 		if mapID then
 			self:LoadModsOnDemand("mapId", "m" .. mapID)
 		end
+		DBM:CheckAvailableModsByMap()
 	end
 
 	function DBM:CHALLENGE_MODE_RESET()

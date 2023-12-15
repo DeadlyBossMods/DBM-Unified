@@ -58,6 +58,7 @@ globals = {
 	"tinsert",
 	"tostringall",
 	"tremove",
+	"Enum",
 
 	-- WoW
 	"ALL",
