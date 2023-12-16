@@ -3661,8 +3661,8 @@ do
 
 	function DBM:CheckAvailableModsByMap()
 		local mapId = C_Map.GetBestMapForUnit("player")
-		if mapId and C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder then -- SoD
-			if mapId == 1440 and not pvpShown then
+		if mapId == 1440 and C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder then -- SoD
+			if not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
 			end

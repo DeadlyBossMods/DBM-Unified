@@ -46,7 +46,7 @@ L.LOOT_SPEC_REMINDER					= "Your current spec is %s. Your current loot choice is
 
 L.BIGWIGS_ICON_CONFLICT					= L.DBM .. " has detected that you have raid icons turned on in both BigWigs and " .. L.DBM .. ". Please disable icons in one of them to avoid conflicts"
 
-L.MOD_AVAILABLE							= "%s is available for this zone. You can find download on Curse, Wago, WoWI, or from the GitHub Releases page"
+L.MOD_AVAILABLE							= "%s is available for this zone. You can download it on Curse, Wago, WoWI, or from the GitHub Releases page."
 
 L.COMBAT_STARTED						= "%s engaged. Good luck and have fun! :)"
 L.COMBAT_STARTED_IN_PROGRESS			= "Engaged an in progress fight against %s. Good luck and have fun! :)"
