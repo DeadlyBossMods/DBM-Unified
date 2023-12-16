@@ -8624,6 +8624,8 @@ do
 
 	local textureCode = " |T%s:12:12|t "
 	local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blank not strips(example: Interface\\Icons\\Spell_Frost_Ring of Frost). But this have limitations. Since I'm poor at regular expressions, this is not good fix. Do you have another good regular expression, tandanu?
+
+	---@class Announce
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
 
@@ -8912,7 +8914,6 @@ do
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter)
 		if not spellId then
 			error("newAnnounce: you must provide spellId", 2)
-			return
 		end
 		local optionVersion, alternateSpellId
 		if type(optionName) == "number" then
@@ -9074,13 +9075,14 @@ end
 --  Yell Object  --
 --------------------
 do
-	local voidForm = GetSpellInfo(194249)
+	---@class Yell
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
+	local voidForm = GetSpellInfo(194249)
+
 	local function newYell(self, yellType, spellId, yellText, optionDefault, optionName, chatType)
 		if not spellId and not yellText then
 			error("NewYell: you must provide either spellId or yellText", 2)
-			return
 		end
 		local optionVersion
 		if type(optionName) == "number" then
@@ -9395,6 +9397,7 @@ do
 		end
 	end
 
+	---@class SpecialWarning
 	local specialWarningPrototype = {}
 	local mt = {__index = specialWarningPrototype}
 
@@ -9882,7 +9885,6 @@ do
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty)
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
-			return
 		end
 		if runSound == true then
 			runSound = 2
@@ -10243,6 +10245,7 @@ end
 --  Timer Object  --
 --------------------
 do
+	---@class Timer
 	local timerPrototype = {}
 	local mt = {__index = timerPrototype}
 	local countvoice1, countvoice2, countvoice3, countvoice4
@@ -11301,6 +11304,7 @@ end
 --  Berserk/Combat Objects  --
 ------------------------------
 do
+	---@class EnrageTimer
 	local enragePrototype = {}
 	local mt = {__index = enragePrototype}
 
