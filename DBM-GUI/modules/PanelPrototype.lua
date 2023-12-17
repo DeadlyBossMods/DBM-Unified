@@ -49,6 +49,8 @@ local function parseDescription(name, usesHTML)
 	return name, spellName
 end
 
+---@class DBMPanel: DBMGUI
+---@field frame Frame
 local PanelPrototype = {}
 setmetatable(PanelPrototype, {
 	__index = DBM_GUI
@@ -63,6 +65,7 @@ function PanelPrototype:SetLastObj(obj)
 end
 
 function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid, scale)
+	---@class DBMPanelCreatureModel: PlayerModel
 	local model = CreateFrame("PlayerModel", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	model.mytype = "modelframe"
 	model:SetSize(width or 100, height or 200)
@@ -75,6 +78,7 @@ function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid, scal
 end
 
 function PanelPrototype:CreateSpellDesc(text)
+	---@class DBMPanelSpellDesc: Frame
 	local test = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	local textblock = self.frame:CreateFontString(test:GetName() .. "Text", "ARTWORK")
 	textblock:SetFontObject(GameFontNormal)
@@ -110,25 +114,30 @@ function PanelPrototype:CreateSpellDesc(text)
 end
 
 function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myheight)
-	local test = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
-	local textblock = self.frame:CreateFontString(test:GetName() .. "Text", "ARTWORK")
+	---@class DBMPanelText: Frame
+	local textFrame = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
+	---@class DBMPanelTextblock: FontString
+	---@field myheight number
+	local textblock = self.frame:CreateFontString(textFrame:GetName() .. "Text", "ARTWORK")
 	textblock:SetFontObject(style or GameFontNormal)
 	textblock:SetText(parseDescription(text))
 	textblock:SetJustifyH(justify or "LEFT")
-	textblock:SetPoint("TOPLEFT", test)
+	textblock:SetPoint("TOPLEFT", textFrame)
 	textblock:SetWidth(width or self.frame:GetWidth())
 	if autoplaced then
-		test:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 15, -5)
+		textFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 15, -5)
 	end
-	test:SetSize(width or self.frame:GetWidth(), textblock:GetStringHeight())
-	test.mytype = "textblock"
-	test.autowidth = not width
-	test.myheight = myheight
+	textFrame:SetSize(width or self.frame:GetWidth(), textblock:GetStringHeight())
+	textFrame.mytype = "textblock"
+	textFrame.autowidth = not width
+	textFrame.myheight = myheight
 	self:SetLastObj(textblock)
 	return textblock
 end
 
 function PanelPrototype:CreateButton(title, width, height, onclick, font)
+	---@class DBMPanelButton: Button
+	---@field myheight number
 	local button = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
 	button.mytype = "button"
 	button:SetSize(width or 100, height or 20)
@@ -148,6 +157,8 @@ function PanelPrototype:CreateButton(title, width, height, onclick, font)
 end
 
 function PanelPrototype:CreateColorSelect(dimension, useAlpha, alphaWidth)
+	---@class DBMPanelColorSelect: ColorSelect
+	---@field myheight number
 	local colorSelect = CreateFrame("ColorSelect", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	colorSelect.mytype = "colorselect"
 	colorSelect:SetSize((dimension or 128) + (useAlpha and 38 or 0), dimension or 128)
@@ -177,6 +188,7 @@ function PanelPrototype:CreateColorSelect(dimension, useAlpha, alphaWidth)
 end
 
 function PanelPrototype:CreateSlider(text, low, high, step, width)
+	---@class DBMPanelSlider: Slider
 	local slider = CreateFrame("Slider", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "OptionsSliderTemplate")
 	slider.mytype = "slider"
 	slider.myheight = 50
@@ -193,6 +205,8 @@ function PanelPrototype:CreateSlider(text, low, high, step, width)
 end
 
 function PanelPrototype:CreateScrollingMessageFrame(width, height, _, fading, fontobject)
+	---@class DBMScrollingMessageFrame: ScrollFrame, MessageFrame, FontString
+	---@diagnostic disable-next-line:assign-type-mismatch
 	local scroll = CreateFrame("ScrollingMessageFrame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	scroll.mytype = "scroll"
 	scroll:SetSize(width or 200, height or 150)
@@ -214,6 +228,8 @@ function PanelPrototype:CreateScrollingMessageFrame(width, height, _, fading, fo
 end
 
 function PanelPrototype:CreateEditBox(text, value, width, height)
+	---@class DBMEditBox: EditBox
+	---@field myheight number
 	local textbox = CreateFrame("EditBox", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "BackdropTemplate,InputBoxTemplate")
 	textbox.mytype = "textbox"
 	textbox:SetSize(width or 100, height or 20)
@@ -233,6 +249,7 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 end
 
 function PanelPrototype:CreateLine(text)
+	---@class DBMPanelLine: Frame
 	local line = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame)
 	line:SetSize(self.frame:GetWidth() - 20, 20)
 	if select("#", self.frame:GetChildren()) == 2 then
@@ -327,11 +344,12 @@ do
 
 	function PanelPrototype:CreateCheckButton(name, autoplace, textLeft, dbmvar, dbtvar, mod, modvar, globalvar, isTimer)
 		if not name then
-			return
+			error("CreateCheckButton: name must not be nil")
 		end
 		if type(name) == "number" then
-			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id." .. name)
+			error("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id." .. name)
 		end
+		---@class DBMCheckButton: CheckButton
 		local button = CreateFrame("CheckButton", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "OptionsBaseCheckButtonTemplate")
 		button:SetHitRectInsets(0, 0, 0, 0)
 		button.myheight = 25
@@ -376,6 +394,7 @@ do
 				frame:ClearAllPoints()
 				frame:SetPoint("LEFT", button, "RIGHT", -20, 2)
 				if mod.Options[modvar .. "SWNote"] then -- Mod has note, insert note hack
+					---@class DBMPanelButtonWithNote: Button
 					frame2 = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
 					frame2:SetPoint("LEFT", frame, "RIGHT", 35, 0)
 					frame2:SetSize(25, 25)
@@ -397,7 +416,7 @@ do
 		local buttonText
 		if desc then -- Switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			buttonText = CreateFrame("SimpleHTML", "$parentText", button)
-			buttonText:SetFontObject("p", "GameFontNormal")
+			buttonText:SetFontObject("p", GameFontNormal)
 			buttonText:SetHyperlinksEnabled(true)
 			buttonText:SetScript("OnHyperlinkEnter", function(self, data)
 				GameTooltip:SetOwner(self, "ANCHOR_NONE")
@@ -499,6 +518,7 @@ do
 end
 
 function PanelPrototype:CreateArea(name)
+	---@class DBMPanelArea: Frame, BackdropTemplate
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "TooltipBorderBackdropTemplate")
 	area.mytype = "area"
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.2)
@@ -528,6 +548,7 @@ local function handleWAKeyHyperlink(self, link)
 end
 
 function PanelPrototype:CreateAbility(titleText, icon, spellID)
+	---@class DBMPanelAbility: Frame, BackdropTemplate
 	local area = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "TooltipBorderBackdropTemplate")
 	area.mytype = "ability"
 	area.hidden = not DBM.Options.AutoExpandSpellGroups
@@ -555,6 +576,9 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID)
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
 	title:SetFontObject("GameFontWhite")
 	-- Button
+	---@class DBMPanelAbilityButton: Button
+	---@field toggle Button
+	---@field highlight Frame
 	local button = CreateFrame("Button", area:GetName() .. "Button", area, "OptionsListButtonTemplate")
 	button:ClearAllPoints()
 	button:SetPoint("LEFT", title, -15, 0)
@@ -583,6 +607,7 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID)
 end
 
 function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, _, displayName)
+	---@class DBMPanelFrame: Frame
 	local panel = CreateFrame("Frame", "DBM_GUI_Option_" .. self:GetNewID(), _G["DBM_GUI_OptionsFramePanelContainer"])
 	panel.mytype = "panel"
 	panel.ID = self:GetCurrentID()

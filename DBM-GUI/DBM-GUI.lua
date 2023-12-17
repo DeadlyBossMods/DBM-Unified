@@ -1,16 +1,27 @@
 local L = DBM_GUI_L
 
-DBM_GUI = {
+---@class DBMGUI
+---@field CreateNewPanel fun(self, frameName, frameType, showSub, _, displayName): DBMPanel -- defined in PanelPrototype
+---@field CreateDropdown fun(self, title, values, vartype, var, callfunc, width, height, parent): DBMDropdownTemplate
+---@field currentViewing Frame
+---@field frame DBMPanelFrame
+---@field Cat_Timers DBMPanel
+---@field Cat_General DBMPanel
+---@field Cat_Frames DBMPanel
+---@field Cat_Filters DBMPanel
+---@field Cat_Alerts DBMPanel
+local DBM_GUI = {
 	tabs	= {},
 	panels	= {}
 }
+_G.DBM_GUI = DBM_GUI
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local next, type, pairs, strsplit, tonumber, tostring, ipairs, tinsert, tsort, mfloor, slower = next, type, pairs, strsplit, tonumber, tostring, ipairs, table.insert, table.sort, math.floor, string.lower
 local CreateFrame, C_Timer, GetExpansionLevel, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent = CreateFrame, C_Timer, GetExpansionLevel, GameFontNormal, GameFontNormalSmall, GameFontHighlight, GameFontHighlightSmall, ChatFontNormal, UIParent
 local RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION = RAID_DIFFICULTY1, RAID_DIFFICULTY2, RAID_DIFFICULTY3, RAID_DIFFICULTY4, PLAYER_DIFFICULTY1, PLAYER_DIFFICULTY2, PLAYER_DIFFICULTY3, PLAYER_DIFFICULTY6, PLAYER_DIFFICULTY_TIMEWALKER, CHALLENGE_MODE, ALL, CLOSE, SPECIALIZATION
-local LibStub, DBM, DBM_GUI, DBM_OPTION_SPACER = _G["LibStub"], DBM, DBM_GUI, DBM_OPTION_SPACER
+local DBM, DBM_OPTION_SPACER = DBM, DBM_OPTION_SPACER
 local playerName, realmName, playerLevel = UnitName("player"), GetRealmName(), UnitLevel("player")
 
 StaticPopupDialogs["IMPORTPROFILE_ERROR"] = {
@@ -139,6 +150,7 @@ do
 	local popupFrame
 
 	local function createPopupFrame()
+		---@class DBMPopup: BackdropTemplate, Frame
 		popupFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 		popupFrame:SetFrameStrata("DIALOG")
 		popupFrame:SetFrameLevel(popupFrame:GetFrameLevel() + 10)
@@ -161,6 +173,7 @@ do
 		popupFrame:Hide()
 		popupFrame.text = ""
 
+		---@class DBMPopupBackdrop: Frame, BackdropTemplate
 		local backdrop = CreateFrame("Frame", nil, popupFrame, "BackdropTemplate")
 		backdrop.backdropInfo = {
 			bgFile		= "Interface\\ChatFrame\\ChatFrameBackground",
@@ -176,6 +189,7 @@ do
 		backdrop:SetPoint("TOPLEFT", 15, -15)
 		backdrop:SetPoint("BOTTOMRIGHT", -40, 40)
 
+		---@class DBMPopupScrollframe: ScrollFrame
 		local scrollFrame = CreateFrame("ScrollFrame", nil, popupFrame, "UIPanelScrollFrameTemplate")
 		scrollFrame:SetPoint("TOPLEFT", 15, -22)
 		scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
@@ -201,6 +215,7 @@ do
 		input:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT")
 		input:SetWidth(452)
 
+		---@class DBMPopupButton: Button
 		local import = CreateFrame("Button", nil, popupFrame, "UIPanelButtonTemplate")
 		import:SetPoint("BOTTOMRIGHT", -120, 13)
 		import:SetFrameLevel(import:GetFrameLevel() + 1)
@@ -418,7 +433,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 				if mod.groupOptions[spellID].title then--Custom title, it's a bogus spellId, so we completely ignore it and bundle with localized custom title
 					title, desc, icon = mod.groupOptions[spellID].title, L.CustomOptions, 136116
 				elseif tonumber(spellID) then
-					spellID = tonumber(spellID)
+					spellID = tonumber(spellID) or 0
 					if spellID < 0 then
 						title, desc, _, icon = DBM:EJ_GetSectionInfo(-spellID)
 					else
