@@ -42,7 +42,7 @@ end)
 
 local bminfo = generaloptions:CreateButton(L.Button_InfoFrame, 120, 30)
 bminfo.myheight = 0
-bminfo:SetPoint("LEFT", bmrange, "RIGHT", 2, 0)
+bminfo:SetPoint("TOPLEFT", bmrange, "BOTTOMLEFT", 0, -2)
 bminfo:SetScript("OnClick", function()
 	if DBM.InfoFrame:IsShown() then
 		DBM.InfoFrame:Hide()
@@ -53,19 +53,19 @@ end)
 
 local bmtestmode = generaloptions:CreateButton(L.Button_TestBars, 120, 30)
 bmtestmode.myheight = 0
-bmtestmode:SetPoint("TOP", bminfo, "BOTTOM", 2, 0)--bmrange
+bmtestmode:SetPoint("LEFT", bmrange, "RIGHT", 6, 0)
 bmtestmode:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
 
 local moveme = generaloptions:CreateButton(L.Button_MoveBars, 120, 30)
-moveme:SetPoint("LEFT", bmtestmode, "RIGHT", 2, 0)
+moveme:SetPoint("TOPLEFT", bmtestmode, "BOTTOMLEFT", 0, -2)
 moveme:SetScript("OnClick", function()
 	DBT:ShowMovableBar()
 end)
 
 local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)
-latencySlider:SetPoint("BOTTOMLEFT", bminfo, "BOTTOMLEFT", 10, -70)--bmrange
+latencySlider:SetPoint("TOPLEFT", bminfo, "BOTTOMLEFT", 4, -20)
 latencySlider:SetValue(DBM.Options.LatencyThreshold)
 latencySlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.LatencyThreshold = self:GetValue()
