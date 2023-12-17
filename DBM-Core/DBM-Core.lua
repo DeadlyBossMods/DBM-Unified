@@ -8015,9 +8015,9 @@ function DBM:IsTanking(playerUnitID, enemyUnitID, isName, onlyRequested, enemyGU
 		if GetPartyAssignment("MAINTANK", playerUnitID, 1) then
 			return true
 		end
-		if isRetail then
+		if not isClassic and not isBCC then--Allow boss checks in wrath and later
 			--no SpecID checks because SpecID is only availalbe with DBM/Bigwigs, but both DBM/Bigwigs auto set DAMAGER/HEALER/TANK roles anyways so it'd be redundant
-			if UnitGroupRolesAssigned(playerUnitID) == "TANK" then
+			if UnitGroupRolesAssigned and UnitGroupRolesAssigned(playerUnitID) == "TANK" then
 				return true
 			end
 			for i = 1, 10 do
