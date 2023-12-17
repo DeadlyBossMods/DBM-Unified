@@ -6,6 +6,7 @@ local DBM = DBM
 
 local defaultFont, defaultFontSize = GameFontHighlightSmall:GetFont()
 
+---@class DBM_GUI_DropDownTemplate: ScrollFrame, BackdropTemplate
 local tabFrame1 = CreateFrame("ScrollFrame", "DBM_GUI_DropDown", _G["DBM_GUI_OptionsFrame"], "DBM_GUI_DropDownTemplate")
 tabFrame1.backdropInfo = {
 	bgFile		= "Interface\\ChatFrame\\ChatFrameBackground", -- 130937
@@ -75,6 +76,7 @@ end)
 
 tabFrame1.buttons = {}
 for i = 1, 10 do
+	---@class DBMFrameButton: Button, BackdropTemplate
 	local button = CreateFrame("Button", tabFrame1:GetName() .. "Button" .. i, tabFrame1, "BackdropTemplate,UIDropDownMenuButtonTemplate")
 	_G[button:GetName() .. "Check"]:Hide()
 	_G[button:GetName() .. "UnCheck"]:Hide()
@@ -184,6 +186,9 @@ function tabFrame1:Refresh()
 	ClickFrame:Show()
 end
 
+---@class DBMDropdownTemplate: Frame
+---@field values table
+---@field myheight number
 local dropdownPrototype = CreateFrame("Frame")
 
 function dropdownPrototype:SetSelectedValue(selected)
@@ -206,6 +211,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 			entry.value = entry.value or entry.text
 		end
 	end
+	---@class DBMDropDown: Frame, DBMDropdownTemplate
 	local dropdown = CreateFrame("Frame", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "UIDropDownMenuTemplate")
 	dropdown.mytype = "dropdown"
 	dropdown.width = width

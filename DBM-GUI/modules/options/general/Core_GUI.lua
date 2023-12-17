@@ -168,8 +168,8 @@ resizeHeight:SetScript("OnEnterPressed", function(self)
 end)
 
 optionsFrame:HookScript("OnSizeChanged", function(self)
-	resizeWidth:SetText(math.floor(self:GetWidth() * 10 ^ 2 + 0.5) / 10 ^ 2)
-	resizeHeight:SetText(math.floor(self:GetHeight() * 10 ^ 2 + 0.5) / 10 ^ 2)
+	resizeWidth:SetText(tostring(math.floor(self:GetWidth() * 10 ^ 2 + 0.5) / 10 ^ 2))
+	resizeHeight:SetText(tostring(math.floor(self:GetHeight() * 10 ^ 2 + 0.5) / 10 ^ 2))
 end)
 
 local UIGroupingOptions = coreoptions:CreateArea(L.UIGroupingOptions)

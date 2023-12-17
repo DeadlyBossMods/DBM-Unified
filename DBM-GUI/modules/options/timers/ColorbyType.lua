@@ -62,6 +62,7 @@ color2Type1:SetScript("OnColorSelect", function(self)
 	color2Type1text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar1: DBTBar
 local dummybarcolor1 = DBT:CreateDummyBar(1, nil, L.CBTAdd)
 dummybarcolor1.frame:SetParent(BarColors.frame)
 dummybarcolor1.frame:SetPoint("TOP", color2Type1text, "LEFT", 10, 40)
@@ -121,6 +122,7 @@ color2Type2:SetScript("OnColorSelect", function(self)
 	color2Type2text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar2: DBTBar
 local dummybarcolor2 = DBT:CreateDummyBar(2, nil, L.CBTAOE)
 dummybarcolor2.frame:SetParent(BarColors.frame)
 dummybarcolor2.frame:SetPoint("TOP", color2Type2text, "LEFT", 10, 40)
@@ -180,6 +182,7 @@ color2Type3:SetScript("OnColorSelect", function(self)
 	color2Type3text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar3: DBTBar
 local dummybarcolor3 = DBT:CreateDummyBar(3, nil, L.CBTTargeted)
 dummybarcolor3.frame:SetParent(BarColors.frame)
 dummybarcolor3.frame:SetPoint("TOP", color2Type3text, "LEFT", 10, 40)
@@ -239,6 +242,7 @@ color2Type4:SetScript("OnColorSelect", function(self)
 	color2Type4text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar4: DBTBar
 local dummybarcolor4 = DBT:CreateDummyBar(4, nil, L.CBTInterrupt)
 dummybarcolor4.frame:SetParent(BarColors.frame)
 dummybarcolor4.frame:SetPoint("TOP", color2Type4text, "LEFT", 10, 40)
@@ -298,6 +302,7 @@ color2Type5:SetScript("OnColorSelect", function(self)
 	color2Type5text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar5: DBTBar
 local dummybarcolor5 = DBT:CreateDummyBar(5, nil, L.CBTRole)
 dummybarcolor5.frame:SetParent(BarColors.frame)
 dummybarcolor5.frame:SetPoint("TOP", color2Type5text, "LEFT", 10, 40)
@@ -357,6 +362,7 @@ color2Type6:SetScript("OnColorSelect", function(self)
 	color2Type6text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar6: DBTBar
 local dummybarcolor6 = DBT:CreateDummyBar(6, nil, L.CBTPhase)
 dummybarcolor6.frame:SetParent(BarColors.frame)
 dummybarcolor6.frame:SetPoint("TOP", color2Type6text, "LEFT", 10, 40)
@@ -418,6 +424,7 @@ color2Type7:SetScript("OnColorSelect", function(self)
 	color2Type7text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar7: DBTBar
 local dummybarcolor7 = DBT:CreateDummyBar(7, nil, L.CBTImportant)
 dummybarcolor7.frame:SetParent(ImpBarColors.frame)
 dummybarcolor7.frame:SetPoint("TOP", color2Type7text, "LEFT", 10, 40)
@@ -478,6 +485,7 @@ color2Type8:SetScript("OnColorSelect", function(self)
 	color2Type8text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class DummyColorBar8: DBTBar
 local dummybarcolor8 = DBT:CreateDummyBar(8, nil, L.CBTImportant)
 dummybarcolor8.frame:SetParent(ImpBarColors.frame)
 dummybarcolor8.frame:SetPoint("TOP", color2Type8text, "LEFT", 10, 40)
