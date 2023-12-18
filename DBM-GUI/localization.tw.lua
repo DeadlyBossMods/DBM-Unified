@@ -272,8 +272,8 @@ L.Area_BrowseOtherCT		= "在Curse上瀏覽倒數包"
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
 -- Panel: Event Sounds
-L.Panel_EventSounds				= "事件音效"
-L.Area_SoundSelection			= "音效選擇 (使用滑鼠滾輪捲動選單)"
+L.Panel_EventSounds				= "事件音效 (勝利、滅團..等等)"
+L.Area_SoundSelection			= "音效選擇，包含勝利、滅團、開怪以及背景音樂"
 L.EventVictorySound				= "設定戰鬥勝利時的音效"
 L.EventWipeSound				= "設定滅團或重置時的音效"
 L.EventEngagePT					= "設定開怪倒數開始的音效"
