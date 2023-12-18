@@ -539,7 +539,7 @@ L.EnableWBSharing 					= "Share when you pull/defeat a world boss with your guil
 L.TabCategory_Frames				= "Frames & Integrations"
 L.Area_NamelateInfo					= "DBM Nameplate Auras Info"
 -- Panel: InfoFrame
-L.Panel_InfoFrame					= "Infoframe (altPower, etc)"
+L.Panel_InfoFrame					= "Infoframe"
 
 -- Panel: Range
 L.Panel_Range						= "Rangeframe"
