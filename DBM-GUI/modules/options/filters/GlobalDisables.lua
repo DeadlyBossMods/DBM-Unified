@@ -1,5 +1,7 @@
 local L = DBM_GUI_L
 
+--Centralized space to disable any feature from any other panel. Many options are duplicated here, but that's fine
+--It's a one stop shop for disabling any DBM core feature
 local spamPanel = DBM_GUI.Cat_Filters:CreateNewPanel(L.Panel_SpamFilter, "option")
 
 local spamSpecAnnounceFeat = spamPanel:CreateArea(L.Area_SpamFilter_SpecFeatures)
