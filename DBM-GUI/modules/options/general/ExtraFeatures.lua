@@ -1,5 +1,4 @@
 local L = DBM_GUI_L
-local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local extraFeaturesPanel	= DBM_GUI.Cat_General:CreateNewPanel(L.Panel_ExtraFeatures, "option")
 

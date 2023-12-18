@@ -93,21 +93,6 @@ L.ShowWAKeys						= "Show WeakAuras keys next to spell names to assist in writin
 L.NoDescription						= "This ability has no description"
 L.CustomOptions						= "This category contains custom options for an ability or event that has no spell or journal ID of it's own. These options have been grouped together using a custom manual ID for the ease of creating WeakAuras"
 
--- Panel: Extra Features
-L.Panel_ExtraFeatures				= "Extra Features"
-
-L.Area_SoundAlerts					= "Sound/Flash Alert Options"
-L.LFDEnhance						= "Play ready check sound and flash application icon for role checks &amp; BG/LFG proposals in Master or Dialog audio channel (I.E. sounds work even if SFX are off and are generally louder)"
-L.WorldBossNearAlert				= "Play ready check sound and flash application icon when world bosses you are near to are pulled that you need"
-L.RLReadyCheckSound					= "When a ready check is performed, play sound through Master or Dialog audio channel and flash application icon."
-L.AFKHealthWarning					= "Play alert sound and flash application icon if you are losing health while AFK"
-L.AutoReplySound					= "Play alert sound and flash application icon when receiving DBM auto reply whisper"
---
-L.TimerGeneral 						= "Timer Options"
-L.SKT_Enabled						= "Show record victory timer for current fight if available"
-L.ShowRespawn						= "Show boss respawn timer after a wipe"
-L.ShowQueuePop						= "Show time remaining to accept a queue pop (LFG,BG,etc)"
-L.ShowBerserkWarnings				= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
 --
 
 -- Panel: Auto Logging
@@ -131,6 +116,22 @@ L.LogCurrentMPlus					= "Current level M+ dungeons"--Retail Only
 L.LogCurrentMythicZero				= "Current level Mythic 0 dungeons"--Retail Only
 L.LogTWDungeons						= "Timewalking or Chromie Time dungeons"--Retail Only
 L.LogCurrentHeroic					= "Current level Heroic dungeons (Note: if you are doing heroic via queuing and want it logged, turn off LFG filter)"
+
+-- Panel: Extra Features
+L.Panel_ExtraFeatures				= "Extra Features"
+
+L.Area_SoundAlerts					= "Sound/Flash Alert Options"
+L.LFDEnhance						= "Play ready check sound and flash application icon for role checks &amp; BG/LFG proposals in Master or Dialog audio channel (I.E. sounds work even if SFX are off and are generally louder)"
+L.WorldBossNearAlert				= "Play ready check sound and flash application icon when world bosses you are near to are pulled that you need"
+L.RLReadyCheckSound					= "When a ready check is performed, play sound through Master or Dialog audio channel and flash application icon."
+L.AFKHealthWarning					= "Play alert sound and flash application icon if you are losing health while AFK"
+L.AutoReplySound					= "Play alert sound and flash application icon when receiving DBM auto reply whisper"
+--
+L.TimerGeneral 						= "Timer Options"
+L.SKT_Enabled						= "Show record victory timer for current fight if available"
+L.ShowRespawn						= "Show boss respawn timer after a wipe"
+L.ShowQueuePop						= "Show time remaining to accept a queue pop (LFG,BG,etc)"
+L.ShowBerserkWarnings				= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
 --
 L.Area_3rdParty						= "3rd Party Addon Options"
 L.oRA3AnnounceConsumables			= "Announce oRA3 consumables check on combat start"
