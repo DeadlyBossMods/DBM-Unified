@@ -278,8 +278,8 @@ L.Area_BrowseOtherCT				= "Browse countdown packs on curse"
 L.BrowseOtherCTs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
 -- Panel: Event Sounds
-L.Panel_EventSounds					= "Event Sounds"
-L.Area_SoundSelection				= "Sound Selections for Victory, Wipe, and background music"
+L.Panel_EventSounds					= "Event Sounds (Victory, Wipe, etc)"
+L.Area_SoundSelection				= "Sound Selections for Victory, Wipe, Pull, and background music"
 L.EventVictorySound					= "Set sound played for encounter victory"
 L.EventWipeSound					= "Set sound played for encounter wipe"
 L.EventEngagePT						= "Set sound played for pull timer start"
