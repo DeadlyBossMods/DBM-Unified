@@ -46,5 +46,5 @@ local EngageSoundDropdown = pbcSoundsArea:CreateDropdown(L.EventEngageSound, Sou
 	DBM.Options.EventSoundEngage2 = value
 	DBM:PlaySoundFile(DBM.Options.EventSoundEngage2)
 end, 180)
-EngageSoundDropdown:SetPoint("LEFT", PullSoundDropdown, "RIGHT", 45, 0)
+EngageSoundDropdown:SetPoint("TOPLEFT", PullSoundDropdown, "TOPLEFT", 0, -45)
 EngageSoundDropdown.myheight = 40
