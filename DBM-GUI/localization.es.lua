@@ -6,14 +6,15 @@ local L = DBM_GUI_L
 L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Traducido por "
-L.TranslationBy 			= "Saispai"
+L.TranslationBy 			= "Saispai, Woopy"
 L.Website					= "Visita nuestro canal de Discord (|cFF73C2FBhttps://discord.gg/deadlybossmods|r) y síguenos en Twitter (@deadlybossmods)."
 L.WebsiteButton				= "Página web"
 
 L.OTabBosses	= "Jefes"
 L.OTabRaids		= "Bandas"
-L.OTabDungeons	= "Mazmorras/otros"
+L.OTabDungeons	= "Mazmorras"
 L.OTabPlugins	= "Plugins"
+L.OTabOptions	= "Opciones"
 L.OTabAbout		= "Acerca de"
 
 L.TabCategory_OTHER    		= "Otros módulos"
@@ -33,6 +34,8 @@ L.Button_LoadMod 			= "Cargar módulo"
 L.Mod_Enabled				= "Habilitar módulo"
 L.Mod_Reset					= "Cargar opciones por defecto"
 L.Reset 					= "Restaurar"
+L.Import					= "Importar"
+
 
 L.NoSound					= "Sin sonido"
 
@@ -72,9 +75,20 @@ L.EnableModels				= "Mostrar modelos 3D en opciones de jefe"
 L.ModelSoundOptions			= "Sonido"
 
 L.ResizeOptions			 	= "Tamaño de la ventana"
+L.ResizeInfo				= "Puedes cambiar el tamaño de la GUI haciendo clic en la esquina inferior derecha y arrastrándola."
 L.Button_ResetWindowSize	= "Restaurar tamaño"
 L.Editbox_WindowWidth		= "Horizontal"
 L.Editbox_WindowHeight		= "Vertical"
+
+L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere recargar la IU para cualquier módulo que ya esté cargado)"
+L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupen por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
+L.GroupOptionsExcludePAura			= "Excluir que las opciones 'Reproducir sonido de aura privada' se agrupen por hechizo (en su lugar, se agruparán en su propia categoría 'Auras privadas')"
+L.AutoExpandSpellGroups				= "Expandir opciones automáticamente que están agrupadas por hechizo"
+L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de Jefe."
+--L.ShowSpellDescWhenExpanded	= "Continue showing spell description when groups are expanded"--Might not be used
+L.NoDescription						= "Esta habilidad no tiene descripción."
+L.CustomOptions						= "Esta categoría contiene opciones personalizadas para una habilidad o evento que no tiene ningún hechizo o ID de diario propio. Estas opciones se han agrupado utilizando una identificación manual personalizada para facilitar la creación de WeakAuras."
+
 
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "Funciones adicionales"
@@ -90,12 +104,25 @@ L.TimerGeneral 				= "Opciones de temporizadores"
 L.SKT_Enabled				= "Mostrar temporizador para batir el récord de victoria del encuentro actual"
 L.ShowRespawn				= "Mostrar temporizador para la reaparición de jefe tras cada derrota"
 L.ShowQueuePop				= "Mostrar temporizador para eltiempo restante para aceptar avisos del buscador"
+L.ShowBerserkWarnings		= "Mostrar anuncios a los 10/5/3/1 minutos y a los 30/10 segundos restantes en el temporizador de $spell:26662"
 --
 L.Area_AutoLogging			= "Opciones del registro automático"
+L.Area_AutoLoggingFilters	= "Filtros del registro automático"
 L.AutologBosses				= "Registrar encuentros automáticamente con el registro de combate de Blizzard (usa '/dbm pull' antes de iniciar un encuentro para comenzar a grabar antes, de forma que tenga en cuenta la toma de pociones y otras acciones)"
 L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcriptor"
 L.RecordOnlyBosses			= "Registrar solo encuentros de jefe (excluye todos los combates contra enemigos que no son jefes; usa '/dbm pull' antes de un jefe para registrar el uso previo de pociones)"
+L.DoNotLogLFG				= "No registras Buscar Grupo o Buscar Banda (contenido en cola)"
 L.LogOnlyNonTrivial			= "Registrar solo el contenido importante (excluye el buscador de bandas, las mazmorras, las gestas y todo el contenido antiguo)"
+--
+L.Area_AutoLoggingContent			= "Contenido del registro automático"
+L.LogCurrentMythicRaids				= "Bandas míticos de nivel actual"--Retail Only
+L.LogCurrentRaids					= "Bandas no míticas de nivel actual (heroico, normal y buscar bandas si el filtro está desactivado)"
+L.LogTWRaids						= "Timewalking or Chromie Time raids"--Retail Only
+L.LogTrivialRaids					= "Bandas triviales (de bajo nivel)"
+L.LogCurrentMPlus					= "Mazmorras M+ de nivel actual"--Retail Only
+L.LogCurrentMythicZero				= "Mazmorras Mítica 0 de nivel actual"--Retail Only
+L.LogTWDungeons						= "Timewalking or Chromie Time dungeons"--Retail Only
+L.LogCurrentHeroic					= "Mazmorras heroicas de nivel actual (Nota: si estás haciendo mazmorra por cola y quieres que se registre, desactiva el filtro Buscar Grupo)"
 --
 L.Area_3rdParty				= "Opciones de addons de terceros"
 --L.oRA3AnnounceConsumables	= "Announce oRA3 consumables check on combat start"
@@ -127,6 +154,11 @@ L.SelectModProfileCopy		= "Copiar configuración de"
 L.SelectModProfileCopySound	= "Copiar conf. de sonido de"
 L.SelectModProfileCopyNote	= "Copiar notas de"
 L.SelectModProfileDelete	= "Borrar configuración de"
+
+L.Area_ImportExportProfile			= "Importar/Exportar perfiles"
+L.ImportExportInfo					= "La importación sobrescribirá su perfil actual, hágalo bajo su propio riesgo."
+L.ButtonImportProfile				= "Importar perfil"
+L.ButtonExportProfile				= "Exportar perfil"
 
 -- Tab: Alerts
 L.TabCategory_Alerts	 	= "Alertas"
@@ -185,7 +217,7 @@ L.SpecialWarnHeader5		= "Tipo 5: Opciones para avisos con notas que contienen tu
 L.Tab_GeneralMessages 		= "Mensajes generales"
 L.CoreMessages				= "Opciones de mensajes del módulo general"
 L.ShowPizzaMessage 			= "Mostrar avisos de temporizadores en el chat"
-L.ShowAllVersions	 		= "Mostrar versión de DBM de cada miembro del grupo en el chat al hacer comprobaciones de versión. Si se deshabilita seguirá mostrando quién lo tiene desactualizado."
+L.ShowAllVersions	 		= "Mostrar versión de DBM de cada miembro del grupo en el chat al hacer comprobaciones de versión. Si se desactiva seguirá mostrando quién lo tiene desactualizado."
 L.ShowReminders				= "Mostrar recordatorios de módulos que falten, que estén desactivados, que hayan recibido cambios, que estén desfasados o que estén silenciados."
 
 L.CombatMessages			= "Opciones de mensajes de combate"
@@ -198,6 +230,7 @@ L.Area_ChatAlerts			= "Opciones de alertas adicionales"
 L.RoleSpecAlert				= "Mostrar mensaje de alerta al unirte a una banda cuando tu especialización de botín no coincida con tu especialización actual"
 L.CheckGear					= "Mostrar mensaje de alerta al iniciar un encuentro cuando tu nivel de equipo sea como mínimo 40 niveles menor que el de tu inventario o no tengas equipada un arma principal"
 L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe de mundo (impreciso si el jugador en combate está en otro reino)"
+L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando un beneficio mundial empieza en tu reino"
 
 L.Area_BugAlerts			= "Opciones de alertas de informes de fallos"
 L.BadTimerAlert				= "Mostrar mensaje en el chat cuando DBM detecte un temporizador erróneo"
@@ -209,6 +242,7 @@ L.CountdownVoice			= "Voz principal para cuentas atrás"
 L.CountdownVoice2			= "Voz secundaria para cuentas atrás"
 L.CountdownVoice3			= "Voz terciaria para cuentas atrás"
 L.VoicePackChoice			= "Paquete de voz para alertas de voz"
+L.Area_VoicePackReplace		= "Opciones de reemplazo de paquetes de voz (que suenan paquetes de voz, cuando están habilitados, silencian y reemplazan)"
 L.Area_CountdownOptions		= "Opciones de cuenta atrás"
 L.Area_VoicePackOptions		= "Opciones de paquetes de voz (archivos de terceros)"
 L.SpecWarn_NoSoundsWVoice	= "Filtrar sonidos de avisos especiales para avisos que también tienen alertas de voz"
@@ -216,10 +250,21 @@ L.SWFNever					= "Nunca"
 L.SWFDefaultOnly			= "Cuando los avisos especiales usen sonidos por defecto"
 L.SWFAll					= "Cuando los avisos especiales usen cualquier sonido"
 L.SpecWarn_AlwaysVoice		= "Reproducir siempre todas las alertas de voz (ignora las opciones de jefe; útil para líderes de banda)"
+L.VPReplaceNote				= "Nota: Los paquetes de voz nunca cambian ni eliminan los sonidos de avisos.\nSimplemente se silencian cuando el paquete de voz los reemplaza."
+L.ReplacesAnnounce					= "Reemplazar los sonidos de anuncio (Nota: muy pocos usan paquetes de voz, excepto para cambios de fase y bichos.)"
+L.ReplacesSA1						= "Reemplazar los sonidos del anuncio especial 1 (personal también conocido como 'pvpflag' que no son GTFO)"
+L.ReplacesSA2						= "Reemplazar los sonidos del anuncio especial 2 (todos también conocidos como 'cuidado')"
+L.ReplacesSA3						= "Reemplazar los sonidos del anuncio especial 3 (alta prioridad también conocido como 'airhorn')"
+L.ReplacesSA4						= "Reemplazar los sonidos del anuncio especial 4 (huida de alta prioridad)"
+L.ReplacesGTFO						= "Reemplazar los sonidos GTFO del anuncio especial"
+L.ReplacesCustom					= "Reemplazar los sonidos de anuncios especiales personalizados establecidos por el usuario (no recomendado)"
+L.Area_VoicePackAdvOptions			= "Opciones avanzadas del paquete de voz"
+L.VPDontMuteSounds					= "Desactivar el silenciamiento de los sonidos de alerta habituales cuando utiliza el paquete de voz (utilícelo solo si desea escuchar AMBOS durante las alertas)"
+L.Area_VPLearnMore					= "Obtenga más información sobre los paquetes de voz y cómo utilizar estas opciones"
 --TODO, maybe add URLS right to GUI panel on where to acquire 3rd party voice packs?
-L.Area_BrowseOtherVP		= "Explorar otros paquetes de voz en Curse"
+L.Area_BrowseOtherVP		= "Explora otros paquetes de voz en Curse"
 L.BrowseOtherVPs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
-L.Area_BrowseOtherCT		= "Explorar otros paquetes de voz de cuenta atrás en Curse"
+L.Area_BrowseOtherCT		= "Explora otros paquetes de voz de cuenta atrás en Curse"
 L.BrowseOtherCTs			= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
 -- Panel: Event Sounds
@@ -287,7 +332,7 @@ L.CVoiceThree				= "Cuenta atrás 3"
 
 -- Panel: Timers
 L.Panel_Appearance	 		= "Apariencia de barras"
-L.Panel_Behavior	 		= "Comportamiento de barrs"
+L.Panel_Behavior	 		= "Comportamiento de barras"
 L.AreaTitle_BarSetup		= "Opciones de apariencia de barras"
 L.AreaTitle_Behavior		= "Opciones de comportamiento de barras"
 L.AreaTitle_BarSetupSmall 	= "Opciones de barras pequeñas"
@@ -297,7 +342,7 @@ L.BarIconLeft 				= "Icono izquierdo"
 L.BarIconRight 				= "Icono derecho"
 L.ExpandUpwards				= "Expandir arriba"
 L.FillUpBars				= "Rellenar"
-L.ClickThrough				= "Deshabilitar clic en barras"
+L.ClickThrough				= "Desactivar clic en barras"
 L.Bar_Decimal				= "Mostrar decimales bajo: %d s"
 L.Bar_Alpha					= "Transparencia: %0.1f"
 L.Bar_EnlargeTime			= "Agrandar barras bajo tiempo: %d s"
@@ -305,8 +350,11 @@ L.BarSpark					= "Destello de barras"
 L.BarFlash					= "Iluminar barras a punto de expirar"
 L.BarSort					= "Ordenar por tiempo restante"
 L.BarColorByType			= "Color por tipo"
+L.Highest					= "Alto hacia arriba"
+L.Lowest					= "Bajo hacia arriba"
 L.NoBarFade					= "Usar color inicial y color final para barras pequeñas y grandes, respectivamente, en lugar de efectuar cambios de color graduales"
 L.BarInlineIcons			= "Iconos en barras"
+L.DisableRightClickBar		= "Desactivar hacer clic derecho a cancelar temporizadores"
 L.ShortTimerText			= "Texto de temporizador breve"
 L.KeepBar					= "Mantener hasta que se lance la habilidad"
 L.KeepBar2					= "(siempre que el módulo lo permita)"
@@ -319,13 +367,19 @@ L.Area_BlizzFiltersSetup	= "Guía de filtros de Blizzard"
 -- Panel: DBM Features
 L.Panel_SpamFilter			= "Funciones de DBM"
 L.Area_SpamFilter_Anounces	= "Opciones de filtros globales de avisos"
+L.Area_SpamFilter_SpecFeatures		= "Opciones de avisos"
 L.SpamBlockNoShowAnnounce	= "Ocultar anuncios generales y desactivar los sonidos asociados"
 L.SpamBlockNoShowTgtAnnounce= "Ocultar anuncios generales de objetivos y desactivar los sonidos asociados (la opción anterior anula esta)"
 L.SpamBlockNoSpecWarnText	= "Ocultar avisos especiales pero sí reproducir sonidos de paquetes de voces (la opción anterior anula esta)"
 L.SpamBlockNoSpecWarnFlash	= "Desactivar destellos de avisos especiales"
+L.SpamBlockNoSpecWarnVibrate	= "No vibre el controlador en un aviso especial"
 L.SpamBlockNoSpecWarnSound	= "Desactivar sonidos de avisos especiales (no afecta a los paquetes de voz)"
+L.SpamBlockNoPrivateAuraSound	= "No registrar sonidos de aura privados"
 
 L.Area_SpamFilter_Timers	= "Opciones de filtros globales de temporizadores"
+L.SpamBlockNoShowBossTimers			= "No mostrar temporizadores para jefes de mazmorras/bandas"
+L.SpamBlockNoShowTrashTimers		= "No mostrar temporizadores para bichos (Nota: esto también desactiva los TdR con placa de nombre.)"
+L.SpamBlockNoShowEventTimers		= "No mostrar temporizadores para eventos o avisos (cola, campo de batalla, etc.)"
 L.SpamBlockNoShowTimers		= "Ocultar temporizadores de módulos"
 L.SpamBlockNoShowUTimers	= "Ocultar temporizadores de usuario"
 L.SpamBlockNoCountdowns		= "Desactivar sonidos de cuenta atrás"
@@ -335,9 +389,14 @@ L.SpamBlockNoSetIcon		= "Desactivar asignación automática de iconos"
 L.SpamBlockNoRangeFrame		= "Ocultar marcos de distancia"
 L.SpamBlockNoInfoFrame		= "Ocultar marcos de información"
 L.SpamBlockNoHudMap			= "Ocultar indicadores"
-L.SpamBlockNoNameplate		= "Ocultar auras de placas de nombres (las deshabilita por completo)"
+
+L.Area_SpamFilter_Nameplates	= "Opciones de filtro y desactivación global de placa de nombre"
+L.SpamBlockNoNameplate		= "Ocultar auras de placas de nombres (las desactiva por completo)"
+L.SpamBlockNoNameplateCD	= "Ocultar iconos de placas de nombre para tiempos de reutilización de habilidades"
+L.SpamBlockNoBossGUIDs		= "Ocultar iconos de placas de nombre para tiempos de reutilización de habilidades para jefes enemigos.\n(Aún verás iconos de bichos o jefes de múltiples objetivos si está activada.)"
 L.SpamBlockNoYells			= "Desactivar envío automático de mensajes en el chat"
 L.SpamBlockNoNoteSync		= "Rechazar automáticamente notas compartidas"
+L.SpamBlockAutoGossip		= "No manejar automáticamente los diálogos de chismes."
 
 L.Area_Restore				= "Opciones de restauración"
 L.SpamBlockNoIconRestore	= "Restaurar iconos al acabar el encuentro"
@@ -346,7 +405,7 @@ L.SpamBlockNoRangeRestore	= "Mantener los marcos de distancia cuando los módulo
 L.Area_SpamFilter			= "Opciones de filtros de avisos"
 L.DontShowFarWarnings		= "Ocultar anuncios y temporizadores de eventos que estén demasiado lejos"
 L.StripServerName			= "Omitir nombre del reino en avisos y temporizadores"
-L.FilterVoidFormSay			= "Deshabilitar el envío de mensajes de posición y cuenta atrás en el chat durante Forma del Vacío"
+L.FilterVoidFormSay			= "Desactivar el envío de mensajes de posición y cuenta atrás en el chat durante Forma del Vacío"
 
 L.Area_SpecFilter			= "Opciones de filtros de rol"
 L.FilterTankSpec			= "Ocultar avisos designados para tanques cuando no sea tu rol"
@@ -358,6 +417,27 @@ L.FilterInterruptNoteName	= "Ocultar avisos de facultades interrumpibles con ord
 L.FilterDispels				= "Ocular avisos de facultades disipables si tu disipación no está disponible"
 L.FilterTrashWarnings		= "Ocultar todos los avisos de enemigos menores en mazmorras normales y heroicas"
 
+L.Area_BInterruptFilter				= "Opciones de filtro de interrupción de jefe"
+L.FilterTargetFocus					= "Filtrar si el lanzador no es el objetivo/enfoque actual"
+L.FilterInterruptCooldown			= "Filtrar si el hechizo de interrupción está en tiempo de reutilización"
+L.FilterInterruptHealer				= "Filtrar si estás en una especialización de sanador"
+L.FilterInterruptNoteName			= "Filtrar si la alerta tiene un recuento pero tu nombre no está en la nota personalizada"--Only used on bosses, trash mods don't assign counts
+L.Area_BInterruptFilterFooter		= "Si no se selecciona ningún filtro, se muestran todas las interrupciones (puede ser spam)\nAlgunos módulos pueden ignorar estos filtros por completo si el hechizo es de importancia crítica."
+L.Area_TInterruptFilter				= "Opciones de filtro de interrupción de bichos"--Reuses above 3 strings
+
+-- Panel: DBM Handholding
+L.Panel_HandFilter					= "Reducir la sujeción del DBM"
+L.Area_SpamFilter_SpecRoleFilters	= "Filtros de tipo de anuncio especial (controla cuánta comunicación realiza DBM)"
+L.SpamSpecInformationalOnly			= "Remover todo el texto instructivo/alertas habladas de los anuncios especiales (requiere recarga de la interfaz de usuario). Las alertas seguirán mostrando y reproduciendo audio, pero serán genéricas y no directivas."
+L.SpamSpecRoleDispel				= "Filtrar las alertas 'disipar' por completo (sin texto ni sonido)"
+L.SpamSpecRoleInterrupt				= "Filtrar las alertas 'interrumpir' por completo (sin texto ni sonido)"
+L.SpamSpecRoleDefensive				= "Filtrar las alertas 'defensiva' por completo (sin texto ni sonido)"
+L.SpamSpecRoleTaunt					= "Filtrar las alertas 'irritar' por completo (sin texto ni sonido)"
+L.SpamSpecRoleSoak					= "Filtrar las alertas 'daño' por completo (sin texto ni sonido)"
+L.SpamSpecRoleStack					= "Filtrar las alertas 'pila de perjuicios' por completo (sin texto ni sonido)"
+L.SpamSpecRoleSwitch				= "Filtrar las alertas de 'cambio de objetivo' y 'bichos' (sin texto ni sonido)"
+L.SpamSpecRoleGTFO					= "Filtrar las alertas 'salga' por completo (sin texto ni sonido)"
+
 L.Area_PullTimer			= "Opciones de filtros de inicio de encuentro, descanso, combate y personalizados"
 L.DontShowPTNoID			= "Ocultar temporizadores de inicio de encuentro que se inicien en zonas distintas"
 L.DontShowPT				= "Ocultar barras de temporizadores de inicio de encuentro y descanso"
@@ -365,6 +445,13 @@ L.DontShowPTText			= "Ocultar anuncios de temporizadores de inicio de encuentro 
 L.DontShowPTCountdownText	= "Ocultar texto de cuenta atrás de temporizadores de inicio de encuentro, descanso, combate y personalizados"
 L.DontPlayPTCountdown		= "Desactivar sonidos de cuenta atrás de temporizadores de inicio de encuentro, descanso, combate y personalizados"
 L.PT_Threshold				= "Ocultar temporizadores por encima de: %d s"
+
+L.Panel_ReducedInformation			= "Reducir la información"
+
+L.Area_SpamFilter_Anounces			= "Anunciar filtros/desescalada"
+L.SpamBlockNoShowTgtAnnounce		= "Ocultar texto ni reproduzca sonido para anuncios generales de OBJETIVO que no le afecten; espere, cuando se indique, que una advertencia específica ignore este filtro (la desactivación global en las funciones de DBM anula este)"
+L.SpamBlockNoTrivialSpecWarnSound	= "No reproducir sonidos de anuncio especiales ni muestra destello en la pantalla para contenido que sea trivial para su nivel (en su lugar, reproduzca un sonido de anuncio no enfatizado seleccionado por el usuario)"
+
 
 -- Panel: Blizzard Features
 L.Panel_HideBlizzard		= "Interfaz y funciones de Blizzard"
@@ -381,6 +468,36 @@ L.OnlyFight					= "Solo en combate, tras haber visto la cinemática por primera 
 L.AfterFirst				= "Tras haber visto la cinemática por primera vez"
 L.CombatOnly				= "En combate"
 L.RaidCombat				= "En combate (solo en jefes)"
+
+-- Panel: Raid Leader Controls
+L.Tab_RLControls					= "Controles de líder de banda"
+L.Area_FeatureOverrides				= "Opciones de anulación de funciones"
+L.OverrideIcons 					= "Desactivar el marcado de iconos para todos los usuarios en banda, incluido el tuyo (use anular en lugar de desactivar si desea que DBM marque según sus términos)"
+L.OverrideSay						= "Desactivar la burbuja de chat/mensajes DECIR para todos los usuarios en la banda, incluido el tuyo"
+L.DisableStatusWhisperShort			= "Desactivar estado/susurros de respuesta para todo el grupo"--Duplicated from privacy but makes sense to include option in both panels
+L.DisableGuildStatusShort			= "Desactivar la sincronización de mensajes de progresión con la hermandad para todo el grupo."--Duplicated from privacy but makes sense to include option in both panels
+--L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
+--L.DiabledForBoth					= "Disable above features for both DBM and BW"--NYI
+--L.DiabledForDBM					= "Disable above features for only DBM users"--NYI
+--L.DiabledForBW					= "Disable above features for only BW users"--NYI
+
+L.Area_ConfigOverrides				= "Opciones de anulación de configuración"--NYI
+L.OverrideBossAnnounceOptions		= "Establecer la configuración de anuncio de todos los usuarios de DBM en mi configuración"--NYI
+L.OverrideBossTimerOptions			= "Establecer la configuración de temporizador de todos los usuarios de DBM en mi configuración"--NYI
+L.OverrideBossIconOptions			= "Establecer la configuración de icono todos los usuarios de DBM en mi configuración (si la configuración del icono está desactivada en las opciones anteriores, esta opción se ignora)"--NYI
+L.OverrideBossSayOptions			= "Establecer la configuración de chat de todos los usuarios de DBM en mi configuración (Si la configuración de la burbuja de chat está desactivada en las opciones anteriores, esta opción se ignora)"--NYI
+L.ConfigAreaFooter					= "Las opciones en esta área solo anulan temporalmente la configuración de los usuarios al participar sin alterar su configuración guardada."
+L.ConfigAreaFooter2					= "Se recomienda considerar todos los roles y no excluir los temporizadores/alertas que un tanque, etc. pueda necesitar."
+
+L.Area_receivingOptions				= "Opciones de recepción"--NYI
+L.NoAnnounceOverride				= "No acepta anuncios anulados por parte de los líderes de la banda."--NYI
+L.NoTimerOverridee					= "No acepta anulaciones del temporizador por parte de los líderes de la banda."--NYI
+L.ReplaceMyConfigOnOverride			= "AVISO: Reemplace permanentemente mis configuraciones de modificación con líderes de banda, al anularlas"--NYI
+L.ReceivingFooter					= "Las anulaciones de opciones de iconos y burbujas de chat no se pueden desactivar ya que estas configuraciones afectan a otros jugadores a tu alrededor."--NYI
+L.ReceivingFooter2					= "Si activas estas opciones, es entre tú y líder de banda si tu configuración causa conflicto con su intención."--NYI
+L.ReceivingFooter3					= "Si activas 'reemplazar mi configuración de módulo', tu configuración original se perderá al anularla."--NYI
+
+L.TabFooter							= "Todas las opciones en este panel solo funcionan si eres líder de grupo en un grupo que no es de mazmorra/buscar banda"
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Controles de privacidad"
@@ -406,6 +523,10 @@ L.Panel_Nameplates			= "Placas de nombres"
 L.UseNameplateHandoff		= "Permitir que otros addons (KuiNameplates, Threat Plates, Plater) controlen las auras de placas de nombres. Activa esta opción si utilizas un addon de placas de nombres para disponer de opciones de configuración más avanzadas."
 L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombres)"
 L.NPAuraSize				= "Tamaño del aura: %d"
+L.NPIcon_BarOffSetX 				= "Desplazamiento del icono X: %d"
+L.NPIcon_BarOffSetY 				= "Desplazamiento del icono X Y: %d"
+L.NPIcon_GrowthDirection 			= "Dirección de crecimiento del icono"
+L.NPDemo							= "Prueba (Acercase de placas de nombre)"
 
 -- Misc
 L.Area_General				= "General"

@@ -3,12 +3,14 @@ local L = DBM_GUI_L
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isModernAPI = DBM:GetTOC() > 100000--Purposely left this way, wrath 3.4.1 doesn't like changes in THIS file (TODO, see if same problem exists in 1.14.4)
 
-local DDM = _G["LibStub"]:GetLibrary("LibDropDownMenu")
+local DDM = LibStub:GetLibrary("LibDropDownMenu")
 
 local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
 local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
+---@class DBMOptionsFrame: Frame, BackdropTemplate
+---@field tabs table
 local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "BackdropTemplate")
 
 function frame:UpdateMenuFrame()
@@ -258,6 +260,7 @@ function frame:CreateTab(tab)
 	tab:Hide()
 	local i = #self.tabs + 1
 	self.tabs[i] = tab
+	---@class DBMOptionsFrameTabButtonTemplate: Button
 	local button = CreateFrame("Button", "DBM_GUI_OptionsFrameTab" .. i, self, "OptionsFrameTabButtonTemplate")
 	local buttonText = _G[button:GetName() .. "Text"]
 	button.Text = buttonText

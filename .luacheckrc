@@ -36,7 +36,9 @@ globals = {
 	"LOCALE_zhCN",
 	"LOCALE_zhTW",
 
+	-- Libraries
 	"Plater",
+	"LibStub",
 
 	-- Lua
 	"bit.band",

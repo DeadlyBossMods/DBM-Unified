@@ -118,6 +118,7 @@ if L.TranslationBy then
 	frameTranslation:SetText(L.TranslationByPrefix .. L.TranslationBy)
 end
 
+---@class DBMMainFrameOkButton: Button
 local frameOkay = CreateFrame("Button", "$parentOkay", frame, "UIPanelButtonTemplate")
 frameOkay:SetSize(96, 22)
 frameOkay:SetPoint("BOTTOMRIGHT", -16, 14)
@@ -153,10 +154,12 @@ frameWebsiteButton:SetScript("OnClick", function()
 	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG)
 end)
 
+---@class DBMBossModsFrame: Frame
 local bossMods = CreateFrame("Frame", "$parentBossMods", frame)
 bossMods.name = L.OTabBosses
 frame:CreateTab(bossMods)
 
+---@class DBMOptionsFrame: Frame
 local DBMOptions = CreateFrame("Frame", "$parentDBMOptions", frame)
 DBMOptions.name = L.OTabOptions
 frame:CreateTab(DBMOptions)
@@ -167,6 +170,7 @@ function OptionsList_OnLoad(self, ...)
 		hack(self, ...)
 	end
 end
+---@class DBMListFrame: Frame, BackdropTemplate
 local frameList = CreateFrame("Frame", "$parentList", frame, "TooltipBorderBackdropTemplate")
 frameList:SetWidth(205)
 frameList:SetPoint("TOPLEFT", 22, -40)
@@ -178,6 +182,8 @@ frameList.offset = 0
 frameList:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
 frameList.buttons = {}
 for i = 1, math.floor(UIParent:GetHeight() / 18) do
+	---@class DBMListFrameButton: Button
+	---@field element table
 	local button = CreateFrame("Button", "$parentButton" .. i, frameList)
 	button:SetHeight(18)
 	button.text = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormalSmall")
@@ -220,6 +226,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		frame:UpdateMenuFrame()
 	end)
 end
+---@class DBMFrameList: ScrollFrame, BackdropTemplate
 local frameListList = CreateFrame("ScrollFrame", "$parentList", frameList, "UIPanelScrollFrameTemplate")
 frameListList.backdropInfo = {
 	edgeFile	= "Interface\\Tooltips\\UI-Tooltip-Border", -- 137057
@@ -258,6 +265,7 @@ scrollDownButton:SetScript("OnClick", function(self)
 	self:GetParent():SetValue(self:GetParent():GetValue() + 18)
 end)
 
+---@class DBMPanelContainer: ScrollFrame, BackdropTemplate
 local frameContainer = CreateFrame("ScrollFrame", "$parentPanelContainer", frame, "BackdropTemplate")
 frameContainer:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 16, 0)
 frameContainer:SetPoint("BOTTOMLEFT", frameList, "BOTTOMRIGHT", 16, 0)
@@ -283,6 +291,7 @@ frameContainerScrollBar:ClearAllPoints()
 frameContainerScrollBar:SetPoint("TOPRIGHT", -4, -15)
 frameContainerScrollBar:SetPoint("BOTTOMRIGHT", 0, 15)
 
+---@class DBMPanelContainerScrollbarBackdrop: Frame, BackdropTemplate
 local frameContainerScrollBarBackdrop = CreateFrame("Frame", nil, frameContainerScrollBar, "BackdropTemplate")
 frameContainerScrollBarBackdrop:SetPoint("TOPLEFT", -4, 20)
 frameContainerScrollBarBackdrop:SetPoint("BOTTOMRIGHT", 4, -20)

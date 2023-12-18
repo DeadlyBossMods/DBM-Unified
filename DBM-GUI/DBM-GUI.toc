@@ -55,6 +55,7 @@ modules\PanelPrototype.lua
 
 modules\options\general\General.lua
 modules\options\general\Core_GUI.lua
+modules\options\general\AutoLogging.lua
 modules\options\general\ExtraFeatures.lua
 modules\options\general\Profile.lua
 
@@ -69,6 +70,7 @@ modules\options\timers\Timers.lua
 modules\options\timers\Appearance.lua
 modules\options\timers\ColorbyType.lua
 modules\options\timers\Behavior.lua
+modules\options\timers\PBC.lua
 
 modules\options\filters\Filters.lua
 modules\options\filters\GlobalDisables.lua

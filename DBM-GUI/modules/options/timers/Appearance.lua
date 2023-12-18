@@ -61,6 +61,7 @@ color2:SetScript("OnColorSelect", function(self)
 	color2text:SetTextColor(self:GetColorRGB())
 end)
 
+---@class MainDummyBar: DBTBar
 local maindummybar = DBT:CreateDummyBar(nil, nil, SMALL)
 maindummybar.frame:SetParent(BarSetup.frame)
 maindummybar.frame:SetPoint("TOP", color2text, "LEFT", 10, 60)
@@ -79,6 +80,7 @@ do
 end
 maindummybar:ApplyStyle()
 
+---@class MainDummyBarHuge: DBTBar
 local maindummybarHuge = DBT:CreateDummyBar(nil, nil, LARGE)
 maindummybarHuge.frame:SetParent(BarSetup.frame)
 maindummybarHuge.frame:SetPoint("TOP", color2text, "LEFT", 10, 35)

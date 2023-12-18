@@ -103,6 +103,7 @@ local localeTable = {
 	EventSoundMusic			= "EventEngageMusic",
 	EventSoundDungeonBGM	= "EventDungeonMusic"
 }
+---@class DBMImportProfileButton: DBMPanelButton
 local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 	DBM_GUI:CreateImportProfile(function(importTable)
 		local errors = {}
