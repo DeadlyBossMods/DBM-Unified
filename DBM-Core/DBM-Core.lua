@@ -10774,7 +10774,6 @@ do
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		DBM:Unschedule(playCountSound, id)
 		local bar = DBT:GetBar(id)
 		if not bar then
 			bar = self:Start(totalTime, ...)
@@ -10792,6 +10791,9 @@ do
 				if (type(countVoice) == "string" or countVoice > 0) then
 					if not bar.fade then--Don't start countdown voice if it's faded bar
 						if newRemaining > 2 then
+							--Can't be called early beacuse then it won't unschedule countdown triggered by :Start if it was called
+							--Also doesn't need to be called early like it does in AddTime and RemoveTime since those early return
+							DBM:Unschedule(playCountSound, id)
 							playCountdown(id, newRemaining, countVoice, bar.countdownMax, bar.requiresCombat)--timerId, timer, voice, count
 							DBM:Debug("Updating a countdown after a timer Update call for timer ID:"..id)
 						end
@@ -10806,7 +10808,7 @@ do
 		if DBM.Options.DontShowBossTimers and not self.mod.isTrashMod then return end
 		if DBM.Options.DontShowTrashTimers and self.mod.isTrashMod then return end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		DBM:Unschedule(playCountSound, id)
+		DBM:Unschedule(playCountSound, id)--Needs to be unscheduled early in case Start is called instead of Update
 		local bar = DBT:GetBar(id)
 		if not bar then
 			return self:Start(extendAmount, ...)
