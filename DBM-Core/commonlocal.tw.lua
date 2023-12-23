@@ -84,3 +84,5 @@ CL.RIFT						= "裂隙"--Often has auto localized alternatives, but still transl
 CL.RIFTS					= "裂隙"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS					= "陷阱"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
 CL.ROOTS					= "定身"
+CL.MARK						= "標記"--As in short text for all the encounter mechanics that start or end in "Mark"
+CL.MARKS					= "標記"--Plural of above
