@@ -227,16 +227,7 @@ L.SpecialWarnHeader4				= "Type 4: Set options for HIGH priority run away specia
 L.SpecialWarnHeader5				= "Type 5: Set options for announcements with notes containing your player name"
 
 -- Panel: Generalwarnings
-L.Tab_GeneralMessages 				= "Chat Frame Messages"
-
-L.SelectChatFrameArea				= "Chat Frame Options"
-L.SelectChatFrameButton				= "Select chat frame"
-L.SelectChatFrameInfoIdle			= "Messages are shown in %s."
-L.SelectChatFrameDefaultName		= "the default chat frame"
-L.SelectChatFrameInfoDone			= "Messages will be shown in this chat frame."
-L.SelectChatFrameInfoSelect			= "Click on a chat frame to select it."
-L.SelectChatFrameInfoSelectNow		= "Click to select %s."
-
+L.Tab_GeneralMessages 				= "Chatframe Messages"
 L.CoreMessages						= "Core Message Options"
 L.ShowPizzaMessage 					= "Show timer broadcast messages in chat frame"
 L.ShowAllVersions	 				= "Show boss mod versions for all group members in chat frame when doing a version check. (If disabled, still does out of date/current summery)"

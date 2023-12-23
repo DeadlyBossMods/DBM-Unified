@@ -1,4 +1,3 @@
----@diagnostic disable: lowercase-global
 std = "lua51"
 max_line_length = false
 exclude_files = {
@@ -40,7 +39,6 @@ globals = {
 	-- Libraries
 	"Plater",
 	"LibStub",
-	"CooldownFrame_Set",
 
 	-- Lua
 	"bit.band",
@@ -99,7 +97,6 @@ globals = {
 	"GUILD",
 	"GUILD_INTEREST_RP",
 	"HIDE",
-	"HIGHLIGHT_FONT_COLOR",
 	"LARGE",
 	"LOCK_FRAME",
 	"MAX_TALENT_TABS", -- Classic
@@ -255,7 +252,6 @@ globals = {
 	"EJ_GetInstanceInfo",
 	"EJ_GetCreatureInfo",
 	"EJ_SetDifficulty",
-	"EnumerateFrames",
 	"FlashClientIcon",
 	"FreeTimerTrackerTimer",
 	"GameTooltip",
