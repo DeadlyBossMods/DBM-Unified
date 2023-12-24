@@ -11464,8 +11464,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 	self.Options["PrivateAuraSound"..auraspellId.."SWSound"] = defaultSound or 1
 	self.localization.options["PrivateAuraSound"..auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
 	if not DBM.Options.GroupOptionsExcludePAura then
-		self:GroupSpells(groupSpellId or auraspellId, "PrivateAuraSound"..auraspellId)
-		self.groupOptions[groupSpellId or auraspellId].hasPrivate = true
+		self:GroupSpellsPA(groupSpellId or auraspellId, "PrivateAuraSound"..auraspellId)
 	end
 	self:SetOptionCategory("PrivateAuraSound"..auraspellId, "paura")
 end
@@ -11831,6 +11830,31 @@ function bossModPrototype:GroupWASpells(customName, ...)
 			self.groupOptions[sSpell] = nil
 		end
 	end
+end
+
+--Duplicate function just for private auras to do literally same thing as GroupSpells without ability to pass extra arg
+function bossModPrototype:GroupSpellsPA(...)
+	local spells = {...}
+	local catSpell = tostring(tremove(spells, 1))
+	if not self.groupSpells[catSpell] then
+		self.groupSpells[catSpell] = {}
+		self.groupSpells[catSpell].hasPrivate = true
+		print("generating Private")
+	end
+	for _, spell in ipairs(spells) do
+		local sSpell = tostring(spell)
+		self.groupSpells[sSpell] = catSpell
+		if sSpell ~= catSpell and self.groupOptions[sSpell] then
+			if not self.groupOptions[catSpell] then
+				self.groupOptions[catSpell] = {}
+			end
+			for _, spell2 in ipairs(self.groupOptions[sSpell]) do
+				tinsert(self.groupOptions[catSpell], spell2)
+			end
+			self.groupOptions[sSpell] = nil
+		end
+	end
+
 end
 
 function bossModPrototype:GroupSpells(...)
