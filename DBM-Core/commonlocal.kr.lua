@@ -86,6 +86,8 @@ CL.RIFT								= "균열"--Often has auto localized alternatives, but still tran
 CL.RIFTS							= "균열"--Often has auto localized alternatives, but still translated for BW aura matching when needed
 CL.TRAPS							= "함정"--Doesn't have a direct auto localize so has to be manually localized, unlike non plural version
 CL.ROOTS							= "이동 불가"
+CL.MARK								= "징표"--As in short text for all the encounter mechanics that start or end in "Mark"
+CL.MARKS							= "징표"--Plural of above
 --NOTE, many common locals are auto localized:
 --Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)
 --Fixate (12021), Trap (181341), Meteor (28884), Shield (151702), Teleport (4801), Fear (5782), Roar (140459), Leap (47482), Orb (265315), Tornados (86189)
