@@ -11465,6 +11465,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 	self.localization.options["PrivateAuraSound"..auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
 	if not DBM.Options.GroupOptionsExcludePAura then
 		self:GroupSpells(groupSpellId or auraspellId, "PrivateAuraSound"..auraspellId)
+		self.groupOptions[groupSpellId or auraspellId].hasPrivate = true
 	end
 	self:SetOptionCategory("PrivateAuraSound"..auraspellId, "paura")
 end
