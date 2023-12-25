@@ -569,14 +569,14 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate)
 	if icon then
 		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
 		if isPrivate then--Second icon for private aura
-			local markuptwo = CreateTextureMarkup(132320, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
+			local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
 			title:SetText(markup .. titleText .. key .. " " .. markuptwo)
 		else
 			title:SetText(markup .. titleText .. key)
 		end
 	else
 		if isPrivate then--Still add icon for private aura even if no spell icon
-			local markuptwo = CreateTextureMarkup(132320, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
+			local markuptwo = CreateTextureMarkup(132320, 0, 0, 18, 18, 0, 0, 0, 0, 0, 0)
 			title:SetText(titleText .. key .. " " .. markuptwo)
 		else
 			title:SetText(titleText .. key)
