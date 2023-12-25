@@ -426,9 +426,12 @@ function DBM_GUI:CreateBossModPanel(mod)
 				panel:CreateLine(options)
 			else
 				local title, desc, _, icon
-				local usedSpellID
+				local usedSpellID, hasPrivate
 				if mod.groupOptions[spellID] and mod.groupOptions[spellID].customKeys then
 					usedSpellID = mod.groupOptions[spellID].customKeys--Color coding would be done in customKeys, not here
+				end
+				if mod.groupOptions[spellID] and mod.groupOptions[spellID].hasPrivate then
+					hasPrivate = true
 				end
 				if mod.groupOptions[spellID].title then--Custom title, it's a bogus spellId, so we completely ignore it and bundle with localized custom title
 					title, desc, icon = mod.groupOptions[spellID].title, L.CustomOptions, 136116
@@ -456,7 +459,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 				if not usedSpellID then
 					usedSpellID = "|Hgarrmission:DBM:wacopy:"..spellID.."|h|cff69ccf0"..spellID.."|r|h"
 				end
-				local catpanel = panel:CreateAbility(title, icon, usedSpellID)
+				local catpanel = panel:CreateAbility(title, icon, usedSpellID, hasPrivate)
 				if desc then
 					catpanel:CreateSpellDesc(desc)
 				end
