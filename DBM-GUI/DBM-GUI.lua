@@ -430,7 +430,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 				if mod.groupOptions[spellID] and mod.groupOptions[spellID].customKeys then
 					usedSpellID = mod.groupOptions[spellID].customKeys--Color coding would be done in customKeys, not here
 				end
-				if mod.groupSpells[spellID] and mod.groupSpells[spellID].hasPrivate then
+				if mod.groupOptions[spellID] and mod.groupOptions[spellID].hasPrivate then
 					hasPrivate = true
 				end
 				if mod.groupOptions[spellID].title then--Custom title, it's a bogus spellId, so we completely ignore it and bundle with localized custom title

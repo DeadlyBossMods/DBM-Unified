@@ -11466,7 +11466,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 	if not DBM.Options.GroupOptionsExcludePAura then
 		self:GroupSpellsPA(groupSpellId or auraspellId, "PrivateAuraSound"..auraspellId)
 	end
-	self:SetOptionCategory("PrivateAuraSound"..auraspellId, "paura")
+	self:SetOptionCategory("PrivateAuraSound"..auraspellId, "paura", nil, nil, true)
 end
 
 --Function to actually register specific media to specific auras
@@ -11838,8 +11838,6 @@ function bossModPrototype:GroupSpellsPA(...)
 	local catSpell = tostring(tremove(spells, 1))
 	if not self.groupSpells[catSpell] then
 		self.groupSpells[catSpell] = {}
-		self.groupSpells[catSpell].hasPrivate = true
-		print("generating Private")
 	end
 	for _, spell in ipairs(spells) do
 		local sSpell = tostring(spell)
@@ -11847,6 +11845,7 @@ function bossModPrototype:GroupSpellsPA(...)
 		if sSpell ~= catSpell and self.groupOptions[sSpell] then
 			if not self.groupOptions[catSpell] then
 				self.groupOptions[catSpell] = {}
+				self.groupOptions[catSpell].hasPrivate = true--This single line is basically why GroupSpellsPA had to duplicate GroupSpells
 			end
 			for _, spell2 in ipairs(self.groupOptions[sSpell]) do
 				tinsert(self.groupOptions[catSpell], spell2)
@@ -11854,7 +11853,6 @@ function bossModPrototype:GroupSpellsPA(...)
 			self.groupOptions[sSpell] = nil
 		end
 	end
-
 end
 
 function bossModPrototype:GroupSpells(...)
@@ -11878,7 +11876,7 @@ function bossModPrototype:GroupSpells(...)
 	end
 end
 
-function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName)
+function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName, hasPrivate)
 	optionType = optionType or ""
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
@@ -11891,7 +11889,9 @@ function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName)
 		if waCustomName and not self.groupOptions[sSpell].title then
 			self.groupOptions[sSpell].title = waCustomName
 		end
-		tinsert(self.groupOptions[sSpell], name)
+		if hasPrivate and not self.groupOptions[sSpell].hasPrivate then
+			self.groupOptions[sSpell].hasPrivate = true
+		end
 	else
 		if not self.optionCategories[cat] then
 			self.optionCategories[cat] = {}
