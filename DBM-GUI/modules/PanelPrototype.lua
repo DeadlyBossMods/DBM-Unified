@@ -569,8 +569,8 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate)
 	if icon then
 		local markup = CreateTextureMarkup(icon, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
 		if isPrivate then--Second icon for private aura
-			local markuptwo = CreateTextureMarkup("Interface\\AddOns\\DBM-Core\\textures\\eye-slash-solid", 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
-			title:SetText(markup .. titleText .. key .. markuptwo)
+			local markuptwo = CreateTextureMarkup(132320, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
+			title:SetText(markup .. titleText .. key .. " " .. markuptwo)
 		else
 			title:SetText(markup .. titleText .. key)
 		end
