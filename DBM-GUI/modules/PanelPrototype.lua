@@ -575,7 +575,12 @@ function PanelPrototype:CreateAbility(titleText, icon, spellID, isPrivate)
 			title:SetText(markup .. titleText .. key)
 		end
 	else
-		title:SetText(titleText .. key)
+		if isPrivate then--Still add icon for private aura even if no spell icon
+			local markuptwo = CreateTextureMarkup(132320, 0, 0, 16, 16, 0, 0, 0, 0, 0, 0)
+			title:SetText(titleText .. key .. " " .. markuptwo)
+		else
+			title:SetText(titleText .. key)
+		end
 	end
 	title:ClearAllPoints()
 	title:SetPoint("BOTTOMLEFT", area, "TOPLEFT", 20, 0)
