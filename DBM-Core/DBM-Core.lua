@@ -11892,6 +11892,7 @@ function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName,
 		if hasPrivate and not self.groupOptions[sSpell].hasPrivate then
 			self.groupOptions[sSpell].hasPrivate = true
 		end
+		tinsert(self.groupOptions[sSpell], name)
 	else
 		if not self.optionCategories[cat] then
 			self.optionCategories[cat] = {}
