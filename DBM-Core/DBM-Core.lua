@@ -250,7 +250,6 @@ DBM.DefaultOptions = {
 	GUIWidth = 800,
 	GUIHeight = 600,
 	GroupOptionsExcludeIcon = false,
-	GroupOptionsExcludePAura = false,
 	AutoExpandSpellGroups = not isRetail,
 	ShowWAKeys = true,
 	--ShowSpellDescWhenExpanded = false,
@@ -11463,9 +11462,7 @@ function bossModPrototype:AddPrivateAuraSoundOption(auraspellId, default, groupS
 	self.Options["PrivateAuraSound"..auraspellId] = (default == nil) or default
 	self.Options["PrivateAuraSound"..auraspellId.."SWSound"] = defaultSound or 1
 	self.localization.options["PrivateAuraSound"..auraspellId] = L.AUTO_PRIVATEAURA_OPTION_TEXT:format(auraspellId)
-	if not DBM.Options.GroupOptionsExcludePAura then
-		self:GroupSpellsPA(groupSpellId or auraspellId, "PrivateAuraSound"..auraspellId)
-	end
+	self:GroupSpellsPA(groupSpellId or auraspellId, "PrivateAuraSound"..auraspellId)
 	self:SetOptionCategory("PrivateAuraSound"..auraspellId, "paura", nil, nil, true)
 end
 
@@ -11881,7 +11878,7 @@ function bossModPrototype:SetOptionCategory(name, cat, optionType, waCustomName,
 	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
-	if self.addon and self.groupSpells[name] and not (optionType == "gtfo" or optionType == "adds" or optionType == "addscount" or optionType == "addscustom" or optionType:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon or cat == "paura" and DBM.Options.GroupOptionsExcludePAura) then
+	if self.addon and self.groupSpells[name] and not (optionType == "gtfo" or optionType == "adds" or optionType == "addscount" or optionType == "addscustom" or optionType:find("stage") or cat == "icon" and DBM.Options.GroupOptionsExcludeIcon) then
 		local sSpell = self.groupSpells[name]
 		if not self.groupOptions[sSpell] then
 			self.groupOptions[sSpell] = {}

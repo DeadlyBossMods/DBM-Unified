@@ -82,7 +82,6 @@ L.Editbox_WindowHeight		= "Vertical"
 
 L.UIGroupingOptions					= "Opciones de agrupación de IU (cambiarlas requiere recargar la IU para cualquier módulo que ya esté cargado)"
 L.GroupOptionsExcludeIcon			= "Excluir que las opciones 'Establecer icono activado' se agrupen por hechizo (en su lugar, se agruparán en su propia categoría 'Iconos')"
-L.GroupOptionsExcludePAura			= "Excluir que las opciones 'Reproducir sonido de aura privada' se agrupen por hechizo (en su lugar, se agruparán en su propia categoría 'Auras privadas')"
 L.AutoExpandSpellGroups				= "Expandir opciones automáticamente que están agrupadas por hechizo"
 L.ShowWAKeys						= "Mostrar las claves de WeakAuras junto a los nombres de los hechizos para ayudar a escribir WeakAuras usando los activadores de módulos de Jefe."
 --L.ShowSpellDescWhenExpanded	= "Continue showing spell description when groups are expanded"--Might not be used
