@@ -366,7 +366,7 @@ L.FadeBar					= "Desteñir barras de habilidades lejanas"
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "Inicio, descanso, combate"
 
-L.Area_SoundOptions					= "Sound Options"
+L.Area_SoundOptions					= "Opciones de sonido"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "Filtros globales"
