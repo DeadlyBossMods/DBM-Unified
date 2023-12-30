@@ -278,7 +278,7 @@ L.EventEngageSound			= "Sonido de inicio de encuentro"
 L.EventDungeonMusic			= "Música de fondo en mazmorras y bandas"
 L.EventEngageMusic			= "Música de fondo en encuentros"
 L.Area_EventSoundsExtras	= "Opciones de sonidos de eventos"
-L.EventMusicCombined		= "Mostrar toda la selección de música (escribe /reload en el chat para que esta opción surta efecto)"
+L.EventMusicCombined		= "Mostrar toda la selección de música (escribe /recargar en el chat para que esta opción surta efecto)"
 L.Area_EventSoundsFilters	= "Filtros de sonidos de evento"
 L.EventFilterDungMythicMusic= "Desactivar música personalizada de mazmorra en dificultad Mítica/M+."
 L.EventFilterMythicMusic	= "Desactivar música personalizada de encuentros en dificultad Mítica/M+."
@@ -366,7 +366,7 @@ L.FadeBar					= "Desteñir barras de habilidades lejanas"
 -- Panel: Pull, Break, Combat
 L.Panel_PullBreakCombat				= "Inicio, descanso, combate"
 
-L.Area_SoundOptions					= "Sound Options"
+L.Area_SoundOptions					= "Opciones de sonido"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "Filtros globales"
