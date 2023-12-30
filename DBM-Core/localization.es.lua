@@ -187,7 +187,7 @@ L.VICTORYSOUND					= "AVISO: DBM-VictorySound no es compatible con esta versión
 L.DPMCORE						= "AVISO: Deadly PvP Mods ya no está en desarrollo y no es compatible con esta versión de "..L.DBM..". Con tal de evitar conflictos, "..L.DBM.." no se ejecutará hasta que borres Deadly PvP Mods."
 L.DBMLDB							= "AVISO: DBM-LDB está ahora incluido en DBM-Core. Es recomendable que borres la carpeta 'DBM-LDB' de tu carpeta de addons."
 L.DBMLOOTREMINDER				= "AVISO: tienes instalado el módulo de terceros DBM-LootReminder. Este addon ya no es compatible con el cliente de WoW y causa conflictos con los temporizadores de "..L.DBM..". Es recomendable que lo desinstales."
-L.UPDATE_REQUIRES_RELAUNCH		= "AVISO: Esta actualización de "..L.DBM.." no funcionará correctamente hasta que reinicies el juego. Esta versión contiene nuevos archivos o cambios a los archivos .toc que no pueden recargarse mediante /reload. Es muy probable que "..L.DBM.." no funcione correctamente hasta que reinicies el juego."
+L.UPDATE_REQUIRES_RELAUNCH		= "AVISO: Esta actualización de "..L.DBM.." no funcionará correctamente hasta que reinicies el juego. Esta versión contiene nuevos archivos o cambios a los archivos .toc que no pueden recargarse mediante /recargar. Es muy probable que "..L.DBM.." no funcione correctamente hasta que reinicies el juego."
 L.OUT_OF_DATE_NAG				= "Tu versión de "..L.DEADLY_BOSS_MODS.." está desfasada para este encuentro. Se recomienda que actualices "..L.DBM.." para no perderte ningún aviso, temporizador o indicador crucial para tu grupo de banda."
 
 L.MOVABLE_BAR				= "¡Muéveme!"
