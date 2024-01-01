@@ -1922,8 +1922,7 @@ do
 	function fireEvent(event, ...)
 		if not callbacks[event] then return end
 		for _, v in ipairs(callbacks[event]) do
-			local ok, err = pcall(v, event, ...)
-			if not ok then DBM:AddMsg(("Error while executing callback %s for event %s: %s"):format(tostring(v), tostring(event), err)) end
+		    securecall(v, event, ...)
 		end
 	end
 
