@@ -61,6 +61,7 @@ globals = {
 	"tostringall",
 	"tremove",
 	"Enum",
+	"securecall",
 
 	-- WoW
 	"ALL",
