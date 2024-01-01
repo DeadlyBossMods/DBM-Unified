@@ -371,6 +371,7 @@ globals = {
 	"UnitIsVisible",
 	"UnitLevel",
 	"UnitName",
+	"UnitOnTaxi",
 	"UnitPhaseReason",
 	"UnitPlayerOrPetInParty",
 	"UnitPlayerOrPetInRaid",
