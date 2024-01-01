@@ -1599,8 +1599,8 @@ do
 		if modname == "DBM-Core" and not isLoaded then
 			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or ""))) or 0
 			isLoaded = true
-			for _, v in ipairs(callbacks[event]) do
-			    securecall(v, event, ...)
+			for _, v in ipairs(onLoadCallbacks) do
+				xpcall(v, geterrorhandler())
 			end
 			onLoadCallbacks = nil
 			loadOptions(self)
