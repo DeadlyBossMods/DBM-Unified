@@ -61,6 +61,7 @@ globals = {
 	"tostringall",
 	"tremove",
 	"Enum",
+	"securecall",
 
 	-- WoW
 	"ALL",
@@ -370,6 +371,7 @@ globals = {
 	"UnitIsVisible",
 	"UnitLevel",
 	"UnitName",
+	"UnitOnTaxi",
 	"UnitPhaseReason",
 	"UnitPlayerOrPetInParty",
 	"UnitPlayerOrPetInRaid",
