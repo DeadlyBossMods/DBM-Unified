@@ -39,12 +39,15 @@ end
 
 local ListFrameButtonsPrototype = {}
 
-function ListFrameButtonsPrototype:CreateCategory(frame, parentID)
+function ListFrameButtonsPrototype:CreateCategory(frame, parentID, forceChildren)
 	if type(frame) ~= "table" then
 		DBM:AddMsg("Failed to create category - frame is not a table")
 		return false
 	end
 	frame.depth = parentID and GetDepth(self, parentID) or 1
+	if forceChildren then
+		frame.haschilds = true
+	end
 	SetParentHasChilds(self, parentID)
 	tinsert(self.buttons, {
 		frame		= frame,
@@ -75,7 +78,3 @@ function DBM_GUI:CreateNewFauxScrollFrameList()
 	self.tabs[#self.tabs + 1] = mt
 	return mt
 end
-
--- TODO: Should this go somewhere else?
-_G["DBM_GUI_Bosses"] = DBM_GUI:CreateNewFauxScrollFrameList()
-_G["DBM_GUI_Options"] = DBM_GUI:CreateNewFauxScrollFrameList()

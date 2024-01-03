@@ -3903,6 +3903,8 @@ function DBM:LoadMod(mod, force)
 		self:LoadModOptions(mod.modId, InCombatLockdown(), true)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
+			DBM_GUI:CreateBossModTab(mod, mod.panel)
+			_G["DBM_GUI_OptionsFrame"]:DisplayFrame(mod.panel.frame)
 		end
 		if LastInstanceType ~= "pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			if not timerRequestInProgress then

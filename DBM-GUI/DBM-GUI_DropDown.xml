@@ -8,6 +8,9 @@
 		</KeyValues>
 		<Frames>
 			<ScrollFrame name="$parentList" hidden="true">
+				<KeyValues>
+					<KeyValue key="noScrollBar" value="true" type="boolean"/>
+				</KeyValues>
 				<Size>
 					<AbsDimension x="24" y="0"/>
 				</Size>
