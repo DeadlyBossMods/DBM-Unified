@@ -146,22 +146,22 @@ frameWebsiteButtonA:SetScript("OnMouseUp", function()
 	DBM:ShowUpdateReminder(nil, nil, CL.COPY_URL_DIALOG, "https://discord.gg/deadlybossmods")
 end)
 
----@class DBMOptionsFrame: Frame
+---@class DBM_GUI_OptionsFrameDBMOptions: Frame
 local DBMOptions = CreateFrame("Frame", "$parentDBMOptions", frame)
 DBMOptions.name = L.OTabOptions
 frame:CreateTab(DBMOptions)
 
----@class RaidOptionsFrame: Frame
+---@class DBM_GUI_OptionsFrameRaidOptions: Frame
 local raidOptions = CreateFrame("Frame", "$parentRaidOptions", frame)
 raidOptions.name = L.OTabRaids
 frame:CreateTab(raidOptions)
 
----@class DungeonOptionsFrame: Frame
+---@class DBM_GUI_OptionsFrameDungeonOptions: Frame
 local dungeonOptions = CreateFrame("Frame", "$parentDungeonOptions", frame)
 dungeonOptions.name = L.OTabDungeons
 frame:CreateTab(dungeonOptions)
 
----@class OtherOptionsFrame: Frame
+---@class DBM_GUI_OptionsFrameOtherOptions: Frame
 local otherTab = CreateFrame("Frame", "$parentOtherOptions", frame)
 otherTab.name = L.OTabPlugins
 frame:CreateTab(otherTab)
@@ -300,7 +300,7 @@ frameBreak:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 0, -3)
 frameBreak:SetPoint("BOTTOMLEFT", frameList, "BOTTOMRIGHT", 0, 3)
 frameBreak:SetWidth(16)
 frameBreak:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border", true, true) -- 137057
-local edgeRepeatY = max(0, (frameBreak:GetHeight() / 16) * frameBreak:GetEffectiveScale() - 2 - 0.0625);
+local edgeRepeatY = math.max(0, (frameBreak:GetHeight() / 16) * frameBreak:GetEffectiveScale() - 2 - 0.0625);
 frameBreak:SetTexCoord(0.1328125, 0.0625,
 	0.1328125, edgeRepeatY,
 	0.2421875, 0.0625,

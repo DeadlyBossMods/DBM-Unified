@@ -6,7 +6,7 @@ local isModernAPI = DBM:GetTOC() > 100000--Purposely left this way, wrath 3.4.1 
 local DDM = LibStub:GetLibrary("LibDropDownMenu")
 
 local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
-local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
+local CreateFrame, GameFontNormal = CreateFrame, GameFontNormal
 local DBM, DBM_GUI = DBM, DBM_GUI
 
 ---@class DBMOptionsFrame: Frame, NineSlicePanelTemplate
