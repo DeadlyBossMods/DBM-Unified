@@ -167,7 +167,7 @@ L.CustomOptions						= "Эта категория содержит настра�
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
 L.TranslationBy 			= "Swix, TOM_RUS, Hollicsh"
-L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на твиттер: |cFF73C2FB@deadlybossmods или @MysticalOS|r"
+L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на разные социальные сети - @deadlybossmods или @mysticalos"
 L.WebsiteButton				= "Форумы"
 
 L.OTabBosses				= "Боссы"
