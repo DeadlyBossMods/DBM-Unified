@@ -1,6 +1,8 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
+local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
+
 local DBM = DBM
 local CreateFrame = CreateFrame
 
@@ -57,16 +59,24 @@ frame:SetScript("OnMouseUp", function(self)
 end)
 frame.tabs = {}
 
+if isClassic then
+	CreateFrame("Button", "$parentClosePanelButton", frame, "UIPanelCloseButtonDefaultAnchors")
+	local titleBg = frame:CreateTexture("$parentTitleBga", "BACKGROUND", "_UI-Frame-TitleTileBg")
+	titleBg:ClearAllPoints()
+	titleBg:SetPoint("TOPLEFT", 8, -3)
+	titleBg:SetPoint("TOPRIGHT", -24, -3)
+end
+
 local frameBg = frame:CreateTexture("$parentBg", "BACKGROUND")
 frameBg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
 frameBg:SetColorTexture(0, 0, 0, 0.8)
 frameBg:SetPoint("TOPLEFT", 5, -21)
-frameBg:SetPoint("BOTTOMRIGHT", -2, 2)
+frameBg:SetPoint("BOTTOMRIGHT", -2, isClassic and 8 or 2)
 
 local frameResize = CreateFrame("Button", nil, frame)
 frameResize:SetSize(25, 25)
 frameResize:EnableMouse(true)
-frameResize:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT")
+frameResize:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 3)
 frameResize:SetScript("OnMouseDown", function()
 	frame:StartSizing("BOTTOMRIGHT")
 end)
@@ -96,7 +106,7 @@ frameResize:SetHighlightTexture(resizeHighlight)
 
 local frameHeader = CreateFrame("Frame", nil, frame)
 frameHeader:SetSize(0, 20)
-frameHeader:SetPoint("TOPLEFT", 58, -1)
+frameHeader:SetPoint("TOPLEFT", 8, -1)
 frameHeader:SetPoint("TOPRIGHT", -24, -1)
 
 local frameHeaderText = frameHeader:CreateFontString("$parentHeaderText", "ARTWORK", "GameFontNormal")

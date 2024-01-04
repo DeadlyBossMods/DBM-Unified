@@ -1,6 +1,7 @@
 local L = DBM_GUI_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isModernAPI = DBM:GetTOC() > 100000--Purposely left this way, wrath 3.4.1 doesn't like changes in THIS file (TODO, see if same problem exists in 1.14.4)
 
 local DDM = LibStub:GetLibrary("LibDropDownMenu")
@@ -240,19 +241,29 @@ function frame:DisplayFrame(targetFrame)
 	end
 end
 
+if isClassic then
+	frame.tabsGroup = CreateRadioButtonGroup()
+end
+
 function frame:CreateTab(tab)
 	tab:Hide()
 	local i = #self.tabs + 1
 	self.tabs[i] = tab
 	DBM_GUI:CreateNewFauxScrollFrameList()
 	---@class DBMOptionsFrameTabButtonTemplate: Button
-	local button = CreateFrame("Button", frame:GetName() .. "Tab" .. i, self, "PanelTopTabButtonTemplate")
+	local button = CreateFrame("Button", frame:GetName() .. "Tab" .. i, self, isClassic and "MinimalTabTemplate" or "PanelTopTabButtonTemplate")
 	button.Text:SetText(tab.name)
-	PanelTemplates_SetNumTabs(self, i);
+	if isClassic then
+		self.tabsGroup:AddButton(button)
+		button:SetWidth(button.Text:GetStringWidth() + 18)
+		button:SetHeight(33)
+	else
+		PanelTemplates_SetNumTabs(self, i)
+	end
 	if i == 1 then
 		button:SetPoint("TOPLEFT", self:GetName(), 20, -28)
 	else
-		button:SetPoint("TOPLEFT", "DBM_GUI_OptionsFrameTab" .. (i - 1), "TOPRIGHT", isModernAPI and 5 or -15, 0)
+		button:SetPoint("TOPLEFT", "DBM_GUI_OptionsFrameTab" .. (i - 1), "TOPRIGHT", (isModernAPI or isClassic) and 5 or -15, 0)
 	end
 	button:SetScript("OnClick", function()
 		self:ShowTab(i)
@@ -262,7 +273,11 @@ end
 function frame:ShowTab(tab)
 	self.tab = tab
 	self:UpdateMenuFrame()
-	PanelTemplates_SetTab(self, tab);
+	if isClassic then
+		self.tabsGroup:SelectAtIndex(tab)
+	else
+		PanelTemplates_SetTab(self, tab)
+	end
 	if selectedPagePerTab[tab] then
 		self:DisplayFrame(selectedPagePerTab[tab])
 	elseif DBM_GUI.currentViewing then
