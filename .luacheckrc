@@ -148,6 +148,7 @@ globals = {
 	"AlertFrame",
 	"BackdropTemplateMixin",
 	"ChatFontNormal",
+	"CreateRadioButtonGroup", -- Classic Era
 	"UIParent",
 	"GameFontHighlight",
 	"GameFontHighlightSmall",
