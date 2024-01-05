@@ -95,8 +95,6 @@ L.GENERIC_WARNING_OTHERS2			= "e %d outros"
 L.GENERIC_WARNING_BERSERK			= "Frenético em %s %s"
 L.GENERIC_TIMER_BERSERK				= "Frenético"
 L.OPTION_TIMER_BERSERK				= "Exibir cronógrafo para $spell:26662"
-L.GENERIC_TIMER_COMBAT				= "Combate começou"
-L.OPTION_TIMER_COMBAT				= "Exibir cronógrafo para começo do combate"
 
 L.OPTION_CATEGORY_TIMERS			= "Barras"
 L.OPTION_CATEGORY_WARNINGS			= "Categoria de anúncios"

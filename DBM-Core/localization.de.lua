@@ -121,8 +121,6 @@ L.GENERIC_WARNING_OTHERS2	= "und %d anderen"
 L.GENERIC_WARNING_BERSERK	= "Berserker in %s %s"
 L.GENERIC_TIMER_BERSERK		= "Berserker"
 L.OPTION_TIMER_BERSERK		= "Zeige Zeit bis $spell:26662"
-L.GENERIC_TIMER_COMBAT		= "Kampfbeginn"
-L.OPTION_TIMER_COMBAT		= "Zeige Zeit bis Kampfbeginn"
 L.BAD						= "Schlechtes"
 
 L.OPTION_CATEGORY_TIMERS			= "Timer"

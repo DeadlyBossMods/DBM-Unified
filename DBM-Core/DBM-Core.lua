@@ -388,6 +388,7 @@ DBM.DefaultOptions = {
 	LastRevision = 0,
 	DebugMode = false,
 	DebugLevel = 1,
+	DebugSound = true,
 	RoleSpecAlert = true,
 	CheckGear = true,
 	WorldBossAlert = not isRetail,
@@ -3607,6 +3608,7 @@ end
 --------------------------------
 do
 	local pvpShown = false
+	local seasonalShown = false
 	local classicZones = {[509]=true,[531]=true,[469]=true,[409]=true}
 	local bcZones = {[564]=true,[534]=true,[532]=true,[565]=true,[544]=true,[548]=true,[580]=true,[550]=true}
 	local wrathZones = {[615]=true,[724]=true,[649]=true,[616]=true,[631]=true,[533]=true,[249]=true,[603]=true,[624]=true}
@@ -3618,6 +3620,7 @@ do
 	local shadowlandsZones = {[2296]=true,[2450]=true,[2481]=true}
 	local challengeScenarios = {[1148]=true,[1698]=true,[1710]=true,[1703]=true,[1702]=true,[1684]=true,[1673]=true,[1616]=true,[2215]=true}
 	local pvpZones = {[30]=true,[489]=true,[529]=true,[559]=true,[562]=true,[566]=true,[572]=true,[617]=true,[618]=true,[628]=true,[726]=true,[727]=true,[761]=true,[968]=true,[980]=true,[998]=true,[1105]=true,[1134]=true,[1170]=true,[1504]=true,[1505]=true,[1552]=true,[1681]=true,[1672]=true,[1803]=true,[1825]=true,[1911]=true,[2106]=true,[2107]=true,[2118]=true,[2167]=true,[2177]=true,[2197]=true,[2245]=true,[2373]=true,[2509]=true,[2511]=true,[2547]=true,[2563]=true}
+	local seasonalZones = {[2579]=true, [1279]=true, [1501]=true, [1466]=true, [1763]=true, [643]=true, [1862]=true}
 
 	--This never wants to spam you to use mods for trivial content you don't need mods for.
 	--It's intended to suggest mods for content that's relevant to your level (TW, leveling up in dungeons, or even older raids you can't just roll over)
@@ -3625,8 +3628,9 @@ do
 		if _G["BigWigs"] then return end--If they are running two boss mods at once, lets assume they are only using DBM for a specific feature (such as brawlers) and not nag
 		if isRetail then
 			if not self:IsTrivial() then
-				if instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2 and not C_AddOns.DoesAddOnExist("DBM-Party-Dragonflight") then
+				if (seasonalZones[LastInstanceMapID] or instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2) and not C_AddOns.DoesAddOnExist("DBM-Party-Dragonflight") and not seasonalShown then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
+					seasonalShown = true
 				elseif (classicZones[LastInstanceMapID] or bcZones[LastInstanceMapID]) and not C_AddOns.DoesAddOnExist("DBM-Raids-BC") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
 				elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
@@ -6822,7 +6826,7 @@ end
 -----------------------
 --  Misc. Functions  --
 -----------------------
-function DBM:AddMsg(text, prefix)
+function DBM:AddMsg(text, prefix, useSound)
 	local tag = prefix or (self.localization and self.localization.general.name) or L.DBM
 	local frame = DBM.Options.ChatFrame and _G[tostring(DBM.Options.ChatFrame)] or DEFAULT_CHAT_FRAME
 	if not frame or not frame:IsShown() then
@@ -6832,6 +6836,9 @@ function DBM:AddMsg(text, prefix)
 		frame:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(tag), tostring(text)), 0.41, 0.8, 0.94)
 	else
 		frame:AddMessage(text, 0.41, 0.8, 0.94)
+	end
+	if DBM.Options.DebugSound and useSound then
+		DBM:PlaySoundFile(567458)--"Ding"
 	end
 end
 AddMsg = DBM.AddMsg
@@ -10343,8 +10350,7 @@ do
 		["cdnp"] = "cd",
 		["nextnp"] = "cd",
 
-		--Combatstart, RPs all map to "warmup"
-		["combat"] = "warmup",
+		--RPs all map to "warmup"
 		["roleplay"] = "warmup",
 
 		--all stage types will map to "stage"
@@ -10403,10 +10409,10 @@ do
 							if bar.timer > 0.2 then
 								local phaseText = self.mod.vb.phase and " ("..SCENARIO_STAGE:format(self.mod.vb.phase)..")" or ""
 								if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-									DBM:AddMsg("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
+									DBM:AddMsg("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug", nil, true)
 									fireEvent("DBM_Debug", "Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug", 2)
 								else
-									DBM:Debug("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining, 2)
+									DBM:Debug("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining, 2, true)
 								end
 							end
 						end
@@ -10482,10 +10488,10 @@ do
 						if bar.timer > 0.2 then
 							local phaseText = self.mod.vb.phase and " ("..SCENARIO_STAGE:format(self.mod.vb.phase)..")" or ""
 							if DBM.Options.BadTimerAlert and bar.timer > 1 then--If greater than 1 seconds off, report this out of debug mode to all users
-								DBM:AddMsg("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug")
+								DBM:AddMsg("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug", nil, true)
 								fireEvent("DBM_Debug", "Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining..". Please report this bug", 2)
 							else
-								DBM:Debug("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining, 2)
+								DBM:Debug("Timer "..ttext..phaseText.. " refreshed before expired. Remaining time is : "..remaining, 2, true)
 							end
 						end
 					end
@@ -11355,21 +11361,6 @@ do
 			{
 				warning1 = warning1,
 				warning2 = warning2,
-				bar = bar,
-				timer = timer,
-				owner = self
-			},
-			mt
-		)
-		return obj
-	end
-	function bossModPrototype:NewCombatTimer(timer, _, barText, barIcon) -- timer, text, barText, barIcon
-		timer = timer or 10
-		--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5, nil, nil, nil, nil, nil, nil, "combat")
-
-		local obj = setmetatable(
-			{
 				bar = bar,
 				timer = timer,
 				owner = self

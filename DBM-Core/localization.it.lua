@@ -121,8 +121,6 @@ L.GENERIC_WARNING_OTHERS2	= "e %d altri"
 L.GENERIC_WARNING_BERSERK	= "Furia tra %s %s"
 L.GENERIC_TIMER_BERSERK		= "Furia"
 L.OPTION_TIMER_BERSERK		= "Visualizza Temporizzatore $spell:26662"
-L.GENERIC_TIMER_COMBAT		= "Inizio combattimento"
-L.OPTION_TIMER_COMBAT		= "Mostra temporizzatore inizio combattimento"
 -- L.BAD						= "Bad"
 
 L.OPTION_CATEGORY_TIMERS		= "Barre"

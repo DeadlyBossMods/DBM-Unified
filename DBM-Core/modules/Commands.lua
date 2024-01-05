@@ -398,6 +398,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		DBM.Options.DebugLevel = level
 		DBM:AddMsg("Debug Level is " .. level)
+	elseif cmd:sub(1, 10) == "debugsound" then
+		DBM.Options.DebugSound = not DBM.Options.DebugSound
+		DBM:AddMsg("Debug Sound is " .. (DBM.Options.DebugSound and "ON" or "OFF"))
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = not DBM.Options.DebugMode
 		DBM:AddMsg("Debug Message is " .. (DBM.Options.DebugMode and "ON" or "OFF"))
