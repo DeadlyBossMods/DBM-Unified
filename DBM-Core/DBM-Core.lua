@@ -6834,7 +6834,7 @@ function DBM:AddMsg(text, prefix, useSound)
 	else
 		frame:AddMessage(text, 0.41, 0.8, 0.94)
 	end
-	if DBM.Options.DebugSound then
+	if DBM.Options.DebugSound and useSound then
 		DBM:PlaySoundFile(567458)--"Ding"
 	end
 end

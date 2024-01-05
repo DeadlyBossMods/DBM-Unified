@@ -51,7 +51,7 @@ do
 			frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
 			frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
 		end
-		if DBM.Options.DebugSound then
+		if DBM.Options.DebugSound and useSound then
 			DBM:PlaySoundFile(567458)--"Ding"
 		end
 	end
