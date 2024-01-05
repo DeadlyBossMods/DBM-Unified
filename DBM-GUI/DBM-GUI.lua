@@ -479,7 +479,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 
 	local reset = panel:CreateButton(L.Mod_Reset, 155, 30, nil, GameFontNormalSmall)
 	reset.myheight = 40
-	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -8, -4)
+	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -4)
 	reset:SetScript("OnClick", function()
 		DBM:LoadModDefaultOption(mod)
 	end)
