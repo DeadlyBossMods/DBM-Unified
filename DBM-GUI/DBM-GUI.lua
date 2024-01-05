@@ -883,24 +883,34 @@ do
 			return
 		end
 		local seasonCategory = DBM_GUI:CreateNewPanel(L.TabCategory_CURRENT_SEASON, "PARTY")
+		local seasonCategoryTab = DBM_GUI.tabs[3].buttons[#DBM_GUI.tabs[3].buttons]
+		local hasAnyMod = false
 		for _, challengeMap in ipairs(C_ChallengeMode.GetMapTable()) do
 			local challengeMode = challengeModeIds[challengeMap]
 			local id = challengeMode
 			local mapName = strsplit("-", GetRealZoneText(id):trim() or id)
 			if not currentSeasons[mapName] then
-				local panel = seasonCategory:CreateNewPanel(mapName, "PARTY", false, nil, true)
-				local test = DBM_GUI.panels[#DBM_GUI.panels].frame
-				test.isSeason = true
+				local modId
 				for _, addon in ipairs(DBM.AddOns) do
 					for _, mapId in ipairs(addon.mapId) do
 						if mapId == id and addon.type == "PARTY" then
-							test.addonId = addon.modId
+							modId = addon.modId
 							break
 						end
 					end
 				end
-				currentSeasons[mapName] = panel
+				if modId then
+					local panel = seasonCategory:CreateNewPanel(mapName, "PARTY", false, nil, true)
+					local panelFrame = DBM_GUI.panels[#DBM_GUI.panels].frame
+					panelFrame.isSeason = true
+					panelFrame.addonId = modId
+					currentSeasons[mapName] = panel
+					hasAnyMod = true
+				end
 			end
+		end
+		if not hasAnyMod then
+			seasonCategoryTab.hidden = true
 		end
 	end
 

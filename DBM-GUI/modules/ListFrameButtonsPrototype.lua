@@ -59,7 +59,7 @@ end
 function ListFrameButtonsPrototype:GetVisibleTabs()
 	local tabs = {}
 	for _, v in ipairs(self.buttons) do
-		if not v.parentID then
+		if not v.parentID and not v.hidden then
 			tinsert(tabs, v)
 			if v.frame.showSub then
 				GetVisibleSubTabs(self, v.frame.ID, tabs)
