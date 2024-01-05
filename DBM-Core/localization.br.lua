@@ -229,7 +229,7 @@ L.AUTO_TIMER_TEXTS.next				= "Próx. %s"
 L.AUTO_TIMER_TEXTS.nextcount		= "Próx. %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource		= "Próx %s: >%%s<"
 L.AUTO_TIMER_TEXTS.achievement		= "%s"
-L.AUTO_TIMER_TEXTS.combat			= "Combate começou"
+L.AUTO_TIMER_TEXTS.combat			= "Combate começa"
 
 L.AUTO_TIMER_OPTIONS.target			= "Exibir cronógrafo para a penalidade $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast			= "Exibir cronógrafo para lançar $spell:%s"
