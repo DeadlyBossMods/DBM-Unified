@@ -222,12 +222,6 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 						end
 					end
 				end
-				for _, mod in ipairs(DBM.Mods) do
-					if mod.id == self.element.modId then
-						DBM_GUI:CreateBossModPanel(mod)
-						break
-					end
-				end
 				self.element.isLoaded = true
 			end
 			if frame.tab ~= 1 then

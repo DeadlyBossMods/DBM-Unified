@@ -1,7 +1,7 @@
 local L = DBM_GUI_L
 
 ---@class DBMGUI
----@field CreateNewPanel fun(self, frameName, frameType, showSub, _, displayName): DBMPanel -- defined in PanelPrototype
+---@field CreateNewPanel fun(self, frameName, frameType, showSub, displayName, forceChildren, addonId, isSeason): DBMPanel -- defined in PanelPrototype
 ---@field CreateDropdown fun(self, title, values, vartype, var, callfunc, width, height, parent): DBMDropdownTemplate
 ---@field currentViewing Frame
 ---@field frame DBMPanelFrame
@@ -877,6 +877,18 @@ end
 do
 	local subTabId = 0
 
+	local cachedAddOns = {}
+	local C_AddOns = {
+		DoesAddOnExist = C_AddOns.DoesAddOnExist or function(addon)
+			if not cachedAddOns then
+				for i = 1, GetNumAddOns() do ---@diagnostic disable-line:deprecated
+				cachedAddOns[GetAddOnInfo(i)] = true ---@diagnostic disable-line:deprecated
+				end
+			end
+			return cachedAddOns[addon]
+		end,
+	}
+
 	local currentSeasons = {}
 	function UpdateCurrentSeason()
 		if not C_ChallengeMode or not C_ChallengeMode.GetMapTable then
@@ -892,22 +904,31 @@ do
 			if not currentSeasons[mapName] then
 				local modId
 				for _, addon in ipairs(DBM.AddOns) do
-					for _, mapId in ipairs(addon.mapId) do
-						if mapId == id and addon.type == "PARTY" then
-							modId = addon.modId
-							break
+					if addon.modId ~= "DBM-Affixes" and addon.type == "PARTY" then
+						for _, mapId in ipairs(addon.mapId) do
+							if mapId == id then
+								modId = addon.modId
+								break
+							end
 						end
 					end
 				end
 				if modId then
-					local panel = seasonCategory:CreateNewPanel(mapName, "PARTY", false, nil, true)
-					local panelFrame = DBM_GUI.panels[#DBM_GUI.panels].frame
-					panelFrame.isSeason = true
-					panelFrame.addonId = modId
-					currentSeasons[mapName] = panel
+					currentSeasons[mapName] = seasonCategory:CreateNewPanel(mapName, "PARTY", false, nil, true, modId, true)
 					hasAnyMod = true
 				end
 			end
+		end
+		if C_AddOns.DoesAddOnExist("DBM-Affixes") then
+			local affixAddon
+			for _, addon in ipairs(DBM.AddOns) do
+				if addon.modId == "DBM-Affixes" then
+					affixAddon = addon
+					break
+				end
+			end
+			currentSeasons["MPlusAffixes"] = seasonCategory:CreateNewPanel("MPlusAffixes", "PARTY", false, affixAddon.name, false, "DBM-Affixes", true)
+			hasAnyMod = true
 		end
 		if not hasAnyMod then
 			seasonCategoryTab.hidden = true
@@ -921,6 +942,9 @@ do
 			if not addon.panel then
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, nil, true, addon.modId)
+				if addon.modId == "DBM-Affixes" then -- If affixes, hide second general entry (as it's under Current Season)
+					DBM_GUI.tabs[3].buttons[#DBM_GUI.tabs[3].buttons].hidden = true
+				end
 
 				if not IsAddOnLoaded(addon.modId) then
 					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
@@ -940,7 +964,6 @@ do
 			end
 
 			if addon.panel and addon.subTabs and IsAddOnLoaded(addon.modId) then
-				-- Create a Panel for "Arachnid Quarter" "Plague Quarter" ...
 				if not addon.subPanels then
 					addon.subPanels = {}
 				end
@@ -948,11 +971,7 @@ do
 				for k, v in pairs(addon.subTabs) do
 					if not addon.subPanels[k] then
 						subTabId = subTabId + 1
-						if currentSeasons[v] then
-							addon.subPanels[k] = currentSeasons[v]
-						else
-							addon.subPanels[k] = addon.panel:CreateNewPanel("SubTab" .. subTabId, addon.type, false, v, addon.modId)
-						end
+						addon.subPanels[k] = currentSeasons[v] or addon.panel:CreateNewPanel("SubTab" .. subTabId, addon.type, false, v, addon.modId)
 						DBM_GUI:CreateBossModTab(addon, addon.subPanels[k], k)
 					end
 				end
@@ -964,7 +983,7 @@ do
 						if addon.subTabs and addon.subPanels[mod.subTab] then
 							mod.panel = addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
 						else
-							mod.panel = addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
+							mod.panel = currentSeasons[mod.id] or addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", addon.type, nil, mod.localization.general.name)
 						end
 					end
 				end
