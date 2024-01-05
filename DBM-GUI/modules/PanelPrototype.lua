@@ -88,6 +88,7 @@ function PanelPrototype:CreateSpellDesc(text)
 	test:SetSize(self.frame:GetWidth(), textblock:GetStringHeight())
 	test.mytype = "spelldesc"
 	test.autowidth = true
+	test.hasDesc = false
 	-- Description logic
 	if type(text) == "number" then
 		local spell = Spell:CreateFromSpellID(text)
@@ -96,6 +97,8 @@ function PanelPrototype:CreateSpellDesc(text)
 			text = GetSpellDescription(spell:GetSpellID())
 			if text == "" then
 				text = L.NoDescription
+			else
+				test.hasDesc = true
 			end
 			textblock:SetText(text:gsub('|cffffffff', '|cff71d5ff'))
 			if DBM_GUI.currentViewing then

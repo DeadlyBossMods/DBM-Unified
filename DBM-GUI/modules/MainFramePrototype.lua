@@ -88,9 +88,9 @@ local function resize(targetFrame, first)
 					if child.mytype == "ability" and child2.mytype then
 						child2:SetShown(not child.hidden)
 						if child2.mytype == "spelldesc" then
-							child2:SetShown(true)
+							child2:SetShown(child2.hasDesc and true or child.hidden)
 							_G[child:GetName() .. "Title"]:Show()
-							_G[child2:GetName() .. "Text"]:SetShown(true)
+							_G[child2:GetName() .. "Text"]:SetShown(child2.hasDesc and true or child.hidden)
 							if child.hidden then
 								neededHeight = 0
 							end
