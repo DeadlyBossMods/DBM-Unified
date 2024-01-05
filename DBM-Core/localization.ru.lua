@@ -131,8 +131,6 @@ L.GENERIC_WARNING_OTHERS2			= "и %d других"
 L.GENERIC_WARNING_BERSERK			= "Берсерк через %s %s"
 L.GENERIC_TIMER_BERSERK				= "Берсерк"
 L.OPTION_TIMER_BERSERK				= "Отсчёт времени до $spell:26662"
-L.GENERIC_TIMER_COMBAT				= "Бой начинается"
-L.OPTION_TIMER_COMBAT				= "Отсчёт времени до начала боя"
 L.BAD								= "Плохой"
 
 L.OPTION_CATEGORY_TIMERS			= "Индикаторы"

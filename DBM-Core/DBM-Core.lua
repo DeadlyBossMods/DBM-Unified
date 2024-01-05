@@ -10350,8 +10350,7 @@ do
 		["cdnp"] = "cd",
 		["nextnp"] = "cd",
 
-		--Combatstart, RPs all map to "warmup"
-		["combat"] = "warmup",
+		--RPs all map to "warmup"
 		["roleplay"] = "warmup",
 
 		--all stage types will map to "stage"
@@ -11362,21 +11361,6 @@ do
 			{
 				warning1 = warning1,
 				warning2 = warning2,
-				bar = bar,
-				timer = timer,
-				owner = self
-			},
-			mt
-		)
-		return obj
-	end
-	function bossModPrototype:NewCombatTimer(timer, _, barText, barIcon) -- timer, text, barText, barIcon
-		timer = timer or 10
-		--timer, name, icon, optionDefault, optionName, colorType, inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-		local bar = self:NewTimer(timer, barText or L.GENERIC_TIMER_COMBAT, barIcon or "132349", nil, "timer_combat", nil, nil, nil, 1, 5, nil, nil, nil, nil, nil, nil, "combat")
-
-		local obj = setmetatable(
-			{
 				bar = bar,
 				timer = timer,
 				owner = self

@@ -105,8 +105,6 @@ L.GENERIC_WARNING_OTHERS2	= "et %d autres"
 L.GENERIC_WARNING_BERSERK	= "Enrage dans %s %s"
 L.GENERIC_TIMER_BERSERK		= "Enrage"
 L.OPTION_TIMER_BERSERK		= "Montrer les chronos pour $spell:26662"
-L.GENERIC_TIMER_COMBAT		= "Le combat débute dans"
-L.OPTION_TIMER_COMBAT		= "Montre le timer avant le début du combat"
 
 L.OPTION_CATEGORY_TIMERS			= "Barres"
 L.OPTION_CATEGORY_WARNINGS		= "Avertissements"
