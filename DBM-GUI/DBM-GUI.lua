@@ -479,16 +479,18 @@ function DBM_GUI:CreateBossModPanel(mod)
 
 	local reset = panel:CreateButton(L.Mod_Reset, 155, 30, nil, GameFontNormalSmall)
 	reset.myheight = 40
-	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -24, -4)
+	reset:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -8, -4)
 	reset:SetScript("OnClick", function()
 		DBM:LoadModDefaultOption(mod)
 	end)
-	local button = panel:CreateCheckButton(L.Mod_Enabled:format(mod.localization.general.name), true)
+	local button = panel:CreateCheckButton(L.Mod_Enabled:format("|n|cFFFFFFFF" .. mod.localization.general.name), true)
 	button:SetChecked(mod.Options.Enabled)
 	button:SetPoint("TOPLEFT", panel.frame, "TOPLEFT", 8, -14)
 	button:SetScript("OnClick", function()
 		mod:Toggle()
 	end)
+	button.textObj:ClearAllPoints()
+	button.textObj:SetPoint("TOPLEFT", button, "TOPRIGHT", 0, 2)
 
 	if mod.addon then
 		for spellID, options in getmetatable(mod.groupOptions).__pairs(mod.groupOptions) do

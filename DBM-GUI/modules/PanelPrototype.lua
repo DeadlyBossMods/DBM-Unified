@@ -484,7 +484,7 @@ do
 			buttonText:SetJustifyH("p", "RIGHT")
 		else
 			buttonText:SetJustifyH("p", "LEFT")
-			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -4)
+			buttonText:SetPoint("TOPLEFT", frame2 or frame or button, "TOPRIGHT", textPad or 0, -5)
 		end
 		buttonText:SetText(button.text)
 		button.myheight = mmax(buttonText:GetContentHeight() + 12, 25)

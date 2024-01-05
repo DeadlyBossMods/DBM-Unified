@@ -26,7 +26,7 @@ L.MoveMe 					= "Mova-me"
 L.Button_OK 				= "OK"
 L.Button_Cancel 			= "Cancelar"
 L.Button_LoadMod 			= "Carregar AddOn"
-L.Mod_Enabled				= "Habilitar módulo"
+L.Mod_Enabled				= "Habilitar: %s"
 L.Mod_Reset					= "Carregar opções padrão"
 L.Reset 					= "Resetar"
 

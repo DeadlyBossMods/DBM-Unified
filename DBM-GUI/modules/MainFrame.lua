@@ -18,7 +18,7 @@ end
 if DBM.Options.GUIWidth then
 	frame:SetSize(DBM.Options.GUIWidth, DBM.Options.GUIHeight)
 else
-	frame:SetSize(800, 600)
+	frame:SetSize(850, 600)
 end
 frame:EnableMouse(true)
 frame:SetMovable(true)
