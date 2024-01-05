@@ -467,6 +467,7 @@ L.AUTO_TIMER_TEXTS.intermissioncount	= "Переходная фаза %%s"
 L.AUTO_TIMER_TEXTS.adds				= "Адды"
 L.AUTO_TIMER_TEXTS.addscustom		= "Адды (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay			= GUILD_INTEREST_RP or "Ролевая игра"
+L.AUTO_TIMER_TEXTS.combat			= "Бой начинается"
 
 L.AUTO_TIMER_OPTIONS.target 		= "Отсчёт времени действия дебаффа $spell:%s"
 L.AUTO_TIMER_OPTIONS.targetcount 	= "Отсчёт времени действия дебаффа (со счётчиком) $spell:%s"
@@ -499,6 +500,7 @@ L.AUTO_TIMER_OPTIONS.intermissioncount	= "Отсчёт времени (со сч
 L.AUTO_TIMER_OPTIONS.adds			= "Отсчёт времени до прибытия аддов"
 L.AUTO_TIMER_OPTIONS.addscustom		= "Отсчёт времени до прибытия аддов"
 L.AUTO_TIMER_OPTIONS.roleplay		= "Отсчёт времени для ролевой игры"
+L.AUTO_TIMER_OPTIONS.combat			= "Отсчёт времени до начала боя"
 
 L.AUTO_ICONS_OPTION_TARGETS			= "Устанавливать метки на цели $spell:%s"
 L.AUTO_ICONS_OPTION_TARGETS_TANK_A		= "Устанавливать метки на цели $spell:%s с приоритетом танка над ближним боем, над дальним и по алфавиту"

@@ -10352,6 +10352,7 @@ do
 
 		--RPs all map to "warmup"
 		["roleplay"] = "warmup",
+		["combat"] = "warmup",
 
 		--all stage types will map to "stage"
 		["achievement"] = "stage",
@@ -11260,6 +11261,11 @@ do
 
 	function bossModPrototype:NewRPTimer(...)
 		return newTimer(self, "roleplay", ...)
+	end
+
+	--self, timerType, timer, spellId, timerText, optionDefault, optionName, colorType, texture, inlineIcon, keep, countdown, countdownMax
+	function bossModPrototype:NewCombatTimer(timer)
+		return newTimer(self, "combat", timer, nil, nil, nil, nil, 0, "132349", nil, nil, 1, 5)
 	end
 
 	function bossModPrototype:NewAddsTimer(...)
