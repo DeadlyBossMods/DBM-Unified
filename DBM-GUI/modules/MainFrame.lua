@@ -1,7 +1,7 @@
 local L		= DBM_GUI_L
 local CL	= DBM_CORE_L
 
-local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
+local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
 local DBM = DBM
 local CreateFrame = CreateFrame
@@ -59,7 +59,7 @@ frame:SetScript("OnMouseUp", function(self)
 end)
 frame.tabs = {}
 
-if isClassic then
+if not isRetail then
 	CreateFrame("Button", "$parentClosePanelButton", frame, "UIPanelCloseButtonDefaultAnchors")
 	local titleBg = frame:CreateTexture("$parentTitleBga", "BACKGROUND", "_UI-Frame-TitleTileBg")
 	titleBg:ClearAllPoints()
@@ -71,7 +71,7 @@ local frameBg = frame:CreateTexture("$parentBg", "BACKGROUND")
 frameBg:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
 frameBg:SetColorTexture(0, 0, 0, 0.8)
 frameBg:SetPoint("TOPLEFT", 5, -21)
-frameBg:SetPoint("BOTTOMRIGHT", -2, isClassic and 8 or 2)
+frameBg:SetPoint("BOTTOMRIGHT", -2, isRetail and 2 or 8)
 
 local frameResize = CreateFrame("Button", nil, frame)
 frameResize:SetSize(25, 25)
