@@ -154,6 +154,8 @@ local function resize(targetFrame, first)
 							end
 						end
 						neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+					elseif child2.myheight and child2:IsVisible() then
+						neededHeight = neededHeight + child2.myheight
 					end
 				end
 				child:SetHeight(neededHeight)
