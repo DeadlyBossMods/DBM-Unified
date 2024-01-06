@@ -386,7 +386,7 @@ L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
 L.BarSkin					= "바 스킨"
 
 -- Panel: Pull, Break, Combat
-L.Panel_PullBreakCombat				= "풀링, 휴식, 전투"
+L.Panel_PullBreakCombat				= "풀링 & 휴식"
 
 L.Area_SoundOptions					= "효과음 설정"
 

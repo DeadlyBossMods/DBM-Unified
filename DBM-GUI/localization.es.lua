@@ -364,7 +364,7 @@ L.KeepBar2					= "(siempre que el módulo lo permita)"
 L.FadeBar					= "Desteñir barras de habilidades lejanas"
 
 -- Panel: Pull, Break, Combat
-L.Panel_PullBreakCombat				= "Inicio, descanso, combate"
+L.Panel_PullBreakCombat				= "Inicio & descanso"
 
 L.Area_SoundOptions					= "Opciones de sonido"
 

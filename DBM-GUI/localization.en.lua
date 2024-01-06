@@ -387,7 +387,7 @@ L.FadeBar							= "Fade timers for out of range abilities"
 L.BarSkin							= "Bar skin"
 
 -- Panel: Pull, Break, Combat
-L.Panel_PullBreakCombat				= "Pull, Break, Combat"
+L.Panel_PullBreakCombat				= "Pull & Break"
 
 L.Area_SoundOptions					= "Sound Options"
 
