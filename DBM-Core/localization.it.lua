@@ -434,6 +434,7 @@ L.AUTO_TIMER_TEXTS.stage			= "Prossima Fase"
 L.AUTO_TIMER_TEXTS.adds			= "Add in Arrivo"
 L.AUTO_TIMER_TEXTS.addscustom	= "Add in Arrivo (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay		= GUILD_INTEREST_RP
+L.AUTO_TIMER_TEXTS.combat		= "Inizio combattimento"
 -- L.AUTO_TIMER_TEXTS - FINE
 
 -- L.AUTO_TIMER_OPTIONS - INIZIO
@@ -457,6 +458,7 @@ L.AUTO_TIMER_OPTIONS.stage		= "Mostra temporizzatore per prossima fase"
 L.AUTO_TIMER_OPTIONS.adds		= "Mostra temporizzatore add in arrivo"
 L.AUTO_TIMER_OPTIONS.addscustom	= "Mostra temporizzatore add in arrivo"
 L.AUTO_TIMER_OPTIONS.roleplay	= "Mostra temporizzatore durata gioco di ruolo"
+L.AUTO_TIMER_OPTIONS.combat		= "Mostra temporizzatore inizio combattimento"
 -- L.AUTO_TIMER_OPTIONS - FINE
 
 

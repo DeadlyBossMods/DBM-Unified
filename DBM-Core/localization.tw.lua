@@ -461,6 +461,7 @@ L.AUTO_TIMER_TEXTS.Intermissioncount		= "中場 %%s"
 L.AUTO_TIMER_TEXTS.adds						= "小怪"
 L.AUTO_TIMER_TEXTS.addscustom  				= "小怪 (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay					= GUILD_INTEREST_RP
+L.AUTO_TIMER_TEXTS.combat					= "戰鬥開始"
 
 L.AUTO_TIMER_OPTIONS.target					= "計時條：$spell:%s減益效果持續時間"
 L.AUTO_TIMER_OPTIONS.targetcount			= "計時條：$spell:%s減益效果持續時間(包含計數)"
@@ -487,6 +488,7 @@ L.AUTO_TIMER_OPTIONS.intermissioncount		= "計時條：下個中場(包含計數
 L.AUTO_TIMER_OPTIONS.adds					= "計時條：下一次小怪"
 L.AUTO_TIMER_OPTIONS.addscustom				= "計時條：小怪出現"
 L.AUTO_TIMER_OPTIONS.roleplay				= "計時條：劇情持續時間"
+L.AUTO_TIMER_OPTIONS.combat					= "為戰鬥開始顯示計時器"
 
 L.AUTO_ICONS_OPTION_TARGETS					= "為$spell:%s的目標設置標記"
 L.AUTO_ICONS_OPTION_TARGETS_TANK_A			= "為$spell:%s的目標設置標記，優先等級為坦克高於近戰高於遠程，並以字母順序優先"

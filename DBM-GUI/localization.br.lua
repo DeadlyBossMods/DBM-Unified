@@ -195,13 +195,13 @@ L.FilterTankSpec			= "Filtrar mensagens designadas para tank role quando não fo
 L.FilterInterrupts			= "Filtrar avisos para habilidades passivas de cortes ( interrupts ) se o alvo não for o seu target ou focus ( Não se aplica para magias criticas que resultaram em derrota caso não seja interrompida)"
 L.FilterDispels				= "Filtrar avisos para magias dissipáveis se a seu dissipar estiver em recarga."
 
-L.Area_PullTimer			= "Opções de Filtros de Puxada, pausa, Combate, & Temporizador customizados"
+L.Area_PullTimer			= "Opções de Filtros de Puxada, pausa, & Temporizador customizados"
 L.DontShowPTNoID			= "Bloquear o temporizador de Puxada se não foi enviado na mesma zona que você"
 L.DontShowPT				= "Não exibir a barra de puxada"
 L.DontShowPTText			= "Não exibir texto de anúncio do temporizador de puxada"
-L.DontPlayPTCountdown		= "Não tocar o áudio da contagem regressiva de puxada/combate/customizado"
-L.DontShowPTCountdownText	= "Não exibir o texto da contagem regressiva de puxada/combate/customizado"
-L.PT_Threshold				= "Não exibir o texto da contagem regressiva de puxada/combate/customizado acima de: %d"
+L.DontPlayPTCountdown		= "Não tocar o áudio da contagem regressiva de puxada/customizado"
+L.DontShowPTCountdownText	= "Não exibir o texto da contagem regressiva de puxada/customizado"
+L.PT_Threshold				= "Não exibir o texto da contagem regressiva de puxada/customizado acima de: %d"
 
 L.Panel_HideBlizzard		= "Esconder Blizzard"
 L.Area_HideBlizzard			= "Esconder Opções da Blizzard"

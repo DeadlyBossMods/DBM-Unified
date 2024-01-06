@@ -229,6 +229,7 @@ L.AUTO_TIMER_TEXTS.next				= "Próx. %s"
 L.AUTO_TIMER_TEXTS.nextcount		= "Próx. %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource		= "Próx %s: >%%s<"
 L.AUTO_TIMER_TEXTS.achievement		= "%s"
+L.AUTO_TIMER_TEXTS.combat			= "Combate começa"
 
 L.AUTO_TIMER_OPTIONS.target			= "Exibir cronógrafo para a penalidade $spell:%s"
 L.AUTO_TIMER_OPTIONS.cast			= "Exibir cronógrafo para lançar $spell:%s"
@@ -241,6 +242,7 @@ L.AUTO_TIMER_OPTIONS.next			= "Exibir cronógrafo para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount		= "Exibir cronógrafo para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource		= "Exibir cronógrafo para o próximo $spell:%s"
 L.AUTO_TIMER_OPTIONS.achievement	= "Exibir cronógrafo para %s"
+L.AUTO_TIMER_OPTIONS.combat			= "Exibir cronógrafo para começo do combate"
 
 -- Auto-generated Warning Localizations
 L.AUTO_ANNOUNCE_TEXTS.target		= "%s em >%%s<"
