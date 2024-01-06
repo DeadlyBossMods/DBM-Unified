@@ -53,8 +53,16 @@ do
 		-- CD text
 		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "overlay", "NumberFontNormal")
 		iconFrame.cooldown.timer:SetPoint ("center")
+		--local font, _, flags = iconFrame.cooldown.timer:GetFont() --TODO: Options
+		--iconFrame.cooldown.timer:SetFont(font, 18, flags)
 		iconFrame.cooldown.timer:Show()
 		iconFrame.timerText = iconFrame.cooldown.timer
+
+		iconFrame.text = iconFrame:CreateFontString(nil, "overlay", "GameFontNormal")
+		iconFrame.text:SetPoint("bottom", iconFrame, "top", 0, 2)
+		local font, _, flags = iconFrame.text:GetFont() --TODO: Options
+		iconFrame.text:SetFont(font, 10, flags)
+		iconFrame.text:Hide()
 
 		iconFrame:SetScript ("OnUpdate", frame.UpdateTimerText)
 
@@ -208,6 +216,15 @@ do
 		else
 			iconFrame:SetBackdropBorderColor(1, 1, 1, 1)
 		end
+
+		if aura_tbl.display and aura_tbl.display ~= "" then --TODO: Options
+			iconFrame.text:SetText(aura_tbl.display)
+			iconFrame.text:SetTextColor(aura_tbl.color[1], aura_tbl.color[2], aura_tbl.color[3], 1)
+			iconFrame.text:Show()
+		else
+			iconFrame.text:Hide()
+		end
+
 		frame.UpdateTimerText(iconFrame)
 		CooldownFrame_Set (iconFrame.cooldown, aura_tbl.startTime, (aura_tbl.duration or 0), (aura_tbl.duration or 0) > 0, true)
 		iconFrame:Show()
@@ -246,7 +263,7 @@ do
 		local aura_tbl = self.aura_tbl
 		if ((self.lastUpdateCooldown or 0) + 0.09) <= now then --throttle a bit
 			aura_tbl.remaining = (aura_tbl.startTime + (aura_tbl.duration or 0) - now)
-			if aura_tbl.remaining > 0 then
+			if aura_tbl.remaining > 0 then --TODO: Options to show/hide text
 				if self.formatWithDecimals then
 					self.cooldown.timer:SetText(AuraFrame_FormatTimeDecimal(aura_tbl.remaining))
 				else
