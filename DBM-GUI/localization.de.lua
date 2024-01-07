@@ -249,13 +249,13 @@ L.FilterInterruptNoteName	= "Unterdrücke Warnungen für unterbrechbare Zauber (
 L.FilterDispels				= "Unterdrücke Warnungen für reinigbare Zauber, falls deine Reinigungen noch abklingen"
 L.FilterTrashWarnings		= "Unterdrücke alle \"Trash\"-Gegner Warnungen in normalen und heroischen Dungeons"
 
-L.Area_PullTimer			= "Filtereinstellungen für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.Area_PullTimer			= "Filtereinstellungen für Pull-, Pausen-, und benutzerdefinierte Timer"
 L.DontShowPTNoID			= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zone gesendet worden sind"
 L.DontShowPT				= "Zeige keinen Timerbalken für Pull-/Pausen-Timer"
 L.DontShowPTText			= "Zeige keine Mitteilungen für Pull-/Pausen-Timer im Chatfenster"
-L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen-, und benutzerdefinierte Timer"
 L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-Timer"
-L.PT_Threshold				= "Zeige keinen opt. Countd. für Pausen-/Kampf-/Nutzer-Timer über: %d"
+L.PT_Threshold				= "Zeige keinen opt. Countd. für Pausen-/Nutzer-Timer über: %d"
 
 L.Panel_HideBlizzard		= "Deaktivierung von Spielelementen"
 L.Area_HideBlizzard			= "Einstellungen zum Deaktivieren und Verbergen von Spielelementen"

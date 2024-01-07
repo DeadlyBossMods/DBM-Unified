@@ -40,7 +40,7 @@ do
 		end
 	end
 
-	function module:Debug(text, level)
+	function module:Debug(text, level, useSound)
 		--But we still want to generate callbacks for level 1 and 2 events
 		if DBM.Options.DebugLevel == 3 or (level or 1) < 3 then--Cap debug level to 2 for trannscriptor unless user specifically specifies 3
 			DBM:FireEvent("DBM_Debug", text, level)
@@ -50,6 +50,9 @@ do
 			local frame = _G[tostring(DBM.Options.ChatFrame)]
 			frame = frame and frame:IsShown() and frame or DEFAULT_CHAT_FRAME
 			frame:AddMessage("|cffff7d0aDBM Debug:|r "..text, 1, 1, 1)
+		end
+		if DBM.Options.DebugSound and useSound then
+			DBM:PlaySoundFile(567458)--"Ding"
 		end
 	end
 end

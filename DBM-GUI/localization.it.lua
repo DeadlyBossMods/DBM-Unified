@@ -267,13 +267,13 @@ L.FilterInterruptNoteName	= "Filtra avvisi solo per abilità interrompibili (con
 L.FilterDispels				= "Filtra avvisi per abilità dispellabili se i tuoi dispel sono in ricarica"
 L.FilterTrashWarnings		= "Filtra tutti gli avvisi degli scartini nelle spedizioni normali ed eroiche"
 
-L.Area_PullTimer			= "Opzioni Filtro Temporizzatori Pull, Pause, Combattimenti e Personalizzati"
+L.Area_PullTimer			= "Opzioni Filtro Temporizzatori Pull, Pause, e Personalizzati"
 L.DontShowPTNoID			= "Blocca Temporizzatori Pull se non inviati dalla tua zona"
 L.DontShowPT				= "Niente barre Temporizzatore Pull/Pausa"
 L.DontShowPTText			= "Niente annunci testuali Temporizzatore Pull/Pausa"
 L.DontShowPTCountdownText	= "Niente testo conto alla rovescia Pull"
-L.DontPlayPTCountdown		= "Niente audio conto alla rovescia Pull/Pausa/Combattimento/Temp. Personale"
-L.PT_Threshold				= "No audio conto alla rovescia Pull/Pausa/Combattimento/Temp. Personale sopra: %d"
+L.DontPlayPTCountdown		= "Niente audio conto alla rovescia Pull/Pausa/Temp. Personale"
+L.PT_Threshold				= "No audio conto alla rovescia Pull/Pausa/Temp. Personale sopra: %d"
 
 L.Panel_HideBlizzard		= "Forzature Blizzard"
 L.Area_HideBlizzard			= "Opzioni Forzature Blizzard"

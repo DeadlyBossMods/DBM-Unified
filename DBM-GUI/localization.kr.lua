@@ -5,7 +5,7 @@ local L = DBM_GUI_L
 
 L.TranslationByPrefix		= "번역: "
 L.TranslationBy 			= "Elnarfim"
-L.Website					= "디스코드 채널 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 방문해 보세요. 트위터 팔로우 @deadlybossmods 또는 @MysticalOS"
+L.Website					= "디스코드 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 방문해 보세요. SNS에서 @deadlybossmods 또는 @MysticalOS를 팔로우하세요"
 L.WebsiteButton				= "웹사이트"
 
 L.OTabBosses					= "보스 설정"--Deprecated and will be deleted once tabs no longer use this
@@ -386,7 +386,7 @@ L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
 L.BarSkin					= "바 스킨"
 
 -- Panel: Pull, Break, Combat
-L.Panel_PullBreakCombat				= "풀링, 휴식, 전투"
+L.Panel_PullBreakCombat				= "풀링과 휴식"
 
 L.Area_SoundOptions					= "효과음 설정"
 
@@ -430,13 +430,13 @@ L.Area_Restore				= "DBM 복구 설정 (DBM이 보스 모드 종료시 이전 �
 L.SpamBlockNoIconRestore	= "아이콘 설정 상태를 저장하지 않고 전투 종료시 원래대로 복구"
 L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 설정 상태로 거리 창 복구 안함"
 
-L.Area_PullTimer			= "풀링, 휴식, 전투, 사용자 지정 바 관련 필터 설정"
+L.Area_PullTimer			= "풀링, 휴식, 사용자 지정 바 관련 필터 설정"
 L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 DBM 풀링 타이머 차단 (지역 ID 없이 전송된 BigWigs 타이머는 차단하지 않습니다)"
 L.DontShowPT				= "풀링/휴식 타이머 표시 안함"
 L.DontShowPTText			= "풀링/휴식 알림 텍스트 표시 안함"
 L.DontShowPTCountdownText	= "풀링 초읽기 숫자 표시 안함"
-L.DontPlayPTCountdown		= "풀링/휴식/전투/사용자 지정 초읽기 전구간 음성 재생 안함"
-L.PT_Threshold				= "휴식/전투/사용자 지정 타이머 초읽기 음성 재생 안함: %d초 까지"
+L.DontPlayPTCountdown		= "풀링/휴식/사용자 지정 초읽기 전구간 음성 재생 안함"
+L.PT_Threshold				= "풀링/휴식/사용자 지정 타이머 초읽기 음성 재생 안함: %d초 까지"
 
 -- Panel: Reduce Information
 L.Panel_ReducedInformation			= "정보량 줄이기"

@@ -121,8 +121,6 @@ L.GENERIC_WARNING_OTHERS2	= "und %d anderen"
 L.GENERIC_WARNING_BERSERK	= "Berserker in %s %s"
 L.GENERIC_TIMER_BERSERK		= "Berserker"
 L.OPTION_TIMER_BERSERK		= "Zeige Zeit bis $spell:26662"
-L.GENERIC_TIMER_COMBAT		= "Kampfbeginn"
-L.OPTION_TIMER_COMBAT		= "Zeige Zeit bis Kampfbeginn"
 L.BAD						= "Schlechtes"
 
 L.OPTION_CATEGORY_TIMERS			= "Timer"
@@ -373,24 +371,25 @@ L.AUTO_SPEC_WARN_OPTIONS.addscustom		= "Spezialwarnung für ankommende Adds"
 
 -- Auto-generated Timer Localizations
 L.AUTO_TIMER_TEXTS.target		= "%s: %%s"
-L.AUTO_TIMER_TEXTS.cast		= "%s"
+L.AUTO_TIMER_TEXTS.cast			= "%s"
 L.AUTO_TIMER_TEXTS.castsource	= "%s: %%s"
 L.AUTO_TIMER_TEXTS.active		= "%s endet"--Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades		= "%s schwindet"--Buff/Debuff on players
 L.AUTO_TIMER_TEXTS.ai			= "%s KI"
 L.AUTO_TIMER_TEXTS.cd			= "%s CD"
 L.AUTO_TIMER_TEXTS.cdcount		= "%s (%%s) CD"
-L.AUTO_TIMER_TEXTS.cdsource	= "%s CD: >%%s<"
+L.AUTO_TIMER_TEXTS.cdsource		= "%s CD: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial	= "Spezial CD"
-L.AUTO_TIMER_TEXTS.next		= "Nächster %s"
+L.AUTO_TIMER_TEXTS.next			= "Nächster %s"
 L.AUTO_TIMER_TEXTS.nextcount	= "Nächster %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource	= "Nächster %s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial	= "Nächste Spezial"
 L.AUTO_TIMER_TEXTS.achievement	= "%s"
 L.AUTO_TIMER_TEXTS.stage		= "Nächste Phase"
-L.AUTO_TIMER_TEXTS.adds		= "Nächste Adds"
+L.AUTO_TIMER_TEXTS.adds			= "Nächste Adds"
 L.AUTO_TIMER_TEXTS.addscustom	= "Nächste Adds (%%s)"
 --L.AUTO_TIMER_TEXTS.roleplay
+L.AUTO_TIMER_TEXTS.combat		= "Kampfbeginn"
 
 L.AUTO_TIMER_OPTIONS.target		= "Dauer des Debuffs $spell:%s anzeigen"
 L.AUTO_TIMER_OPTIONS.cast		= "Wirkzeit von $spell:%s anzeigen"
@@ -411,7 +410,7 @@ L.AUTO_TIMER_OPTIONS.stage		= "Zeige Zeit bis nächste Phase"
 L.AUTO_TIMER_OPTIONS.adds		= "Zeige Zeit bis Adds erscheinen"
 L.AUTO_TIMER_OPTIONS.addscustom	= "Zeige Zeit bis Adds erscheinen"
 L.AUTO_TIMER_OPTIONS.roleplay	= "Dauer des Rollenspiels anzeigen"
-
+L.AUTO_TIMER_OPTIONS.combat		= "Zeige Zeit bis Kampfbeginn"
 
 L.AUTO_ICONS_OPTION_TARGETS			= "Setze Zeichen auf Ziele von $spell:%s"
 L.AUTO_ICONS_OPTION_NPCS		= "Setze Zeichen auf $spell:%s"

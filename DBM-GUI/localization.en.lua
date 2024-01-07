@@ -6,7 +6,7 @@ L.MainFrame							= "Deadly Boss Mods"
 
 L.TranslationByPrefix				= "Translated by "
 L.TranslationBy 					= nil -- your name here, localizers!
-L.Website							= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Follow on twitter @deadlybossmods or @MysticalOS"
+L.Website							= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Follow on most socials @deadlybossmods or @mysticalos"
 L.WebsiteButton						= "Website"
 
 L.OTabBosses						= "Boss Options"--Deprecated and will be deleted once tabs no longer use this
@@ -389,7 +389,7 @@ L.FadeBar							= "Fade timers for out of range abilities"
 L.BarSkin							= "Bar skin"
 
 -- Panel: Pull, Break, Combat
-L.Panel_PullBreakCombat				= "Pull, Break, Combat"
+L.Panel_PullBreakCombat				= "Pull & Break"
 
 L.Area_SoundOptions					= "Sound Options"
 
@@ -433,13 +433,13 @@ L.Area_Restore						= "DBM Restore Options (Whether DBM restores previous user s
 L.SpamBlockNoIconRestore			= "Do not save icon states and restore them on combat end"
 L.SpamBlockNoRangeRestore			= "Do not restore range frame to previous state when mods call 'hide'"
 
-L.Area_PullTimer					= "Pull, Break, Combat, & Custom Timer Filter Options"
+L.Area_PullTimer					= "Pull, Break, & Custom Timer Filter Options"
 L.DontShowPTNoID					= "Block DBM Pull Timers if not sent from same zone as you (will never block BigWigs timers that are sent with no zone ID)"
 L.DontShowPT						= "Do not show Pull/Break Timer bar"
 L.DontShowPTText					= "Do not show announce text for Pull/Break Timer"
 L.DontShowPTCountdownText			= "Do not show Pull countdown text"
-L.DontPlayPTCountdown				= "Do not play Pull/Break/Combat/Custom Timer countdown audio at all"
-L.PT_Threshold						= "Do not play Pull/Break/Combat/Custom Timer countdown audio above: %d"
+L.DontPlayPTCountdown				= "Do not play Pull/Break/Custom Timer countdown audio at all"
+L.PT_Threshold						= "Do not play Pull/Break/Custom Timer countdown audio above: %d"
 
 -- Panel: Reduce Information
 L.Panel_ReducedInformation			= "Reduce Information"
