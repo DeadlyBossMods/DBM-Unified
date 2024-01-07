@@ -31,7 +31,6 @@ function frame:UpdateMenuFrame()
 	end
 	for i = 1, #listFrame.buttons do
 		local button = listFrame.buttons[i]
-		button:SetWidth(bigList and 185 or 209)
 		button:UnlockHighlight()
 		local element = displayedElements[i + (listFrame.offset or 0)]
 		if not element or i > bigList then

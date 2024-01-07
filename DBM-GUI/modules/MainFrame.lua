@@ -213,7 +213,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	---@class DBMListFrameButton: Button
 	---@field element table
 	local button = CreateFrame("Button", "$parentButton" .. i, frameList)
-	button:SetHeight(18)
+	button:SetSize(220, 18)
 	button.text = button:CreateFontString("$parentText", "ARTWORK", "GameFontNormalSmall")
 	button:RegisterForClicks("LeftButtonUp")
 	button:SetScript("OnClick", function(self)
