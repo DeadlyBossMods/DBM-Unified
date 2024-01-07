@@ -260,7 +260,7 @@ function frame:CreateTab(tab)
 		button:SetSize(button.Text:GetStringWidth() + 18, 33)
 	end
 	if i == 1 then
-		button:SetPoint("TOPLEFT", self:GetName(), 20, -28)
+		button:SetPoint("TOPLEFT", self:GetName(), 20, -29)
 	else
 		button:SetPoint("TOPLEFT", "DBM_GUI_OptionsFrameTab" .. (i - 1), "TOPRIGHT", 5, 0)
 	end
