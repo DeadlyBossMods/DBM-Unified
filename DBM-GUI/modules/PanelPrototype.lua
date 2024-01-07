@@ -637,8 +637,10 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 		frameType = 2
 	elseif frameType == "PARTY" then
 		frameType = 3
-	else
+	elseif frameType == "WORLDBOSS" then
 		frameType = 4
+	else
+		frameType = 5
 	end
 	self.tabs[frameType]:CreateCategory(panel, self and self.frame and self.frame.ID, forceChildren)
 	PanelPrototype:SetLastObj(panel)
