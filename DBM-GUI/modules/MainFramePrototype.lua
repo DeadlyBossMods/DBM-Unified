@@ -21,12 +21,13 @@ function frame:UpdateMenuFrame()
 	end
 	local displayedElements = self.tab and DBM_GUI.tabs[self.tab]:GetVisibleTabs() or {}
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
+	local scrollBar = _G[listFrame:GetName() .. "ScrollBar"]
 	if #displayedElements > bigList then
-		_G[listFrame:GetName() .. "List"]:Show()
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
+		scrollBar:Show()
+		scrollBar:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
 	else
-		_G[listFrame:GetName() .. "List"]:Hide()
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
+		scrollBar:Hide()
+		scrollBar:SetValue(0)
 	end
 	for i = 1, #listFrame.buttons do
 		local button = listFrame.buttons[i]

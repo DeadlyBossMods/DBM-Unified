@@ -54,9 +54,6 @@ frame:SetScript("OnSizeChanged", function(self)
 		self:DisplayFrame(DBM_GUI.currentViewing)
 	end
 end)
-frame:SetScript("OnMouseUp", function(self)
-	self:StopMovingOrSizing()
-end)
 frame.tabs = {}
 
 if not isRetail then
@@ -74,9 +71,9 @@ frameBg:SetPoint("TOPLEFT", 5, -21)
 frameBg:SetPoint("BOTTOMRIGHT", -2, isRetail and 2 or 8)
 
 local frameResize = CreateFrame("Button", nil, frame)
-frameResize:SetSize(25, 25)
+frameResize:SetSize(16, 16)
 frameResize:EnableMouse(true)
-frameResize:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 3)
+frameResize:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 1)
 frameResize:SetScript("OnMouseDown", function()
 	frame:StartSizing("BOTTOMRIGHT")
 end)
@@ -193,10 +190,20 @@ function OptionsList_OnLoad(self, ...)
 		hack(self, ...)
 	end
 end
-local frameList = CreateFrame("Frame", "$parentList", frameWrapper)
+---@class DBMFrameList: ScrollFrame, BackdropTemplate
+local frameList = CreateFrame("ScrollFrame", "$parentList", frameWrapper, "UIPanelScrollFrameTemplate")
+frameList:SetScript("OnVerticalScroll", function(self, offset)
+	local scrollbar = _G[self:GetName() .. "ScrollBar"]
+	local _, max = scrollbar:GetMinMaxValues()
+	scrollbar:SetValue(offset)
+	_G[self:GetName() .. "ScrollBarScrollUpButton"]:SetEnabled(offset ~= 0)
+	_G[self:GetName() .. "ScrollBarScrollDownButton"]:SetEnabled(scrollbar:GetValue() - max ~= 0)
+	frameList.offset = math.floor((offset / 18) + 0.5)
+	frame:UpdateMenuFrame()
+end)
 frameList:SetWidth(205)
-frameList:SetPoint("TOPLEFT", 0, 0)
-frameList:SetPoint("BOTTOMLEFT", 0, 0)
+frameList:SetPoint("TOPLEFT", 2, -2)
+frameList:SetPoint("BOTTOMLEFT", 2, 2)
 frameList:SetScript("OnShow", function()
 	frame:UpdateMenuFrame()
 end)
@@ -270,18 +277,10 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		frame:UpdateMenuFrame()
 	end)
 end
----@class DBMFrameList: ScrollFrame, BackdropTemplate
-local frameListList = CreateFrame("ScrollFrame", "$parentList", frameList, "UIPanelScrollFrameTemplate")
-frameListList:SetScript("OnVerticalScroll", function(self, offset)
-	local scrollbar = _G[self:GetName() .. "ScrollBar"]
-	local _, max = scrollbar:GetMinMaxValues()
-	scrollbar:SetValue(offset)
-	_G[self:GetName() .. "ScrollBarScrollUpButton"]:SetEnabled(offset ~= 0)
-	_G[self:GetName() .. "ScrollBarScrollDownButton"]:SetEnabled(scrollbar:GetValue() - max ~= 0)
-	frameList.offset = math.floor((offset / 18) + 0.5)
-	frame:UpdateMenuFrame()
-end)
-local frameListScrollBar = _G[frameListList:GetName() .. "ScrollBar"]
+local frameListScrollBar = _G[frameList:GetName() .. "ScrollBar"]
+frameListScrollBar:ClearAllPoints()
+frameListScrollBar:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 6, -20)
+frameListScrollBar:SetPoint("BOTTOMLEFT", frameList, "BOTTOMRIGHT", 6, 18)
 frameListScrollBar:SetMinMaxValues(0, 11)
 frameListScrollBar:SetValueStep(18)
 frameListScrollBar:SetValue(0)
@@ -300,8 +299,8 @@ scrollDownButton:SetScript("OnClick", function(self)
 end)
 
 local frameBreak = frameWrapper:CreateTexture()
-frameBreak:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 0, -3)
-frameBreak:SetPoint("BOTTOMLEFT", frameList, "BOTTOMRIGHT", 0, 3)
+frameBreak:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 12, -1)
+frameBreak:SetPoint("BOTTOMLEFT", frameList, "BOTTOMRIGHT", 12, 1)
 frameBreak:SetWidth(16)
 frameBreak:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border", true, true) -- 137057
 local edgeRepeatY = math.max(0, (frameBreak:GetHeight() / 16) * frameBreak:GetEffectiveScale() - 2 - 0.0625);
@@ -313,8 +312,8 @@ frameBreak:SetVertexColor(0.6, 0.6, 0.6, 1)
 
 ---@class DBMPanelContainer: ScrollFrame, BackdropTemplate
 local frameContainer = CreateFrame("ScrollFrame", "$parentPanelContainer", frameWrapper, "BackdropTemplate")
-frameContainer:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 16, 0)
-frameContainer:SetPoint("BOTTOMRIGHT", frameWrapper, "BOTTOMRIGHT", 0, 0)
+frameContainer:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 24, 0)
+frameContainer:SetPoint("BOTTOMRIGHT", frameWrapper, "BOTTOMRIGHT", 0, 2)
 
 local frameContainerFOV = CreateFrame("ScrollFrame", "$parentFOV", frameContainer, "FauxScrollFrameTemplate")
 frameContainerFOV:Hide()
