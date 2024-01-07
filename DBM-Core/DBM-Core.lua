@@ -8084,7 +8084,7 @@ do
 		[183752] = true,--Demon hunter Disrupt
 		[351338] = true,--Evoker Quell
 	}
-	--onlyTandF param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
+	--checkOnlyTandF param is used when CheckInterruptFilter is actually being used for a simpe target/focus check and nothing more.
 	--checkCooldown should always be passed true except for special rotations like count warnings when you should be alerted it's your turn even if you dropped ball and put it on CD at wrong time
 	--ignoreTandF is passed usually when interrupt is on a main boss or event that is global to entire raid and should always be alerted regardless of targetting.
 	function bossModPrototype:CheckInterruptFilter(sourceGUID, checkOnlyTandF, checkCooldown, ignoreTandF)
@@ -8105,7 +8105,7 @@ do
 		end
 
 		local unitID = (UnitGUID("target") == sourceGUID) and "target" or not isClassic and (UnitGUID("focus") == sourceGUID) and "focus"
-		--Check if target/focus is required (or if onlyTandF is used, meaning this isn't actually an interrupt API check)
+		--Check if target/focus is required (or if checkOnlyTandF is used, meaning this isn't actually an interrupt API check)
 		if checkOnlyTandF or (self.isTrashMod and DBM.Options.FilterTTargetFocus or not self.isTrashMod and DBM.Options.FilterBTargetFocus) then
 			--Just return false if source isn't our target or focus, no need to do further checks
 			if not ignoreTandF and not unitID then
