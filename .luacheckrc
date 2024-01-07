@@ -49,9 +49,11 @@ globals = {
 
 	-- Utility functions
 	"CopyTable",
-	"geterrorhandler",
+	"Enum",
 	"fastrandom",
 	"format",
+	"geterrorhandler",
+	"securecall",
 	"strjoin",
 	"strsplit",
 	"tContains",
@@ -60,8 +62,6 @@ globals = {
 	"tinsert",
 	"tostringall",
 	"tremove",
-	"Enum",
-	"securecall",
 
 	-- WoW
 	"ALL",
@@ -148,6 +148,7 @@ globals = {
 	"AlertFrame",
 	"BackdropTemplateMixin",
 	"ChatFontNormal",
+	"CreateRadioButtonGroup", -- Classic Era
 	"UIParent",
 	"GameFontHighlight",
 	"GameFontHighlightSmall",
@@ -155,6 +156,7 @@ globals = {
 	"GameFontNormalSmall",
 	"GameFontWhite",
 	"MovieFrame",
+	"NineSliceUtil",
 	"ObjectiveTrackerFrame",
 	"QuestWatchFrame", -- Classic Era / BCC
 	"RaidBossEmoteFrame",
@@ -170,6 +172,8 @@ globals = {
 	"ObjectiveTracker_Collapse",
 	"ObjectiveTracker_Expand",
 	"OptionsList_OnLoad",
+	"PanelTemplates_SetNumTabs",
+	"PanelTemplates_SetTab",
 	"StaticPopup_Hide",
 	"StaticPopup_Show",
 	"TimerTracker_OnEvent",
@@ -194,6 +198,7 @@ globals = {
 	"C_BattleNet.GetFriendAccountInfo",
 	"C_BattleNet.GetGameAccountInfoByID",
 	"C_ChallengeMode.GetActiveKeystoneInfo",
+	"C_ChallengeMode.GetMapTable",
 	"C_ChatInfo.IsAddonMessagePrefixRegistered",
 	"C_ChatInfo.RegisterAddonMessagePrefix",
 	"C_ChatInfo.SendAddonMessageLogged",

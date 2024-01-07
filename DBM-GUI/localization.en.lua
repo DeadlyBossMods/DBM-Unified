@@ -10,11 +10,13 @@ L.Website							= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybos
 L.WebsiteButton						= "Website"
 
 L.OTabBosses						= "Boss Options"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids							= "Raid"--Raids & PVP
-L.OTabDungeons						= "Party/Solo"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
-L.OTabPlugins						= "Core Plugins"
+L.OTabRaids							= "Raids"--Raids & PVP
+L.OTabDungeons						= "Dungeons"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
+L.OTabPlugins						= "Other"
 L.OTabOptions						= "Core Options"
 L.OTabAbout							= "About"
+
+L.TabCategory_CURRENT_SEASON		= "Current Season"
 
 L.TabCategory_OTHER					= "Other Mods"
 L.TabCategory_AFFIXES				= "Affixes"
@@ -31,7 +33,7 @@ L.MoveMe 							= "Move me"
 L.Button_OK 						= "OK"
 L.Button_Cancel 					= "Cancel"
 L.Button_LoadMod 					= "Load AddOn"
-L.Mod_Enabled						= "Enable boss mod"
+L.Mod_Enabled						= "Enable: %s"
 L.Mod_Reset							= "Load default options"
 L.Reset 							= "Reset"
 L.Import							= "Import"
