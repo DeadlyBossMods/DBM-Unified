@@ -509,7 +509,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 					title, desc, icon = mod.groupOptions[spellID].title, L.CustomOptions, 136116
 				elseif tonumber(spellID) then
 					spellID = tonumber(spellID)
-					if spellID < 0 then
+					if (spellID or 0) < 0 then
 						title, desc, _, icon = DBM:EJ_GetSectionInfo(-spellID)
 					else
 						local _title = DBM:GetSpellInfo(spellID)
