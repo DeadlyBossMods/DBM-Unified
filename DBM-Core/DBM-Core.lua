@@ -7585,8 +7585,9 @@ do
 		if uId then
 			if not UnitIsFriend("player", uId) then--API only allowed on hostile unit
 				itemId = itemId or 32698
+				--/dump IsItemInRange(32698, "target")
 				local inRange = IsItemInRange(itemId, uId)
-				if inRange then--IsItemInRange was a success
+				if inRange ~= nil then--IsItemInRange was a success if it returned true or false, if it failed it returns nil
 					return inRange
 				else--IsItemInRange doesn't work on all bosses/npcs, but tank checks do
 					DBM:Debug("CheckBossDistance failed on IsItemInRange due to bad check/unitId: "..cidOrGuid, 2)
