@@ -9,11 +9,15 @@ L.Website					= "디스코드 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 �
 L.WebsiteButton				= "웹사이트"
 
 L.OTabBosses					= "보스 설정"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids						= "공격대"--Raids & PVP
-L.OTabDungeons						= "파티/1인"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
-L.OTabPlugins					= "핵심 플러그인"
+L.OTabRaids						= "공격대"--Just pve raids
+L.OTabDungeons						= "던전"--Just dungeons
+L.OTabWorld						= "필드 보스"--Since there are so many world mods, enough to get their own tab
+L.OTabScenarios						= "시나리오"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
+L.OTabPlugins						= "기타"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions					= "핵심 설정"
 L.OTabAbout						= "소개"
+
+L.TabCategory_CURRENT_SEASON		= "현재 시즌"
 
 L.TabCategory_OTHER			= "기타 모드"
 L.TabCategory_AFFIXES		= "어픽스"
@@ -227,6 +231,13 @@ L.SpecialWarnHeader5		= "유형 5: 메모에 당신의 이름이 있을 때 알�
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "대화창 메시지"
+L.SelectChatFrameArea				= "대화창 설정"
+L.SelectChatFrameButton				= "대화창 선택"
+L.SelectChatFrameInfoIdle			= "%s에 메시지가 표시됩니다."
+L.SelectChatFrameDefaultName		= "기본 대화창"
+L.SelectChatFrameInfoDone			= "이 대화창에 메시지가 표시됩니다."
+L.SelectChatFrameInfoSelect			= "대화창을 클릭해서 선택합니다."
+L.SelectChatFrameInfoSelectNow		= "클릭해서 %s|1을;를; 선택하세요."
 L.CoreMessages				= "기본 메시지 설정"
 L.ShowPizzaMessage 			= "대화창에 전송받은 타이머 표시"
 L.ShowAllVersions	 		= "버전 검사시 대화창에 모든 파티/공격대원의 보스 모드 버전을 표시합니다. (설정을 꺼도 구버전/신버전으로 간략하게 표시됨)"
