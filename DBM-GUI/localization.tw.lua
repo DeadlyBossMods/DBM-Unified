@@ -12,9 +12,14 @@ L.WebsiteButton				= "論壇"
 L.OTabBosses				= "首領選項"
 L.OTabRaids					= "團隊"
 L.OTabDungeons				= "隊伍/單獨"
+L.OTabWorld					= "世界首領"
+L.OTabScenarios				= "事件"
+L.OTabPlugins				= "其他"
 L.OTabPlugins				= "核心插件"
 L.OTabOptions				= "核心選項"
 L.OTabAbout					= "關於"
+
+L.TabCategory_CURRENT_SEASON		= "當前賽季"
 
 L.TabCategory_OTHER			= "其它模組"
 L.TabCategory_AFFIXES		= "詞綴"
@@ -31,7 +36,7 @@ L.MoveMe 					= "移動"
 L.Button_OK 				= "確定"
 L.Button_Cancel 			= "取消"
 L.Button_LoadMod 			= "載入模組"
-L.Mod_Enabled				= "啟用: %s"
+L.Mod_Enabled				= "啟用首領模組"
 L.Mod_Reset					= "讀取預設值"
 L.Reset 					= "重置"
 L.Import					= "匯入"
@@ -92,6 +97,28 @@ L.ShowWAKeys				= "在法術名稱旁顯示WeakAuras鍵來使用首領模組觸�
 L.NoDescription				= "此技能無描述說明"
 L.CustomOptions				= "此類別包含一個技能或事件本身不具有法術或冒險指南ID的自定義選項。 這些選項已使用自定義手動ID組合在一起，以便於創建WA。"
 
+-- Panel: Auto Logging
+L.Panel_AutoLogging					= "自動記錄"
+
+--Auto Logging: Logging toggles/types
+L.Area_AutoLogging					= "自動記錄切換"
+L.AutologBosses						= "自動使用暴雪戰鬥日誌記錄所選內容"
+L.AdvancedAutologBosses				= "自動使用Transcriptor紀錄所選內容"
+--Auto Logging: Global filter Options
+L.Area_AutoLoggingFilters			= "自動記錄過濾"
+L.RecordOnlyBosses					= "不記錄小怪的戰鬥 (只記錄首領。請於首領開打前使用 /dbm pull 以獲取數據)"
+L.DoNotLogLFG						= "不記錄地城搜尋器或團隊搜尋器 (佇列的內容)"
+--Auto Logging: Recorded Content types
+L.Area_AutoLoggingContent			= "自動記錄內容"
+L.LogCurrentMythicRaids		= "當前等級傳奇團隊副本"--Retail Only
+L.LogCurrentRaids			= "當前等級團隊"
+L.LogTWRaids				= "時光漫遊 或 克羅米時光團隊副本"--Retail Only
+L.LogTrivialRaids			= "低等團隊副本 (低於角色等級)"
+L.LogCurrentMPlus			= "當前等級傳奇+地下城"--Retail Only
+L.LogCurrentMythicZero		= "當前等級傳奇0層地下城"--Retail Only
+L.LogTWDungeons				= "時光漫遊 或 克羅米時光地下城"--Retail Only
+L.LogCurrentHeroic			= "當前等級英雄地下城 (注意：如果您通過地城搜尋器佇列英雄並想要記錄，請關閉地城搜尋器過濾)"
+
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "額外功能"
 
@@ -107,25 +134,6 @@ L.SKT_Enabled				= "顯示目前戰鬥的最佳紀錄勝利計時器"
 L.ShowRespawn				= "顯示下一次首領重生計時器"
 L.ShowQueuePop				= "顯示接受彈出佇列的剩餘時間(尋求組隊、戰場..等)"
 L.ShowBerserkWarnings		= "在10/5/3/1分鐘顯示通告並且在 $spell:26662 計時器剩餘30/10秒時"
---
---Auto Logging: Logging toggles/types
-L.Area_AutoLogging			= "自動記錄切換"
-L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄所選內容"
-L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄所選內容"
---Auto Logging: Global filter Options
-L.Area_AutoLoggingFilters	= "自動記錄過濾"
-L.RecordOnlyBosses			= "不記錄小怪的戰鬥 (只記錄首領。請於首領開打前使用 /dbm pull 以獲取數據)"
-L.DoNotLogLFG				= "不記錄地城搜尋器或團隊搜尋器 (佇列的內容)"
---Auto Logging: Recorded Content types
-L.Area_AutoLoggingContent	= "自動記錄內容"
-L.LogCurrentMythicRaids		= "當前等級傳奇團隊副本"--Retail Only
-L.LogCurrentRaids			= "當前等級團隊"
-L.LogTWRaids				= "時光漫遊 或 克羅米時光團隊副本"--Retail Only
-L.LogTrivialRaids			= "低等團隊副本 (低於角色等級)"
-L.LogCurrentMPlus			= "當前等級傳奇+地下城"--Retail Only
-L.LogCurrentMythicZero		= "當前等級傳奇0層地下城"--Retail Only
-L.LogTWDungeons				= "時光漫遊 或 克羅米時光地下城"--Retail Only
-L.LogCurrentHeroic			= "當前等級英雄地下城 (注意：如果您通過地城搜尋器佇列英雄並想要記錄，請關閉地城搜尋器過濾)"
 --
 L.Area_3rdParty				= "協力插件選項"
 L.oRA3AnnounceConsumables	= "在戰鬥開始時通告oRA3消耗品檢查"
@@ -221,11 +229,18 @@ L.SpecialWarnHeader4		= "類型4: 設置高優先級運行特別提示的選擇"
 L.SpecialWarnHeader5		= "類型5: 設置提示選項，並在註釋中包含您的玩家名稱"
 
 -- Panel: Generalwarnings
-L.Tab_GeneralMessages 		= "聊天訊息"
-L.CoreMessages				= "核心訊息選項"
-L.ShowPizzaMessage 			= "在聊天視窗顯示計時器廣播訊息"
-L.ShowAllVersions	 		= "當運行版本檢查時在聊天視窗顯示所有隊伍成員的首領模組版本。(如果停用，依舊顯示過期/目前總結)"
-L.ShowReminders				= "顯示有關缺少子模組、禁用子模組、子模組修復、子模組過期以及仍啟用靜音模式的提醒訊息。"
+L.Tab_GeneralMessages 			= "聊天訊息"
+L.SelectChatFrameArea			= "聊天視窗選項"
+L.SelectChatFrameButton			= "選擇聊天視窗"
+L.SelectChatFrameInfoIdle		= "訊息顯示在 %s。"
+L.SelectChatFrameDefaultName	= "預設聊天視窗"
+L.SelectChatFrameInfoDone		= "訊息將顯示在聊天視窗。"
+L.SelectChatFrameInfoSelect		= "點擊一個聊天視窗來選擇它。"
+L.SelectChatFrameInfoSelectNow	= "點擊選擇 %s。"
+L.CoreMessages					= "核心訊息選項"
+L.ShowPizzaMessage 				= "在聊天視窗顯示計時器廣播訊息"
+L.ShowAllVersions	 			= "當運行版本檢查時在聊天視窗顯示所有隊伍成員的首領模組版本。(如果停用，依舊顯示過期/目前總結)"
+L.ShowReminders					= "顯示有關缺少子模組、禁用子模組、子模組修復、子模組過期以及仍啟用靜音模式的提醒訊息。"
 
 L.CombatMessages			= "戰鬥訊息選項"
 L.ShowEngageMessage 		= "在聊天視窗顯示開戰訊息"
@@ -350,7 +365,7 @@ L.CVoiceOne					= "倒數語音 1"
 L.CVoiceTwo					= "倒數語音 2"
 L.CVoiceThree				= "倒數語音 3"
 
--- Panel: Timers
+-- Panel: Bar Appearance
 L.Panel_Appearance	 		= "計時條外觀"
 L.Panel_Behavior	 		= "計時條動作"
 L.AreaTitle_BarSetup		= "計時條外觀選項"
@@ -380,6 +395,11 @@ L.KeepBar					= "保持計時器啟用直到技能施放"
 L.KeepBar2					= "(當有支援的模組時)"
 L.FadeBar					= "隱藏已超出距離技能的計時器"
 L.BarSkin					= "計時條外觀"
+
+-- Panel: Pull, Break, Combat
+L.Panel_PullBreakCombat			= "開怪 & 休息"
+
+L.Area_SoundOptions				= "聲音選項"
 
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "全局禁用及過濾"
@@ -554,4 +574,4 @@ L.FontColor					= "文字顏色"
 L.FontShadow				= "陰影"
 L.FontType					= "選擇字型"
 
-L.FontHeight	= 18
+L.FontHeight	= 16
