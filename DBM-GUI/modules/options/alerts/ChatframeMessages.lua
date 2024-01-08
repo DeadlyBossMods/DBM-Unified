@@ -67,6 +67,16 @@ selectFrameButton:SetScript("OnUpdate", function()
 end)
 selectFrameButton:RegisterEvent("GLOBAL_MOUSE_DOWN")
 
+local resetbutton = selectChatFrameArea:CreateButton(L.Reset, 120, 16)
+resetbutton:SetPoint("BOTTOMRIGHT", selectChatFrameArea.frame, "BOTTOMRIGHT", -2, 4)
+resetbutton:SetNormalFontObject(GameFontNormalSmall)
+resetbutton:SetHighlightFontObject(GameFontNormalSmall)
+resetbutton:SetScript("OnClick", function()
+	-- Set Options
+	DBM.Options.ChatFrame = DBM.DefaultOptions.ChatFrame
+	-- Set UI visuals
+	updateChatInfoText()
+end)
 
 local generalCoreArea = generalWarningPanel:CreateArea(L.CoreMessages)
 generalCoreArea:CreateCheckButton(L.ShowPizzaMessage, true, nil, "ShowPizzaMessage")
