@@ -1,3 +1,5 @@
+local _, private = ...
+
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 
@@ -48,6 +50,7 @@ local function parseDescription(name, usesHTML)
 	end
 	return name, spellName
 end
+private.parseDescription = parseDescription
 
 ---@class DBMPanel: DBMGUI
 ---@field frame Frame
