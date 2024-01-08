@@ -163,6 +163,14 @@ L.Area_SoundOptions					= "Параметры звука"
 L.TabFooter							= "Все параметры на этой панели работают только в том случае, если Вы являетесь лидером группы, не относящейся к подземелью или LFR"
 L.ShowWAKeys						= "Показывать ключи WeakAuras рядом с именами заклинаний, чтобы помочь в написании WeakAuras с использованием триггеров Boss Mod."
 L.CustomOptions						= "Эта категория содержит настраиваемые параметры для способности или события, у которых нет собственного идентификатора заклинания или журнала. Эти параметры были сгруппированы вместе с использованием пользовательского идентификатора вручную для простоты создания WeakAuras"
+
+L.SelectChatFrameArea				= "Параметры чата"
+L.SelectChatFrameButton				= "Выбрать фрейм чата"
+L.SelectChatFrameInfoIdle			= "Сообщения отображаются в %s."
+L.SelectChatFrameDefaultName		= "фрейм чата по умолчанию"
+L.SelectChatFrameInfoDone			= "Сообщения будут отображаться в этом фрейме чата."
+L.SelectChatFrameInfoSelect			= "Нажмите на фрейм чата, чтобы выбрать его."
+L.SelectChatFrameInfoSelectNow		= "Нажмите, чтобы выбрать %s."
 -- Missing phrases. End ..
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
@@ -171,13 +179,15 @@ L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://disco
 L.WebsiteButton				= "Форумы"
 
 L.OTabBosses				= "Боссы"
-L.OTabRaids					= "Рейд"
-L.OTabDungeons				= "Группа/Соло"
-L.OTabPlugins				= "Основные плагины"
+L.OTabRaids					= "Рейды"
+L.OTabDungeons				= "Подземелья"
+L.OTabPlugins				= "Другое"
 L.OTabOptions				= "Настройки"
 
+L.TabCategory_CURRENT_SEASON		= "Текущий сезон"
+
 L.TabCategory_Options	 	= "Общие параметры"
-L.TabCategory_OTHER 		= "Другие боссы"
+L.TabCategory_OTHER 		= "Другие моды"
 L.TabCategory_AFFIXES		= "Аффиксы"
 
 L.BossModLoaded 			= "%s - статистика"
@@ -258,7 +268,7 @@ L.MonochromeThickOutline	= "Монохромный толстый контур"
 L.RaidWarnSound				= "Звук рейд-предупреждения"
 
 -- Tab: Generalwarnings
-L.Tab_GeneralMessages 		= "Общие сообщения"
+L.Tab_GeneralMessages 		= "Сообщения чата"
 L.CoreMessages				= "Параметры общих сообщений"
 L.ShowPizzaMessage 			= "Показывать сообщения транслируемых таймеров в окне чата"
 L.ShowAllVersions	 		= "Показывать версии босс мода для всех членов группы в окне чата"
