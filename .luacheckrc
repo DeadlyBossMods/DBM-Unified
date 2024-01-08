@@ -98,6 +98,7 @@ globals = {
 	"GUILD",
 	"GUILD_INTEREST_RP",
 	"HIDE",
+	"HIGHLIGHT_FONT_COLOR",
 	"LARGE",
 	"LOCK_FRAME",
 	"MAX_TALENT_TABS", -- Classic
@@ -258,6 +259,7 @@ globals = {
 	"EJ_GetInstanceInfo",
 	"EJ_GetCreatureInfo",
 	"EJ_SetDifficulty",
+	"EnumerateFrames",
 	"FlashClientIcon",
 	"FreeTimerTrackerTimer",
 	"GameTooltip",
