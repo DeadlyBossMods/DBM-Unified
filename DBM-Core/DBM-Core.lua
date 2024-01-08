@@ -9487,9 +9487,14 @@ do
 				text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName, L.SEC_FMT:format(tostring(stacks or 5)))
 			end
 		else
-			if DBM.Options.SpamSpecInformationalOnly and specInstructionalRemapTable[announceType] then
-				local newType = specInstructionalRemapTable[announceType]
-				text = L.AUTO_SPEC_WARN_TEXTS[newType]:format(spellName)
+			if DBM.Options.SpamSpecInformationalOnly then
+				local remapType = specInstructionalRemapTable[announceType]
+				if remapType then
+					local newType = remapType
+					text = L.AUTO_SPEC_WARN_TEXTS[newType]:format(spellName)
+				else
+					text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
+				end
 			else
 				text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
 			end
@@ -9816,12 +9821,16 @@ do
 		local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 		if not canVoiceReplace(self, soundId) then return end
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
-		if specTypeFilterTable[self.announceType] then
+		local filterType = specTypeFilterTable[self.announceType]
+		if filterType then
 			--Filtered warning, filtered voice
-			if DBM.Options["SpamSpecRole"..specTypeFilterTable[self.announceType]] then return end
-		elseif DBM.Options.SpamSpecInformationalOnly and specInstructionalRemapVoiceTable[self.announceType] then
-			--Instructional disabled, remap to a less instructional voice line
-			name = specInstructionalRemapVoiceTable[self.announceType]
+			if DBM.Options["SpamSpecRole"..filterType] then return end
+		elseif DBM.Options.SpamSpecInformationalOnly then
+			local remapType = specInstructionalRemapVoiceTable[self.announceType]
+			if remapType then
+				--Instructional disabled, remap to a less instructional voice line
+				name = remapType
+			end
 		end
 		if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabled then
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
