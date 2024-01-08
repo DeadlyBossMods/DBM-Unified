@@ -427,7 +427,11 @@ local function addOptions(mod, catpanel, v)
 				end
 			end, nil, 32)
 			if not addSpacer then
-				catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
+				if lastButton then
+					catbutton:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -12)
+				else
+					catbutton:SetPoint("TOPLEFT", catpanel:GetLastObj(), "BOTTOMLEFT", -14, -18)
+				end
 			end
 		end
 		if addSpacer then
