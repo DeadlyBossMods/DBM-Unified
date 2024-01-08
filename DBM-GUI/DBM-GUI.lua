@@ -857,7 +857,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 					section.value1:SetText(kills)
 					section.value2:SetText(pulls - kills)
 					if statType == "challenge" and bestRank > 0 then
-						section.value3:SetText(bestTime and ("%d:%02d (%d)"):format(mfloor(bestTime / 60), bestTime % 60) or "-", bestRank)
+						section.value3:SetText(bestTime and ("%d:%02d (%d)"):format(mfloor(bestTime / 60), bestTime % 60, bestRank) or "-")
 					else
 						section.value3:SetText(bestTime and ("%d:%02d"):format(mfloor(bestTime / 60), bestTime % 60) or "-")
 					end
