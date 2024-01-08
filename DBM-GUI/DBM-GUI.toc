@@ -49,8 +49,8 @@ DBM-GUI_DropDown.lua
 
 # Modules
 modules\MainFramePrototype.lua
-modules\MainFrame.lua
 modules\ListFrameButtonsPrototype.lua
+modules\MainFrame.lua
 modules\PanelPrototype.lua
 
 modules\options\general\General.lua

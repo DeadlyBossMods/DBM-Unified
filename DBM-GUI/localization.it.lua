@@ -27,7 +27,7 @@ L.MoveMe 					= "Spostami"
 L.Button_OK 				= "OK"
 L.Button_Cancel 			= "Annulla"
 L.Button_LoadMod 			= "Carica AddOn"
-L.Mod_Enabled				= "Abilita boss mod"
+L.Mod_Enabled				= "Abilita: %s"
 L.Mod_Reset					= "Ripristina predefiniti"
 L.Reset 					= "Resetta"
 
