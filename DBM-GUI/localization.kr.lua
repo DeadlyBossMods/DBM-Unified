@@ -563,6 +563,8 @@ L.NPIcon_BarOffSetY 				= "아이콘 위치 조정 Y: %d"
 L.NPIcon_GrowthDirection 			= "아이콘 생성 방향"
 L.NPDemo							= "테스트 (이름표 근처에서 실행)"
 
+L.TabCategory_Plugins				= "플러그인"
+
 -- Misc
 L.Area_General				= "일반"
 L.Area_Position				= "위치"
