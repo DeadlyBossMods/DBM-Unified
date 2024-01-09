@@ -564,6 +564,8 @@ L.NPIcon_BarOffSetY 				= "Icon Offset Y: %d"
 L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
 L.NPDemo							= "Test (Be near nameplates)"
 
+L.TabCategory_Plugins				= "Plugins"
+
 -- Misc
 L.Area_General						= "General"
 L.Area_Position						= "Position"

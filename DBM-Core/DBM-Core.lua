@@ -77,25 +77,25 @@ local DBM = {
 }
 _G.DBM = DBM
 
-local fakeBWVersion, fakeBWHash = 312, "f548b77"--312.1
+local fakeBWVersion, fakeBWHash = 313, "2d4d4e6"--313.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.14 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 12, 27) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.2.15 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 1, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 8--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
-	DBM.DisplayVersion = "1.15.7 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 12, 29) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.15.8 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 1, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 4--When this is incremented, trigger force disable regardless of major patch
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
-	DBM.ReleaseRevision = releaseDate(2023, 10, 10) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.ReleaseRevision = releaseDate(2024, 1, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 2--When this is incremented, trigger force disable regardless of major patch
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.55 alpha"
-	DBM.ReleaseRevision = releaseDate(2023, 11, 7) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "3.4.56 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 1, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 3--When this is incremented, trigger force disable regardless of major patch
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -9487,9 +9487,14 @@ do
 				text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName, L.SEC_FMT:format(tostring(stacks or 5)))
 			end
 		else
-			if DBM.Options.SpamSpecInformationalOnly and specInstructionalRemapTable[announceType] then
-				local newType = specInstructionalRemapTable[announceType]
-				text = L.AUTO_SPEC_WARN_TEXTS[newType]:format(spellName)
+			if DBM.Options.SpamSpecInformationalOnly then
+				local remapType = specInstructionalRemapTable[announceType]
+				if remapType then
+					local newType = remapType
+					text = L.AUTO_SPEC_WARN_TEXTS[newType]:format(spellName)
+				else
+					text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
+				end
 			else
 				text = L.AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName)
 			end
@@ -9559,8 +9564,9 @@ do
 			--Next, we check if trash mod warning and if so check the filter trash warning filter for trivial difficulties
 			if self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 and (self.mod:IsEasyDungeon() or DBM:IsTrivial()) then return end
 			--We also check if person has the role filter turned on (typical for highest end raiders who don't want as much handholding from DBM)
-			if specTypeFilterTable[self.announceType] then
-				if DBM.Options["SpamSpecRole"..specTypeFilterTable[self.announceType]] then return end
+			local filterType = specTypeFilterTable[self.announceType]
+			if filterType then
+				if DBM.Options["SpamSpecRole"..filterType] then return end
 			end
 			--Lastly, we check if it's a tank warning and filter if not in tank spec. This is done because tank warnings on by default and handled fluidly by spec, not option setting
 			if self.announceType == "taunt" and DBM.Options.FilterTankSpec and not self.mod:IsTank() then return end--Don't tell non tanks to taunt, ever.
@@ -9815,12 +9821,16 @@ do
 		local soundId = self.option and self.mod.Options[self.option .. "SWSound"] or self.flash
 		if not canVoiceReplace(self, soundId) then return end
 		if self.mod:IsEasyDungeon() and self.mod.isTrashMod and DBM.Options.FilterTrashWarnings2 then return end
-		if specTypeFilterTable[self.announceType] then
+		local filterType = specTypeFilterTable[self.announceType]
+		if filterType then
 			--Filtered warning, filtered voice
-			if DBM.Options["SpamSpecRole"..specTypeFilterTable[self.announceType]] then return end
-		elseif DBM.Options.SpamSpecInformationalOnly and specInstructionalRemapVoiceTable[self.announceType] then
-			--Instructional disabled, remap to a less instructional voice line
-			name = specInstructionalRemapVoiceTable[self.announceType]
+			if DBM.Options["SpamSpecRole"..filterType] then return end
+		elseif DBM.Options.SpamSpecInformationalOnly then
+			local remapType = specInstructionalRemapVoiceTable[self.announceType]
+			if remapType then
+				--Instructional disabled, remap to a less instructional voice line
+				name = remapType
+			end
 		end
 		if ((not self.option or self.mod.Options[self.option]) or always) and self.hasVoice <= SWFilterDisabled then
 			--Filter tank specific voice alerts for non tanks if tank filter enabled
