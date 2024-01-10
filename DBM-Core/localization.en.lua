@@ -657,3 +657,5 @@ L.WORLD_BUFFS = {
 	rendHead							= "The false Warchief, Rend Blackhand, has fallen!",
 	blackfathomBoon						= "boon of Blackfathom"
 }
+
+L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
