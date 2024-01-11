@@ -355,3 +355,5 @@ L.WORLD_BUFFS.zgHeart		= "Agora só falta um passo para nos livrarmos do Esfolad
 L.WORLD_BUFFS.zgHeartBooty	= "O Deus Sanguinário, o Esfolador de Almas, foi derrotado! Acabaram-se os nossos temores!"
 L.WORLD_BUFFS.zgHeartYojamba	= "Iniciem o ritual, meus servos. Temos que banir o coração de Hakkar de volta para o vórtice!"
 L.WORLD_BUFFS.rendHead		= "O falso Chefe Guerreiro, Laceral Mão Negra, caiu!"
+
+--L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet

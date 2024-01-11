@@ -620,3 +620,5 @@ L.WORLD_BUFFS.zgHeart			= "Теперь остался лишь один шаг 
 L.WORLD_BUFFS.zgHeartBooty		= "Кровавый Свежеватель Душ побежден! Теперь нам ничто не угрожает!"
 L.WORLD_BUFFS.zgHeartYojamba	= "Начинайте ритуал, слуги мои. Мы должны отправить сердце Хаккара обратно в Пустоту!"
 L.WORLD_BUFFS.rendHead			= "Самозванец Ренд Чернорук мертв!"
+
+--L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
