@@ -19,6 +19,8 @@ L.OTabPlugins				= "核心插件"
 L.OTabOptions				= "核心選項"
 L.OTabAbout					= "關於"
 
+L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+
 L.TabCategory_CURRENT_SEASON		= "當前賽季"
 
 L.TabCategory_OTHER			= "其它模組"

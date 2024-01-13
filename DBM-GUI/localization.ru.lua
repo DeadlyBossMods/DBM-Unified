@@ -184,6 +184,8 @@ L.OTabDungeons				= "Подземелья"
 L.OTabPlugins				= "Другое"
 L.OTabOptions				= "Настройки"
 
+--L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+
 L.TabCategory_CURRENT_SEASON		= "Текущий сезон"
 
 L.TabCategory_Options	 	= "Общие параметры"

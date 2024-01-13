@@ -426,5 +426,3 @@ L.WORLD_BUFFS.zgHeart		= "Il ne reste plus qu'une étape avant que prenne fin la
 L.WORLD_BUFFS.zgHeartBooty	= "Le Dieu sanglant, l'Écorcheur d'âmes, a été vaincu ! Nous ne sommes plus menacés !"
 L.WORLD_BUFFS.zgHeartYojamba	= "Commencez le rituel, mes serviteurs. Nous devons renvoyer le cœur d'Hakkar dans le vide !"
 L.WORLD_BUFFS.rendHead		= "Le faux chef Rend Blackhand est tombé !"
-
---L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
