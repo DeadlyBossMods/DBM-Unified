@@ -7559,7 +7559,7 @@ do
 			if uId then--Now we have a valid uId
 				bossCache[cidOrGuid] = GetTime()
 				lastTank = UnitName(uId)
-				return UnitName(lastTank), uId
+				return lastTank, uId
 			end
 			return false
 		end
