@@ -553,5 +553,3 @@ L.LAG_FOOTER					= "Nessuna Risposta: %s"
 --LDB
 L.LDB_TOOLTIP_HELP1	= "Clicca per aprire "..L.DBM..""
 L.LDB_TOOLTIP_HELP2	= "Clicca col tasto destro per aprire la configurazione"
-
---L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet

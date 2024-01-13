@@ -584,5 +584,3 @@ L.AUTO_YELL_OPTION_TEXT.repeaticon="Schreie wiederholt (mit Icon) wenn du von $s
 L.AUTO_INFO_FRAME_OPTION_TEXT3="Zeige Infofenster für $spell:%s (falls der Schwellwert von %%s übertroffen ist)"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT="Zeige Timer für den schnellsten Clear von %s"
 L.SILENTMODE_IS="stummer Modus ist"
-
---L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
