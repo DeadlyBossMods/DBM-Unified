@@ -936,8 +936,10 @@ do
 					break
 				end
 			end
-			currentSeasons["MPlusAffixes"] = seasonCategory:CreateNewPanel("MPlusAffixes", "PARTY", false, affixAddon.name, false, "DBM-Affixes", true)
-			hasAnyMod = true
+			if affixAddon then
+				currentSeasons["MPlusAffixes"] = seasonCategory:CreateNewPanel("MPlusAffixes", "PARTY", false, affixAddon.name, false, "DBM-Affixes", true)
+				hasAnyMod = true
+			end
 		end
 		if not hasAnyMod then
 			seasonCategoryTab.hidden = true
