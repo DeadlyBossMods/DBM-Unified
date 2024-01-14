@@ -171,6 +171,8 @@ L.SelectChatFrameDefaultName		= "фрейм чата по умолчанию"
 L.SelectChatFrameInfoDone			= "Сообщения будут отображаться в этом фрейме чата."
 L.SelectChatFrameInfoSelect			= "Нажмите на фрейм чата, чтобы выбрать его."
 L.SelectChatFrameInfoSelectNow		= "Нажмите, чтобы выбрать %s."
+
+L.OTabWorld							= "Мировые боссы"
 -- Missing phrases. End ..
 
 L.TranslationByPrefix		= "Перевод на русский язык - "

@@ -19,7 +19,7 @@ L.OTabPlugins				= "核心插件"
 L.OTabOptions				= "核心選項"
 L.OTabAbout					= "關於"
 
-L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.FOLLOWER					= "追隨者"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 
 L.TabCategory_CURRENT_SEASON		= "當前賽季"
 
@@ -564,6 +564,9 @@ L.NPAuraSize				= "光環像素大小 (平方): %d"
 L.NPIcon_BarOffSetX 		= "圖示水平偏移：%d"
 L.NPIcon_BarOffSetY 		= "圖示垂直偏移：%d"
 L.NPIcon_GrowthDirection 	= "圖示增長方向"
+L.NPDemo					= "測試 (靠近名條)"
+
+L.TabCategory_Plugins		= "掛件"
 
 -- Misc
 L.Area_General				= "一般"

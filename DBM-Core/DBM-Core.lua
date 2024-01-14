@@ -77,7 +77,7 @@ local DBM = {
 }
 _G.DBM = DBM
 
-local fakeBWVersion, fakeBWHash = 313, "2d4d4e6"--313.1
+local fakeBWVersion, fakeBWHash = 314, "7bb5a7f"--314.0
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
@@ -7559,7 +7559,7 @@ do
 			if uId then--Now we have a valid uId
 				bossCache[cidOrGuid] = GetTime()
 				lastTank = UnitName(uId)
-				return UnitName(lastTank), uId
+				return lastTank, uId
 			end
 			return false
 		end
