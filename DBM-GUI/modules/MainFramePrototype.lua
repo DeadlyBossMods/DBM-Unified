@@ -2,13 +2,16 @@ local L = DBM_GUI_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 local DDM = LibStub:GetLibrary("LibDropDownMenu")
 
 local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
 local CreateFrame, GameFontNormal = CreateFrame, GameFontNormal
-local DBM, DBM_GUI = DBM, DBM_GUI
+local DBM = DBM
 
----@class DBMOptionsFrame: Frame, NineSlicePanelTemplate
+---@class DBMOptionsFrame: Frame
 ---@field tabs table
 local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSlicePanelTemplate")
 
@@ -251,6 +254,7 @@ function frame:CreateTab(tab)
 	self.tabs[i] = tab
 	DBM_GUI:CreateNewFauxScrollFrameList()
 	---@class DBMOptionsFrameTabButtonTemplate: Button
+	---@field Text FontString -- From MinimalTabTemplate/PanelTopTabButtonTemplate
 	local button = CreateFrame("Button", frame:GetName() .. "Tab" .. i, self, isRetail and "PanelTopTabButtonTemplate" or "MinimalTabTemplate")
 	button.Text:SetText(tab.name)
 	if isRetail then

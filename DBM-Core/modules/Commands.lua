@@ -137,6 +137,7 @@ if not _G["BigWigs"] then
 		Break(tonumber(msg) or 10)
 	end
 	if C_PartyInfo then
+		---@diagnostic disable-next-line:duplicate-set-field
 		C_PartyInfo.DoCountdown = function(msg)
 			if SlashCmdList.DEADLYBOSSMODSPULL then
 				SlashCmdList.DEADLYBOSSMODSPULL(msg)
@@ -313,8 +314,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 				local playerName = UnitName("player")
 				local _, targetClass = UnitClass(uId)
 				local color2 = RAID_CLASS_COLORS[targetClass]
-				local m1 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", playerName, 0.1, hudDuration, 0, 1, 0, 1, nil, false):Appear()
-				local m2 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", targetName, 0.75, hudDuration, color2.r, color2.g, color2.b, 1, nil, false):Appear()
+				local m1 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", playerName, 0.1, hudDuration, 0, 1, 0, 1, nil):Appear()
+				local m2 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", targetName, 0.75, hudDuration, color2.r, color2.g, color2.b, 1, nil):Appear()
 				tinsert(trackedHudMarkers, playerName)
 				tinsert(trackedHudMarkers, targetName)
 				m2:EdgeTo(m1, nil, hudDuration, 0, 1, 0, 1)
@@ -322,23 +323,23 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			elseif hudType == "dot" then
 				local _, targetClass = UnitClass(uId)
 				local color2 = RAID_CLASS_COLORS[targetClass]
-				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", targetName, 0.75, hudDuration, color2.r, color2.g, color2.b, 1, nil, false):Appear()
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "party", targetName, 0.75, hudDuration, color2.r, color2.g, color2.b, 1, nil):Appear()
 				tinsert(trackedHudMarkers, targetName)
 				DBM:AddMsg(L.HUD_SUCCESS:format(DBM:strFromTime(hudDuration)))
 			elseif hudType == "green" then
-				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 0, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 0, 1, 0, 0.5, nil):Pulse(0.5, 0.5)
 				tinsert(trackedHudMarkers, targetName)
 				DBM:AddMsg(L.HUD_SUCCESS:format(DBM:strFromTime(hudDuration)))
 			elseif hudType == "red" then
-				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 1, 0, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 1, 0, 0, 0.5, nil):Pulse(0.5, 0.5)
 				tinsert(trackedHudMarkers, targetName)
 				DBM:AddMsg(L.HUD_SUCCESS:format(DBM:strFromTime(hudDuration)))
 			elseif hudType == "yellow" then
-				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 1, 1, 0, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 1, 1, 0, 0.5, nil):Pulse(0.5, 0.5)
 				tinsert(trackedHudMarkers, targetName)
 				DBM:AddMsg(L.HUD_SUCCESS:format(DBM:strFromTime(hudDuration)))
 			elseif hudType == "blue" then
-				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 0, 0, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, "highlight", targetName, 3.5, hudDuration, 0, 0, 1, 0.5, nil):Pulse(0.5, 0.5)
 				tinsert(trackedHudMarkers, targetName)
 				DBM:AddMsg(L.HUD_SUCCESS:format(DBM:strFromTime(hudDuration)))
 			elseif hudType == "icon" then
@@ -347,7 +348,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 					DBM:AddMsg(L.HUD_INVALID_ICON)
 					return
 				end
-				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, DBM:IconNumToString(icon):lower(), targetName, 3.5, hudDuration, 1, 1, 1, 0.5, nil, false):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(12345, DBM:IconNumToString(icon):lower(), targetName, 3.5, hudDuration, 1, 1, 1, 0.5, nil):Pulse(0.5, 0.5)
 				tinsert(trackedHudMarkers, targetName)
 				DBM:AddMsg(L.HUD_SUCCESS:format(DBM:strFromTime(hudDuration)))
 			else
@@ -409,12 +410,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:DemoMode()
 	elseif cmd:sub(1, 8) == "whereiam" or cmd:sub(1, 8) == "whereami" then
 		local x, y, _, map = UnitPosition("player")
-		local mapID = C_Map.GetBestMapForUnit("player") or "nil"
+		local mapID = C_Map.GetBestMapForUnit("player") or -1
 		if DBM:HasMapRestrictions() then
 			DBM:AddMsg(("Location Information\nYou are at zone %u (%s).\nLocal Map ID %u (%s)"):format(map, GetRealZoneText(map), mapID, GetZoneText()))
 		else
 			local pos = C_Map.GetPlayerMapPosition(mapID, "player")
-			DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), pos.x, pos.y))
+			DBM:AddMsg(("Location Information\nYou are at zone %u (%s): x=%f, y=%f.\nLocal Map ID %u (%s): x=%f, y=%f"):format(map, GetRealZoneText(map), x, y, mapID, GetZoneText(), pos and pos.x or 0, pos and pos.y or 0))
 		end
 	elseif cmd:sub(1, 7) == "request" then
 		DBM:Unschedule(DBM.RequestTimers)

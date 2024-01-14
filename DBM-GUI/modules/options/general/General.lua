@@ -1,5 +1,8 @@
 local L		= DBM_GUI_L
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 DBM_GUI.Cat_General = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
 
 --This is still needed in first options panel to load to avoid model viewer errors

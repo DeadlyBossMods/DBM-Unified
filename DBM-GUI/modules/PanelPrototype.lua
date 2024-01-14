@@ -6,9 +6,12 @@ local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local L		= DBM_GUI_L
 local CL	= DBM_COMMON_L
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 local setmetatable, select, type, tonumber, strsplit, mmax, tinsert = setmetatable, select, type, tonumber, strsplit, math.max, table.insert
 local CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal = CreateFrame, GetCursorPosition, UIParent, GameTooltip, NORMAL_FONT_COLOR, GameFontNormal
-local DBM, DBM_GUI = DBM, DBM_GUI
+local DBM = DBM
 local CreateTextureMarkup = CreateTextureMarkup
 
 --TODO, not 100% sure which ones use html and which don't so some might need true added or removed for 2nd arg
@@ -144,6 +147,8 @@ end
 function PanelPrototype:CreateButton(title, width, height, onclick, font)
 	---@class DBMPanelButton: Button
 	---@field myheight number
+	---@field addon table
+	---@field headline DBMPanelTextblock
 	local button = CreateFrame("Button", "DBM_GUI_Option_" .. self:GetNewID(), self.frame, "UIPanelButtonTemplate")
 	button.mytype = "button"
 	button:SetSize(width or 100, height or 20)
@@ -645,6 +650,7 @@ function DBM_GUI:CreateNewPanel(frameName, frameType, showSub, displayName, forc
 	else
 		frameType = 5
 	end
+	---@diagnostic disable-next-line: undefined-field
 	self.tabs[frameType]:CreateCategory(panel, self and self.frame and self.frame.ID, forceChildren)
 	PanelPrototype:SetLastObj(panel)
 	tinsert(self.panels, {

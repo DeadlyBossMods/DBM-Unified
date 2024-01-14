@@ -1,18 +1,23 @@
 --NOBODY, except Keseva touches this file.
 
+---@class DBM
+local DBM = DBM
+
 -- globals
-DBM.Nameplate = {}
+---@class DBMNameplateFrame
+local nameplateFrame = {}
+DBM.Nameplate = nameplateFrame
 -- locals
-local nameplateFrame = DBM.Nameplate
 local units = {}
 local nameplateTimerBars = {}
 local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
+---@cast GetNamePlates fun(): table[] -- https://github.com/Ketho/vscode-wow-api/issues/122
 local twipe, floor, strsub= table.wipe, math.floor, _G.strsub
-local CooldownFrame_Set = _G.CooldownFrame_Set
+local CooldownFrame_Set = CooldownFrame_Set
 --function locals
-local NameplateIcon_Hide,Nameplate_UnitAdded,CreateAuraFrame
+local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame
 
 --------------------
 --  Create Frame  --
@@ -27,23 +32,25 @@ DBMNameplateFrame:Hide()
 do
 	local function AuraFrame_CreateIcon(frame)
 		-- base frame
+		---@class DBMNamePlateIconFrame: Button, BackdropTemplate
 		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame, BackdropTemplateMixin and "BackdropTemplate")
 		iconFrame:EnableMouse(false)
-		iconFrame:SetBackdrop ({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
+		iconFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
 		--local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame)
 		iconFrame:SetSize(DBM.Options.NPIconSize+2, DBM.Options.NPIconSize+2)
 		iconFrame:Hide()
 
 		-- texture icon
-		iconFrame.icon = iconFrame:CreateTexture(nil,'BORDER')
+		iconFrame.icon = iconFrame:CreateTexture(nil, 'BORDER')
 		iconFrame.icon:SetSize(DBM.Options.NPIconSize, DBM.Options.NPIconSize)
-		iconFrame.icon:SetPoint ("center")
+		iconFrame.icon:SetPoint("CENTER")
 
 		-- CD swipe
-		iconFrame.cooldown = CreateFrame ("cooldown", "$parentCooldown", iconFrame, "CooldownFrameTemplate, BackdropTemplate")
-		iconFrame.cooldown:SetPoint ("center")
+		---@class DBMNameplateFrameCooldown: Cooldown, BackdropTemplate
+		iconFrame.cooldown = CreateFrame("Cooldown", "$parentCooldown", iconFrame, "CooldownFrameTemplate, BackdropTemplate")
+		iconFrame.cooldown:SetPoint("CENTER")
 		iconFrame.cooldown:SetAllPoints()
-		iconFrame.cooldown:EnableMouse (false)
+		iconFrame.cooldown:EnableMouse(false)
 		if iconFrame.cooldown.EnableMouseMotion then
 			iconFrame.cooldown:EnableMouseMotion(false)
 		end
@@ -51,12 +58,12 @@ do
 		--iconFrame.cooldown.noCooldownCount = true --OmniCC override flag
 
 		-- CD text
-		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "overlay", "NumberFontNormal")
-		iconFrame.cooldown.timer:SetPoint ("center")
+		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "OVERLAY", "NumberFontNormal")
+		iconFrame.cooldown.timer:SetPoint("CENTER")
 		iconFrame.cooldown.timer:Show()
 		iconFrame.timerText = iconFrame.cooldown.timer
 
-		iconFrame:SetScript ("OnUpdate", frame.UpdateTimerText)
+		iconFrame:SetScript("OnUpdate", frame.UpdateTimerText)
 
 		tinsert(frame.icons,iconFrame)
 		iconFrame.parent = frame
@@ -133,6 +140,8 @@ do
 				return br > ar
 			elseif (a_aura_tbl.startTime + a_aura_tbl.duration) < (b_aura_tbl.startTime + b_aura_tbl.duration) then
 				return true
+			else
+				return false -- unreachable
 			end
 		end)
 
@@ -482,7 +491,7 @@ end)
 --------------------------------------
 local function getAllShownGUIDs() -- for testing
 	local guids = {}
-	for _, plateFrame in ipairs(GetNamePlates() or {}) do
+	for _, plateFrame in ipairs(GetNamePlates()) do
 		if plateFrame and plateFrame.UnitFrame and plateFrame.UnitFrame.unit then
 			tinsert(guids,  UnitGUID(plateFrame.UnitFrame.unit))
 		end

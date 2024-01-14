@@ -3,6 +3,9 @@ local CL	= DBM_CORE_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 local DBM = DBM
 local CreateFrame = CreateFrame
 
@@ -178,6 +181,7 @@ local otherTab = CreateFrame("Frame", "$parentOtherOptions", frame)
 otherTab.name = L.OTabPlugins
 frame:CreateTab(otherTab)
 
+---@class DBMGUIFrameWrapper: Frame, BackdropTemplate
 local frameWrapper = CreateFrame("Frame", nil, frame, "BackdropTemplate")
 frameWrapper:SetPoint("TOPLEFT", 15, -59)
 frameWrapper:SetPoint("BOTTOMRIGHT", -15, 40)
@@ -226,6 +230,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 		frame.tabs[frame.tab].selection = self.element
 		if not self.element.isLoaded then
 			if self.element.isSeason then
+				---@diagnostic disable-next-line: deprecated
 				if not IsAddOnLoaded(self.element.addonId) then
 					for _, addon in ipairs(DBM.AddOns) do
 						if addon.modId == self.element.addonId then
@@ -269,6 +274,7 @@ for i = 1, math.floor(UIParent:GetHeight() / 18) do
 	buttonToggle:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	buttonToggle:SetScript("OnClick", function()
 		if not button.element.isLoaded and button.element.addonId then
+			---@diagnostic disable-next-line: deprecated
 			if not IsAddOnLoaded(button.element.addonId) then
 				for _, addon in ipairs(DBM.AddOns) do
 					if addon.modId == button.element.addonId then
@@ -307,7 +313,7 @@ local frameBreak = frameWrapper:CreateTexture()
 frameBreak:SetPoint("TOPLEFT", frameList, "TOPRIGHT", 12, -1)
 frameBreak:SetPoint("BOTTOMLEFT", frameList, "BOTTOMRIGHT", 12, 1)
 frameBreak:SetWidth(16)
-frameBreak:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border", true, true) -- 137057
+frameBreak:SetTexture("Interface\\Tooltips\\UI-Tooltip-Border", "REPEAT", "REPEAT") -- 137057
 local edgeRepeatY = math.max(0, (frameBreak:GetHeight() / 16) * frameBreak:GetEffectiveScale() - 2 - 0.0625);
 frameBreak:SetTexCoord(0.1328125, 0.0625,
 	0.1328125, edgeRepeatY,

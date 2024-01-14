@@ -330,7 +330,7 @@ do
 				end
 			end
 		end
-		if success then
+		if success and guid then
 			addsGUIDs[guid] = true
 			addsIconSet[scanId] = addsIconSet[scanId] + 1
 			DBM:Debug("SetRaidTarget succeeded. Total set "..(addsIconSet[scanId] or "unknown").." of "..(iconVariables[scanId].maxIcon or "unknown"), 2)
