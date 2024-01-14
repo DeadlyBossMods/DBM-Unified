@@ -2,6 +2,9 @@ local _, private = ...
 
 local L = DBM_GUI_L
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 local pairs, next, type, ipairs, setmetatable, mfloor, mmax = pairs, next, type, ipairs, setmetatable, math.floor, math.max
 local CreateFrame, GameFontNormalSmall = CreateFrame, GameFontNormalSmall
 local DBM = DBM
@@ -214,6 +217,7 @@ function DBM_GUI:CreateDropdown(title, values, vartype, var, callfunc, width, he
 		end
 	end
 	---@class DBMDropDown: Frame, DBMDropdownTemplate
+	---@diagnostic disable-next-line: undefined-field -- frame comes from a subclass of DBM_GUI
 	local dropdown = CreateFrame("Frame", "DBM_GUI_DropDown" .. self:GetNewID(), parent or self.frame, "UIDropDownMenuTemplate")
 	dropdown.mytype = "dropdown"
 	dropdown.width = width

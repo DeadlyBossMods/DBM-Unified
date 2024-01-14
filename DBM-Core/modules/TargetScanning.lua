@@ -65,6 +65,7 @@ do
 		return name, uid, bossuid
 	end
 
+	---@return string? name, string? uid, string? bossuid
 	function module:GetBossTarget(mod, cidOrGuid, scanOnlyBoss)
 		local name, uid, bossuid
 		DBM:Debug("GetBossTarget firing for :"..tostring(mod).." "..tostring(cidOrGuid).." "..tostring(scanOnlyBoss), 3)
@@ -138,7 +139,7 @@ do
 			DBM:Debug("BossTargetScanner has ended for "..cidOrGuid, 2)
 			filteredTargetCache[cidOrGuid] = nil
 		--Perform normal scan criteria matching
-		elseif targetname and targetname ~= CL.UNKNOWN and (not targetFilter or (targetFilter and targetFilter ~= targetname)) then
+		elseif targetname and targetuid and targetname ~= CL.UNKNOWN and (not targetFilter or (targetFilter and targetFilter ~= targetname)) then
 			if not IsInGroup() then scanTimes = 1 end--Solo, no reason to keep scanning, give faster warning. But only if first scan is actually a valid target, which is why i have this check HERE
 			if (isEnemyScan and UnitIsFriend("player", targetuid) or (onlyPlayers and not UnitIsUnit("player", targetuid)) or mod:IsTanking(targetuid, bossuid)) and not isFinalScan then--On player scan, ignore tanks. On enemy scan, ignore friendly player. On Only player, ignore npcs and pets
 				if targetScanCount[cidOrGuid] < scanTimes then--Make sure no infinite loop.

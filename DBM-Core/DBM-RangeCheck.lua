@@ -1,7 +1,9 @@
----------------
---  Globals  --
----------------
-DBM.RangeCheck = {}
+---@class DBM
+local DBM = DBM
+
+---@class DBMRangeCheck
+local rangeCheck = {}
+DBM.RangeCheck = rangeCheck
 
 --------------
 --  Locals  --
@@ -20,7 +22,7 @@ local function UnitPhaseReasonHack(uId)
 end
 
 local L = DBM_CORE_L
-local rangeCheck = DBM.RangeCheck
+---@class DBMRangeCheckFrame: Frame
 local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For Phanx' Class Colors
@@ -471,6 +473,7 @@ end
 --  Create the frame  --
 ------------------------
 local function createTextFrame()
+	---@class DBMRangeCheckFrame: Frame, BackdropTemplate
 	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, "BackdropTemplate")
 	textFrame:SetFrameStrata("DIALOG")
 	textFrame.backdropInfo = {
@@ -501,11 +504,14 @@ local function createTextFrame()
 	textFrame:SetScript("OnMouseDown", function(_, button)
 		if button == "RightButton" then
 			local dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", UIParent)
+			---@diagnostic disable-next-line: param-type-mismatch
 			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
+			---@diagnostic disable-next-line: param-type-mismatch
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
 
+	---@class DBMRangeCheckTitleFrame: FontString
 	local text = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
 	text:SetSize(128, 15)
 	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
@@ -542,6 +548,7 @@ local function createTextFrame()
 end
 
 local function createRadarFrame()
+	---@class DBMRangeCheckRadarFrame: Frame
 	radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
 	radarFrame:SetFrameStrata("DIALOG")
 	radarFrame:SetPoint(DBM.Options.RangeFrameRadarPoint, UIParent, DBM.Options.RangeFrameRadarPoint, DBM.Options.RangeFrameRadarX, DBM.Options.RangeFrameRadarY)
@@ -566,7 +573,9 @@ local function createRadarFrame()
 	radarFrame:SetScript("OnMouseDown", function(_, button)
 		if button == "RightButton" then
 			local dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", UIParent)
+			---@diagnostic disable-next-line: param-type-mismatch
 			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
+			---@diagnostic disable-next-line: param-type-mismatch
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
@@ -653,7 +662,7 @@ do
 	end
 
 	function updateIcon()
-		local numPlayers = GetNumGroupMembers()
+		local numPlayers = GetNumGroupMembers() or 0
 		activeDots = max(numPlayers, activeDots)
 		for i = 1, activeDots do
 			local dot = radarFrame.dots[i]

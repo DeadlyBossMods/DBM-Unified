@@ -1,5 +1,8 @@
 local L		= DBM_GUI_L
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 DBM_GUI.Cat_Alerts = DBM_GUI:CreateNewPanel(L.TabCategory_Alerts, "option")
 
 local AlertsArea1		= DBM_GUI.Cat_Alerts:CreateArea(L.Area_BasicSetup)

@@ -1,17 +1,21 @@
+---@class DBM
+local DBM = DBM
+
 ---------------
 --  Globals  --
 ---------------
-DBM.InfoFrame = {}
+---@class DBMInfoFrame
+local infoFrame = {}
+DBM.InfoFrame = infoFrame
 
 -------------------
 -- Local Globals --
 -------------------
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
-local DDM = _G["LibStub"]:GetLibrary("LibDropDownMenu")
+local DDM = LibStub:GetLibrary("LibDropDownMenu")
 local UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu = DDM.UIDropDownMenu_AddButton, DDM.UIDropDownMenu_Initialize, DDM.ToggleDropDownMenu
 
-local DBM = DBM
 local L = DBM_CORE_L
 local UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit = UnitClass, GetTime, GetPartyAssignment, UnitGroupRolesAssigned, GetRaidTargetIndex, UnitExists, UnitGetTotalAbsorbs, UnitName, UnitHealth, UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitThreatSituation, UnitPosition, UnitIsUnit
 local error, tostring, type, pairs, ipairs, select, tonumber, tsort, twipe, mfloor, mmax, mmin, mrandom, schar, ssplit = error, tostring, type, pairs, ipairs, select, tonumber, table.sort, table.wipe, math.floor, math.max, math.min, math.random, string.char, string.split
@@ -35,12 +39,12 @@ end
 --------------
 --  Locals  --
 --------------
-local infoFrame = DBM.InfoFrame
 local frame, initializeDropdown, currentMapId, currentEvent, createFrame
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
 local playerName = UnitName("player")
+---@cast playerName string
 
 ---------------------
 --  Dropdown Menu  --
@@ -232,6 +236,7 @@ end
 --  Create the frame  --
 ------------------------
 function createFrame()
+	---@class DBMInfoFrameFrame: Frame, BackdropTemplate
 	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, "BackdropTemplate")
 	frame:Hide()
 	frame:SetFrameStrata("DIALOG")
@@ -267,8 +272,12 @@ function createFrame()
 	end)
 	frame:SetScript("OnMouseDown", function(_, button)
 		if button == "RightButton" then
+			-- no clue what is going on with DDM here
+			---@diagnostic disable-next-line: param-type-mismatch
 			local dropdownFrame = DDM.Create_DropDownMenu("Frame", "DBMInfoFrameDropdown", frame)
+			---@diagnostic disable-next-line: param-type-mismatch
 			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown)
+			---@diagnostic disable-next-line: param-type-mismatch
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
@@ -537,7 +546,7 @@ local function updateMultiEnemyAbsorb()
 		local uId = "boss" .. i
 		if UnitExists(uId) then
 			local targetGUID = UnitGUID(uId)
-			if guidTable[targetGUID] and not guidTracked[targetGUID] then
+			if targetGUID and guidTable[targetGUID] and not guidTracked[targetGUID] then
 				guidTracked[targetGUID] = true
 				local absorbAmount
 				if spellInput then -- Get specific spell absorb
@@ -561,7 +570,7 @@ local function updateMultiEnemyAbsorb()
 		end
 		local uId = unitId .. "target"
 		local targetGUID = UnitGUID(unitId)
-		if guidTable[targetGUID] and not guidTracked[targetGUID] then
+		if targetGUID and guidTable[targetGUID] and not guidTracked[targetGUID] then
 			guidTracked[targetGUID] = true
 			local absorbAmount
 			if spellInput then -- Get specific spell absorb
@@ -649,7 +658,7 @@ local function updatePlayerBuffs()
 	local spellName = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			if not DBM:UnitBuff(uId, spellName) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -666,7 +675,7 @@ local function updateGoodPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -684,7 +693,7 @@ local function updateBadPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			if DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -740,7 +749,7 @@ local function updateReverseBadPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) and not DBM:UnitBuff(uId, 27827) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -782,7 +791,7 @@ local function updatePlayerAggro()
 	local aggroType = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			local currentThreat = UnitThreatSituation(uId) or 0
 			if currentThreat >= aggroType then

@@ -1,17 +1,18 @@
 -- This file uses models and textures taken from TomTom. The 3D arrow model was created by Guillotine (curse.guillotine@gmail.com) and 2D minimap textures by Cladhaire.
 
-local L = DBM_CORE_L
+---@class DBM
+local DBM = DBM
 
----------------
---  Globals  --
----------------
-DBM.Arrow = {}
+local L = DBM_CORE_L
 
 --------------
 --  Locals  --
 --------------
-local arrowFrame = DBM.Arrow
+---@class DBMArrow
+local arrowFrame = {}
 local frame, runAwayArrow, targetType, targetPlayer, targetX, targetY, targetMapId, hideTime, hideDistance
+
+DBM.Arrow = arrowFrame
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -23,6 +24,7 @@ local UnitPosition, GetTime = UnitPosition, GetTime
 --------------------
 --  Create Frame  --
 --------------------
+---@class DBMArrowFrame: Button
 frame = CreateFrame("Button", "DBMArrow", UIParent)
 frame:Hide()
 frame:SetFrameStrata("HIGH")
@@ -41,6 +43,7 @@ frame:SetScript("OnDragStop", function(self)
 	DBM.Options.ArrowPosY = y
 end)
 
+---@class DBMArrowTextFrame: Frame
 local textframe = CreateFrame("Frame", nil, frame)
 frame.distance = textframe:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
 frame.title = textframe:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
@@ -212,7 +215,7 @@ local function show(runAway, x, y, distance, time, legacy, _, title, customAreaI
 	else
 		targetType = "fixed"
 		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
-			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(customAreaID) or C_Map.GetBestMapForUnit("player"), CreateVector2D(x / 100, y / 100))
+			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(customAreaID) or C_Map.GetBestMapForUnit("player") or 0, CreateVector2D(x / 100, y / 100))
 			x, y = temptable.x, temptable.y
 		end
 		targetX, targetY = x, y

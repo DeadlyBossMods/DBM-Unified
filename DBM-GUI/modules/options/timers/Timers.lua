@@ -1,5 +1,8 @@
 local L		= DBM_GUI_L
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 DBM_GUI.Cat_Timers = DBM_GUI:CreateNewPanel(L.TabCategory_Timers, "option")
 
 local TimersArea1		= DBM_GUI.Cat_Timers:CreateArea(L.Area_BasicSetup)
