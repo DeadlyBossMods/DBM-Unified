@@ -567,7 +567,7 @@ if isRetail then
 		[2286]={60, 2},[2289]={60, 2},[2290]={60, 2},[2287]={60, 2},[2285]={60, 2},[2293]={60, 2},[2291]={60, 2},[2284]={60, 2},[2441]={60, 2},--Shadowlands Dungeons
 		[2520]={70, 2},[2451]={70, 2},[2516]={70, 2},[2519]={70, 2},[2526]={70, 2},[2515]={70, 2},[2521]={70, 2},[2527]={70, 2},[2579]={70, 2},--Dragonflight Dungeons
 	}
-elseif isWrath then--Since naxx is moved to northrend, wrath can't use tbc/classics table
+elseif isWrath then--Since naxx is moved to northrend, wrath and cata can't use tbc/classics table
 	instanceDifficultyBylevel = {
 		--World
 		[0]={60,1},[1]={60, 1},--Eastern Kingdoms and Kalimdor world bosses.
@@ -1886,16 +1886,16 @@ do
 					"SCENARIO_COMPLETED",
 					"GOSSIP_SHOW"
 				)
-			elseif isWrath then -- WoTLKC
+			elseif isBCC or isClassic then
+				self:RegisterEvents(
+					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
+					"CHARACTER_POINTS_CHANGED"
+				)
+			else -- WoTLKC and Cata
 				self:RegisterEvents(
 					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
 					"CHARACTER_POINTS_CHANGED",
 					"PLAYER_TALENT_UPDATE"
-				)
-			else -- BCC and Classic
-				self:RegisterEvents(
-					"UNIT_HEALTH_FREQUENT mouseover target focus player",--Still exists in classic and non frequent is slow and less reliable
-					"CHARACTER_POINTS_CHANGED"
 				)
 			end
 			if RolePollPopup and RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") and isRetail then
@@ -4487,7 +4487,7 @@ do
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
 			modId = tonumber(modId)
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			if isRetail or isWrath then
+			if not isClassic and not isBCC then
 				local difficultyName
 				if difficulty == 8 then
 					if difficultyModifier and difficultyModifier ~= 0 then
@@ -4526,7 +4526,7 @@ do
 			if not DBM.Options.ShowGuildMessagesPlus and difficulty == 8 then return end
 			modId = tonumber(modId)
 			local bossName = modId and (EJ_GetEncounterInfo and EJ_GetEncounterInfo(modId) or DBM:GetModLocalization(modId).general.name) or name or CL.UNKNOWN
-			if isRetail or isWrath then
+			if not isClassic and not isBCC then
 				local difficultyName
 				if difficulty == 8 then
 					if difficultyModifier and difficultyModifier ~= 0 then
@@ -10197,7 +10197,7 @@ do
 	end
 
 	do
-		local minVoicePackVersion = isRetail and 15 or 10
+		local minVoicePackVersion = isRetail and 15 or isWrath and 16 or 10
 
 		function DBM:CheckVoicePackVersion(value)
 			local activeVP = self.Options.ChosenVoicePack2
