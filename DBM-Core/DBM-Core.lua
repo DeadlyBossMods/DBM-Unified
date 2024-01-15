@@ -8182,7 +8182,7 @@ do
 			end
 		end
 
-		local unitID = (UnitGUID("target") == sourceGUID) and "target" or not isClassic and (UnitGUID("focus") == sourceGUID) and "focus"
+		local unitID = (UnitGUID("target") == sourceGUID) and "target" or not isClassic and (UnitGUID("focus") == sourceGUID) and "focus" or (UnitGUID("softenemy") == sourceGUID) and "softenemy"
 		--Check if target/focus is required (or if checkOnlyTandF is used, meaning this isn't actually an interrupt API check)
 		if checkOnlyTandF or (self.isTrashMod and DBM.Options.FilterTTargetFocus or not self.isTrashMod and DBM.Options.FilterBTargetFocus) then
 			--Just return false if source isn't our target or focus, no need to do further checks

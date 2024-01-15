@@ -470,7 +470,7 @@ L.FilterDispels						= "Filter announcements for dispelable spells if your dispe
 L.FilterTrashWarnings				= "Filter all trash mob announcements in normal, heroic, and trivial (outleveled) dungeons"
 
 L.Area_BInterruptFilter				= "Boss Interrupt Filter Options"
-L.FilterTargetFocus					= "Filter if caster is not current target/focus"
+L.FilterTargetFocus					= "Filter if caster is not current target/focus/softenemy"
 L.FilterInterruptCooldown			= "Filter if interrupt spell is on cooldown"
 L.FilterInterruptHealer				= "Filter if you're in a healer spec"
 L.FilterInterruptNoteName			= "Filter if alert has a count but your name isn't in the custom note"--Only used on bosses, trash mods don't assign counts
