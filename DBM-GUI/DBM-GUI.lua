@@ -1,15 +1,6 @@
 local L = DBM_GUI_L
 
 ---@class DBMGUI
----@field CreateNewPanel fun(self, frameName, frameType, showSub, displayName, forceChildren, addonId, isSeason): DBMPanel -- defined in PanelPrototype
----@field CreateDropdown fun(self, title, values, vartype, var, callfunc, width, height, parent): DBMDropdownTemplate
----@field currentViewing Frame
----@field frame DBMPanelFrame
----@field Cat_Timers DBMPanel
----@field Cat_General DBMPanel
----@field Cat_Frames DBMPanel
----@field Cat_Filters DBMPanel
----@field Cat_Alerts DBMPanel
 local DBM_GUI = {
 	tabs	= {},
 	panels	= {}
@@ -217,6 +208,7 @@ do
 	local popupFrame
 
 	local function createPopupFrame()
+		---@class DBMPopupFrame: Frame, BackdropTemplate
 		popupFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 		popupFrame:SetFrameStrata("DIALOG")
 		popupFrame:SetFrameLevel(popupFrame:GetFrameLevel() + 10)
@@ -239,6 +231,7 @@ do
 		popupFrame:Hide()
 		popupFrame.text = ""
 
+		---@class DBMPopupFrameBackdrop: Frame, BackdropTemplate
 		local backdrop = CreateFrame("Frame", nil, popupFrame, "BackdropTemplate")
 		backdrop.backdropInfo = {
 			bgFile		= "Interface\\ChatFrame\\ChatFrameBackground",
@@ -254,6 +247,7 @@ do
 		backdrop:SetPoint("TOPLEFT", 15, -15)
 		backdrop:SetPoint("BOTTOMRIGHT", -40, 40)
 
+		---@class DBMPopupFrameScrollFrame: ScrollFrame
 		local scrollFrame = CreateFrame("ScrollFrame", nil, popupFrame, "UIPanelScrollFrameTemplate")
 		scrollFrame:SetPoint("TOPLEFT", 15, -22)
 		scrollFrame:SetPoint("BOTTOMRIGHT", -40, 45)
@@ -279,6 +273,7 @@ do
 		input:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT")
 		input:SetWidth(452)
 
+		---@class DBMPopupFrameImportButton: Button
 		local import = CreateFrame("Button", nil, popupFrame, "UIPanelButtonTemplate")
 		import:SetPoint("BOTTOMRIGHT", -120, 13)
 		import:SetFrameLevel(import:GetFrameLevel() + 1)
@@ -518,7 +513,7 @@ function DBM_GUI:CreateBossModPanel(mod)
 					else
 						local _title = DBM:GetSpellInfo(spellID)
 						if _title then
-							title, desc, icon = _title, tonumber(spellID), GetSpellTexture(spellID)
+							title, desc, icon = _title, tonumber(spellID), GetSpellTexture(spellID or 0)
 						end
 					end
 				elseif spellID:find("^ej") then

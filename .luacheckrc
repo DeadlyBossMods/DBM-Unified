@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 std = "lua51"
 max_line_length = false
 exclude_files = {
@@ -150,6 +151,7 @@ globals = {
 	"BackdropTemplateMixin",
 	"ChatFontNormal",
 	"CreateRadioButtonGroup", -- Classic Era
+	"CooldownFrame_Set",
 	"UIParent",
 	"GameFontHighlight",
 	"GameFontHighlightSmall",

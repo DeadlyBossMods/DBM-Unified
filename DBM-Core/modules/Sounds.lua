@@ -5,6 +5,9 @@ local tinsert, unpack = table.insert, unpack
 
 local CL = DBM_COMMON_L
 
+---@class DBM
+local DBM = DBM
+
 do
 	local counts = {
 		{	text	= "Corsica",value 	= "Corsica", path = "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica\\", max = 10},
@@ -19,7 +22,8 @@ do
 	}
 	local hasCached = false
 	local cachedTable
-	DBM.Counts = counts -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	DBM.Counts = counts
 
 	function DBM:GetCountSounds()
 		if not hasCached then
@@ -48,7 +52,8 @@ do
 	}
 	local hasCached = false
 	local cachedTable
-	DBM.Victory = victory -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	DBM.Victory = victory
 
 	function DBM:GetVictorySounds()
 		if not hasCached then
@@ -105,7 +110,8 @@ do
 
 	local hasCached = false
 	local cachedTable
-	DBM.Defeat = defeat -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	DBM.Defeat = defeat
 
 	function DBM:GetDefeatSounds()
 		if not hasCached then
@@ -151,7 +157,8 @@ do
 
 	local hasCached = false
 	local cachedTable
-	DBM.DungeonMusic = dungeonMusic -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	DBM.DungeonMusic = dungeonMusic
 
 	function DBM:GetDungeonMusic()
 		if not hasCached then
@@ -198,7 +205,8 @@ do
 
 	local hasCached = false
 	local cachedTable
-	DBM.BattleMusic = battleMusic -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	DBM.BattleMusic = battleMusic
 
 	function DBM:GetBattleMusic()
 		if not hasCached then
@@ -231,7 +239,8 @@ do
 	}
 	local hasCached = false
 	local cachedTable
-	DBM.Music = music -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	DBM.Music = music
 
 	function DBM:GetMusic()
 		if not hasCached then

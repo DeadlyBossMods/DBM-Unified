@@ -3,6 +3,7 @@ local L = DBM_CORE_L
 local frame, text, ignore, cancel
 
 local function CreateOurFrame()
+	---@class DBMHyperlinkFrame: Frame, BackdropTemplate
 	frame = CreateFrame("Frame", "DBMHyperLinks", UIParent, "BackdropTemplate")
 	frame.backdropInfo = {
 		bgFile		= "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", -- 312922

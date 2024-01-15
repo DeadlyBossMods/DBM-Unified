@@ -1,17 +1,19 @@
----------------
---  Globals  --
----------------
-DBM.Flash = {}
+---@class DBM
+local DBM = DBM
+
+---@class DBMFlash
+local flashFrame= {}
+DBM.Flash = flashFrame
 
 --------------
 --  Locals  --
 --------------
-local flashFrame = DBM.Flash
 local frame, duration, elapsed, totalRepeat
 
 --------------------
 --  Create Frame  --
 --------------------
+---@class DBMFlashFrame: Frame, BackdropTemplate
 frame = CreateFrame("Frame", "DBMFlash", UIParent, "BackdropTemplate")
 frame.backdropInfo = {
 	bgFile = "Interface\\Tooltips\\UI-Tooltip-Background" -- 137056

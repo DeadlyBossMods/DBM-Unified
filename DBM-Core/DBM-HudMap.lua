@@ -1,16 +1,22 @@
 -- Original code and concept by Antiarc. Used and modified with his permission.
 -- First adaptation in dbm credits to VEM team. Continued on their behalf do to no time from original author to make it an external mod or DBM plugin.
 
-DBM.HudMap = {
+---@class DBM
+local DBM = DBM
+
+---@class DBMHudMap
+local mod =  {
 	Version = 2 -- That way external usage can querie hud api feature level of of users installed mod version
 }
-local mod = DBM.HudMap
+
+DBM.HudMap = mod
 
 local wipe, type, pairs, ipairs, tinsert, tremove, tonumber, setmetatable, unpack = table.wipe, type, pairs, ipairs, table.insert, table.remove, tonumber, setmetatable, unpack
 local abs, pow, sqrt, sin, cos, atan2, floor, ceil, min, max, pi2 = math.abs, math.pow, math.sqrt, math.sin, math.cos, math.atan2, math.floor, math.ceil, math.min, math.max, math.pi * 2
 local error = error
 
 local CallbackHandler = _G["LibStub"]:GetLibrary("CallbackHandler-1.0")
+---@class DBMMHudMapUpdateFrame: Frame
 local updateFrame = CreateFrame("Frame", "DBMHudMapUpdateFrame")
 local fixedOnUpdateRate = 0.03
 local onUpdate, Point, Edge
@@ -1067,7 +1073,7 @@ do
 				t.callbacks = CallbackHandler:New(t)
 				t.frame = CreateFrame("Frame", nil, canvas)
 				t.frame:SetFrameStrata("LOW")
-				t.frame.owner = t
+				t.frame.owner = t ---@diagnostic disable-line: inject-field
 				t.text = t.frame:CreateFontString()
 				t.text:SetFont(standardFont, 10, "")
 				t.text:SetDrawLayer("OVERLAY")
@@ -1193,7 +1199,7 @@ end
 function mod:RegisterPositionMarker(spellid, name, texture, x, y, radius, duration, r, g, b, a, blend, localMap, AreaID)
 	if localMap then
 		if x >= 0 and x <= 100 and y >= 0 and y <= 100 then
-			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(AreaID) or C_Map.GetBestMapForUnit("player"), CreateVector2D(x / 100, y / 100))
+			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(AreaID) or C_Map.GetBestMapForUnit("player") or 0, CreateVector2D(x / 100, y / 100))
 			x, y = temptable.x, temptable.y
 		end
 	end

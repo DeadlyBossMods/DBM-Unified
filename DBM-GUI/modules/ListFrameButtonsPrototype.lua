@@ -1,5 +1,8 @@
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 local setmetatable, type, ipairs, tinsert = setmetatable, type, ipairs, table.insert
-local DBM, DBM_GUI = DBM, DBM_GUI
+local DBM = DBM
 
 local function GetDepth(self, parentID, depth) -- Called internally
 	depth = depth or 1
