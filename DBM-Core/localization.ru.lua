@@ -3,6 +3,12 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
+local dateTable = date("*t")
+if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
+	--L.DEADLY_BOSS_MODS					= "Bigwigs"
+	--L.DBM								= "BW"
+end
+
 L.HOW_TO_USE_MOD					= "Добро пожаловать в " .. L.DBM .. ". Наберите /dbm help, чтобы получить список поддерживаемых команд. Для доступа к настройкам наберите /dbm в чате. Загрузите конкретные зоны вручную, чтобы настроить определённых боссов на свой вкус. " .. L.DBM .. " установит настройки по умолчанию для Вашей специализации, но Вы, возможно, захотите настроить их более тонко."
 L.SILENT_REMINDER					= "Напоминание: " .. L.DBM .. " всё ещё в тихом режиме."
 L.NEWS_UPDATE						= "|h|c11ff1111Новости|r|h: Это обновление представляет собой повторный выпуск версии 9.1.9 для устранения ложного обнаружения вредоносного ПО в хэше предыдущего выпуска файла. Подробнее об этом |Hgarrmission:DBM:news|h|cff3588ff[здесь]|r|h"
@@ -196,6 +202,7 @@ L.DBMLDB							= "ПРЕДУПРЕЖДЕНИЕ: DBM-LDB теперь встро�
 L.DBMLOOTREMINDER					= "ПРЕДУПРЕЖДЕНИЕ: Обнаружен установленный DBM-LootReminder. Этот аддон больше не совместим с клиентом WoW Retail и приводит к поломке пулл таймеров " .. L.DBM .. ". Рекомендуется удалить этот аддон."
 L.UPDATE_REQUIRES_RELAUNCH			= "ПРЕДУПРЕЖДЕНИЕ: Это обновление " .. L.DBM .. " не будет работать корректно, если Вы не перезапустите игровой клиент. Это обновление содержит новые файлы или изменения в .toc файле, которые не могут быть загружены через ReloadUI. Вы можете столкнуться со сломанной функциональностью или ошибками, если продолжите без перезапуска клиента."
 L.OUT_OF_DATE_NAG					= "Ваша версия " .. L.DBM .. " устарела и этот энкаунтер имеет новые фичи и багфиксы в новой версии. Рекомендуется обновиться, чтобы не было отсутствующих важных предупреждений, или таймеров, или крика от Вас, на который рассчитывает остальная группа."
+--L.PLATER_NP_AURAS_MSG					= L.DBM .. " includes an advanced feature to show enemy cooldown timers using icons on nameplates. This is on by default for most users, but for Plater users it is off by default in Plater options unless you enable it. To get the most out of DBM (and Plater) it's recommended you enable this feature in Plater under 'Buff Special' section. If you don't want to see this message again, you can also just entirely disable 'Cooldown icons on nameplates' option in DBM global disable or nameplate options panels"
 
 L.MOVABLE_BAR						= "Перетащите!"
 
@@ -374,7 +381,7 @@ L.AUTO_SPEC_WARN_TEXTS.moveaway			= "%s - отбегите от остальны
 L.AUTO_SPEC_WARN_TEXTS.moveawaycount	= "%s (%%s) - отбегите от остальных"
 L.AUTO_SPEC_WARN_TEXTS.moveto			= "%s - бегите к >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.soak				= "%s - перекройте"
-L.AUTO_SPEC_WARN_TEXTS.soakcount		= "%s - перекройте %%s"
+L.AUTO_SPEC_WARN_TEXTS.soakcount		= "%s - перекройте (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.jump				= "%s - подпрыгните"
 L.AUTO_SPEC_WARN_TEXTS.run 				= "%s - убегайте"
 L.AUTO_SPEC_WARN_TEXTS.runcount 		= "%s - убегайте (%%s)"
@@ -448,14 +455,17 @@ L.AUTO_TIMER_TEXTS.castsource		= "%s: %%s"
 L.AUTO_TIMER_TEXTS.active			= "%s заканчивается"
 L.AUTO_TIMER_TEXTS.fades			= "%s спадает"
 L.AUTO_TIMER_TEXTS.ai				= "%s ИИ"
+
 L.AUTO_TIMER_TEXTS.cd 				= "%s"
 L.AUTO_TIMER_TEXTS.cdcount			= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.cdsource			= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial		= "Восст. спецспособности"
+
 L.AUTO_TIMER_TEXTS.next 			= "%s"
 L.AUTO_TIMER_TEXTS.nextcount		= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource		= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial		= "Спецспособность"
+
 L.AUTO_TIMER_TEXTS.achievement		= "%s"
 L.AUTO_TIMER_TEXTS.stage			= "Фаза"
 L.AUTO_TIMER_TEXTS.stagecount		= "Фаза %%s"
@@ -468,6 +478,11 @@ L.AUTO_TIMER_TEXTS.adds				= "Адды"
 L.AUTO_TIMER_TEXTS.addscustom		= "Адды (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay			= GUILD_INTEREST_RP or "Ролевая игра"
 L.AUTO_TIMER_TEXTS.combat			= "Бой начинается"
+--This basically clones np only bar option and display text from regular counterparts
+--L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
+--L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
+--L.AUTO_TIMER_TEXTS.cdcountnp = L.AUTO_TIMER_TEXTS.cdcount
+--L.AUTO_TIMER_TEXTS.nextcountnp = L.AUTO_TIMER_TEXTS.nextcount
 
 L.AUTO_TIMER_OPTIONS.target 		= "Отсчёт времени действия дебаффа $spell:%s"
 L.AUTO_TIMER_OPTIONS.targetcount 	= "Отсчёт времени действия дебаффа (со счётчиком) $spell:%s"
@@ -538,8 +553,10 @@ L.AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d"
 L.AUTO_YELL_ANNOUNCE_TEXT.position 	= "%s %%s на {rt%%d}"..UnitName("player").."{rt%%d}"
 L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 	= "{rt%%1$d}%s %%2$d"
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s и %%s"
+--L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer						= UnitName("player")
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon	= "{rt%%1$d}"
 
+--L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE				= "%s спал"
 L.AUTO_HUD_OPTION_TEXT				= "Показывать HudMap для $spell:%s"
 L.AUTO_HUD_OPTION_TEXT_MULTI		= "Показывать HudMap для различных механик"
@@ -620,3 +637,4 @@ L.WORLD_BUFFS.zgHeart			= "Теперь остался лишь один шаг 
 L.WORLD_BUFFS.zgHeartBooty		= "Кровавый Свежеватель Душ побежден! Теперь нам ничто не угрожает!"
 L.WORLD_BUFFS.zgHeartYojamba	= "Начинайте ритуал, слуги мои. Мы должны отправить сердце Хаккара обратно в Пустоту!"
 L.WORLD_BUFFS.rendHead			= "Самозванец Ренд Чернорук мертв!"
+--L.WORLD_BUFFS.blackfathomBoon						= "boon of Blackfathom"
