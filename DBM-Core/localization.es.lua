@@ -588,8 +588,8 @@ L.HUD_USAGE	= {
 	"Uso de "..L.DBM.."-HudMap:",
 	"-----------------",
 	"/dbm hud <tipo> <objetivo> <seg>: Crea un indicador en pantalla que apunta al jugador objetivo durante el tiempo designado.",
-	"Tipos válidos: flecha, punto, rojo, azul, verde, amarillo, icono (requiere un objetivo con icono de banda)",
-	"Objetivos válidos: objetivo, enfoque, <jugador>",
+	"Tipos válidos: arrow, dot, red, blue, green, yellow, icon (requiere un objetivo con icono de banda)",
+	"Objetivos válidos: target, focus, <jugador>",
 	"Duraciones válidas: cualquier número (en segundos). Si se deja en blanco, durará 20 minutos.",
 	"/dbm hud hide: cancela y oculta el indicador en pantalla."
 }
