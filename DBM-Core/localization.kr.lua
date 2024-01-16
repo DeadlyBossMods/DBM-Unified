@@ -201,7 +201,7 @@ L.DBMLDB							= "경고: DBM-LDB는 이제 DBM-Core에 편입되었습니다. �
 L.DBMLOOTREMINDER				= "경고: 써드파티 모드인 DBM-LootReminder가 설치되었습니다. 이 애드온은 최신 WoW 클라이언트에 더이상 호환되지 않으며 " .. L.DBM .. "이 오작동하여 풀링 타이머를 전송하지 못하게 될 수 있습니다. 애드온 삭제를 권장합니다"
 L.UPDATE_REQUIRES_RELAUNCH		= "경고: 지금 업데이트한 " .. L.DBM .. "은 게임 클라이언트를 완전히 재시작하기 전까진 정상 작동하지 않습니다. 이 업데이트엔 새 파일이 포함되어 있거나 UI 재시작으로는 로딩할 수 없는 .toc 파일의 변경 사항이 있습니다. 클라이언트 재시작 없이 사용할 경우 오류가 발생하거나 작동하지 않을 수 있습니다."
 L.OUT_OF_DATE_NAG				= "현재 사용중인 " .. L.DBM .. " 버전이 오래되었습니다. 이 전투에 대응하는 모듈은 새로운 기능을 탑재했거나 버그가 수정된 상태입니다. 향상된 레이드 경험을 누리고 싶다면 업데이트를 권장합니다."
-L.PLATER_NP_AURAS_MSG					= L.DBM .. "엔 이름표에 적들의 쿨타임 타이머를 아이콘으로 표시해주는 진보된 기능이 있습니다. 대부분의 사용자에게 기본적으로 활성화되어 있으나, Plater 사용자는 옵션에서 활성화하기 전까지는 기본적으로 작동하지 않습니다. DBM(및 Plater)을 최대한 활용하려면 Plater 내 'Buff Special' 설정에서 이 기능을 활성화 하는걸 권장합니다. 이 메시지를 다시 보고싶지 않다면 DBM 기능 켜고 끄기 또는 이름표 설정 메뉴에 '이름표에 쿨타임 아이콘' 설정을 비활성화하세요"
+L.PLATER_NP_AURAS_MSG					= L.DBM .. "엔 이름표에 적들의 쿨타임 타이머를 아이콘으로 표시해주는 진보된 기능이 있습니다. 대부분의 사용자에게 기본적으로 활성화되어 있으나, Plater 사용자는 옵션에서 활성화하기 전까지는 기본적으로 작동하지 않습니다. DBM (Plater 조합)을 최대한 활용하려면 Plater 내 'Buff Special' 설정에서 이 기능을 활성화 하는걸 권장합니다. 이 메시지를 다시 보고싶지 않다면 DBM 기능 켜고 끄기 또는 이름표 설정 메뉴에 '이름표에 쿨타임 아이콘' 설정을 비활성화하세요"
 
 L.MOVABLE_BAR				= "드래그 하세요!"
 
@@ -553,7 +553,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s %%d초 후 사라짐"
 --L.AUTO_YELL_ANNOUNCE_TEXT.iconfade							= "{rt%%2$d}%%1$d"
 L.AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}" .. UnitName("player") .. "{rt%%3$d}에게 %1$s %%2$s"
 --L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 						= "{rt%%1$d}%s %%2$d",--Icon, Spellname, number
-L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s랑 %%s 걸림"
+L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s랑 %%s"--Spell name (from option, plus spellname given in arg)
 --L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer						= UnitName("player"),--Doesn't need translation, it's just player name spam
 --L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon							= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
 
@@ -627,7 +627,7 @@ L.OVERRIDE_ACTIVATED					= "이 전투에서 공대장에 의해 설정 강제 �
 
 --LDB
 L.LDB_TOOLTIP_HELP1			= "왼쪽 클릭으로 " .. L.DBM .. " 열기"
---L.LDB_TOOLTIP_HELP2						= "Alt+right click to toggle Silent Mode"
+L.LDB_TOOLTIP_HELP2				= "Alt+오른쪽 클릭으로 조용함 모드 켜기/끄기"
 L.SILENTMODE_IS					= "조용함 모드 "
 
 L.WORLD_BUFFS.hordeOny		= "호드의 백성들이여, 오그리마의 주민들이여, 모두 와서 호드의 영웅을 찬양하라."

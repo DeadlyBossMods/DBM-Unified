@@ -473,7 +473,7 @@ L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 알림 보지 않�
 L.FilterTrashWarnings		= "일반, 영웅, 이전 확장팩 던전에선 일반몹 알림 보지 않기"
 
 L.Area_BInterruptFilter				= "보스 차단 알림 필터 설정"
-L.FilterTargetFocus					= "현재 대상/주시 대상이 아니면 알림 표시 안함"
+L.FilterTargetFocus					= "현재 대상/주시 대상/액션 대상(적)이 아니면 알림 표시 안함"
 L.FilterInterruptCooldown			= "차단 주문이 쿨타임일땐 표시 안함"
 L.FilterInterruptHealer				= "힐러일때 표시 안함"
 L.FilterInterruptNoteName			= "시전 횟수가 포함되어 있는 차단 알림에서 사용자 정의 메모에 내 이름이 없으면 표시 안함"--Only used on bosses, trash mods don't assign counts
