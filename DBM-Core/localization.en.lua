@@ -479,8 +479,8 @@ L.AUTO_TIMER_TEXTS = {
 
 	achievement							= "%s",
 	stage								= "Stage",
-	stagecount							= "Stage %%s",
-	stagecountcycle						= "Stage %%s (%%s)",--Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
+	stagecount							= "Stage %%s",--NOT BUGGED, stage is 2nd arg, spellID is ignored on purpose
+	stagecountcycle						= "Stage %%s (%%s)",--^^. Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
 	stagecontext						= "%s",
 	stagecontextcount					= "%s (%%s)",
 	intermission						= "Intermission",
