@@ -3,6 +3,12 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
+local dateTable = date("*t")
+if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
+	--L.DEADLY_BOSS_MODS					= "Bigwigs"
+	--L.DBM								= "BW"
+end
+
 L.HOW_TO_USE_MOD					= L.DBM .. "을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 원하는 던전을 직접 선택해서 로딩을 클릭하세요. " .. L.DBM .. "이 당신의 현재 전문화에 맞는 기본값을 설정하지만 일부 옵션은 자신에게 맞게 조정해야 할 수도 있습니다."
 L.SILENT_REMINDER					= "알림: " .. L.DBM .. "이 아직 조용함 모드입니다."
 L.NEWS_UPDATE						= "|h|c11ff1111뉴스|r|h: 이 업데이트는 기본적으로 이전에 배포된 파일의 해쉬값이 악성코드로 잘못 감지되어 이를 피하기 위한 9.1.9의 재배포 버전입니다. 자세한 내용은 |Hgarrmission:DBM:news|h|cff3588ff[이곳]|r|h에서 읽을 수 있습니다"
@@ -164,6 +170,8 @@ L.WHISPER_SCENARIO_END_WIPE			= "%s님이 %s 시나리오를 완료하지 못했
 L.WHISPER_SCENARIO_END_WIPE_STATS	= "%s님이 %s 시나리오를 완료하지 못했습니다. 이 난이도를 총 %d회 실패했습니다."
 
 L.VERSIONCHECK_HEADER		= "보스 모드 - 버전"
+--L.VERSIONCHECK_ENTRY					= "%s: %s (%s) %s"--One Boss mod
+--L.VERSIONCHECK_ENTRY_TWO				= "%s: %s (%s) & %s (%s)"--Two Boss mods
 L.VERSIONCHECK_ENTRY_NO_DBM	= "%s: 설치된 보스 모드 없음"
 L.VERSIONCHECK_FOOTER		= L.DBM .. "을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
 L.VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보스 모드를 사용중: %s"
@@ -172,6 +180,7 @@ L.VOICE_PACK_OUTDATED		= "선택한 " .. L.DBM .. " 음성팩에 일부 음성�
 L.VOICE_MISSING				= "선택한 " .. L.DBM .. " 음성팩을 찾을 수 없습니다. 오류일 경우 음성팩이 제대로 설치되어 있고 애드온 목록에서 활성화되어 있는지 확인해 보시기 바랍니다."
 L.VOICE_DISABLED				= "현재 " .. L.DBM .. " 음성팩이 한 개 이상 설치되어 있지만 사용하고 있는게 없습니다. 음성팩을 사용하려면 '음성 경고' 항목에서 음성팩이 지정되어 있는지 확인하세요. 음성팩을 사용할 의사가 없으면 음성팩을 삭제하시면 이 메시지는 더이상 출력되지 않습니다"
 L.VOICE_COUNT_MISSING		= "초읽기 음성중 %d초로 설정된 음성/초읽기 팩을 찾을 수 없습니다. 기본 설정으로 초기화 되었습니다: %s"
+--L.BIG_WIGS								= "BigWigs"
 L.WEAKAURA_KEY							= " (|cff308530WA 키:|r %s)"
 
 L.UPDATEREMINDER_HEADER			= "사용중인 " .. L.DEADLY_BOSS_MODS .. " 버전의 사용 기한이 지났습니다.\n Curse, Wago, WoWI, GitHub 릴리즈 페이지 등에서 %s (%s) 버전을 다운로드 할 수 있습니다."
@@ -201,6 +210,7 @@ L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 " .. L.DBM .
 L.PIZZA_CONFIRM_IGNORE			= "정말 %s의 " .. L.DBM .. " 타이머를 차단하시겠습니까? 이 공격대에 있는 동안에만 적용됩니다."
 L.PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <텍스트>. <시간>은 3초 이상이어야 합니다."
 
+--L.MINIMAP_TOOLTIP_HEADER				= L.DEADLY_BOSS_MODS --Technically redundant
 L.MINIMAP_TOOLTIP_FOOTER		= "쉬프트 누르고 드래그로 이동"
 
 L.RANGECHECK_HEADER			= "탐지 거리 (%dm)"
@@ -295,6 +305,7 @@ L.AUTO_ANNOUNCE_TEXTS.you			= "당신에게 %s"
 L.AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetsource	= ">%%s<의 %s 시전: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%s): >%%s<"
+--L.AUTO_ANNOUNCE_TEXTS.spell								= "%s"
 L.AUTO_ANNOUNCE_TEXTS.incoming		= "%s 디버프 걸림"
 L.AUTO_ANNOUNCE_TEXTS.incomingcount	= "%s 디버프 걸림 (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends			= "%s 종료"
@@ -309,6 +320,7 @@ L.AUTO_ANNOUNCE_TEXTS.prewarn		= "%2$s 후 %1$s"
 L.AUTO_ANNOUNCE_TEXTS.bait		= "곧 %s - 위치 유도"
 L.AUTO_ANNOUNCE_TEXTS.stage			= "%s단계"
 L.AUTO_ANNOUNCE_TEXTS.prestage		= "곧 %s단계"
+--L.AUTO_ANNOUNCE_TEXTS.count								= "%s (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.stack			= "%s: >%%s< (%%d)"
 L.AUTO_ANNOUNCE_TEXTS.moveto		= "%s - >%%s< 위치로 이동"
 
@@ -338,6 +350,7 @@ L.AUTO_ANNOUNCE_OPTIONS.count		= "$spell:%s 시전 완료 알림 보기 (횟수 
 L.AUTO_ANNOUNCE_OPTIONS.stack		= "$spell:%s 중첩 알림"
 L.AUTO_ANNOUNCE_OPTIONS.moveto		= "$spell:%s에 특정인 또는 특정 위치로 이동 알림 보기"
 
+--L.AUTO_SPEC_WARN_TEXTS.spell								= "%s!"
 L.AUTO_SPEC_WARN_TEXTS.ends		= "%s 종료!"
 L.AUTO_SPEC_WARN_TEXTS.fades		= "%s 사라짐!"
 L.AUTO_SPEC_WARN_TEXTS.soon		= "곧 %s"
@@ -374,6 +387,7 @@ L.AUTO_SPEC_WARN_TEXTS.runcount		= "%s - 도망치세요 (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.cast		= "%s - 주문 시전 중지"
 L.AUTO_SPEC_WARN_TEXTS.lookaway		= "%%2$s에게 %1$s - 고개 돌리세요"
 L.AUTO_SPEC_WARN_TEXTS.reflect		= "%s: >%%s< - 공격 중지"
+--L.AUTO_SPEC_WARN_TEXTS.count								= "%s! (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.stack		= "당신에게 %s (%%d중첩)"
 L.AUTO_SPEC_WARN_TEXTS.switch		= "%s - 대상 바꾸세요"
 L.AUTO_SPEC_WARN_TEXTS.switchcount	= "%s - 대상 바꾸세요 (%%s)"
@@ -432,26 +446,43 @@ L.AUTO_SPEC_WARN_OPTIONS.addscustom		= "쫄 등장시 특수 알림 보기"
 L.AUTO_SPEC_WARN_OPTIONS.targetchange	= "점사 우선순위 변경시 특수 알림 보기"
 
 -- Auto-generated Timer Localizations
+--L.AUTO_TIMER_TEXTS.target								= "%s: %%s",
+--L.AUTO_TIMER_TEXTS.targetcount							= "%s (%%2$s): %%1$s",
+--L.AUTO_TIMER_TEXTS.cast								= "%s",
+--L.AUTO_TIMER_TEXTS.castcount							= "%s (%%s)",
+--L.AUTO_TIMER_TEXTS.castsource							= "%s: %%s",
 L.AUTO_TIMER_TEXTS.active				= "%s 종료"--Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades				= "%s 사라짐"--Buff/Debuff on players
 L.AUTO_TIMER_TEXTS.ai					= "%s AI 예상"
+
 L.AUTO_TIMER_TEXTS.cd					= "%s 쿨타임"
 L.AUTO_TIMER_TEXTS.cdcount				= "%s (%%s) 쿨타임"
 L.AUTO_TIMER_TEXTS.cdsource				= "%s 쿨타임: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial			= "특수 능력"
+
 L.AUTO_TIMER_TEXTS.next					= "다음 %s"
 L.AUTO_TIMER_TEXTS.nextcount			= "다음 %s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource			= "다음 %s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial			= "특수 능력"
+
+--L.AUTO_TIMER_TEXTS.achievement							= "%s"
 L.AUTO_TIMER_TEXTS.stage				= "단계"
 L.AUTO_TIMER_TEXTS.stagecount			= "%%s단계"
 L.AUTO_TIMER_TEXTS.stagecountcycle		= "%%s단계 (%%s)"--Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
+--L.AUTO_TIMER_TEXTS.stagecontext						= "%s"
+--L.AUTO_TIMER_TEXTS.stagecontextcount					= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.intermission			= "사잇 단계"
 L.AUTO_TIMER_TEXTS.intermissioncount	= "사잇 단계 %%s"
 L.AUTO_TIMER_TEXTS.adds					= "쫄"
 L.AUTO_TIMER_TEXTS.addscustom			= "쫄 (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay				= "NPC 대사"
 L.AUTO_TIMER_TEXTS.combat				= "전투 시작"
+
+--This basically clones np only bar option and display text from regular counterparts
+--L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
+--L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
+--L.AUTO_TIMER_TEXTS.cdcountnp = L.AUTO_TIMER_TEXTS.cdcount
+--L.AUTO_TIMER_TEXTS.nextcountnp = L.AUTO_TIMER_TEXTS.nextcount
 
 L.AUTO_TIMER_OPTIONS.target				= "$spell:%s 디버프 타이머 바 보기"
 L.AUTO_TIMER_OPTIONS.targetcount		= "$spell:%s 디버프 타이머 바 보기 (횟수 포함)"
@@ -513,11 +544,20 @@ L.AUTO_YELL_OPTION_TEXT.shortposition	= "$spell:%s 대상일 때 말풍선으로
 L.AUTO_YELL_OPTION_TEXT.combo		= "$spell:%s|1과;와; 다른 디버프가 같이 걸렸을 때 말풍선으로 알리기 (사용자 지정 문자 포함)"
 L.AUTO_YELL_OPTION_TEXT.repeatplayer	= "$spell:%s에 걸렸을 때 말풍선 알림 반복 (플레이어 이름 포함)"
 L.AUTO_YELL_OPTION_TEXT.repeaticon	= "$spell:%s에 걸렸을 때 말풍선 알림 반복 (공격대 징표 포함)"
+
+--L.AUTO_YELL_ANNOUNCE_TEXT.shortyell							= "%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. "에게 %s"
 L.AUTO_YELL_ANNOUNCE_TEXT.count		= UnitName("player") .. "에게 %s (%%d)"
 L.AUTO_YELL_ANNOUNCE_TEXT.fade		= "%s %%d초 후 사라짐"
+--L.AUTO_YELL_ANNOUNCE_TEXT.shortfade							= "%%d"
+--L.AUTO_YELL_ANNOUNCE_TEXT.iconfade							= "{rt%%2$d}%%1$d"
 L.AUTO_YELL_ANNOUNCE_TEXT.position	= "{rt%%3$d}" .. UnitName("player") .. "{rt%%3$d}에게 %1$s %%2$s"
+--L.AUTO_YELL_ANNOUNCE_TEXT.shortposition 						= "{rt%%1$d}%s %%2$d",--Icon, Spellname, number
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s랑 %%s"--Spell name (from option, plus spellname given in arg)
+--L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer						= UnitName("player"),--Doesn't need translation, it's just player name spam
+--L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon							= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
+
+--L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE				= "%s 사라짐"
 L.AUTO_HUD_OPTION_TEXT				= "$spell:%s에 HUD 표시 (중단됨)"
 L.AUTO_HUD_OPTION_TEXT_MULTI		= "여러 보스 기술에 HUD 표시 (중단됨)"
