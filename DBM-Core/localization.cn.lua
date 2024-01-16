@@ -8,6 +8,12 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
+local dateTable = date("*t")
+if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
+	--L.DEADLY_BOSS_MODS					= "Bigwigs"
+	--L.DBM								= "BW"
+end
+
 L.HOW_TO_USE_MOD					= "欢迎使用" .. L.DBM .. "。在聊天框输入 /dbm help 以获取可用命令的帮助。输入 /dbm 可打开设置窗口，并对各个Boss模块进行设置，也可以浏览首领击杀记录。"..L.DBM.." 会自动按你的专精做出相应配置，但是你可以进行微调。"
 L.SILENT_REMINDER					= "提示：" .. L.DBM .. " 正处于静音模式。"
 L.NEWS_UPDATE						= "|h|c11ff1111News|r|h: 此次更新主要在 9.1.9 的版本上去除了导致杀毒软件误报警的情况。详情点击 |Hgarrmission:DBM:news|h|cff3588ff[这里]|r|h"
@@ -85,10 +91,10 @@ L.PROFILE_CREATE_ERROR		= "配置文件创建失败. 无效的配置文件名."
 L.PROFILE_CREATE_ERROR_D		= "配置文件创建失败. '%s' 已经存在."
 L.PROFILE_APPLIED			= "配置文件 '%s' 已经应用."
 L.PROFILE_APPLY_ERROR		= "配置文件应用失败. '%s' 并不存在."
-L.PROFILE_DELETED			= "配置文件 '%s' 已经删除. 'Default' 默认配置文件会被应用."
 L.PROFILE_COPIED				= "配置文件 '%s' 已经复制."
 L.PROFILE_COPY_ERROR			= "配置文件复制失败. '%s' 并不存在."
 L.PROFILE_COPY_ERROR_SELF	= "无法自己复制自己的配置文件."
+L.PROFILE_DELETED			= "配置文件 '%s' 已经删除. 'Default' 默认配置文件会被应用."
 L.PROFILE_DELETE_ERROR		= "配置文件删除失败. '%s' 并不存在."
 L.PROFILE_CANNOT_DELETE		= "'Default' 默认配置文件无法被删除"
 L.MPROFILE_COPY_SUCCESS		= "%s(%d专精)的模块设置已经被复制."
@@ -152,6 +158,7 @@ L.OPTION_CATEGORY_DROPDOWNS		= "下拉"
 L.OPTION_CATEGORY_YELLS			= "大喊"
 L.OPTION_CATEGORY_NAMEPLATES		= "姓名版"
 L.OPTION_CATEGORY_ICONS			= "图标"
+--L.OPTION_CATEGORY_PAURAS				= "Private Auras"
 
 L.AUTO_RESPONDED						= "已自动回复."
 L.STATUS_WHISPER						= "%s：%s，%d/%d存活"
@@ -186,6 +193,7 @@ L.UPDATEREMINDER_HEADER			= "您的 " .. L.DEADLY_BOSS_MODS .. " 版本已过期
 L.UPDATEREMINDER_FOOTER			= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制下载地址到剪切板。"
 L.UPDATEREMINDER_FOOTER_GENERIC	= "按下 " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. "复制链接到剪切板。"
 L.UPDATEREMINDER_DISABLE			= "警告：你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期太久，它已被强制禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。"
+--L.UPDATEREMINDER_DISABLETEST			= "WARNING: Due to your " .. L.DEADLY_BOSS_MODS.. " being out of date and this being a test/beta realm, it has been force disabled and cannot be used until updated. This is to ensure out of date mods aren't being used to generate test feedback"
 L.UPDATEREMINDER_HOTFIX			= "你的 " .. L.DEADLY_BOSS_MODS .. " 版本会在这首领战斗中有问题。最新版的" .. L.DBM .. "已经修复了这个问题。"
 L.UPDATEREMINDER_HOTFIX_ALPHA	= "你的 " .. L.DEADLY_BOSS_MODS .. " 版本会在这首领战斗中有问题。最新版的" .. L.DBM .. "（或Alpha版本）已经修复了这个问题。"
 L.UPDATEREMINDER_MAJORPATCH		= "你的 " .. L.DEADLY_BOSS_MODS .. " 已经过期，它已被禁用，直到你更新。这是为了确保它不会导致你或其他团队成员出错。这次更新是一个非常重要的补丁，请立刻到Curse, Wago, WOWI或者到GitHub Releases页面获取最新版本"
@@ -199,6 +207,7 @@ L.DBMLDB							= "警告: DBM-LDB 已经集成入" .. L.DBM .. "核心。建议�
 L.DBMLOOTREMINDER					= "警告: 第三方插件DBM-LootReminder已安装。该插件不兼容正式服，并会导致" .. L.DBM .. "挂掉，无法发送开怪提醒。建议移除。"
 L.UPDATE_REQUIRES_RELAUNCH		= "警告: 如果你不完全重启游戏，" .. L.DBM .. "可能会工作不正常。此次更新包含了新的文件，或者toc文件的改变，这是重载界面无法加载的。不重启游戏可能导致作战模块功能错误。"
 L.OUT_OF_DATE_NAG				= "你的" .. L.DBM .. "版本已经过期，新版本针对特定的首领战斗增加新的功能和错误的修复。建议您进行更新来改善您的游戏体验。"
+--L.PLATER_NP_AURAS_MSG					= L.DBM .. " includes an advanced feature to show enemy cooldown timers using icons on nameplates. This is on by default for most users, but for Plater users it is off by default in Plater options unless you enable it. To get the most out of DBM (and Plater) it's recommended you enable this feature in Plater under 'Buff Special' section. If you don't want to see this message again, you can also just entirely disable 'Cooldown icons on nameplates' option in DBM global disable or nameplate options panels"
 
 L.MOVABLE_BAR				= "拖动我！"
 
@@ -206,6 +215,7 @@ L.PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h向你发送了一个" .. L.DBM 
 L.PIZZA_CONFIRM_IGNORE			= "是否要在该次游戏连接中屏蔽来自%s的计时条？"
 L.PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <时间（秒）> <文本>"
 
+--L.MINIMAP_TOOLTIP_HEADER				= L.DEADLY_BOSS_MODS --Technically redundant
 L.MINIMAP_TOOLTIP_FOOTER		= "Shift+拖动 / 右键拖动：拖动\nAlt+Shift+拖动：自由拖动"
 
 L.RANGECHECK_HEADER			= "距离监视（%d码）"
@@ -229,7 +239,7 @@ L.RANGERADAR_HEADER			= "距离%d码 %d人"
 L.RANGERADAR_RHEADER			= "反向距离%码 %d人"
 L.RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内（%0.1f码）"
 L.RANGECHECK_IN_RANGE_TEXT	= "%d人在监视距离内"
-L.RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1f码)"--One target
+L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1f码)"--One target
 
 L.INFOFRAME_SHOW_SELF		= "总是显示你的能量"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "设置最大行数"
@@ -266,7 +276,7 @@ L.SLASHCMD_HELP2				= {
 	"/dbm durability: 检测全团装备耐久度"
 }
 L.TIMER_USAGE	= {
-	L.DBM.."计时器可用命令:",
+	L.DBM .. "计时器可用命令:",
 	"-----------------",
 	"/dbm timer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的计时器。",
 	"/dbm ltimer <秒> <文本>: 启动一个<文本>为名称，长度为<秒>的循环计时器。",
@@ -301,6 +311,8 @@ L.AUTO_ANNOUNCE_TEXTS.target			= "%s: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetsource		= ">%%s< 施放 %s 于 >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.targetcount		= "%s (%%s)：>%%s<"
 L.AUTO_ANNOUNCE_TEXTS.spell				= "%s"
+--L.AUTO_ANNOUNCE_TEXTS.incoming							= "%s incoming debuff"
+--L.AUTO_ANNOUNCE_TEXTS.incomingcount						= "%s incoming debuff (%%s)"
 L.AUTO_ANNOUNCE_TEXTS.ends 				= "%s 结束"
 L.AUTO_ANNOUNCE_TEXTS.endtarget			= "%s 结束: >%%s<"
 L.AUTO_ANNOUNCE_TEXTS.fades				= "%s 消失"
@@ -323,6 +335,8 @@ L.AUTO_ANNOUNCE_OPTIONS.targetNF			= "警报：$spell:%s的目标(忽略全局�
 L.AUTO_ANNOUNCE_OPTIONS.targetsource		= "警报：$spell:%s的目标(带来源)"
 L.AUTO_ANNOUNCE_OPTIONS.targetcount		= "警报：$spell:%s的目标(带计数)"
 L.AUTO_ANNOUNCE_OPTIONS.spell			= "警报：当$spell:%s施法时"
+--L.AUTO_ANNOUNCE_OPTIONS.incoming							= "Announce when $spell:%s has incoming debuffs"
+--L.AUTO_ANNOUNCE_OPTIONS.incomingcount						= "Announce (with count) when $spell:%s has incoming debuffs"
 L.AUTO_ANNOUNCE_OPTIONS.ends				= "警报：$spell:%s结束"
 L.AUTO_ANNOUNCE_OPTIONS.endtarget		= "警报：$spell:%s结束（带目标）"
 L.AUTO_ANNOUNCE_OPTIONS.fades			= "警报：$spell:%s消失"
@@ -345,8 +359,8 @@ L.AUTO_SPEC_WARN_TEXTS.ends				= "%s 结束"
 L.AUTO_SPEC_WARN_TEXTS.fades				= "%s 消失"
 L.AUTO_SPEC_WARN_TEXTS.soon				= "%s 即将到来"
 L.AUTO_SPEC_WARN_TEXTS.sooncount			= "%s (%%s) 即将到来"
-L.AUTO_SPEC_WARN_TEXTS.prewarn			= "%s 于 %s"
 L.AUTO_SPEC_WARN_TEXTS.bait				= "%s 即将到来 - 快引诱"
+L.AUTO_SPEC_WARN_TEXTS.prewarn			= "%s 于 %s"
 L.AUTO_SPEC_WARN_TEXTS.dispel			= ">%%s<中了%s - 快驱散"
 L.AUTO_SPEC_WARN_TEXTS.interrupt			= "%s - 快打断"
 L.AUTO_SPEC_WARN_TEXTS.interruptcount	= "%s - 快打断 (%%d)"
@@ -370,8 +384,10 @@ L.AUTO_SPEC_WARN_TEXTS.moveaway			= "%s - 离开人群"
 L.AUTO_SPEC_WARN_TEXTS.moveawaycount		= "%s (%%s) - 离开人群"
 L.AUTO_SPEC_WARN_TEXTS.moveto			= "%s - 靠近 >%%s<"
 L.AUTO_SPEC_WARN_TEXTS.soak				= "%s - 快吸收"
+--L.AUTO_SPEC_WARN_TEXTS.soakcount							= "%s - soak %%s"
 L.AUTO_SPEC_WARN_TEXTS.jump				= "%s - 快跳"
 L.AUTO_SPEC_WARN_TEXTS.run				= "%s - 快跑"
+--L.AUTO_SPEC_WARN_TEXTS.runcount							= "%s - run away (%%s)"
 L.AUTO_SPEC_WARN_TEXTS.cast				= "%s - 停止施法"
 L.AUTO_SPEC_WARN_TEXTS.lookaway			= "%s - 快转身"
 L.AUTO_SPEC_WARN_TEXTS.reflect			= ">%%s<中了%s - 快停手"
@@ -391,8 +407,8 @@ L.AUTO_SPEC_WARN_OPTIONS.ends			= "特殊警报：$spell:%s结束"
 L.AUTO_SPEC_WARN_OPTIONS.fades			= "特殊警报：$spell:%s消失"
 L.AUTO_SPEC_WARN_OPTIONS.soon			= "特殊警报：$spell:%s即将到来"
 L.AUTO_SPEC_WARN_OPTIONS.sooncount		= "特殊警报：$spell:%s即将到来(带计数)"
-L.AUTO_SPEC_WARN_OPTIONS.prewarn 		= "特殊警报：%s秒前预警$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.bait			= "特殊警报: $spell:%s需要引诱"
+L.AUTO_SPEC_WARN_OPTIONS.prewarn 		= "特殊警报：%s秒前预警$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.dispel			= "特殊警报：需要驱散$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.interrupt		= "特殊警报：需要打断$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.interruptcount	= "特殊警报：需要打断$spell:%s(带计数)"
@@ -416,14 +432,15 @@ L.AUTO_SPEC_WARN_OPTIONS.moveaway		= "特殊警报：当你受到$spell:%s影响
 L.AUTO_SPEC_WARN_OPTIONS.moveawaycount	= "特殊警报：当你受到$spell:%s影响并需要跑开人群时(带计数)"
 L.AUTO_SPEC_WARN_OPTIONS.moveto			= "特殊警报：当他人中了$spell:%s并需要你去靠近时"
 L.AUTO_SPEC_WARN_OPTIONS.soak			= "特殊警报：当你需要吸收$spell:%s时"
+--L.AUTO_SPEC_WARN_OPTIONS.soakcount							= "Show special announce (with count) to soak for $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.jump			= "特殊警报：当你受到$spell:%s影响并需要跳起来时"
 L.AUTO_SPEC_WARN_OPTIONS.run				= "特殊警报：当你受到$spell:%s影响并需要跑开时"
+--L.AUTO_SPEC_WARN_OPTIONS.runcount							= "Show special announce (with count) to run away from $spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.cast			= "特殊警报：当你需要打断$spell:%s时"
 L.AUTO_SPEC_WARN_OPTIONS.lookaway		= "特殊警报：当你受到$spell:%s影响需要快转身时"
 L.AUTO_SPEC_WARN_OPTIONS.reflect			= "特殊警报：当目标使用$spell:%s需要停止攻击时"
 L.AUTO_SPEC_WARN_OPTIONS.count 			= "特殊警报：$spell:%s(带计数)"
 L.AUTO_SPEC_WARN_OPTIONS.stack			= "特殊警报：当叠加了>=%d层$spell:%s时"
-L.AUTO_SPEC_WARN_OPTIONS.stackcount		= "特殊警报：当叠加了>=%d层$spell:%s时(带计数)"
 L.AUTO_SPEC_WARN_OPTIONS.switch 			= "特殊警报：针对$spell:%s需要转换目标"
 L.AUTO_SPEC_WARN_OPTIONS.switchcount		= "特殊警报：针对$spell:%s需要转换目标(带计数)"
 L.AUTO_SPEC_WARN_OPTIONS.gtfo			= "特殊警报：需要躲开地上的有害技能"
@@ -441,20 +458,34 @@ L.AUTO_TIMER_TEXTS.castsource			= "%s: %%s"
 L.AUTO_TIMER_TEXTS.active				= "%s结束"--Buff/Debuff/event on boss
 L.AUTO_TIMER_TEXTS.fades					= "%s消失"--Buff/Debuff on players
 L.AUTO_TIMER_TEXTS.ai					= "%s人工智能计时冷却"
+
 L.AUTO_TIMER_TEXTS.cd					= "%s冷却"
 L.AUTO_TIMER_TEXTS.cdcount				= "%s冷却（%%s）"
 L.AUTO_TIMER_TEXTS.cdsource				= "%s冷却: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial				= "特殊技能冷却"
+
 L.AUTO_TIMER_TEXTS.next 					= "下一次%s"
 L.AUTO_TIMER_TEXTS.nextcount				= "下一次%s（%%s）"
 L.AUTO_TIMER_TEXTS.nextsource			= "下一次%s: >%%s<"
 L.AUTO_TIMER_TEXTS.nextspecial			= "下一次特殊技能"
+
 L.AUTO_TIMER_TEXTS.achievement 			= "%s"
 L.AUTO_TIMER_TEXTS.stage					= "下一阶段"
+--L.AUTO_TIMER_TEXTS.stagecount							= "Stage %%s"
+--L.AUTO_TIMER_TEXTS.stagecountcycle						= "Stage %%s (%%s)"--Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
+--L.AUTO_TIMER_TEXTS.stagecontext						= "%s"
+--L.AUTO_TIMER_TEXTS.stagecontextcount					= "%s (%%s)"
+--L.AUTO_TIMER_TEXTS.intermission						= "Intermission"
+--L.AUTO_TIMER_TEXTS.intermissioncount					= "Intermission %%s"
 L.AUTO_TIMER_TEXTS.adds					= "下一波小怪"
 L.AUTO_TIMER_TEXTS.addscustom			= "小怪 (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay				= GUILD_INTEREST_RP or "剧情"
 L.AUTO_TIMER_TEXTS.combat				= "战斗开始"
+--This basically clones np only bar option and display text from regular counterparts
+L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
+L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
+L.AUTO_TIMER_TEXTS.cdcountnp = L.AUTO_TIMER_TEXTS.cdcount
+L.AUTO_TIMER_TEXTS.nextcountnp = L.AUTO_TIMER_TEXTS.nextcount
 
 L.AUTO_TIMER_OPTIONS.target				= "计时条：$spell:%s减益效果持续时间"
 L.AUTO_TIMER_OPTIONS.targetcount		= "计时条：$spell:%s减益效果持续时间(带计数)"
@@ -466,14 +497,22 @@ L.AUTO_TIMER_OPTIONS.fades				= "计时条：$spell:%s何时从玩家身上消�
 L.AUTO_TIMER_OPTIONS.ai					= "计时条：$spell:%s人工智能冷却时间"
 L.AUTO_TIMER_OPTIONS.cd					= "计时条：$spell:%s冷却时间"
 L.AUTO_TIMER_OPTIONS.cdcount				= "计时条：$spell:%s冷却时间"
+--L.AUTO_TIMER_OPTIONS.cdnp								= "Show nameplate only timer for $spell:%s cooldown"
+--L.AUTO_TIMER_OPTIONS.cdnpcount							= "Show nameplate only timer (with count) for $spell:%s cooldown"
 L.AUTO_TIMER_OPTIONS.cdsource			= "计时条：$spell:%s冷却时间以及来源"
 L.AUTO_TIMER_OPTIONS.cdspecial			= "计时条：特殊技能冷却"
 L.AUTO_TIMER_OPTIONS.next				= "计时条：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount			= "计时条：下一次$spell:%s"
+--L.AUTO_TIMER_OPTIONS.nextnp								= "Show nameplate only timer for next $spell:%s"
+--L.AUTO_TIMER_OPTIONS.nextnpcount							= "Show nameplate only timer (with count) for next $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource			= "计时条：下一次$spell:%s以及来源"
 L.AUTO_TIMER_OPTIONS.nextspecial			= "计时条：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.achievement			= "计时条：成就-%s"
 L.AUTO_TIMER_OPTIONS.stage				= "计时条：下一阶段"
+--L.AUTO_TIMER_OPTIONS.stagecount							= "Show timer (with count) for next stage"
+--L.AUTO_TIMER_OPTIONS.stagecountcycle						= "Show timer (with stage count and cycle count) for next stage"
+--L.AUTO_TIMER_OPTIONS.stagecontext						= "Show timer for next $spell:%s stage"
+--L.AUTO_TIMER_OPTIONS.stagecontextcount					= "Show timer (with count) for next $spell:%s stage"
 L.AUTO_TIMER_OPTIONS.intermission		= "计时条：下一转阶段(带计数)"
 L.AUTO_TIMER_OPTIONS.intermissioncount	= "计时条：下一转阶段"
 L.AUTO_TIMER_OPTIONS.adds				= "计时条：下一波小怪"
@@ -505,6 +544,8 @@ L.AUTO_YELL_OPTION_TEXT.iconfade		= "当你身上的$spell:%s即将消失时大�
 L.AUTO_YELL_OPTION_TEXT.position		= "当你受到$spell:%s影响时大喊（带位置和名字）"
 L.AUTO_YELL_OPTION_TEXT.shortposition	= "当你受到$spell:%s影响时大喊（带位置）"
 L.AUTO_YELL_OPTION_TEXT.combo		= "当你受到$spell:%s影响时大喊（带一个自定义文本）"
+--L.AUTO_YELL_OPTION_TEXT.repeatplayer						= "Yell repeatedly (with player name) when you are affected by $spell:%s"
+--L.AUTO_YELL_OPTION_TEXT.repeaticon							= "Yell repeatedly (with icon) when you are affected by $spell:%s"
 --
 L.AUTO_YELL_ANNOUNCE_TEXT.shortyell	= "%s"
 L.AUTO_YELL_ANNOUNCE_TEXT.yell		= UnitName("player") .. " 中了%s"
@@ -515,8 +556,11 @@ L.AUTO_YELL_ANNOUNCE_TEXT.iconfade	= "{rt%%2$d}%%1$d秒"
 L.AUTO_YELL_ANNOUNCE_TEXT.position	= UnitName("player").. " ({rt%%3$d})中了%1$s (%%1$s - {rt%%2$d})"
 L.AUTO_YELL_ANNOUNCE_TEXT.shortposition	= "{rt%%1$d}%s, %%2$d" --Icon, Spellname, number
 L.AUTO_YELL_ANNOUNCE_TEXT.combo		= "%s, %%s"
+--L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer						= UnitName("player")--Doesn't need translation, it's just player name spam
+--L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon							= "{rt%%1$d}"--Doesn't need translation. It's just icon spam
 
 --
+--L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE				= "%s 消失"
 L.AUTO_HUD_OPTION_TEXT				= "为$spell:%s显示HudMap(退休了)"
 L.AUTO_HUD_OPTION_TEXT_MULTI			= "为多个机制显示HudMap(退休了)"
@@ -528,8 +572,10 @@ L.AUTO_RRANGE_OPTION_TEXT			= "反转距离监视(%s码)：$spell:%s"--Reverse r
 L.AUTO_RRANGE_OPTION_TEXT_SHORT		= "反转距离监视(%s码)"
 L.AUTO_INFO_FRAME_OPTION_TEXT		= "信息框：$spell:%s"
 L.AUTO_INFO_FRAME_OPTION_TEXT2		= "信息框：战斗总览"
+--L.AUTO_INFO_FRAME_OPTION_TEXT3			= "Show info frame for $spell:%s (when threshold of %%s is met)"
 L.AUTO_READY_CHECK_OPTION_TEXT		= "当首领开打时播放准备检查的音效（即使没有选定目标）"
 L.AUTO_SPEEDCLEAR_OPTION_TEXT		= "为%s显示快速消除计数器"
+--L.AUTO_PRIVATEAURA_OPTION_TEXT			= "Play DBM sound alerts for $spell:%s private auras on this fight."
 
 -- New special warnings
 L.MOVE_WARNING_BAR				= "可拖动的团队警报"
@@ -543,7 +589,7 @@ L.HUD_INVALID_SELF				= "不能把自己设定成HUD目标"
 L.HUD_INVALID_ICON				= "当使用团队标记作为HUD目标定义时，不能定义一个没有团队标记的目标"
 L.HUD_SUCCESS					= "HUD成功地使用了你的参数启动了。HUD会在%s关闭, 或者输入 '/dbm hud hide'来关闭"
 L.HUD_USAGE	= {
-	L.DBM.."-HudMap 可用命令：",
+	L.DBM .. "-HudMap 可用命令：",
 	"-----------------",
 	"/dbm hud <类型> <目标> <持续时间> 新建一个指向玩家的HUD指示器",
 	"变量-类型: arrow, dot, red, blue, green, yellow, icon (请输入英语。需要相应的带团队标记的目标。)",
@@ -556,7 +602,7 @@ L.ARROW_MOVABLE				= "可移动箭头"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: 新建一个箭头到指定位置 (使用区域地图坐标系)"
 L.ARROW_WAY_SUCCESS			= "输入 '/dbm arrow hide' 隐藏箭头, 或到达位置"
 L.ARROW_ERROR_USAGE	= {
-	L.DBM.."-Arrow 可用命令：",
+	L.DBM .. "-Arrow 可用命令：",
 	"-----------------",
 	"/dbm arrow <x> <y> 新建一个箭头到指定位置(使用世界坐标系)",
 	"/dbm arrow map <x> <y> 新建一个箭头到指定位置 (使用区域地图坐标系)",
@@ -578,7 +624,6 @@ L.LAG_FOOTER					= "未反馈此次检测的团员:%s"
 L.DUR_CHECKING				= "全团装备耐久度检测请稍后... "
 L.DUR_HEADER					= L.DEADLY_BOSS_MODS .. "- 装备耐久度检测结果"
 L.DUR_ENTRY					= "%s: %d 耐久度 / %s件装备损坏"
-L.DUR_FOOTER					= "未反馈此次检测的团员:%s"
 
 L.OVERRIDE_ACTIVATED			= "本次战斗的配置已经被队长的配置覆盖"
 

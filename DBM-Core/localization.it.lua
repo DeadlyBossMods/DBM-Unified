@@ -488,7 +488,6 @@ L.AUTO_YELL_ANNOUNCE_TEXT.position 		= "%s %%s su {rt%%d}"..UnitName("player")..
 L.AUTO_YELL_ANNOUNCE_TEXT.combo			= "%s e %%s" -- Nome abilità (da opzioni, più nome abilità passata in arg)
 -- L.AUTO_YELL_ANNOUNCE_TEXT - FINE
 L.AUTO_YELL_CUSTOM_POSITION		= "{rt%d}%s"--Doesn't need translating. Has no strings
-L.AUTO_YELL_CUSTOM_POSITION2		= "{rt%d}%s{rt%d}"--Doesn't need translating. Has no strings
 L.AUTO_YELL_CUSTOM_FADE			= "%s svanito"
 L.AUTO_HUD_OPTION_TEXT			= "Mostra la HudMap per l'abilità $spell:%s (Dismessa)"
 L.AUTO_HUD_OPTION_TEXT_MULTI		= "Mostra la HudMap per varie meccaniche (Dismessa)"

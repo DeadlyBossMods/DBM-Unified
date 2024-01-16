@@ -3,6 +3,12 @@ if not DBM_CORE_L then DBM_CORE_L = {} end
 
 local L = DBM_CORE_L
 
+local dateTable = date("*t")
+if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month == 4 then
+	--L.DEADLY_BOSS_MODS					= "Bigwigs"
+	--L.DBM								= "BW"
+end
+
 L.HOW_TO_USE_MOD				= "歡迎使用"..L.DBM.."。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。"..L.DBM.."會在設定你的職業天賦的預設值，但有些選項可能需要調整。"
 L.SILENT_REMINDER				= "提醒："..L.DBM.."正處於無聲模式。"
 L.NEWS_UPDATE					= "|h|c11ff1111更新說明|r|h: 此更新基本上是重新發佈的9.1.9，以清除上一個文件發佈時的錯誤惡意軟件檢測驗證。讀取更多訊息在|Hgarrmission:DBM:news|h|cff3588ff[此處]|r|h"
@@ -22,6 +28,7 @@ L.LOAD_MOD_DISABLED				= "%s已安裝但目前停用中。此模組不會載入�
 L.LOAD_MOD_DISABLED_PLURAL		= "%s已安裝但目前停用中。這些模組不會載入除非你啟用它們。"
 
 L.COPY_URL_DIALOG				= "複製網址"
+--L.COPY_WA_DIALOG						= "Copy WA Key"
 
 --Post Patch 7.1
 L.TEXT_ONLY_RANGE				= "範圍框架受限於該區域的API限制，只限於文字。"
@@ -66,6 +73,7 @@ L.TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄。"
 L.TRANSCRIPTOR_LOG_END			= "Transcriptor結束紀錄。"
 
 L.MOVIE_SKIPPED					= L.DBM.."已嘗試自動略過一個過場動畫。"
+--L.MOVIE_NOTSKIPPED							= L.DBM .. " has detected a skipable cut scene but has NOT skipped it due to a blizzard bug. When this bug is fixed, skipping will be re-enabled"
 L.BONUS_SKIPPED					= L.DBM.."已經自動關閉額外戰利品擲骰框架。如果你需要恢復此框架，在三分鐘內輸入/dbmbonusroll"
 
 L.AFK_WARNING					= "你正在暫離並戰鬥中(血量還剩餘%d百分比)所以發出警告。如果你並非暫離，請清除暫離的標籤或是在'額外功能'停用此選項。"
@@ -194,7 +202,7 @@ L.DBMLDB							= "警告: DBM-LDB已內建在"..L.DBM.."-核心。雖然它不�
 L.DBMLOOTREMINDER					= "警告：已安裝第三方模組 DBM-LootReminder。 此附加插件不再與正式版WOW客戶端相容，並且將導致"..L.DBM.."中斷並且無法發送請求計時器。 建議卸載此插件。"
 L.UPDATE_REQUIRES_RELAUNCH			= "警告: 如果你沒有重啟你的遊戲，這次"..L.DBM.."更新可能無法正確運作。這次更新包含了新的檔案或是.toc檔更新而不能使用ReloadUI載入。如果沒有將遊戲完全重啟可能會導致錯誤或功能不完整。"
 L.OUT_OF_DATE_NAG					= "你的"..L.DEADLY_BOSS_MODS.."版本已經過期，新版本針對特定的首領戰鬥增加新的功能和錯誤的修復。建議您進行更新來改善您的遊戲體驗。"
-L.PLATER_NP_AURAS_MSG					= "DBM包含一個進階功能，用於使用名條上的圖示顯示敵人冷卻時間。 對於大多數用戶而言，預設情況下是這樣的，但是對於Plater用戶而言，除非您啟用它，否則預設情況下它會在Plater選項中關閉。 為了充分利用DBM（和Plater），建議您在“ Buff Special”部分的Plater中啟用此功能。 如果您不想再次看到此訊息，也可以在DBM全局禁用或名條選項面板中的“名條上的冷卻圖標”選項中禁用。"
+L.PLATER_NP_AURAS_MSG					= L.DBM .. "包含一個進階功能，用於使用名條上的圖示顯示敵人冷卻時間。 對於大多數用戶而言，預設情況下是這樣的，但是對於Plater用戶而言，除非您啟用它，否則預設情況下它會在Plater選項中關閉。 為了充分利用DBM（和Plater），建議您在“ Buff Special”部分的Plater中啟用此功能。 如果您不想再次看到此訊息，也可以在DBM全局禁用或名條選項面板中的“名條上的冷卻圖標”選項中禁用。"
 
 L.MOVABLE_BAR					= "拖動我!"
 
@@ -203,6 +211,7 @@ L.PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h 向你發送了" .. L.DBM .. "�
 L.PIZZA_CONFIRM_IGNORE			= "是否要在該次遊戲連結中忽略來自%s的計時？"
 L.PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <時間（秒）> <文字>。<時間>必須大於等於3"
 
+--L.MINIMAP_TOOLTIP_HEADER				= L.DEADLY_BOSS_MODS --Technically redundant
 L.MINIMAP_TOOLTIP_FOOTER		= "按下Shift並拖曳即可移動"
 
 L.RANGECHECK_HEADER				= "距離監視(%d碼)"
@@ -263,7 +272,7 @@ L.SLASHCMD_HELP2				= {
 	"/dbm durability: 進行團隊範圍內的裝備耐久度檢測。"
 }
 L.TIMER_USAGE	= {
-	"DBM計時器指令：",
+	L.DBM .. "計時器指令：",
 	"-----------------",
 	"/dbm timer <秒數> <文字>: 開始一個時間為<秒數>秒並以<文字>為名稱的計時器。",
 	"/dbm ltimer <秒數> <文字>: 開始一個時間為<秒數>秒的計時器同時無限循環直到取消。",
@@ -335,8 +344,8 @@ L.AUTO_ANNOUNCE_OPTIONS.countdown			= "預先警告：$spell:%s的倒數計時�
 L.AUTO_ANNOUNCE_OPTIONS.prewarn				= prewarnOption
 L.AUTO_ANNOUNCE_OPTIONS.bait				= "警告：$spell:%s去引誘的預先警告"
 L.AUTO_ANNOUNCE_OPTIONS.stage				= "提示：第%s階段"
-L.AUTO_ANNOUNCE_OPTIONS.phasechange			= "提示：階段轉換"
 L.AUTO_ANNOUNCE_OPTIONS.stagechange			= "預先警告：第%s階段"
+--L.AUTO_ANNOUNCE_OPTIONS.prestage			= "Show a prewarning for Stage %s"
 L.AUTO_ANNOUNCE_OPTIONS.count				= "提示：當$spell:%s施放時(包含計數)"
 L.AUTO_ANNOUNCE_OPTIONS.stack				= "提示：$spell:%s疊加層數"
 L.AUTO_ANNOUNCE_OPTIONS.moveto				= "提示：$spell:%s需要移動到某人或某個地方"
@@ -367,8 +376,8 @@ L.AUTO_SPEC_WARN_TEXTS.stopmove				= "%s - 停止移動"
 L.AUTO_SPEC_WARN_TEXTS.dodge				= "%s - 閃避攻擊"
 L.AUTO_SPEC_WARN_TEXTS.dodgecount			= "%s (%%s) - 閃避攻擊"
 L.AUTO_SPEC_WARN_TEXTS.dodgeloc				= "%s - 閃避技能 %%s"
-L.AUTO_SPEC_WARN_TEXTS.moveawaycount		= "%s (%%s) - 快離開其他人"
 L.AUTO_SPEC_WARN_TEXTS.moveaway				= "%s - 快離開其他人"
+L.AUTO_SPEC_WARN_TEXTS.moveawaycount		= "%s (%%s) - 快離開其他人"
 L.AUTO_SPEC_WARN_TEXTS.moveto				= "%s - 快跑向>%%s<"
 L.AUTO_SPEC_WARN_TEXTS.soak					= "%s - 踩圈分擔"
 L.AUTO_SPEC_WARN_TEXTS.soakcount			= "%s - 踩圈分擔 %%s"
@@ -444,24 +453,35 @@ L.AUTO_TIMER_TEXTS.castsource				= "%s: %%s"
 L.AUTO_TIMER_TEXTS.active					= "%s結束"
 L.AUTO_TIMER_TEXTS.fades					= "%s消退"
 L.AUTO_TIMER_TEXTS.ai						= "%s AI"
+
 L.AUTO_TIMER_TEXTS.cd						= "%s"
 L.AUTO_TIMER_TEXTS.cdcount					= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.cdsource					= "%s: >%%s<"
 L.AUTO_TIMER_TEXTS.cdspecial				= "特別技能"
+
 L.AUTO_TIMER_TEXTS.next 					= "%s"
 L.AUTO_TIMER_TEXTS.nextcount 				= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource				= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial				= "特別技能"
+
 L.AUTO_TIMER_TEXTS.achievement				= "%s"
 L.AUTO_TIMER_TEXTS.stage					= "階段"
 L.AUTO_TIMER_TEXTS.stagecount				= "階段 %%s"
 L.AUTO_TIMER_TEXTS.stagecountcycle			= "階段 %%s (%%s)"--Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
-L.AUTO_TIMER_TEXTS.Intermission				= "中場"
-L.AUTO_TIMER_TEXTS.Intermissioncount		= "中場 %%s"
+--L.AUTO_TIMER_TEXTS.stagecontext						= "%s",
+--L.AUTO_TIMER_TEXTS.stagecontextcount					= "%s (%%s)",
+L.AUTO_TIMER_TEXTS.intermission				= "中場"
+L.AUTO_TIMER_TEXTS.intermissioncount		= "中場 %%s"
 L.AUTO_TIMER_TEXTS.adds						= "小怪"
 L.AUTO_TIMER_TEXTS.addscustom  				= "小怪 (%%s)"
 L.AUTO_TIMER_TEXTS.roleplay					= GUILD_INTEREST_RP
 L.AUTO_TIMER_TEXTS.combat					= "戰鬥開始"
+
+--This basically clones np only bar option and display text from regular counterparts
+--L.AUTO_TIMER_TEXTS.cdnp = L.AUTO_TIMER_TEXTS.cd
+--L.AUTO_TIMER_TEXTS.nextnp = L.AUTO_TIMER_TEXTS.next
+--L.AUTO_TIMER_TEXTS.cdcountnp = L.AUTO_TIMER_TEXTS.cdcount
+--L.AUTO_TIMER_TEXTS.nextcountnp = L.AUTO_TIMER_TEXTS.nextcount
 
 L.AUTO_TIMER_OPTIONS.target					= "計時條：$spell:%s減益效果持續時間"
 L.AUTO_TIMER_OPTIONS.targetcount			= "計時條：$spell:%s減益效果持續時間(包含計數)"
@@ -473,16 +493,22 @@ L.AUTO_TIMER_OPTIONS.fades					= "計時條：$spell:%s何時從玩家身上消�
 L.AUTO_TIMER_OPTIONS.ai						= "計時條：$spell:%s冷卻的AI計時條"
 L.AUTO_TIMER_OPTIONS.cd						= "計時條：$spell:%s冷卻時間"
 L.AUTO_TIMER_OPTIONS.cdcount				= "計時條：$spell:%s冷卻時間"
+--L.AUTO_TIMER_OPTIONS.cdnp					= "Show nameplate only timer for $spell:%s cooldown"
+--L.AUTO_TIMER_OPTIONS.cdnpcount			= "Show nameplate only timer (with count) for $spell:%s cooldown"
 L.AUTO_TIMER_OPTIONS.cdsource				= "計時條：$spell:%s冷卻時間以及來源"
 L.AUTO_TIMER_OPTIONS.cdspecial				= "計時條：特殊技能冷卻"
 L.AUTO_TIMER_OPTIONS.next					= "計時條：下一次$spell:%s"
 L.AUTO_TIMER_OPTIONS.nextcount				= "計時條：下一次$spell:%s"
+--L.AUTO_TIMER_OPTIONS.nextnp				= "Show nameplate only timer for next $spell:%s"
+--L.AUTO_TIMER_OPTIONS.nextnpcount			= "Show nameplate only timer (with count) for next $spell:%s"
 L.AUTO_TIMER_OPTIONS.nextsource				= "計時條：下一次$spell:%s以及來源"
 L.AUTO_TIMER_OPTIONS.nextspecial			= "計時條：下一次特殊技能"
 L.AUTO_TIMER_OPTIONS.achievement			= "計時條：成就%s"
 L.AUTO_TIMER_OPTIONS.stage					= "計時條：下一階段"
 L.AUTO_TIMER_OPTIONS.stagecount				= "計時條：下一階段(包含計數)"
 L.AUTO_TIMER_OPTIONS.stagecountcycle		= "計時條：下一階段(包含階段計數與循環計數)"
+--L.AUTO_TIMER_OPTIONS.stagecontext			= "Show timer for next $spell:%s stage"
+--L.AUTO_TIMER_OPTIONS.stagecontextcount	= "Show timer (with count) for next $spell:%s stage",
 L.AUTO_TIMER_OPTIONS.intermission			= "計時條：下個中場"
 L.AUTO_TIMER_OPTIONS.intermissioncount		= "計時條：下個中場(包含計數)"
 L.AUTO_TIMER_OPTIONS.adds					= "計時條：下一次小怪"
@@ -528,6 +554,7 @@ L.AUTO_YELL_ANNOUNCE_TEXT.combo				= "%s與%%s"--Spell name (from option, plus s
 L.AUTO_YELL_ANNOUNCE_TEXT.repeatplayer		= UnitName("player")--Doesn't need translation, it's just player name spam
 L.AUTO_YELL_ANNOUNCE_TEXT.repeaticon		= "{rt%%1$d}"
 
+--L.AUTO_YELL_CUSTOM_POSITION				= "{rt%d}%s"--Doesn't need translating. Has no strings (Used in niche situations such as icon repeat yells)
 L.AUTO_YELL_CUSTOM_FADE					= "%s已消退"
 L.AUTO_HUD_OPTION_TEXT					= "為$spell:%s顯示HudMap(不再作用)"
 L.AUTO_HUD_OPTION_TEXT_MULTI			= "為不同的機制顯示HudMap(不再作用)"
@@ -557,7 +584,7 @@ L.HUD_INVALID_SELF			= "不能將HUD目标設定成自己"
 L.HUD_INVALID_ICON			= "不能設定對無團隊標記的目標"
 L.HUD_SUCCESS				= "HUD成功使用你的參數運作。這會在%s後取消，或是使用'/dbm hud hide'指令取消。"
 L.HUD_USAGE	= {
-	""..L.DBM.."-HudMap 用法:",
+	L.DBM .. "-HudMap 用法:",
 	"-----------------",
 	"/dbm hud <類型> <目標> <持續時間>: 建立一個指向玩家的HUD",
 	"有效類型: arrow, dot, red, blue, green, yellow, icon(需要團隊標記)",
@@ -570,7 +597,7 @@ L.ARROW_MOVABLE					= "可移動箭頭"
 L.ARROW_WAY_USAGE				= "/dway <x> <y>: 建立一個箭頭指向一個指定地點 (使用本地區域地圖座標)"
 L.ARROW_WAY_SUCCESS				= "要隱藏箭頭，鍵入 '/dbm arrow hide' 或到達箭頭"
 L.ARROW_ERROR_USAGE	= {
-	""..L.DBM.."-Arrow 用法:",
+	L.DBM .. "-Arrow 用法:",
 	"-----------------",
 	"/dbm arrow <x> <y>: 建立一個箭頭在特定的位置(使用世界地圖座標)",
 	"/dbm arrow map <x> <y>: 建立一個箭頭在特定的位置 (使用小地圖座標)",
@@ -592,7 +619,6 @@ L.LAG_FOOTER					= "無回應:%s"
 L.DUR_CHECKING					= "檢測團隊裝備耐久度..."
 L.DUR_HEADER					= ""..L.DEADLY_BOSS_MODS.." - 裝備耐久度結果"
 L.DUR_ENTRY						= "%s:耐久度[%d百分比]/裝備損壞[%s]"
-L.LAG_FOOTER					= "無回應:%s"
 
 L.OVERRIDE_ACTIVATED			= "領隊已啟用此首領的配置覆蓋"
 
@@ -610,3 +636,4 @@ L.WORLD_BUFFS.zgHeart						= "只差最後一步，我們就可以擺脫靈魂�
 L.WORLD_BUFFS.zgHeartBooty					= "靈魂掠奪者血神已經被打敗了！我們不再有危險了！"
 L.WORLD_BUFFS.zgHeartYojamba				= "開始儀式，我的僕從們。我們必須把哈卡完全打回扭曲虛空中！"
 L.WORLD_BUFFS.rendHead						= "那個假的酋長，雷德·黑手，已經倒下了！"
+--L.WORLD_BUFFS.blackfathomBoon				= "boon of Blackfathom"
