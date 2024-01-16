@@ -182,6 +182,7 @@ L.TabCategory_Alerts	 			= "Alerts"
 L.Area_SpecAnnounceConfig			= "Special Announce visuals and sound guide"
 L.Area_SpecAnnounceNotes			= "Special Announce Notes guide"
 L.Area_VoicePackInfo				= "Information on DBM Voice Packs"
+
 -- Panel: Raidwarning
 L.Tab_RaidWarning 					= "Announcements"
 L.RaidWarning_Header				= "Announce Options"
@@ -408,6 +409,7 @@ L.Area_SoundOptions					= "Sound Options"
 L.TabCategory_Filters	 			= "Global Disables & Filters"
 L.Area_DBMFiltersSetup				= "DBM Filters guide"
 L.Area_BlizzFiltersSetup			= "Blizzard Filters guide"
+
 -- Panel: Toggle DBM Features
 L.Panel_SpamFilter					= "Disable DBM Features"
 
@@ -565,8 +567,6 @@ L.NPIcon_BarOffSetX 				= "Icon Offset X: %d"
 L.NPIcon_BarOffSetY 				= "Icon Offset Y: %d"
 L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
 L.NPDemo							= "Test (Be near nameplates)"
-
-L.TabCategory_Plugins				= "Plugins"
 
 -- Misc
 L.Area_General						= "General"

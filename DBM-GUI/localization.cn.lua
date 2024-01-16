@@ -104,6 +104,27 @@ L.ShowWAKeys				= "在技能名称旁边显示 WeakAuras 键，以便使用DBM�
 L.NoDescription				= "此技能无描述说明"
 L.CustomOptions				= "此类别包含针对没有自己的技能或事件ID的事件的自定义选项。 这些选项已使用自定义手动 ID 分组在一起，以便于创建 WeakAuras"
 
+-- Panel: Auto Logging
+L.Panel_AutoLogging			= "自动记录"
+--Auto Logging: Logging toggles/types
+L.Area_AutoLogging			= "自动战斗日志开关"
+L.AutologBosses				= "自动采用官方格式记录日志。"
+L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
+--Auto Logging: Global filter Options
+L.Area_AutoLoggingFilters	= "自动记录选项"
+L.RecordOnlyBosses			= "不记录小怪数据 (只记录团队BOSS数据，使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
+L.DoNotLogLFG				= "不记录随机5人本/团队副本"
+--Auto Logging: Recorded Content types
+L.Area_AutoLoggingContent	= "自动记录内容"
+--L.LogCurrentMythicRaids				= "Current level Mythic raids"--Retail Only
+L.LogCurrentRaids			= "当前等级团队副本"
+L.LogTWRaids				= "时光团队副本或通过克罗米进入的团队副本"--Retail Only
+L.LogTrivialRaids			= "低等级团队"
+L.LogCurrentMPlus			= "当前等级的M+5人本"--Retail Only
+--L.LogCurrentMythicZero				= "Current level Mythic 0 dungeons"--Retail Only
+L.LogTWDungeons				= "时光5人本或通过克罗米进入的5人本"--Retail Only
+L.LogCurrentHeroic			= "当前等级的英雄5人本"
+
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "其他功能"
 
@@ -119,25 +140,6 @@ L.SKT_Enabled				= "总是显示最速胜利计时条(覆盖单独BOSS设置)"
 L.ShowRespawn				= "Boss战斗未完成时显示Boss刷新计时条"
 L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
 L.ShowBerserkWarnings		= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
-
--- Panel: Auto Logging
-L.Panel_AutoLogging			= "自动记录"
---Auto Logging: Logging toggles/types
-L.Area_AutoLogging			= "自动战斗日志开关"
-L.AutologBosses				= "自动采用官方格式记录日志。"
-L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
---Auto Logging: Global filter Options
-L.Area_AutoLoggingFilters	= "自动记录选项"
-L.RecordOnlyBosses			= "不记录小怪数据 (只记录团队BOSS数据，使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
-L.DoNotLogLFG				= "不记录随机5人本/团队副本"
---Auto Logging: Recorded Content types
-L.Area_AutoLoggingContent	= "自动记录内容"
-L.LogCurrentRaids			= "当前等级团队副本"
-L.LogTWRaids				= "时光团队副本或通过克罗米进入的团队副本"--Retail Only
-L.LogTrivialRaids			= "低等级团队"
-L.LogCurrentMPlus			= "当前等级的M+5人本"--Retail Only
-L.LogTWDungeons				= "时光5人本或通过克罗米进入的5人本"--Retail Only
-L.LogCurrentHeroic			= "当前等级的英雄5人本"
 --
 L.Area_3rdParty				= "第三方插件选项"
 L.oRA3AnnounceConsumables	= "在战斗开始时通报oRA3消耗品检查"
@@ -234,7 +236,7 @@ L.SpecialWarnHeader5		= "类型 5: 设置警报选项，并包含玩家姓名"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "聊天窗口消息"
-L.FrameArea		= "聊天窗口选项"
+L.SelectChatFrameArea		= "聊天窗口选项"
 L.SelectChatFrameButton		= "选择聊天窗口"
 L.SelectChatFrameInfoIdle		= "消息在 %s 中显示。"
 L.SelectChatFrameDefaultName	= "默认聊天窗口"
@@ -311,6 +313,7 @@ L.Area_ColorBytype			= "计时条分类着色指南"
 -- Panel: Color by Type
 L.Panel_ColorByType	 		= "计时条分类着色"
 L.AreaTitle_BarColors		= "计时条颜色"
+--L.AreaTitle_ImpBarColors			= "Important Bar Colors (These are bars set important by user)"
 L.BarTexture				= "计时条材质"
 L.BarStyle					= "计时条样式"
 L.BarDBM					= "DBM(有动画)"
@@ -339,6 +342,8 @@ L.BarStartColorPhase		= "初始颜色 (阶段转换)"
 L.BarEndColorPhase			= "结束颜色 (阶段转换)"
 L.BarStartColorUI			= "初始颜色 (自定义)"
 L.BarEndColorUI				= "结束颜色 (自定义)"
+--L.BarStartColorI2					= "Start color 8 (Important)"
+--L.BarEndColorI2						= "End color 8 (Important)"
 --Type 7 options
 L.Bar7Header				= "自定义计时条选项"
 L.Bar7ForceLarge			= "总是使用大型计时条"
@@ -390,6 +395,7 @@ L.Highest					= "顶部最高"
 L.Lowest					= "顶部最低"
 L.NoBarFade					= "使用开始/结束颜色作为长/短计时条颜色，而不是颜色渐变"
 L.BarInlineIcons			= "显示条内图标"
+--L.DisableRightClickBar				= "Disable right click to cancel timers"
 L.ShortTimerText			= "使用更短的计时条文字 (当可行时)"
 L.KeepBar					= "保持计时条显示直到技能被释放"
 L.KeepBar2					= "(当被模组支持时)"
@@ -414,6 +420,7 @@ L.SpamBlockNoSpecWarnText			= "不显示特殊警报提示文字"
 L.SpamBlockNoSpecWarnFlash			= "特殊警报时不闪烁屏幕"
 L.SpamBlockNoSpecWarnVibrate		= "特殊警报时不振动"
 L.SpamBlockNoSpecWarnSound			= "不播放特殊团队警报的声音（如果在“语音警报”面板中启用了语音包，则仍然允许语音包）"
+--L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
 
 L.Area_SpamFilter_Timers			= "计时器过滤选项"
 L.SpamBlockNoShowBossTimers			= "不为Boss显示计时条"
@@ -509,6 +516,10 @@ L.OverrideIcons 					= "禁用团队中所有玩家的团队标记，包括我�
 L.OverrideSay						= "禁用团队中所有玩家的聊天泡泡/说话功能，包含我自己"
 L.DisableStatusWhisperShort			= "禁用整个团队的私聊状态回复"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "禁用整个团队的公会进度消息同步"--Duplicated from privacy but makes sense to include option in both panels
+--L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
+--L.DiabledForBoth					= "Disable above features for both DBM and BW"--NYI
+--L.DiabledForDBM					= "Disable above features for only DBM users"--NYI
+--L.DiabledForBW					= "Disable above features for only BW users"--NYI
 
 L.Area_ConfigOverrides				= "设定覆盖选项 (施工中)"--NYI
 L.OverrideBossAnnounceOptions		= "使用我的配置覆盖全团的通告配置"--NYI
@@ -556,8 +567,6 @@ L.NPIcon_BarOffSetX 		= "技能图标X轴偏移: %d"
 L.NPIcon_BarOffSetY 		= "技能图标Y轴偏移: %d"
 L.NPIcon_GrowthDirection 	= "技能图标出现方向"
 L.NPDemo					= "测试 (靠近姓名版)"
-
-L.TabCategory_Plugins		= "挂件"
 
 -- Misc
 L.Area_General				= "一般"
