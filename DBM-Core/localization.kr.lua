@@ -467,8 +467,8 @@ L.AUTO_TIMER_TEXTS.nextspecial			= "특수 능력"
 
 --L.AUTO_TIMER_TEXTS.achievement							= "%s"
 L.AUTO_TIMER_TEXTS.stage				= "단계"
-L.AUTO_TIMER_TEXTS.stagecount			= "%%s단계"
-L.AUTO_TIMER_TEXTS.stagecountcycle		= "%%s단계 (%%s)"--Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
+L.AUTO_TIMER_TEXTS.stagecount			= "%s단계"
+L.AUTO_TIMER_TEXTS.stagecountcycle		= "%s단계 (%%s)"--Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
 --L.AUTO_TIMER_TEXTS.stagecontext						= "%s"
 --L.AUTO_TIMER_TEXTS.stagecontextcount					= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.intermission			= "사잇 단계"
