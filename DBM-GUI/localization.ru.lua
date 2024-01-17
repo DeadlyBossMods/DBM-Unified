@@ -6,7 +6,7 @@ local L = DBM_GUI_L
 L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
-L.TranslationBy 			= "Swix, TOM_RUS, Hollicsh"
+L.TranslationBy 			= "Hollicsh"
 L.Website					= "Посетите наш дискорд: |cFF73C2FBhttps://discord.gg/deadlybossmods|r. Подпишитесь на разные социальные сети - |cFF73C2FB@deadlybossmods|r или |cFF73C2FB@mysticalos|r"
 L.WebsiteButton				= "Форумы"
 
@@ -67,7 +67,7 @@ L.Area_ProfilesSetup				= "Руководство по использовани�
 L.Core_GUI 					= "Ядро и графический интерфейс"
 L.General 					= "Общие параметры DBM"
 L.EnableMiniMapIcon			= "Отображать кнопку на миникарте"
---L.EnableCompartmentIcon	= "Show compartment button"
+L.EnableCompartmentIcon		= "Кнопка 'Показать отсек'"
 L.UseSoundChannel			= "Выбор звукового канала для предупреждений DBM"
 L.UseMasterChannel			= "Основной звуковой канал"
 L.UseDialogChannel			= "Звуковой канал диалогов"
