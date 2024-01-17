@@ -78,12 +78,12 @@ local DBM = {
 }
 _G.DBM = DBM
 
-local fakeBWVersion, fakeBWHash = 315, "64bda25"--315.0
+local fakeBWVersion, fakeBWHash = 315, "9bac4d9"--315.2
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.17 alpha"
+	DBM.DisplayVersion = "10.2.18 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 1, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 8--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
@@ -1659,7 +1659,11 @@ do
 				DBM_MinimapIcon = {}
 			end
 			if LibStub and LibStub("LibDBIcon-1.0", true) then
-				LibStub("LibDBIcon-1.0"):Register("DBM", private.dataBroker, DBM_MinimapIcon)
+				local LibDBIcon = LibStub("LibDBIcon-1.0")
+				LibDBIcon:Register("DBM", private.dataBroker, DBM_MinimapIcon)
+				if DBM_MinimapIcon.showInCompartment == nil then
+					LibDBIcon:AddButtonToCompartment("DBM")
+				end
 			end
 			local soundChannels = tonumber(GetCVar("Sound_NumChannels")) or 24--if set to 24, may return nil, Defaults usually do
 			--If this messes with your fps, stop raiding with a toaster. It's only fix for addon sound ducking.

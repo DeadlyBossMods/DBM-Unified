@@ -67,6 +67,7 @@ L.Area_ProfilesSetup		= "Guia de uso de perfis DBM"
 L.Core_GUI 					= "Cor e GUI"
 L.General 					= "Opções gerais do DBM"
 L.EnableMiniMapIcon			= "Exibir botão no mini-mapa"
+--L.EnableCompartmentIcon	= "Show compartment button"
 L.UseSoundChannel			= "Defina o canal de áudio usado pelo DBM para reproduzir sons de alerta"
 L.UseMasterVolume			= "Utilizar canal principal de áudio para reproduzir arquivos de som."--Update
 L.UseDialogChannel			= "Canal de áudio de diálogo."
