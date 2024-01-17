@@ -7,6 +7,7 @@ local L = DBM_CORE_L
 
 if not LibStub or not LibStub("LibDataBroker-1.1", true) or not LibStub("LibDBIcon-1.0") then
 	function DBM:ToggleMinimapButton() end -- NOOP
+	function DBM:ToggleCompartmentButton() end -- NOOP
 	return
 end
 
@@ -51,6 +52,15 @@ do
 			LibDBIcon:Hide("DBM")
 		else
 			LibDBIcon:Show("DBM")
+		end
+	end
+
+	function DBM:ToggleCompartmentButton()
+		DBM_MinimapIcon.showInCompartment = not DBM_MinimapIcon.showInCompartment
+		if DBM_MinimapIcon.showInCompartment then
+			LibDBIcon:AddButtonToCompartment("DBM")
+		else
+			LibDBIcon:RemoveButtonFromCompartment("DBM")
 		end
 	end
 end
