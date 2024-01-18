@@ -83,9 +83,9 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.18 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 1, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 8--When this is incremented, trigger force disable regardless of major patch
+	DBM.DisplayVersion = "10.2.19 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 1, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	PForceDisable = 9--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
 	DBM.DisplayVersion = "1.15.9 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 1, 16) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
@@ -2542,10 +2542,10 @@ do
 	function DBM:GetNumRealPlayersInZone()
 		if not IsInGroup() then return 1 end
 		local total = 0
-		local _, _, _, currentMapId = UnitPosition("player")
+		local currentMapId = select(-1, UnitPosition("player"))
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
-				local _, _, _, targetMapId = UnitPosition("raid"..i)
+				local targetMapId = select(-1, UnitPosition("raid"..i))
 				if targetMapId == currentMapId then
 					total = total + 1
 				end
@@ -2553,7 +2553,7 @@ do
 		else
 			total = 1--add player/self for "party" count
 			for i = 1, GetNumSubgroupMembers() do
-				local _, _, _, targetMapId = UnitPosition("party"..i)
+				local targetMapId = select(-1, UnitPosition("party"..i))
 				if targetMapId == currentMapId then
 					total = total + 1
 				end
@@ -2762,11 +2762,11 @@ function DBM:GetNumRealGroupMembers()
 	if not IsInInstance() then--Not accurate outside of instances (such as world bosses)
 		return IsInGroup() and GetNumGroupMembers() or 1--So just return regular group members.
 	end
-	local _, _, _, currentMapId = UnitPosition("player")
+	local currentMapId = select(-1, UnitPosition("player"))
 	local realGroupMembers = 0
 	if IsInGroup() then
 		for uId in self:GetGroupMembers() do
-			local _, _, _, targetMapId = UnitPosition(uId)
+			local targetMapId = select(-1, UnitPosition(uId))
 			if targetMapId == currentMapId then
 				realGroupMembers = realGroupMembers + 1
 			end
@@ -4049,8 +4049,8 @@ do
 		if LastInstanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then--world boss
 			local senderuId = DBM:GetRaidUnitId(sender)
 			if not senderuId then return end--Should never happen, but just in case. If happens, MANY "C" syncs are sent. losing 1 no big deal.
-			local _, _, _, playerZone = UnitPosition("player")
-			local _, _, _, senderZone = UnitPosition(senderuId)
+			local playerZone = select(-1, UnitPosition("player"))
+			local senderZone = select(-1, UnitPosition(senderuId))
 			if playerZone ~= senderZone then return end--not same zone
 		end
 		if not cSyncSender[sender] then
@@ -6398,7 +6398,7 @@ do
 		else--Either a multi spell check, spell name check, or C_UnitAuras.GetPlayerAuraBySpellID is unavailable
 			if newUnitAuraAPIs then
 				if type(spellInput) == "string" and not spellInput2 then--A simple single spellName check should use more efficent direct blizzard method
-					local spellTable = UnitAura(uId, spellInput, "HARMFUL")
+					local spellTable = GetAuraDataBySpellName(uId, spellInput, "HARMFUL")
 					if not spellTable then return end
 					return spellTable.name, spellTable.icon, spellTable.applications, spellTable.dispelName, spellTable.duration, spellTable.expirationTime, spellTable.sourceUnit, spellTable.isStealable, spellTable.nameplateShowPersonal, spellTable.spellId, spellTable.canApplyAura, spellTable.isBossAura, spellTable.isFromPlayerOrPlayerPet, spellTable.nameplateShowAll, spellTable.timeMod, spellTable.points[1] or nil, spellTable.points[2] or nil, spellTable.points[3] or nil
 				else--Either a multi spell check, or a single spell id check on non player unit (C_UnitAuras.GetPlayerAuraBySpellID is unavailable)
@@ -6716,18 +6716,18 @@ do
 	local function getNumRealAlivePlayers()
 		local alive = 0
 		local isInInstance = IsInInstance()
-		local currentMapId = isInInstance and select(4, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
+		local currentMapId = isInInstance and select(-1, UnitPosition("player")) or C_Map.GetBestMapForUnit("player") or 0
 		local currentMapName = C_Map.GetMapInfo(currentMapId) or CL.UNKNOWN
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
-				if isInInstance and select(4, UnitPosition("raid"..i)) == currentMapId or select(7, GetRaidRosterInfo(i)) == currentMapName then
+				if isInInstance and select(-1, UnitPosition("raid"..i)) == currentMapId or select(7, GetRaidRosterInfo(i)) == currentMapName then
 					alive = alive + ((UnitIsDeadOrGhost("raid"..i) and 0) or 1)
 				end
 			end
 		else
 			alive = (UnitIsDeadOrGhost("player") and 0) or 1
 			for i = 1, GetNumSubgroupMembers() do
-				if isInInstance and select(4, UnitPosition("party"..i)) == currentMapId or select(7, GetRaidRosterInfo(i)) == currentMapName then
+				if isInInstance and select(-1, UnitPosition("party"..i)) == currentMapId or select(7, GetRaidRosterInfo(i)) == currentMapName then
 					alive = alive + ((UnitIsDeadOrGhost("party"..i) and 0) or 1)
 				end
 			end
