@@ -3,8 +3,6 @@ if GetLocale() ~= "koKR" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
 local L = DBM_GUI_L
 
---L.MainFrame							= "Deadly Boss Mods"
-
 L.TranslationByPrefix		= "번역: "
 L.TranslationBy 			= "Elnarfim"
 L.Website					= "디스코드 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 방문해 보세요. SNS에서 @deadlybossmods 또는 @MysticalOS를 팔로우하세요"
@@ -67,7 +65,7 @@ L.Area_ProfilesSetup		= "DBM 프로필 사용법 가이드"
 L.Core_GUI 					= "핵심 모드와 GUI"
 L.General 					= "일반 설정"
 L.EnableMiniMapIcon			= "미니맵 버튼 표시"
---L.EnableCompartmentIcon	= "Show compartment button"
+L.EnableCompartmentIcon			= "애드온 모음 버튼에 표시"
 L.UseSoundChannel			= "DBM 경고 효과음 재생 채널 선택"
 L.UseMasterChannel			= "주 음량"
 L.UseDialogChannel			= "대화"
@@ -185,6 +183,7 @@ L.TabCategory_Alerts	 	= "경고"
 L.Area_SpecAnnounceConfig	= "특수 경고 외형과 효과음 설정 가이드"
 L.Area_SpecAnnounceNotes	= "특수 경고 메모 기능 가이드"
 L.Area_VoicePackInfo		= "DBM 음성팩 정보"
+
 -- Panel: Raidwarning
 L.Tab_RaidWarning 			= "알림"
 L.RaidWarning_Header		= "알림 설정"
@@ -286,11 +285,8 @@ L.Area_VoicePackAdvOptions	= "음성팩 고급 설정"
 L.SpecWarn_AlwaysVoice		= "모든 음성 경고 재생 (특수 알림을 꺼놔도 재생됩니다. 일부 특수한 상황에 처한 공대장에게 유용하며 그 외에는 권장하지 않습니다)"
 L.VPDontMuteSounds			= "음성팩 사용시 DBM 경고음을 끄지 않음 (두가지 경고음 모두 듣고싶을때만 사용)"
 L.Area_VPLearnMore			= "음성팩에 대한 정보 및 관련 설정 사용법 알아보기"
---L.VPLearnMore						= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
 L.Area_BrowseOtherVP		= "Curse에 올라와있는 다른 음성팩 보기"
---L.BrowseOtherVPs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
 L.Area_BrowseOtherCT		= "Curse에 올라와있는 카운트다운 팩 보기"
---L.BrowseOtherCTs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
 
 -- Panel: Event Sounds
 L.Panel_EventSounds			= "이벤트 효과음 (승리, 전멸, 기타)"
@@ -412,6 +408,7 @@ L.Area_SoundOptions					= "효과음 설정"
 L.TabCategory_Filters	 	= "기능 끄기 및 필터"
 L.Area_DBMFiltersSetup		= "DBM 기능 필터 가이드"
 L.Area_BlizzFiltersSetup	= "블리자드 기능 필터 가이드"
+
 -- Panel: Toggle DBM Features
 L.Panel_SpamFilter			= "DBM 기능 끄기"
 
@@ -580,5 +577,3 @@ L.FontStyle				= "글꼴 속성"
 L.FontColor			= "글꼴 색상"
 L.FontShadow				= "그림자"
 L.FontType				= "글꼴 선택"
-
---L.FontHeight	= 16
