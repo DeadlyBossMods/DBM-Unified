@@ -88,4 +88,4 @@ CL.TRAPS					= "Ловушки"
 CL.ROOTS					= "Корни"
 CL.MARK						= "Метка"
 CL.MARKS					= "Метки"
---CL.SWIRLS							= "Swirls"--Plural of Swirl
+CL.SWIRLS					= "Вихри"--Множественное число слова Вихрь
