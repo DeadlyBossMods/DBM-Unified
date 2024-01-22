@@ -661,7 +661,7 @@ local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS-- for Phanx' Class Colors
 
 -- Polyfill for C_AddOns, Classic and Retail have the fully featured table, Wrath has only Metadata (as of Dec 15th 2023)
-local cachedAddOns = {}
+local cachedAddOns = nil
 local C_AddOns = {
 	GetAddOnMetadata = C_AddOns.GetAddOnMetadata,
 	GetNumAddOns = C_AddOns.GetNumAddOns or GetNumAddOns, ---@diagnostic disable-line:deprecated
@@ -674,6 +674,7 @@ local C_AddOns = {
 	end,
 	DoesAddOnExist = C_AddOns.DoesAddOnExist or function(addon)
 		if not cachedAddOns then
+			cachedAddOns = {}
 			for i = 1, GetNumAddOns() do ---@diagnostic disable-line:deprecated
 				cachedAddOns[GetAddOnInfo(i)] = true ---@diagnostic disable-line:deprecated
 			end
