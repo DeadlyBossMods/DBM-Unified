@@ -2,7 +2,7 @@ DBM_GUI_L = {}
 
 local L = DBM_GUI_L
 
-L.MainFrame							= "Deadly Boss Mods"
+L.MainFrame							= "Deadly Boss Mods" -- OPTIONAL
 
 L.TranslationByPrefix				= "Translated by "
 L.TranslationBy 					= nil -- your name here, localizers!
@@ -285,11 +285,11 @@ L.Area_VoicePackAdvOptions			= "Voice Pack Advanced Options"
 L.SpecWarn_AlwaysVoice				= "Always play all spoken alerts (Even if Special Announce disabled. Useful for some Raid Leaders in niche situations, not recommended otherwise)"
 L.VPDontMuteSounds					= "Disable muting of regular alert sounds when using voice pack (use this only if you desire to hear BOTH during alerts)"
 L.Area_VPLearnMore					= "Learn more about voice packs and how to use these options"
-L.VPLearnMore						= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
+L.VPLearnMore						= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r" -- OPTIONAL
 L.Area_BrowseOtherVP				= "Browse other voice packs on curse"
-L.BrowseOtherVPs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
+L.BrowseOtherVPs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r" -- OPTIONAL
 L.Area_BrowseOtherCT				= "Browse countdown packs on curse"
-L.BrowseOtherCTs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
+L.BrowseOtherCTs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r" -- OPTIONAL
 
 -- Panel: Event Sounds
 L.Panel_EventSounds					= "Event Sounds (Victory, Wipe, etc)"
@@ -470,7 +470,7 @@ L.FilterVoidFormSay					= "Do not send chat icon or countdown chat yells when in
 L.Area_SpecFilter					= "Role Filter Options"
 L.FilterTankSpec					= "Filter announcements designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' announcements are now all on by default.)"
 L.FilterDispels						= "Filter announcements for dispelable spells if your dispel is on cooldown"
-L.FilterTrashWarnings				= "Filter all trash mob announcements in normal, heroic, and trivial (outleveled) dungeons"
+L.FilterTrashWarnings				= "Filter all trash mob announcements in follower, normal, heroic, and trivial (outleveled) dungeons"
 
 L.Area_BInterruptFilter				= "Boss Interrupt Filter Options"
 L.FilterTargetFocus					= "Filter if caster is not current target/focus/softenemy"
@@ -580,4 +580,4 @@ L.FontColor							= "Font color"
 L.FontShadow						= "Font Shadow"
 L.FontType							= "Select font"
 
-L.FontHeight	= 16
+L.FontHeight	= 16 -- OPTIONAL
