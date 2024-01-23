@@ -419,7 +419,7 @@ L.SpamBlockNoShowAnnounce			= "Do not show text or play sound for ANY general (n
 L.SpamBlockNoSpecWarnText			= "Do not show special announce text"
 L.SpamBlockNoSpecWarnFlash			= "Do not show special announce screen flash"
 L.SpamBlockNoSpecWarnVibrate		= "Do not vibrate controller on special announce"
-L.SpamBlockNoSpecWarnSound			= "Do not play special announce sounds (still permits voice packs, if one is enabled in Spoken Alerts panel)"
+L.SpamBlockNoSpecWarnSound			= "Do not play special announce sounds (voice packs sounds enabled in Countdowns & Voice Packs panel will still play)"
 L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
 
 L.Area_SpamFilter_Timers			= "Timer Features"
@@ -483,7 +483,7 @@ L.Area_TInterruptFilter				= "Trash Interrupt Filter Options"--Reuses above 3 st
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "Reduce DBM Handholding"
 L.Area_SpamFilter_SpecRoleFilters	= "Special Announce Type Filters (control how much handholding DBM does)"
-L.SpamSpecInformationalOnly			= "Remove all instructional text/spoken alerts from special announcements (Requires UI Reload). Alerts still show and play audio but will be generic and less directive"
+L.SpamSpecInformationalOnly			= "Change all instructional text/voice pack alerts from special announcements (Requires UI Reload). Alerts still show and play audio but will be generic and less directive"
 L.SpamSpecRoleDispel				= "Filter 'dispel' alerts entirely (No text or sound at all)"
 L.SpamSpecRoleInterrupt				= "Filter 'interrupt' alerts (No text or sound at all)"
 L.SpamSpecRoleDefensive				= "Filter 'defensive' alerts (No text or sound at all)"
