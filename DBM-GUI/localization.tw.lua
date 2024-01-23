@@ -20,7 +20,7 @@ L.OTabAbout					= "關於"
 
 L.FOLLOWER					= "追隨者"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 
-L.TabCategory_CURRENT_SEASON		= "當前賽季"
+L.TabCategory_CURRENT_SEASON	= "當前賽季"
 
 L.TabCategory_OTHER			= "其它模組"
 L.TabCategory_AFFIXES		= "詞綴"
@@ -66,7 +66,7 @@ L.Area_ProfilesSetup		= "DBM配置檔使用指南"
 L.Core_GUI 					= "核心 & 圖形界面"
 L.General 					= "一般DBM核心選項"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
---L.EnableCompartmentIcon	= "Show compartment button"
+L.EnableCompartmentIcon		= "顯示整合按鈕"
 L.UseSoundChannel			= "設置DBM警告的音效頻道"
 L.UseMasterChannel			= "主聲道"
 L.UseDialogChannel			= "對話聲道"
@@ -407,16 +407,17 @@ L.Area_SoundOptions				= "聲音選項"
 L.TabCategory_Filters	 	= "全局禁用及過濾"
 L.Area_DBMFiltersSetup		= "DBM過濾器指南"
 L.Area_BlizzFiltersSetup	= "暴雪過濾器指南"
--- Panel: DBM Features
-L.Panel_SpamFilter					= "DBM功能設置"
+
+-- Panel: Toggle DBM Features
+L.Panel_SpamFilter					= "停用DBM功能"
 
 L.Area_SpamFilter_SpecFeatures		= "通告功能"
 L.SpamBlockNoShowAnnounce			= "不顯示任何一般（非強調）通告提示文字或播放警告音效"
 L.SpamBlockNoSpecWarnText			= "不顯示特別提示文字"
 L.SpamBlockNoSpecWarnFlash			= "特別提示時不閃爍螢幕"
 L.SpamBlockNoSpecWarnVibrate		= "特別提示時不震動控制器"
-L.SpamBlockNoSpecWarnSound			= "不播放特別提示音效 (如果在“語音警告”面板中啟用了語音包，則仍允許語音包)"
-L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
+L.SpamBlockNoSpecWarnSound			= "不播放特別提示音效 (在倒數與語音包面板中啟用的語音仍會播放)"
+L.SpamBlockNoPrivateAuraSound		= "不登記私人光環音效"
 
 L.Area_SpamFilter_Timers			= "全局計時禁用及過濾選項"
 L.SpamBlockNoShowBossTimers			= "不顯示地城/團隊首領的計時器"
@@ -479,7 +480,7 @@ L.Area_TInterruptFilter				= "小怪打斷過濾選項"--Reuses above 3 strings
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "減少DBM的控制"
 L.Area_SpamFilter_SpecRoleFilters	= "特別警告類型過濾 (控制DBM要怎麼做)"
-L.SpamSpecInformationalOnly			= "刪除所有特別警告的說明文字/語音警告 (需要UI重載)。警報仍顯示和播放聲音，但將是通用和非指示性"
+L.SpamSpecInformationalOnly			= "更改所有特別警告的說明文字/語音警告 (需要UI重載)。警報仍顯示和播放聲音，但將是通用和非指示性"
 L.SpamSpecRoleDispel				= "徹底過濾'驅散'警告 (完全無文字或聲音)"
 L.SpamSpecRoleInterrupt				= "過濾'打斷'警告 (完全無文字或聲音)"
 L.SpamSpecRoleDefensive				= "過濾'減傷'警告 (完全無文字或聲音)"
