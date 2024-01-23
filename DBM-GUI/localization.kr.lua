@@ -417,7 +417,7 @@ L.SpamBlockNoShowAnnounce	= "모든 알림 및 효과음 재생 안함"
 L.SpamBlockNoSpecWarnText	= "특수 알림 텍스트 표시 안함"
 L.SpamBlockNoSpecWarnFlash	= "특수 알림에 화면 점멸 사용 안함"
 L.SpamBlockNoSpecWarnVibrate		= "특수 알림에 컨트롤러 진동 안함"
-L.SpamBlockNoSpecWarnSound	= "특수 알림 효과음 재생 안함 (음성 경고 메뉴에서 설정했다면 음성팩은 계속 작동)"
+L.SpamBlockNoSpecWarnSound	= "특수 알림 효과음 재생 안함 (초읽기와 음성팩 메뉴에서 활성화된 음성팩은 계속 작동)"
 L.SpamBlockNoPrivateAuraSound		= "비공개 오라 효과음 등록 안함"
 
 L.Area_SpamFilter_Timers	= "타이머"
@@ -468,7 +468,7 @@ L.FilterVoidFormSay			= "공허의 형상일땐 공격대 징표나 초읽기를
 L.Area_SpecFilter			= "역할 관련 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 알림 보지 않기 (참고: '도발' 알림은 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"
 L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 알림 보지 않기"
-L.FilterTrashWarnings		= "일반, 영웅, 이전 확장팩 던전에선 일반몹 알림 보지 않기"
+L.FilterTrashWarnings		= "추종자, 일반, 영웅, 이전 확장팩 던전에선 일반몹 알림 보지 않기"
 
 L.Area_BInterruptFilter				= "보스 차단 알림 필터 설정"
 L.FilterTargetFocus					= "현재 대상/주시 대상/액션 대상(적)이 아니면 알림 표시 안함"
