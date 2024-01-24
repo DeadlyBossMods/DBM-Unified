@@ -471,6 +471,7 @@ L.FilterVoidFormSay					= "当在虚无状态下，不播发位置或报数喊�
 L.Area_SpecFilter					= "角色过滤选项"
 L.FilterTankSpec					= "当非坦克专精时，过滤掉给予坦克的专用信息"
 L.FilterDispels						= "当驱散技能在冷却时, 过滤掉驱散提示"
+--L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
 L.FilterTrashWarnings				= "当进入低等级、普通或英雄副本时，过滤掉所有小怪警报"
 
 L.Area_BInterruptFilter				= "Boss打断过滤选项"
