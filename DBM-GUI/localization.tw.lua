@@ -467,6 +467,7 @@ L.FilterVoidFormSay					= "在虛空型態時不要發送圖示/倒數計時聊�
 L.Area_SpecFilter					= "角色職責過濾選項"
 L.FilterTankSpec					= "非坦克角色職責時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
 L.FilterDispels						= "過濾可驅散技能如果你的驅散技正在冷卻中"
+--L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
 L.FilterTrashWarnings				= "過濾所有小怪警告在普通與英雄以及過往版本的地城"
 
 L.Area_BInterruptFilter				= "首領打斷過濾選項"

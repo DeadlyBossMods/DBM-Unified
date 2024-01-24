@@ -468,6 +468,7 @@ L.FilterVoidFormSay			= "Desactivar el envío de mensajes de posición y cuenta 
 L.Area_SpecFilter			= "Opciones de filtros de rol"
 L.FilterTankSpec			= "Ocultar avisos designados para tanques cuando no sea tu rol"
 L.FilterDispels				= "Ocular avisos de facultades disipables si tu disipación no está disponible"
+--L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
 L.FilterTrashWarnings		= "Ocultar todos los avisos de enemigos menores en mazmorras normales y heroicas"
 
 L.Area_BInterruptFilter				= "Opciones de filtro de interrupción de jefe"

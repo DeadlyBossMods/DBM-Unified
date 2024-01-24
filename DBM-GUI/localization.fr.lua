@@ -410,6 +410,7 @@ L.FilterInterrupts2			= "Si le lanceur n'est pas la cible/focus actuelle (Toujou
 L.FilterInterrupts3			= "Si le lanceur n'est pas la cible/focus actuelle (Toujours) ou interruption en recharge (Boss &amp; Trash)"
 L.FilterInterruptNoteName	= "Filtrer les alertes des sorts interruptibles (avec compte) si l'alerte ne contient pas votre nom dans la note personnalisée"
 L.FilterDispels				= "Filtrer les alertes de dissipations si votre sort de dissipation est en recharge"
+--L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
 L.FilterTrashWarnings		= "Filtrer toutes les annonces liées aux trash dans les donjons normaux &amp; héroïques"
 
 L.Area_PullTimer			= "Options du filtre des décomptes de pull, pause, & personnalisé"

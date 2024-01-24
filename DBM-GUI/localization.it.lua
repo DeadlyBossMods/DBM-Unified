@@ -268,6 +268,7 @@ L.FilterInterrupts2			= "Se il caster non è obiettivo/focus attuale (Sempre), C
 L.FilterInterrupts3			= "Se il caster non è obiettivo/focus attuale (Sempre), CD interrompibili (Boss/Scartini)"
 L.FilterInterruptNoteName	= "Filtra avvisi solo per abilità interrompibili (con conteggio) se l'avviso non contiene il tuo nome in nota personalizzata"
 L.FilterDispels				= "Filtra avvisi per abilità dispellabili se i tuoi dispel sono in ricarica"
+--L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
 L.FilterTrashWarnings		= "Filtra tutti gli avvisi degli scartini nelle spedizioni normali ed eroiche"
 
 L.Area_PullTimer			= "Opzioni Filtro Temporizzatori Pull, Pause, e Personalizzati"
