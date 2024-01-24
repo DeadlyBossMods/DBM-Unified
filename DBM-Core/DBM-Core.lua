@@ -83,8 +83,8 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.19 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 1, 17) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.2.19"
+	DBM.ReleaseRevision = releaseDate(2024, 1, 23) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 9--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
 	DBM.DisplayVersion = "1.15.9 alpha"
@@ -8380,15 +8380,15 @@ do
 		--start, duration, enable = GetSpellCooldown
 		--start & duration == 0 if spell not on cd
 		if UnitIsDeadOrGhost("player") then return false end--if dead, can't crowd control
-		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckCCFilter running on multiple raid members getting debuffed at once
+		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckCCFilter running from multiple mobs casting at once
 			return lastReturn
 		end
 		if ccType then
 			--We cannot do inverse check here because some classes actually have two ccs for same type (such as warrior)
 			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
 			--As such, we have to check if a spell is known in addition to it not being on cooldown
-			for spellID, _ in pairs(typeCheck[typeCheck]) do
-				if typeCheck[typeCheck][spellID] and IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
+			for spellID, _ in pairs(typeCheck[ccType]) do
+				if typeCheck[ccType][spellID] and IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 					lastCheck = GetTime()
 					lastReturn = true
 					return lastReturn
