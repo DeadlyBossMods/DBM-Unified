@@ -221,6 +221,7 @@ DBM.DefaultOptions = {
 	FilterTInterruptCooldown = true,
 	FilterTInterruptHealer = false,
 	FilterDispel = true,
+	FilterCrowdControl = true,
 	FilterTrashWarnings2 = true,
 	FilterVoidFormSay = true,
 	AutologBosses = false,
@@ -8375,18 +8376,18 @@ do
 	}
 	local lastCheck, lastReturn = 0, true
 	function bossModPrototype:CheckCCFilter(ccType)
-		if not DBM.Options.FilterDispel then return true end
+		if not DBM.Options.FilterCrowdControl then return true end
 		--start, duration, enable = GetSpellCooldown
 		--start & duration == 0 if spell not on cd
-		if UnitIsDeadOrGhost("player") then return false end--if dead, can't dispel
-		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckDispelFilter running on multiple raid members getting debuffed at once
+		if UnitIsDeadOrGhost("player") then return false end--if dead, can't crowd control
+		if GetTime() - lastCheck < 0.1 then--Recently returned status, return same status to save cpu from aggressive api checks caused by CheckCCFilter running on multiple raid members getting debuffed at once
 			return lastReturn
 		end
 		if ccType then
 			--We cannot do inverse check here because some classes actually have two ccs for same type (such as warrior)
 			--Therefor, we can't go false if only one of them are on cooldown. We have to go true of any of them aren't on CD instead
 			--As such, we have to check if a spell is known in addition to it not being on cooldown
-			for spellID, _ in pairs(typeCheck[ccType]) do
+			for spellID, _ in pairs(typeCheck[typeCheck]) do
 				if typeCheck[dispelType][spellID] and IsSpellKnown(spellID) and (GetSpellCooldown(spellID)) == 0 then--Spell is known and not on cooldown
 					lastCheck = GetTime()
 					lastReturn = true
