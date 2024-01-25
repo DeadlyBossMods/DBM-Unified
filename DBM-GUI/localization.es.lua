@@ -493,20 +493,30 @@ L.SpamSpecRoleSwitch				= "Filtrar las alertas de 'cambio de objetivo' y 'bichos
 L.SpamSpecRoleGTFO					= "Filtrar las alertas 'salga' por completo (sin texto ni sonido)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard		= "Interfaz y funciones de Blizzard"
-L.Area_HideBlizzard			= "Opciones de interfaz y funciones de Blizzard"
-L.HideBossEmoteFrame		= "Ocultar avisos de encuentro de mazmorra y banda"
-L.HideWatchFrame			= "Ocultar seguimiento de objetivos (misiones, logros, etc.) en encuentros si no se está siguiendo un logro relacionado. En modo desafío muestra el tiempo restante."
-L.HideGarrisonUpdates		= "Ocultar botón de ciudadela en jefes"
-L.HideGuildChallengeUpdates	= "Ocultar botón de desafíos de hermandad en jefes"
-L.HideQuestTooltips			= "Ocultar objetivos de misión en en descripciones emergentes durante Hide quest objectives from tooltips during boss fights"
-L.HideTooltips				= "Ocultar por completo las descripciones emergentes en encuentros"
-L.DisableSFX				= "Desactivar el canal de efectos de sonido en encuentros"
-L.DisableCinematics			= "Saltar cinemáticas automáticamente"
-L.OnlyFight					= "Solo en combate, tras haber visto la cinemática por primera vez"
-L.AfterFirst				= "Tras haber visto la cinemática por primera vez"
-L.CombatOnly				= "En combate"
-L.RaidCombat				= "En combate (solo en jefes)"
+L.Panel_HideBlizzard				= "Block Blizzard Features"
+--Toast
+L.Area_HideToast					= "Disable blizzard toasts (popups)"
+L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
+L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
+--L.HideBossKill					= "Hide boss kill toasts"--NYI
+--L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+--Cut Scenes
+L.Area_Cinematics					= "Block in-game cinematics"
+L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
+L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
+L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+--Sound
+L.Area_Sound						= "Block in-game sounds"
+L.DisableSFX						= "Disable sound effects channel during boss fights"
+L.DisableAmbiance					= "Disable ambiance channel during boss fights"
+L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+--Other
+L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
+L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
+L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
+L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
+L.HideTooltips						= "Completely hide tooltips during boss fights"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Controles de líder de banda"

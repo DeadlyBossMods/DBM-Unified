@@ -72,6 +72,8 @@ CL.TANKCOMBO						= "Tank Combo"
 CL.AOEDAMAGE						= "AOE Damage"
 CL.GROUPSOAK						= "Soak"
 CL.GROUPSOAKS						= "Soaks"
+CL.HEALABSORB						= "Heal Absorb"
+CL.HEALABSORBS						= "Heal Absorbs"
 CL.DODGES							= "Dodges"
 CL.POOL								= "Pool"
 CL.POOLS							= "Pools"
@@ -87,6 +89,8 @@ CL.TRAPS							= "Traps"--Doesn't have a direct auto localize so has to be manua
 CL.ROOTS							= "Roots"
 CL.MARK								= "Mark"--As in short text for all the encounter mechanics that start or end in "Mark"
 CL.MARKS							= "Marks"--Plural of above
+CL.CURSE							= "Curse"
+CL.CURSES							= "Curses"
 CL.SWIRLS							= "Swirls"--Plural of Swirl
 --NOTE, many common locals are auto localized:
 --Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)

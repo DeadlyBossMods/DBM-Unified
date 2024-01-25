@@ -9,6 +9,8 @@ featureOverridesArea:CreateCheckButton(L.DisableGuildStatusShort, true, nil, "Di
 local infotext = featureOverridesArea:CreateText(L.ConfigAreaFooter, nil, false, GameFontNormalSmall, "LEFT", 25)
 infotext:SetPoint("BOTTOMLEFT", featureOverridesArea.frame, "BOTTOMLEFT", 10, 10)
 
+--NYI
+--[[
 local configOverrideArea = rlControlsPanel:CreateArea(L.Area_ConfigOverrides)
 configOverrideArea:CreateCheckButton(L.OverrideBossAnnounceOptions, true, nil, "OverrideBossAnnounce")
 configOverrideArea:CreateCheckButton(L.OverrideBossTimerOptions, true, nil, "OverrideBossTimer")
@@ -32,3 +34,4 @@ infotext7:SetPoint("BOTTOMLEFT", infotext6, "BOTTOMLEFT", 0, 20)
 
 local infotext4 = rlControlsPanel:CreateText(L.TabFooter, nil, false, GameFontNormalSmall, "LEFT", 0)
 infotext4:SetPoint("BOTTOMLEFT", rlControlsPanel.frame, "BOTTOMLEFT", 10, 10)
+--]]
