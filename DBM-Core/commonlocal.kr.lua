@@ -73,6 +73,8 @@ CL.TANKCOMBO					= "탱커 연속 공격"
 CL.AOEDAMAGE						= "광역 데미지"
 CL.GROUPSOAK						= "같이 맞기"
 CL.GROUPSOAKS						= "같이 맞기"
+--CL.HEALABSORB						= "Heal Absorb"
+--CL.HEALABSORBS					= "Heal Absorbs"
 CL.DODGES							= "피하기"
 CL.POOL								= "바닥"
 CL.POOLS							= "바닥"
@@ -88,6 +90,8 @@ CL.TRAPS							= "함정"--Doesn't have a direct auto localize so has to be manu
 CL.ROOTS							= "이동 불가"
 CL.MARK								= "징표"--As in short text for all the encounter mechanics that start or end in "Mark"
 CL.MARKS							= "징표"--Plural of above
+--CL.CURSE							= "Curse"
+--CL.CURSES							= "Curses"
 CL.SWIRLS							= "회오리"--Plural of Swirl
 --NOTE, many common locals are auto localized:
 --Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)

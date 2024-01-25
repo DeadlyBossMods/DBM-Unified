@@ -492,20 +492,30 @@ L.SpamSpecRoleSwitch				= "過濾'切換目標''小怪' 警報 (完全無文字�
 L.SpamSpecRoleGTFO					= "過濾'地板技能'警告 (完全無文字或聲音)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard			= "暴雪內建功能設置"
-L.Area_HideBlizzard				= "禁用及隱藏暴雪功能選項"
-L.HideBossEmoteFrame			= "首領戰鬥時隱藏團隊首領表情框架"
-L.HideWatchFrame				= "首領戰鬥時隱藏任務目標框架。如果沒有追蹤中的成就，或是不在傳奇+。"
-L.HideGarrisonUpdates			= "首領戰鬥時隱藏追隨者任務完成提示"
-L.HideGuildChallengeUpdates		= "首領戰鬥時隱藏公會挑戰完成提示"
-L.HideQuestTooltips				= "首領戰鬥時隱藏任務目標提示"
-L.HideTooltips					= "首領戰鬥時完全地隱藏滑鼠提示"
-L.DisableSFX					= "首領戰鬥時禁用音效頻道（注意：如果啟用此選項，則即使戰鬥進入時音效未打開，戰鬥結束時也會打開聲音效果）"
-L.DisableCinematics				= "禁用遊戲中的過場動畫"
-L.OnlyFight						= "只有戰鬥中，每次動畫播放一次之後"
-L.AfterFirst					= "在副本中，每次動畫播放一次之後"
-L.CombatOnly					= "在任何戰鬥中停用"
-L.RaidCombat					= "只在首領戰鬥中停用"
+L.Panel_HideBlizzard				= "Block Blizzard Features"
+--Toast
+L.Area_HideToast					= "Disable blizzard toasts (popups)"
+L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
+L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
+--L.HideBossKill					= "Hide boss kill toasts"--NYI
+--L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+--Cut Scenes
+L.Area_Cinematics					= "Block in-game cinematics"
+L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
+L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
+L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+--Sound
+L.Area_Sound						= "Block in-game sounds"
+L.DisableSFX						= "Disable sound effects channel during boss fights"
+L.DisableAmbiance					= "Disable ambiance channel during boss fights"
+L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+--Other
+L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
+L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
+L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
+L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
+L.HideTooltips						= "Completely hide tooltips during boss fights"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "團隊領隊控制項"

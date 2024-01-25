@@ -248,6 +248,8 @@ DBM.DefaultOptions = {
 	HideGuildChallengeUpdates = true,
 	HideTooltips = false,
 	DisableSFX = false,
+	DisableAmbiance = false,
+	DisableMusic = false,
 	EnableModels = true,
 	GUIWidth = 800,
 	GUIHeight = 600,
@@ -386,7 +388,10 @@ DBM.DefaultOptions = {
 	ShowBerserkWarnings = true,
 	HelpMessageVersion = 3,
 	MoviesSeen = {},
-	MovieFilter2 = "Never",
+	HideMovieDuringFight = true,
+	HideMovieInstanceAnywhere = false,
+	HideMovieNonInstanceAnywhere = false,
+	HideMovieOnlyAfterSeen = true,
 	LastRevision = 0,
 	DebugMode = false,
 	DebugLevel = 1,
@@ -3693,9 +3698,9 @@ do
 	function DBM:TransitionToDungeonBGM(force, cleanup)
 		if cleanup then--Runs on zone change/cinematic Start (first load delay) and combat end
 			self:Unschedule(self.TransitionToDungeonBGM)
-			if self.Options.RestoreSettingMusic then
-				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingMusic)
-				self.Options.RestoreSettingMusic = nil
+			if self.Options.RestoreSettingCustomMusic then
+				SetCVar("Sound_EnableMusic", self.Options.RestoreSettingCustomMusic)
+				self.Options.RestoreSettingCustomMusic = nil
 				self:Debug("Restoring Sound_EnableMusic CVAR")
 			end
 			if self.Options.musicPlaying then--Primarily so DBM doesn't call StopMusic unless DBM is one that started it. We don't want to screw with other addons
@@ -3707,14 +3712,15 @@ do
 			return
 		end
 		if LastInstanceType ~= "raid" and LastInstanceType ~= "party" and not force then return end
+		if self.Options.RestoreSettingMusic then return end--Music was disabled by the music disable override, abort here
 		fireEvent("DBM_MusicStart", "RaidOrDungeon")
 		if self.Options.EventSoundDungeonBGM and self.Options.EventSoundDungeonBGM ~= "None" and self.Options.EventSoundDungeonBGM ~= "" and not (self.Options.EventDungMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) then
-			if not self.Options.RestoreSettingMusic then
-				self.Options.RestoreSettingMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
-				if self.Options.RestoreSettingMusic == 0 then
+			if not self.Options.RestoreSettingCustomMusic then
+				self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
+				if self.Options.RestoreSettingCustomMusic == 0 then
 					SetCVar("Sound_EnableMusic", 1)
 				else
-					self.Options.RestoreSettingMusic = nil--Don't actually need it
+					self.Options.RestoreSettingCustomMusic = nil--Don't actually need it
 				end
 			end
 			local path = "MISSING"
@@ -5391,6 +5397,15 @@ do
 				end
 				if self.Options.DisableSFX and GetCVar("Sound_EnableSFX") == "1" then
 					SetCVar("Sound_EnableSFX", 0)
+					self.Options.RestoreSettingSFX = true
+				end
+				if self.Options.DisableAmbiance and GetCVar("Sound_EnableAmbiance") == "1" then
+					SetCVar("Sound_EnableAmbiance", 0)
+					self.Options.RestoreSettingAmbiance = true
+				end
+				if self.Options.DisableMusic and GetCVar("Sound_EnableMusic") == "1" then
+					SetCVar("Sound_EnableMusic", 0)
+					self.Options.RestoreSettingMusic = true
 				end
 				--boss health info scheduler
 				if mod.CustomHealthUpdate then
@@ -5540,14 +5555,14 @@ do
 				if self.Options.EventSoundEngage2 and self.Options.EventSoundEngage2 ~= "" and self.Options.EventSoundEngage2 ~= "None" then
 					self:PlaySoundFile(self.Options.EventSoundEngage2, nil, true)
 				end
-				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) and not mod.noStatistics then
+				if self.Options.EventSoundMusic and self.Options.EventSoundMusic ~= "None" and self.Options.EventSoundMusic ~= "" and not (self.Options.EventMusicMythicFilter and (savedDifficulty == "mythic" or savedDifficulty == "challenge")) and not mod.noStatistics and not self.Options.RestoreSettingMusic then
 					fireEvent("DBM_MusicStart", "BossEncounter")
-					if not self.Options.RestoreSettingMusic then
-						self.Options.RestoreSettingMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
-						if self.Options.RestoreSettingMusic == 0 then
+					if not self.Options.RestoreSettingCustomMusic then
+						self.Options.RestoreSettingCustomMusic = tonumber(GetCVar("Sound_EnableMusic")) or 1
+						if self.Options.RestoreSettingCustomMusic == 0 then
 							SetCVar("Sound_EnableMusic", 1)
 						else
-							self.Options.RestoreSettingMusic = nil--Don't actually need it
+							self.Options.RestoreSettingCustomMusic = nil--Don't actually need it
 						end
 					end
 					local path = "MISSING"
@@ -5882,8 +5897,17 @@ do
 					tooltipsHidden = false
 					GameTooltip:SetScript("OnShow", GameTooltip.Show)
 				end
-				if self.Options.DisableSFX then
+				if self.Options.RestoreSettingSFX then
 					SetCVar("Sound_EnableSFX", 1)
+					self.Options.RestoreSettingSFX = nil
+				end
+				if self.Options.RestoreSettingAmbiance then
+					SetCVar("Sound_EnableAmbiance", 1)
+					self.Options.RestoreSettingAmbiance = nil
+				end
+				if self.Options.RestoreSettingMusic then
+					SetCVar("Sound_EnableMusic", 1)
+					self.Options.RestoreSettingMusic = nil
 				end
 				--cache table
 				twipe(autoRespondSpam)
@@ -6683,16 +6707,22 @@ do
 			end
 		end
 		--Check if any previous changed cvars were not restored and restore them
-		if self.Options.DisableSFX then
+		if self.Options.RestoreSettingSFX then
 			SetCVar("Sound_EnableSFX", 1)
+			self.Options.RestoreSettingSFX = nil
 			self:Debug("Restoring Sound_EnableSFX CVAR")
 		end
-		if self.Options.RestoreSettingQuestTooltips then
-			SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips) ---@diagnostic disable-line: param-type-mismatch
-			self.Options.RestoreSettingQuestTooltips = nil
-			self:Debug("Restoring showQuestTrackingTooltips CVAR")
+		if self.Options.RestoreSettingAmbiance then
+			SetCVar("Sound_EnableAmbiance", 1)
+			self.Options.RestoreSettingAmbiance = nil
+			self:Debug("Restoring Sound_EnableAmbiance CVAR")
 		end
-		--RestoreSettingMusic doens't need restoring here, since zone change transition will handle it
+		if self.Options.RestoreSettingMusic then
+			SetCVar("Sound_EnableMusic", 1)
+			self.Options.RestoreSettingMusic = nil
+			self:Debug("Restoring Sound_EnableMusic CVAR")
+		end
+		--RestoreSettingCustomMusic doens't need restoring here, since zone change transition will handle it
 	end
 end
 
@@ -6847,11 +6877,6 @@ do
 				DisableEvent(AlertFrame, "GUILD_CHALLENGE_COMPLETED")
 			end
 		elseif toggle == 0 then
-			if self.Options.RestoreSettingQuestTooltips then
-				SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips) ---@diagnostic disable-line: param-type-mismatch
-				self.Options.RestoreSettingQuestTooltips = nil
-				self:Debug("Restoring Quest Tooltip CVAR")
-			end
 			if (self.Options.HideBossEmoteFrame2 or custom) and not testBuild then
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 				EnableEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
@@ -7099,37 +7124,50 @@ do
 		[489] = true, -- Unknown, currently encrypted
 		[490] = true, -- Unknown, currently encrypted
 	}
+	local function checkOptions(id)
+		--First, check if this specific cut scene should be blocked at all via the 3 primary rules
+		local allowBlock = false
+		if self.Options.HideMovieDuringFight and IsEncounterInProgress() then
+			allowBlock = true
+		end
+		local isInstance, instanceType = IsInInstance()
+		if self.Options.HideMovieInstanceAnywhere and (isInstance or instanceType == "scenario" or C_Garrison and C_Garrison:IsOnGarrisonMap()) then
+			allowBlock = true
+		end
+		if self.Options.HideMovieNonInstanceAnywhere and not isInstance and instanceType ~= "scenario" and not (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
+			allowBlock = true
+		end
+		--Last check if seen yet and if seen once filter enabled, abort after flagging seen once
+		if allowBlock and self.Options.HideMovieOnlyAfterSeen and not self.Options.MoviesSeen[id] then
+			self.Options.MoviesSeen[id] = true
+			allowBlock = false
+		end
+		return allowBlock
+	end
 	function DBM:PLAY_MOVIE(id)
+		--Stop custom BG music during cut scenes regardless of block features
+		self:TransitionToDungeonBGM(false, true)
 		if id and not neverFilter[id] then
 			self:Debug("PLAY_MOVIE fired for ID: "..id, 2)
-			local isInstance, instanceType = IsInInstance()
-			if not isInstance or (C_Garrison and C_Garrison:IsOnGarrisonMap()) or instanceType == "scenario" or self.Options.MovieFilter2 == "Never" or self.Options.MovieFilter2 == "OnlyFight" and not IsEncounterInProgress() then return end
-			if self.Options.MovieFilter2 == "Block" or (self.Options.MovieFilter2 == "AfterFirst" or self.Options.MovieFilter2 == "OnlyFight") and self.Options.MoviesSeen[id] then
+			if checkOptions(id) then
 				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
 				self:AddMsg(L.MOVIE_SKIPPED)
-			else
-				self.Options.MoviesSeen[id] = true
 			end
 		end
-		self:TransitionToDungeonBGM(false, true)
 	end
 
 	function DBM:CINEMATIC_START()
 		self:Debug("CINEMATIC_START fired", 2)
+		--Stop custom BG music during cut scenes regardless of block features
+		self:TransitionToDungeonBGM(false, true)
 		self.HudMap:SupressCanvas()
-		local isInstance, instanceType = IsInInstance()
-		if not isInstance or (C_Garrison and C_Garrison:IsOnGarrisonMap()) or instanceType == "scenario" or self.Options.MovieFilter2 == "Never" or DBM.Options.MovieFilter2 == "OnlyFight" and not IsEncounterInProgress() then return end
 		local currentMapID = C_Map.GetBestMapForUnit("player")
 		local currentSubZone = GetSubZoneText() or ""
-		if not currentMapID then return end--Protection from map failures in zones that have no maps yet
-		if self.Options.MovieFilter2 == "Block" or (self.Options.MovieFilter2 == "AfterFirst" or self.Options.MovieFilter2 == "OnlyFight") and self.Options.MoviesSeen[currentMapID..currentSubZone] then
+		if checkOptions(currentMapID..currentSubZone) then
 			CinematicFrame_CancelCinematic()
 			self:AddMsg(L.MOVIE_SKIPPED)
 --			self:AddMsg(L.MOVIE_NOTSKIPPED)
-		else
-			self.Options.MoviesSeen[currentMapID..currentSubZone] = true
 		end
-		self:TransitionToDungeonBGM(false, true)
 	end
 	function DBM:CINEMATIC_STOP()
 		self:Debug("CINEMATIC_STOP fired", 2)
@@ -8366,7 +8404,11 @@ do
 		["root"] = {
 			[339] = true,--Druid: Entangling roots
 		},
+		--Most slows are spamable abilities, but can still be used in inverse CD filter
+		--Since this filter checks if it's available, not if it isn't
+		--So can still also be used as an "Is a slow spell known" check :D
 		["slow"] = {
+			[1715] = true,--Warrior: Hamstring
 			[45524] = true,--DK: Chains of Ice
 			[202138] = true,--DH: Sigil of Chains (also a knock?)
 		},
