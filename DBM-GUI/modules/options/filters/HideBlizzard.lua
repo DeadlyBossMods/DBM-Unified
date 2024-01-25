@@ -12,7 +12,7 @@ if isRetail then
 	local hideMovieArea = hideBlizzPanel:CreateArea(L.Area_Cinematics)
 	hideMovieArea:CreateCheckButton(L.DuringFight, true, nil, "HideMovieDuringFight")
 	hideMovieArea:CreateCheckButton(L.InstanceAnywhere, true, nil, "HideMovieInstanceAnywhere")
-	hideMovieArea:CreateCheckButton(L.NonInstanceAnywhere, true, nil, "HideMovieNonInstanceAnywhere")
+--	hideMovieArea:CreateCheckButton(L.NonInstanceAnywhere, true, nil, "HideMovieNonInstanceAnywhere")
 	hideMovieArea:CreateCheckButton(L.OnlyAfterSeen, true, nil, "HideMovieOnlyAfterSeen")
 end
 
