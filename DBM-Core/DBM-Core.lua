@@ -1918,7 +1918,7 @@ do
 			if RolePollPopup and RolePollPopup:IsEventRegistered("ROLE_POLL_BEGIN") and isRetail then
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 			end
-			self:GROUP_ROSTER_UPDATE()
+			self:GROUP_ROSTER_UPDATE(true)
 			C_TimerAfter(1.5, function()
 				combatInitialized = true
 			end)
@@ -2533,10 +2533,11 @@ do
 
 	function DBM:GROUP_ROSTER_UPDATE(force)
 		self:Unschedule(updateAllRoster)
-		if force then
+		--Updated with no throttle on ADDON_LOADDED, DBM:LoadMod and if in combat with a boss
+		if force or #inCombat > 0 then
 			updateAllRoster(self)
 		else
-			self:Schedule(1.5, updateAllRoster, self)
+			self:Schedule(3, updateAllRoster, self)
 		end
 	end
 
