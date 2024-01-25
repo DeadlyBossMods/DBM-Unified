@@ -494,30 +494,30 @@ L.SpamSpecRoleSwitch				= "Фильтровать оповещения о 'см�
 L.SpamSpecRoleGTFO					= "Фильтровать 'GTFO' оповещения"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Block Blizzard Features"
+L.Panel_HideBlizzard				= "Блокировка функций Blizzard"
 --Toast
-L.Area_HideToast					= "Disable blizzard toasts (popups)"
-L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
-L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
---L.HideBossKill					= "Hide boss kill toasts"--NYI
---L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+L.Area_HideToast					= "Отключение уведомлений/речи Blizzard (всплывающие окна)"
+L.HideGarrisonUpdates				= "Скрывать речь соратников во время боя с боссами"
+L.HideGuildChallengeUpdates			= "Скрывать уведомления о гильдейских испытаниях во время боя с боссами"
+--L.HideBossKill					= "Скрывать уведомления об убийстве босса"--Ещё не реализовано
+--L.HideVaultUnlock					= "Скрывать уведомления о разблокировке Великого Хранилища"--Ещё не реализовано
 --Cut Scenes
-L.Area_Cinematics					= "Block in-game cinematics"
-L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
-L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
-L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+L.Area_Cinematics					= "Блокировка внутриигровых видеороликов"
+L.DuringFight						= "Блокировать ролики в бою при сражении с боссом"
+L.InstanceAnywhere					= "Блокировать ролики, когда не в бою, в любом месте подземелья или рейда"
+L.NonInstanceAnywhere				= "ОПАСНО: Блокировать ролики в открытом мире (НЕ рекомендуется)"
+L.OnlyAfterSeen						= "Блокировать ролики только после того, как они были просмотрены хотя бы один раз<br/>(НАСТОЯТЕЛЬНО рекомендуется хотя бы один раз прочувствовать сюжет так, как он задуман)"
 --Sound
-L.Area_Sound						= "Block in-game sounds"
-L.DisableSFX						= "Disable sound effects channel during boss fights"
-L.DisableAmbiance					= "Disable ambiance channel during boss fights"
-L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+L.Area_Sound						= "Блокировка внутриигровых звуков"
+L.DisableSFX						= "Отключить канал звуковых эффектов во время боя с боссами"
+L.DisableAmbiance					= "Отключить акустический канал во время боя с боссами"
+L.DisableMusic						= "Отключить музыкальный канал во время боя с боссами<br/>(Примечание: если включено, пользовательская музыка босса не будет воспроизводиться, если она включена в звуках событий)"
 --Other
-L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.Area_HideBlizzard					= "Отключить и скрыть другие раздражители Blizzard"
+L.HideBossEmoteFrame				= "Скрывать фрейм эмоций рейдового босса во время боя с боссом"
+L.HideWatchFrame					= "Скрывать окно отслеживания заданий во время боя с боссами, если не отслеживаются достижения и если Вы не в М+"
+L.HideQuestTooltips					= "Скрывать цели заданий из всплывающих подсказок во время боя с боссами"--В настоящее время скрыто (ещё не реализовано)
+L.HideTooltips						= "Полностью скрывать всплывающие подсказки во время боя с боссами"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Лидер рейда"
