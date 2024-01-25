@@ -7142,7 +7142,7 @@ do
 			allowBlock = true
 		end
 		--Check for cinematics that should only be blocked if boss just died or was just pulled
-		if mapID and requiresRecentKill[mapID] then
+		if mapID and requiresRecentKill[mapID] and allowBlock then
 			local modID = requiresRecentKill[mapID]
 			local mod = DBM:GetModByName(modID)
 			if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
