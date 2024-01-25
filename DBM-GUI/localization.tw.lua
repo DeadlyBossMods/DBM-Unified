@@ -466,8 +466,8 @@ L.FilterVoidFormSay					= "在虛空型態時不要發送圖示/倒數計時聊�
 
 L.Area_SpecFilter					= "角色職責過濾選項"
 L.FilterTankSpec					= "非坦克角色職責時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
-L.FilterDispels						= "過濾可驅散技能如果你的驅散技正在冷卻中"
---L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
+L.FilterDispels						= "如果你的驅散技能正在冷卻中，過濾可驅散技能"
+L.FilterCrowdControl				= "如果你的控場技能正在冷卻中，過濾基於打斷的控場通告"
 L.FilterTrashWarnings				= "過濾所有小怪警告在普通與英雄以及過往版本的地城"
 
 L.Area_BInterruptFilter				= "首領打斷過濾選項"
@@ -492,30 +492,30 @@ L.SpamSpecRoleSwitch				= "過濾'切換目標''小怪' 警報 (完全無文字�
 L.SpamSpecRoleGTFO					= "過濾'地板技能'警告 (完全無文字或聲音)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Block Blizzard Features"
+L.Panel_HideBlizzard				= "阻擋暴雪功能"
 --Toast
-L.Area_HideToast					= "Disable blizzard toasts (popups)"
-L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
-L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
+L.Area_HideToast					= "停用暴雪彈出提示 (跳出提醒)"
+L.HideGarrisonUpdates				= "首領戰鬥時隱藏追隨者彈出提示"
+L.HideGuildChallengeUpdates			= "首領戰鬥時隱藏公會挑戰彈出提示"
 --L.HideBossKill					= "Hide boss kill toasts"--NYI
 --L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
 --Cut Scenes
-L.Area_Cinematics					= "Block in-game cinematics"
-L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
-L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
-L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+L.Area_Cinematics					= "阻擋遊戲中的動畫"
+L.DuringFight						= "首領戰鬥時阻擋戰鬥過場動畫"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "在地下城或團隊副本中的任何地方阻擋非戰鬥過場動畫"
+L.NonInstanceAnywhere				= "危險: 在室外開放世界阻擋過場動畫 (不建議)"
+L.OnlyAfterSeen						= "只在每次動畫播放一次之後阻擋 (強烈建議，至少體驗一次劇情)"
 --Sound
-L.Area_Sound						= "Block in-game sounds"
-L.DisableSFX						= "Disable sound effects channel during boss fights"
-L.DisableAmbiance					= "Disable ambiance channel during boss fights"
-L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+L.Area_Sound						= "阻擋遊戲中聲音"
+L.DisableSFX						= "首領戰鬥時停用音效頻道"
+L.DisableAmbiance					= "首領戰鬥時停用環境頻道"
+L.DisableMusic						= "首領戰鬥時停用音樂頻道 (注意: 如果啟用，在事件音效中啟用的自訂音樂將不會播放)"
 --Other
-L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.Area_HideBlizzard					= "停用 & 隱藏其他暴雪提示"
+L.HideBossEmoteFrame				= "首領戰鬥時隱藏團隊首領表情框架"
+L.HideWatchFrame					= "首領戰鬥時隱追蹤框架(任務目標)，如果沒有追踪成就，或不是在傳奇+中"
+L.HideQuestTooltips					= "首領戰鬥時隱藏任務目標提示"--Currently hidden (NYI)
+L.HideTooltips						= "首領戰鬥時隱藏完全隱藏提示"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "團隊領隊控制項"
