@@ -8387,31 +8387,46 @@ do
 			[46968] = true,--Warrior: Shockwave (Stun)
 			[221562] = true,--DK: Asphyxiate (Stun)
 			[5211] = true,--Druid: Mighty Bash (Stun)
+			[408] = true,--Rogue: Kidney Shot (Stun)
+			[1833] = true,--Rogue: Cheap Shot (Stun)
+			[192058] = true,--Shaman: Capacitor Totem (Stun)
 		},
 		["knock"] = {
 			[132469] = true,--Druid: Typhoon
 			--[102793] = true,--Druid: Ursol's Vortex
 			[108199] = true,--DK: Gorefiends Grasp
 			[49576] = true,--DK: Death Grip (!Also a taunt!)
+			[157981] = true,--Mage: Blast Wave
+			[51490] = true,--Shaman: Thunderstorm
 		},
 		["disorient"] = {
 			[5246] = true,--Warrior: Intimidating Shout
 			[33786] = true,--Druid: Cyclone
+			[2094] = true,--Rogue: Blind
+			[31661] = true,--Mage: Dragon's Breath
 		},
 		["incapacitate"] = {
 			[99] = true,--Druid: Incapacitating Roar
 			[217832] = true,--DH: Imprison
+			[118] = true,--Mage: Polymorph (Should be shared CD with all variants, so only need one ID)
+			[383121] = true,--Mage: Mass Polymorph
+			[197214] = true,--Shaman: Sundering
+			[51514] = true,--Shaman: Hex
 		},
 		["root"] = {
 			[339] = true,--Druid: Entangling roots
+			[122] = true,--Mage: Frost Nova
+			[51485] = true,--Shaman: Earthgrab Totem
 		},
-		--Most slows are spamable abilities, but can still be used in inverse CD filter
+		--Many slows are spamable abilities, but can still be used in inverse CD filter
 		--Since this filter checks if it's available, not if it isn't
 		--So can still also be used as an "Is a slow spell known" check :D
 		["slow"] = {
 			[1715] = true,--Warrior: Hamstring
 			[45524] = true,--DK: Chains of Ice
 			[202138] = true,--DH: Sigil of Chains (also a knock?)
+			[120] = true,--Mage: Cone of Cold
+			[2484] = true,--Shaman: Earthbind Totem
 		},
 		["sleep"] = {
 			[2637] = true,--Druid: Hibernate
