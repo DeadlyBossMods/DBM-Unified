@@ -495,11 +495,11 @@ L.SpamSpecRoleGTFO					= "'바닥 피하기' 경고 빼기 (텍스트와 효과�
 -- Panel: Blizzard Features
 L.Panel_HideBlizzard				= "블리자드 기능 차단"
 --Toast
-L.Area_HideToast					= "블리자드 팝업 비활성화"
-L.HideGarrisonUpdates				= "보스 전투중 추종자 팝업 알림 숨기기"
-L.HideGuildChallengeUpdates			= "보스 전투중 길드 도전 과제 알림 숨기기"
---L.HideBossKill				= "보스 처치 팝업 알림 숨기기"--NYI
---L.HideVaultUnlock					= "금고 개방 팝업 알림 숨기기"--NYI
+L.Area_HideToast					= "블리자드 토스트 알림 비활성화 (팝업)"
+L.HideGarrisonUpdates				= "보스 전투중 추종자 토스트 알림 숨기기"
+L.HideGuildChallengeUpdates			= "보스 전투중 길드 도전 과제 토스트 알림 숨기기"
+--L.HideBossKill				= "보스 처치 토스트 알림 숨기기"--NYI
+--L.HideVaultUnlock					= "금고 잠금 해제 토스트 알림 숨기기"--NYI
 --Cut Scenes
 L.Area_Cinematics					= "게임내 시네마틱 재생 차단"
 L.DuringFight						= "보스 전투중 컷신 재생 차단"--uses explicite IsEncounterInProgress check
@@ -512,7 +512,7 @@ L.DisableSFX					= "보스 전투중 효과 음량 비활성화"
 L.DisableAmbiance					= "보스 전투중 환경 음량 비활성화"
 L.DisableMusic						= "보스 전투중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
 --Other
-L.Area_HideBlizzard			= "그 외 블리자드 기능 비활성화 & 숨김"
+L.Area_HideBlizzard			= "다른 블리자드 성가신 요소 비활성화 및 숨김"
 L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 프레임 숨기기"
 L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
 L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
