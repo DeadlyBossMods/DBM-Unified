@@ -7128,7 +7128,7 @@ do
 	local requiresRecentKill = {
 		[2238] = 2519--Fyrakk in Amirdrassil
 	}
-	local function checkOptions(self, id, map)
+	local function checkOptions(self, id, mapID)
 		--First, check if this specific cut scene should be blocked at all via the 3 primary rules
 		local allowBlock = false
 		if self.Options.HideMovieDuringFight and IsEncounterInProgress() then
@@ -7143,12 +7143,14 @@ do
 		end
 		--Run ugly iterator on mods who's cinematics should only be blocked if boss just died or was just pulled
 		--Else, be completely ignored
-		for map, modId in ipairs do
-			if requiresRecentKill[map] then
-				local mod = DBM:GetModByName(modId):
-				if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
-					allowBlock = false
-					break
+		if mapID then
+			for map, modId in ipairs do
+				if requiresRecentKill[mapID] then
+					local mod = DBM:GetModByName(modId):
+					if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
+						allowBlock = false
+						break
+					end
 				end
 			end
 		end
