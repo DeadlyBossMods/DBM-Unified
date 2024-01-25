@@ -7125,7 +7125,10 @@ do
 		[489] = true, -- Unknown, currently encrypted
 		[490] = true, -- Unknown, currently encrypted
 	}
-	local function checkOptions(self, id)
+	local requiresRecentKill = {
+		[2238] = 2519--Fyrakk in Amirdrassil
+	}
+	local function checkOptions(self, id, mapID)
 		--First, check if this specific cut scene should be blocked at all via the 3 primary rules
 		local allowBlock = false
 		if self.Options.HideMovieDuringFight and IsEncounterInProgress() then
@@ -7137,6 +7140,14 @@ do
 		end
 		if self.Options.HideMovieNonInstanceAnywhere and not isInstance and instanceType ~= "scenario" and not (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			allowBlock = true
+		end
+		--Check for cinematics that should only be blocked if boss just died or was just pulled
+		if mapID and requiresRecentKill[mapID] then
+			local modID = requiresRecentKill[mapID]
+			local mod = DBM:GetModByName(modID)
+			if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
+				allowBlock = false
+			end
 		end
 		--Last check if seen yet and if seen once filter enabled, abort after flagging seen once
 		if allowBlock and self.Options.HideMovieOnlyAfterSeen and not self.Options.MoviesSeen[id] then
@@ -7164,7 +7175,7 @@ do
 		self.HudMap:SupressCanvas()
 		local currentMapID = C_Map.GetBestMapForUnit("player")
 		local currentSubZone = GetSubZoneText() or ""
-		if checkOptions(self, currentMapID..currentSubZone) then
+		if checkOptions(self, currentMapID..currentSubZone, currentMapID) then
 			CinematicFrame_CancelCinematic()
 			self:AddMsg(L.MOVIE_SKIPPED)
 --			self:AddMsg(L.MOVIE_NOTSKIPPED)
