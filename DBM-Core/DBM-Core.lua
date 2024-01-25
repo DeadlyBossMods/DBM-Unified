@@ -7124,7 +7124,7 @@ do
 		[489] = true, -- Unknown, currently encrypted
 		[490] = true, -- Unknown, currently encrypted
 	}
-	local function checkOptions(id)
+	local function checkOptions(self, id)
 		--First, check if this specific cut scene should be blocked at all via the 3 primary rules
 		local allowBlock = false
 		if self.Options.HideMovieDuringFight and IsEncounterInProgress() then
@@ -7149,7 +7149,7 @@ do
 		self:TransitionToDungeonBGM(false, true)
 		if id and not neverFilter[id] then
 			self:Debug("PLAY_MOVIE fired for ID: "..id, 2)
-			if checkOptions(id) then
+			if checkOptions(self, id) then
 				MovieFrame:Hide()--can only just hide movie frame safely now, which means can't stop audio anymore :\
 				self:AddMsg(L.MOVIE_SKIPPED)
 			end
@@ -7163,7 +7163,7 @@ do
 		self.HudMap:SupressCanvas()
 		local currentMapID = C_Map.GetBestMapForUnit("player")
 		local currentSubZone = GetSubZoneText() or ""
-		if checkOptions(currentMapID..currentSubZone) then
+		if checkOptions(self, currentMapID..currentSubZone) then
 			CinematicFrame_CancelCinematic()
 			self:AddMsg(L.MOVIE_SKIPPED)
 --			self:AddMsg(L.MOVIE_NOTSKIPPED)
