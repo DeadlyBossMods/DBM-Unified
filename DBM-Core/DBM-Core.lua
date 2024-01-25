@@ -7147,7 +7147,6 @@ do
 			local mod = DBM:GetModByName(modID)
 			if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
 				allowBlock = false
-				break
 			end
 		end
 		--Last check if seen yet and if seen once filter enabled, abort after flagging seen once
