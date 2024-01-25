@@ -7141,17 +7141,13 @@ do
 		if self.Options.HideMovieNonInstanceAnywhere and not isInstance and instanceType ~= "scenario" and not (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			allowBlock = true
 		end
-		--Run ugly iterator on mods who's cinematics should only be blocked if boss just died or was just pulled
-		--Else, be completely ignored
-		if mapID then
-			for map, modId in ipairs do
-				if requiresRecentKill[mapID] then
-					local mod = DBM:GetModByName(modId):
-					if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
-						allowBlock = false
-						break
-					end
-				end
+		--Check for cinematics that should only be blocked if boss just died or was just pulled
+		if mapID and requiresRecentKill[mapID] then
+			local modID = requiresRecentKill[mapID]
+			local mod = DBM:GetModByName(modID)
+			if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
+				allowBlock = false
+				break
 			end
 		end
 		--Last check if seen yet and if seen once filter enabled, abort after flagging seen once
