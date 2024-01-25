@@ -512,11 +512,11 @@ L.DisableSFX					= "보스 전투중 효과 음량 비활성화"
 L.DisableAmbiance					= "보스 전투중 환경 음량 비활성화"
 L.DisableMusic						= "보스 전투중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
 --Other
-L.Area_HideBlizzard			= "블리자드 기능 끄기 및 숨김"
-L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 숨기기"
-L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임을 숨깁니다."
-L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 정보 숨기기"
-L.HideTooltips				= "보스 전투중 모든 툴팁 숨기기"
+L.Area_HideBlizzard			= "그 외 블리자드 기능 비활성화 & 숨김"
+L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 프레임 숨기기"
+L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
+L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
+L.HideTooltips				= "보스 전투중 툴팁 완전히 숨기기"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "공대장 제어 설정"
