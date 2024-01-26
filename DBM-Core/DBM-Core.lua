@@ -7142,7 +7142,7 @@ do
 			allowBlock = true
 		end
 		--Check for cinematics that should only be blocked if boss just died or was just pulled
-		if mapID and requiresRecentKill[mapID] then
+		if mapID and requiresRecentKill[mapID] and allowBlock then
 			local modID = requiresRecentKill[mapID]
 			local mod = DBM:GetModByName(modID)
 			if mod and mod.lastKillTime and (GetTime() - mod.lastKillTime) > 5 then
@@ -10762,10 +10762,10 @@ do
 			local colorId
 			if self.option then
 				colorId = self.mod.Options[self.option .. "TColor"]
-			elseif self.colorType and type(self.colorType) == "string" then--No option for specific timer, but another bool option given that tells us where to look for TColor
+			elseif self.colorType and type(self.colorType) == "string" then--No option for specific timer, but another bool option given that tells us where to look for TColor (for mods such as trio boss for valentines day in events mods)
 				colorId = self.mod.Options[self.colorType .. "TColor"]
 			else--No option, or secondary option, set colorId to hardcoded color type
-				colorId = self.colorType
+				colorId = self.colorType or 0
 			end
 			local countVoice, countVoiceMax = 0, self.countdownMax or 4
 			if self.option then
@@ -11279,7 +11279,7 @@ do
 				timer = timer,
 				id = name,
 				icon = icon,
-				colorType = colorType,
+				colorType = colorType or 0,
 				inlineIcon = inlineIcon,
 				keep = keep,
 				countdown = countdown,
@@ -11306,8 +11306,8 @@ do
 		if type(timer) == "string" and timer:match("OptionVersion") then
 			error("OptionVersion hack deprecated, remove it from: "..spellId)
 		end
-		if type(colorType) == "number" and colorType > 7 then
-			DBM:Debug("|cffff0000texture is in the colorType arg for: |r"..spellId)
+		if type(colorType) == "number" and colorType > 8 then
+			DBM:AddMsg("|cffff0000texture is in the colorType arg for: |r"..spellId)
 		end
 		--Use option optionName for optionVersion as well, no reason to split.
 		--This ensures that remaining arg positions match for auto generated and regular NewTimer
@@ -11339,6 +11339,7 @@ do
 			colorType = 1
 		else
 			icon = parseSpellIcon(texture or spellId, timerType)
+			colorType = colorType or 0
 		end
 		local timerTextValue
 		if timerText then
