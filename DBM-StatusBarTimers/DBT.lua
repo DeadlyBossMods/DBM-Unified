@@ -279,8 +279,8 @@ do
 			return
 		end
 		-- Most efficient place to block it, nil colorType instead of checking option every update
-		if not self.Options.ColorByType then
-			colorType = nil
+		if not self.Options.ColorByType or not colorType then
+			colorType = 0
 		end
 		local newBar = self:GetBar(id)
 		if newBar then -- Update an existing bar
