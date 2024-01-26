@@ -17,7 +17,7 @@ L.OTabPlugins						= "기타"--Scenarios, PVP, Delves (11.x), Solo/Challenge con
 L.OTabOptions					= "핵심 설정"
 L.OTabAbout						= "소개"
 
---L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 
 L.TabCategory_CURRENT_SEASON		= "현재 시즌"
 
@@ -468,7 +468,7 @@ L.FilterVoidFormSay			= "공허의 형상일땐 공격대 징표나 초읽기를
 L.Area_SpecFilter			= "역할 관련 필터 설정"
 L.FilterTankSpec			= "방어 전담이 아닐땐 방어 전담용 알림 보지 않기 (참고: '도발' 알림은 현재 전부 기본값으로 켜짐 상태이기 때문에 대부분의 이용자는 설정을 끄지 않는 것을 권장합니다.)"
 L.FilterDispels				= "해제 주문이 쿨타임일땐 해제 알림 보지 않기"
---L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
+L.FilterCrowdControl			= "메즈기가 쿨타임일땐 메즈 기반 차단 알림 보지 않기"
 L.FilterTrashWarnings		= "추종자, 일반, 영웅, 이전 확장팩 던전에선 일반몹 알림 보지 않기"
 
 L.Area_BInterruptFilter				= "보스 차단 알림 필터 설정"
@@ -493,30 +493,30 @@ L.SpamSpecRoleSwitch				= "'대상 변경' &amp; '쫄 등장' 경고 빼기 (텍
 L.SpamSpecRoleGTFO					= "'바닥 피하기' 경고 빼기 (텍스트와 효과음 전부)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Block Blizzard Features"
+L.Panel_HideBlizzard				= "블리자드 기능 차단"
 --Toast
-L.Area_HideToast					= "Disable blizzard toasts (popups)"
-L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
-L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
---L.HideBossKill					= "Hide boss kill toasts"--NYI
---L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+L.Area_HideToast					= "블리자드 토스트 알림 비활성화 (팝업)"
+L.HideGarrisonUpdates				= "보스 전투중 추종자 토스트 알림 숨기기"
+L.HideGuildChallengeUpdates			= "보스 전투중 길드 도전 과제 토스트 알림 숨기기"
+--L.HideBossKill				= "보스 처치 토스트 알림 숨기기"--NYI
+--L.HideVaultUnlock					= "금고 잠금 해제 토스트 알림 숨기기"--NYI
 --Cut Scenes
-L.Area_Cinematics					= "Block in-game cinematics"
-L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
-L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
-L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+L.Area_Cinematics					= "게임내 시네마틱 재생 차단"
+L.DuringFight						= "보스 전투중 컷신 재생 차단"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "던전이나 공격대 인스턴스에서 비전투 컷신 재생 차단"
+L.NonInstanceAnywhere				= "위험: 야외 컷신 재생 차단 (권장하지 않음)"
+L.OnlyAfterSeen						= "한번 봤던 컷신만 재생 차단 (강력 권장, 한번은 스토리를 보는게 좋습니다)"
 --Sound
-L.Area_Sound						= "Block in-game sounds"
-L.DisableSFX						= "Disable sound effects channel during boss fights"
-L.DisableAmbiance					= "Disable ambiance channel during boss fights"
-L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+L.Area_Sound						= "게임내 소리 차단"
+L.DisableSFX					= "보스 전투중 효과 음량 비활성화"
+L.DisableAmbiance					= "보스 전투중 환경 음량 비활성화"
+L.DisableMusic						= "보스 전투중 배경음악 음량 비활성화 (알림: 옵션을 켜면 이벤트 효과음에서 보스 전투 배경음을 설정해도 재생이 되지 않습니다)"
 --Other
-L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.Area_HideBlizzard			= "다른 블리자드 성가신 요소 비활성화 및 숨김"
+L.HideBossEmoteFrame		= "보스 전투중 보스 감정표현 프레임 숨기기"
+L.HideWatchFrame			= "추적중인 업적이 없고 신화+ 난이도가 아니라면 보스 전투시 퀘스트 추적 프레임 숨기기"
+L.HideQuestTooltips			= "보스 전투중 툴팁에서 퀘스트 목표 숨기기"--Currently hidden (NYI)
+L.HideTooltips				= "보스 전투중 툴팁 완전히 숨기기"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "공대장 제어 설정"
