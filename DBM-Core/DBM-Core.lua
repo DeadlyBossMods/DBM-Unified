@@ -11306,7 +11306,7 @@ do
 		if type(timer) == "string" and timer:match("OptionVersion") then
 			error("OptionVersion hack deprecated, remove it from: "..spellId)
 		end
-		if type(colorType) == "number" and colorType > 7 then
+		if type(colorType) == "number" and colorType > 8 then
 			DBM:AddMsg("|cffff0000texture is in the colorType arg for: |r"..spellId)
 		end
 		--Use option optionName for optionVersion as well, no reason to split.
