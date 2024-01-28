@@ -1,6 +1,7 @@
-DBM_COMMON_L = {}
+---@class DBMLocaleCommon
+local CL = {}
 
-local CL = DBM_COMMON_L
+DBM_COMMON_L = CL
 
 --General
 CL.NONE								= "None"
