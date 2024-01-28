@@ -11,9 +11,9 @@ local CL = DBM_COMMON_L
 -- 基本
 CL.NONE								= "无"
 CL.RANDOM							= "随机"
+CL.UNKNOWN							= "未知"
 CL.NEXT								= "下一个 %s"
 CL.COOLDOWN							= "%s 冷却"
-CL.UNKNOWN							= "未知"
 CL.INCOMING							= "%s 即将到来"
 CL.INTERMISSION						= "转场"
 CL.NO_DEBUFF						= "没有 %s"
@@ -97,3 +97,4 @@ CL.MARK								= "标记"
 CL.MARKS							= "标记"
 --CL.CURSE							= "Curse"
 --CL.CURSES							= "Curses"
+--CL.SWIRLS							= "Swirls"--Plural of Swirl
