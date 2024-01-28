@@ -1,4 +1,3 @@
--- CL.Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20231212
