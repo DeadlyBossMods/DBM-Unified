@@ -941,13 +941,20 @@ do
 		end
 	end
 
+    local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT"}
+
 	-- WotLK compat, search for "local C_AddOns" in DBM-Core.lua for more details
 	local IsAddOnLoaded = C_AddOns.IsAddOnLoaded or IsAddOnLoaded ---@diagnostic disable-line:deprecated
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
 			if not addon.panel then
+				local customName
+				--Auto truncate Raid, Dungeon, and World boss mods to only display expansion name in list
+				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" then
+					customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
+				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
-				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, nil, true, addon.modId)
+				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
 				if addon.modId == "DBM-Affixes" then -- If affixes, hide second general entry (as it's under Current Season)
 					DBM_GUI.tabs[3].buttons[#DBM_GUI.tabs[3].buttons].hidden = true
 				end
