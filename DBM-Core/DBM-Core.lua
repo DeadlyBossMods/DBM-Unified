@@ -7162,10 +7162,10 @@ do
 			allowBlock = true
 		end
 		local isInstance, instanceType = IsInInstance()
-		if self.Options.HideMovieInstanceAnywhere and (isInstance or instanceType == "scenario" or C_Garrison and C_Garrison:IsOnGarrisonMap()) then
+		if self.Options.HideMovieInstanceAnywhere and (isInstance or instanceType == "scenario" and not (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			allowBlock = true
 		end
-		if self.Options.HideMovieNonInstanceAnywhere and not isInstance and instanceType ~= "scenario" and not (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
+		if self.Options.HideMovieNonInstanceAnywhere and (not isInstance and instanceType ~= "scenario" or (C_Garrison and C_Garrison:IsOnGarrisonMap())) then
 			allowBlock = true
 		end
 		--Check for cinematics that should only be blocked if boss just died or was just pulled
