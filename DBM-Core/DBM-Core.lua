@@ -7162,10 +7162,14 @@ do
 			allowBlock = true
 		end
 		local isInstance, instanceType = IsInInstance()
-		if self.Options.HideMovieInstanceAnywhere and (isInstance or instanceType == "scenario" or C_Garrison and C_Garrison:IsOnGarrisonMap()) then
+		--HideMovieInstanceAnywhere means only dunegons and raids. NOT scenarios, and NOT garrisons. Delves will probably be added to this when api known
+		if self.Options.HideMovieInstanceAnywhere and isInstance and instanceType ~= "scenario" and not (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
 			allowBlock = true
 		end
-		if self.Options.HideMovieNonInstanceAnywhere and not isInstance and instanceType ~= "scenario" and not (C_Garrison and C_Garrison:IsOnGarrisonMap()) then
+		--HideMovieNonInstanceAnywhere means any outdoor area, which means anywhere non instanced or the garrison.
+		--Scenarios are once again excluded, per deal with blizzard, since Legion
+		--(scenarios ofen used for story events like broken shore and blizzard doesn't want addons skipping these)
+		if self.Options.HideMovieNonInstanceAnywhere and instanceType ~= "scenario" and (not isInstance or (C_Garrison and C_Garrison:IsOnGarrisonMap())) then
 			allowBlock = true
 		end
 		--Check for cinematics that should only be blocked if boss just died or was just pulled
