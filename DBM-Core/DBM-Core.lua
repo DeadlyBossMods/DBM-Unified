@@ -7206,7 +7206,8 @@ do
 		self.HudMap:SupressCanvas()
 		local currentMapID = C_Map.GetBestMapForUnit("player")
 		local currentSubZone = GetSubZoneText() or ""
-		if checkOptions(self, currentMapID..currentSubZone, currentMapID) then
+		--Just abort if map is nil, don't want to touch it if can't map cinematic to an area
+		if currentMapID and checkOptions(self, currentMapID..currentSubZone, currentMapID) then
 			CinematicFrame_CancelCinematic()
 			self:AddMsg(L.MOVIE_SKIPPED)
 --			self:AddMsg(L.MOVIE_NOTSKIPPED)
