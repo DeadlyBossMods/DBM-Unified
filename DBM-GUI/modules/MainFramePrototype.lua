@@ -14,6 +14,11 @@ local DBM = DBM
 ---@class DBMOptionsFrame: Frame
 ---@field tabs table
 local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSlicePanelTemplate")
+frame:SetScript("OnShow", function(self)
+	if DBM_GUI.currentViewing then
+		self:DisplayFrame(DBM_GUI.currentViewing)
+	end
+end)
 
 local selectedPagePerTab = {}
 
