@@ -14,11 +14,6 @@ local DBM = DBM
 ---@class DBMOptionsFrame: Frame
 ---@field tabs table
 local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSlicePanelTemplate")
-frame:SetScript("OnShow", function(self)
-	if DBM_GUI.currentViewing then
-		self:DisplayFrame(DBM_GUI.currentViewing)
-	end
-end)
 
 local selectedPagePerTab = {}
 
@@ -180,6 +175,12 @@ local function resize(targetFrame, first)
 	end
 	return frameHeight
 end
+
+frame:SetScript("OnShow", function()
+	if DBM_GUI.currentViewing then
+		resize(DBM_GUI.currentViewing)
+	end
+end)
 
 function frame:DisplayFrame(targetFrame)
 	if select("#", targetFrame:GetChildren()) == 0 then
