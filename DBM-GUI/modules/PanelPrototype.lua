@@ -134,7 +134,11 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myhe
 	textblock:SetPoint("TOPLEFT", textFrame)
 	textblock:SetWidth(width or self.frame:GetWidth())
 	if autoplaced then
-		textFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 15, -5)
+		if select("#", self.frame:GetChildren()) == 2 then
+			textFrame:SetPoint("TOPLEFT", self.frame, 15, -12)
+		else
+			textFrame:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -12)
+		end
 	end
 	textFrame:SetSize(width or self.frame:GetWidth(), textblock:GetStringHeight())
 	textFrame.mytype = "textblock"

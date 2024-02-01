@@ -40,7 +40,6 @@ EnlargeTimeSlider.myheight = 0
 
 local ClickThrough = BarBehaviors:CreateCheckButton(L.ClickThrough, true, nil, nil, "ClickThrough")
 ClickThrough:SetPoint("TOPLEFT", DecimalSlider, "BOTTOMLEFT", 0, -15)
-ClickThrough.myheight = 25
 
 BarBehaviors:CreateCheckButton(L.DisableRightClickBar, true, nil, nil, "DisableRightClick")
 BarBehaviors:CreateCheckButton(L.ShortTimerText, true, nil, "ShortTimerText")

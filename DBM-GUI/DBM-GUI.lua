@@ -691,8 +691,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		end
 
 		local importExportProfilesArea = panel:CreateArea(L.Area_ImportExportProfile)
-		local test = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
-		test:SetPoint("TOPLEFT", 15, -10)
+		local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 		local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 			local exportProfile = {}
 			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
@@ -701,8 +700,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 			DBM_GUI:CreateExportProfile(exportProfile)
 		end)
-		exportProfile.myheight = 0
-		exportProfile:SetPoint("TOPLEFT", 12, -25)
+		exportProfile:SetPoint("TOPLEFT", importExportText, "BOTTOMLEFT", 0, -12)
 		local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 			DBM_GUI:CreateImportProfile(function(importTable)
 				local errors = {}
@@ -738,7 +736,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 				end
 			end)
 		end)
-		importProfile.myheight = 0
+		importProfile.myheight = 12
 		importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
 	end
 
@@ -776,10 +774,10 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 				return -- No stats available for this? Possibly a bug
 			end
 
-			local Title			= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
+			local Title			= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight)
 
 			local function CreateText(text, header)
-				local frame = area:CreateText(text or "", nil, nil, header and GameFontHighlightSmall or GameFontNormalSmall, "LEFT")
+				local frame = area:CreateText(text or "", nil, nil, header and GameFontHighlightSmall or GameFontNormalSmall)
 				frame:Hide()
 				return frame
 			end

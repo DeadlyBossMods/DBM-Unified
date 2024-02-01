@@ -126,7 +126,7 @@ ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
 
 local resizeOptions = coreoptions:CreateArea(L.ResizeOptions)
 
-resizeOptions:CreateText(L.ResizeInfo, nil, true, nil, nil, 0)
+resizeOptions:CreateText(L.ResizeInfo, nil, true)
 
 local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 

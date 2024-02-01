@@ -94,9 +94,6 @@ local function resize(targetFrame, first)
 							child2:SetShown(child2.hasDesc and true or child.hidden)
 							_G[child:GetName() .. "Title"]:Show()
 							_G[child2:GetName() .. "Text"]:SetShown(child2.hasDesc and true or child.hidden)
-							if child.hidden then
-								neededHeight = 0
-							end
 						end
 					end
 					if child2.mytype and child2:IsVisible() then
@@ -105,9 +102,6 @@ local function resize(targetFrame, first)
 							if child2.autowidth then
 								_G[child2:GetName() .. "Text"]:SetWidth(width - 30)
 								child2:SetSize(width, text:GetStringHeight())
-							end
-							if not child2.myheight or child2.mytype == "spelldesc" then
-								child2.myheight = text:GetStringHeight() + 20 -- + padding
 							end
 							lastObject = child2
 						elseif child2.mytype == "checkbutton" then
@@ -125,8 +119,8 @@ local function resize(targetFrame, first)
 									buttonText:SetPoint(oldPoint1, oldPoint2, oldPoint3, oldPoint4, oldPoint5)
 									-- End classic fix
 								end
-								if lastObject and lastObject.myheight then
-									child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+								if lastObject then
+									child2:SetPointOld("TOPLEFT", lastObject, "BOTTOMLEFT", 0, -mmax((lastObject.textObj and lastObject.textObj:GetContentHeight() or 0) - lastObject:GetHeight() + 6, 0))
 								else
 									child2:SetPointOld("TOPLEFT", 10, -12)
 								end
