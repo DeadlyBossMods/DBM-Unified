@@ -39,6 +39,9 @@ frame:SetScript("OnShow", function(self)
 		self.firstshow = false
 		self:ShowTab(1)
 	end
+	if DBM_GUI.currentViewing then
+		self:DisplayFrame(DBM_GUI.currentViewing)
+	end
 end)
 frame:SetScript("OnHide", function()
 	_G["DBM_GUI_DropDown"]:Hide()

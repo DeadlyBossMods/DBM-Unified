@@ -176,12 +176,6 @@ local function resize(targetFrame, first)
 	return frameHeight
 end
 
-frame:SetScript("OnShow", function()
-	if DBM_GUI.currentViewing then
-		resize(DBM_GUI.currentViewing)
-	end
-end)
-
 function frame:DisplayFrame(targetFrame)
 	if select("#", targetFrame:GetChildren()) == 0 then
 		return
