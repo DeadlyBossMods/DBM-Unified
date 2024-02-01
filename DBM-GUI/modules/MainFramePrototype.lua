@@ -170,6 +170,7 @@ local function resize(targetFrame, first)
 	return frameHeight
 end
 
+local bossPreview
 function frame:DisplayFrame(targetFrame)
 	if select("#", targetFrame:GetChildren()) == 0 then
 		return
@@ -206,7 +207,6 @@ function frame:DisplayFrame(targetFrame)
 		resize(targetFrame)
 	end
 	if DBM.Options.EnableModels then
-		local bossPreview = _G["DBM_BossPreview"]
 		if not bossPreview then
 			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
 			bossPreview:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
@@ -215,7 +215,6 @@ function frame:DisplayFrame(targetFrame)
 			bossPreview:SetRotation(0)
 			bossPreview:SetClampRectInsets(0, 0, 24, 0)
 		end
-		bossPreview.enabled = false
 		bossPreview:Hide()
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.panel and mod.panel.frame and mod.panel.frame == targetFrame then
@@ -274,6 +273,9 @@ function frame:ShowTab(tab)
 		PanelTemplates_SetTab(self, tab)
 	else
 		self.tabsGroup:SelectAtIndex(tab)
+	end
+	if bossPreview then
+		bossPreview:Hide()
 	end
 	if selectedPagePerTab[tab] then
 		self:DisplayFrame(selectedPagePerTab[tab])
