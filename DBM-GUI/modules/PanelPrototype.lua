@@ -306,10 +306,10 @@ do
 	local sounds = DBM_GUI:MixinSharedMedia3("sound", {
 		-- Inject basically dummy values for ordering special warnings to just use default SW sound assignments
 		{ text = L.None, value = "None" },
-		{ text = "SA 1", value = 1 },
-		{ text = "SA 2", value = 2 },
-		{ text = "SA 3", value = 3 },
-		{ text = "SA 4", value = 4 },
+		{ text = L.SAOne, value = 1 },
+		{ text = L.SATwo, value = 2 },
+		{ text = L.SAThree, value = 3 },
+		{ text = L.SAFour, value = 4 },
 		-- Inject DBMs custom media that's not available to LibSharedMedia because I haven't added it yet
 		--{ text = "AirHorn (DBM)", value = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg" },
 		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },

@@ -208,6 +208,10 @@ L.ThickOutline						= "Thick outline"
 L.MonochromeOutline					= "Monochrome outline"
 L.MonochromeThickOutline			= "Monochrome thick outline"
 L.RaidWarnSound						= "Play sound on raid announcement"
+L.SAOne								= "Global Sound 1 (Personal)"
+L.SATwo								= "Global Sound 2 (Everyone)"
+L.SAThree							= "Global Sound 3 (High Priority Action)"
+L.SAFour							= "Global Sound 4 (High Priority Run Away)"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame				= "Special Announcements"

@@ -207,6 +207,10 @@ L.ThickOutline				= "Толстый контур"
 L.MonochromeOutline			= "Монохромный контур"
 L.MonochromeThickOutline	= "Монохромный толстый контур"
 L.RaidWarnSound				= "Звук рейд-предупреждения"
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Спецпредупреждения для рейда"

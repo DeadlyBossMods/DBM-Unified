@@ -137,7 +137,10 @@ L.RaidWarnSound				= "toque som no aviso de raide"
 L.RaidWarnMessage 			= "Obrigado por utilizar o Deadly Boss Mods" -- não existe no en.lua
 L.BarWhileMove 				= "Aviso de Raide móvel" -- não existe no en.lua
 L.RaidWarnSound				= "Tocar som junto com o aviso na raide" -- não existe no en.lua
-
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 
 

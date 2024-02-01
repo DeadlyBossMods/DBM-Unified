@@ -208,6 +208,10 @@ L.ThickOutline				= "두꺼운 외곽선"
 L.MonochromeOutline			= "단색 외곽선"
 L.MonochromeThickOutline	= "단색 두꺼운 외곽선"
 L.RaidWarnSound				= "레이드 알림에 효과음 재생"
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "특수 알림"

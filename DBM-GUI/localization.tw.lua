@@ -205,6 +205,10 @@ L.ThickOutline				= "厚描邊"
 L.MonochromeOutline			= "單色描邊"
 L.MonochromeThickOutline	= "單色加粗描邊"
 L.RaidWarnSound				= "在團隊通告時播放音效"
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特別提示"

@@ -207,6 +207,10 @@ L.ThickOutline				= "Contorno grueso"
 L.MonochromeOutline			= "Contorno monocromo"
 L.MonochromeThickOutline	= "Contorno monocromo grueso"
 L.RaidWarnSound				= "Sonido de avisos"
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 -- Panel: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Avisos especiales"
