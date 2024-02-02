@@ -93,6 +93,10 @@ L.ThickOutline				= "Contorno spesso"
 L.MonochromeOutline			= "Contono monocromatico"
 L.MonochromeThickOutline	= "Contono spesso monocromatico"
 L.RaidWarnSound				= "Esegui suoni avviso incursione"
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Messaggi Generali"

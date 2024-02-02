@@ -24,7 +24,7 @@ local color1 = BarSetup:CreateColorSelect(64)
 local color2 = BarSetup:CreateColorSelect(64)
 color1:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 30, -80)
 color2:SetPoint("TOPLEFT", color1, "TOPRIGHT", 20, 0)
-color1.myheight = 84
+color1.myheight = 130
 color2.myheight = 0
 
 local color1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -38,12 +38,10 @@ color2reset:SetScript("OnClick", function()
 	color2:SetColorRGB(DBT.DefaultOptions.EndColorR, DBT.DefaultOptions.EndColorG, DBT.DefaultOptions.EndColorB)
 end)
 
-local color1text = BarSetup:CreateText(L.BarStartColor, 80)
-local color2text = BarSetup:CreateText(L.BarEndColor, 80)
+local color1text = BarSetup:CreateText(L.BarStartColor, 80, nil, nil, nil, 0)
+local color2text = BarSetup:CreateText(L.BarEndColor, 80, nil, nil, nil, 0)
 color1text:SetPoint("BOTTOM", color1, "TOP", 0, 4)
 color2text:SetPoint("BOTTOM", color2, "TOP", 0, 4)
-color1text.myheight = 0
-color2text.myheight = 0
 color1:SetColorRGB(DBT.Options.StartColorR, DBT.Options.StartColorG, DBT.Options.StartColorB)
 color1text:SetTextColor(DBT.Options.StartColorR, DBT.Options.StartColorG, DBT.Options.StartColorB)
 color2:SetColorRGB(DBT.Options.EndColorR, DBT.Options.EndColorG, DBT.Options.EndColorB)

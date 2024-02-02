@@ -91,6 +91,10 @@ L.ThickOutline				= "mit dickem Umriss"
 L.MonochromeOutline			= "ohne Glättung, mit Umriss"
 L.MonochromeThickOutline	= "ohne Glätt., mit dickem Umriss"
 L.RaidWarnSound				= "Sound für Schlachtzugwarnungen"
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Allgemeine Meldungen"

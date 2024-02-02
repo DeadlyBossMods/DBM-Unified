@@ -12,7 +12,7 @@ local profilePanel			= DBM_GUI.Cat_General:CreateNewPanel(L.Panel_Profile, "opti
 local createProfileArea		= profilePanel:CreateArea(L.Area_CreateProfile)
 local createTextbox			= createProfileArea:CreateEditBox(L.EnterProfileName, "", 175)
 createTextbox:SetMaxLetters(17)
-createTextbox:SetPoint("TOPLEFT", 30, -25)
+createTextbox:SetPoint("TOPLEFT", 25, -25)
 createTextbox:SetScript("OnEnterPressed", function()
 	Create()
 end)
@@ -81,7 +81,7 @@ local function actuallyImport(importTable)
 end
 
 local importExportProfilesArea = profilePanel:CreateArea(L.Area_ImportExportProfile)
-importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true, nil, nil, 0)
+local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 	DBM_GUI:CreateExportProfile({
 		DBM		= DBM.Options,
@@ -89,7 +89,7 @@ local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfil
 		minimap	= DBM_MinimapIcon
 	})
 end)
-exportProfile:SetPoint("TOPLEFT", 12, -20)
+exportProfile:SetPoint("TOPLEFT", importExportText, "BOTTOMLEFT", 0, -12)
 local localeTable = {
 	RaidWarningSound		= "RaidWarnSound",
 	SpecialWarningSound		= "SpecialWarnSoundOption",
@@ -144,7 +144,7 @@ local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfil
 		end
 	end)
 end)
-importProfile.myheight = 0
+importProfile.myheight = 12
 importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
 
 function Create()

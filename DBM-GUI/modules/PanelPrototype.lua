@@ -134,7 +134,11 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify, myhe
 	textblock:SetPoint("TOPLEFT", textFrame)
 	textblock:SetWidth(width or self.frame:GetWidth())
 	if autoplaced then
-		textFrame:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 15, -5)
+		if select("#", self.frame:GetChildren()) == 2 then
+			textFrame:SetPoint("TOPLEFT", self.frame, 15, -12)
+		else
+			textFrame:SetPoint("TOPLEFT", select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -12)
+		end
 	end
 	textFrame:SetSize(width or self.frame:GetWidth(), textblock:GetStringHeight())
 	textFrame.mytype = "textblock"
@@ -302,10 +306,10 @@ do
 	local sounds = DBM_GUI:MixinSharedMedia3("sound", {
 		-- Inject basically dummy values for ordering special warnings to just use default SW sound assignments
 		{ text = L.None, value = "None" },
-		{ text = "SA 1", value = 1 },
-		{ text = "SA 2", value = 2 },
-		{ text = "SA 3", value = 3 },
-		{ text = "SA 4", value = 4 },
+		{ text = L.SAOne, value = 1 },
+		{ text = L.SATwo, value = 2 },
+		{ text = L.SAThree, value = 3 },
+		{ text = L.SAFour, value = 4 },
 		-- Inject DBMs custom media that's not available to LibSharedMedia because I haven't added it yet
 		--{ text = "AirHorn (DBM)", value = "Interface\\AddOns\\DBM-Core\\sounds\\AirHorn.ogg" },
 		{ text = "Algalon: Beware!", value = isRetail and 543587 or "Interface\\AddOns\\DBM-Core\\sounds\\ClassicSupport\\UR_Algalon_BHole01.ogg" },

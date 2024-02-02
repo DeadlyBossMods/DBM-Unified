@@ -94,9 +94,6 @@ local function resize(targetFrame, first)
 							child2:SetShown(child2.hasDesc and true or child.hidden)
 							_G[child:GetName() .. "Title"]:Show()
 							_G[child2:GetName() .. "Text"]:SetShown(child2.hasDesc and true or child.hidden)
-							if child.hidden then
-								neededHeight = 0
-							end
 						end
 					end
 					if child2.mytype and child2:IsVisible() then
@@ -105,9 +102,6 @@ local function resize(targetFrame, first)
 							if child2.autowidth then
 								_G[child2:GetName() .. "Text"]:SetWidth(width - 30)
 								child2:SetSize(width, text:GetStringHeight())
-							end
-							if not child2.myheight or child2.mytype == "spelldesc" then
-								child2.myheight = text:GetStringHeight() + 20 -- + padding
 							end
 							lastObject = child2
 						elseif child2.mytype == "checkbutton" then
@@ -125,8 +119,8 @@ local function resize(targetFrame, first)
 									buttonText:SetPoint(oldPoint1, oldPoint2, oldPoint3, oldPoint4, oldPoint5)
 									-- End classic fix
 								end
-								if lastObject and lastObject.myheight then
-									child2:SetPointOld("TOPLEFT", lastObject, "TOPLEFT", 0, -lastObject.myheight)
+								if lastObject then
+									child2:SetPointOld("TOPLEFT", lastObject, "BOTTOMLEFT", 0, -mmax((lastObject.textObj and lastObject.textObj:GetContentHeight() or 0) - lastObject:GetHeight() + 6, 0))
 								else
 									child2:SetPointOld("TOPLEFT", 10, -12)
 								end
@@ -176,6 +170,7 @@ local function resize(targetFrame, first)
 	return frameHeight
 end
 
+local bossPreview
 function frame:DisplayFrame(targetFrame)
 	if select("#", targetFrame:GetChildren()) == 0 then
 		return
@@ -212,7 +207,6 @@ function frame:DisplayFrame(targetFrame)
 		resize(targetFrame)
 	end
 	if DBM.Options.EnableModels then
-		local bossPreview = _G["DBM_BossPreview"]
 		if not bossPreview then
 			bossPreview = CreateFrame("PlayerModel", "DBM_BossPreview", _G["DBM_GUI_OptionsFramePanelContainer"])
 			bossPreview:SetPoint("BOTTOMRIGHT", "DBM_GUI_OptionsFramePanelContainer", "BOTTOMRIGHT", -5, 5)
@@ -221,7 +215,6 @@ function frame:DisplayFrame(targetFrame)
 			bossPreview:SetRotation(0)
 			bossPreview:SetClampRectInsets(0, 0, 24, 0)
 		end
-		bossPreview.enabled = false
 		bossPreview:Hide()
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.panel and mod.panel.frame and mod.panel.frame == targetFrame then
@@ -280,6 +273,9 @@ function frame:ShowTab(tab)
 		PanelTemplates_SetTab(self, tab)
 	else
 		self.tabsGroup:SelectAtIndex(tab)
+	end
+	if bossPreview then
+		bossPreview:Hide()
 	end
 	if selectedPagePerTab[tab] then
 		self:DisplayFrame(selectedPagePerTab[tab])
