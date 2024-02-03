@@ -309,7 +309,7 @@ L.EventFilterMythicMusic	= "Не проигрывать музыку боя на
 L.TabCategory_Timers		= "Индикаторы таймеров"
 L.Area_ColorBytype			= "Цветные полосы по типу (руководство)"
 -- Panel: Color by Type
-L.Panel_ColorByType	 		= "Цвет по типу"
+L.Panel_ColorByType	 		= "Цветотип"
 L.AreaTitle_BarColors		= "Цвета индикатора по типу таймера"
 L.AreaTitle_ImpBarColors	= "Важные цвета полос (это полосы, установленные пользователем)"
 L.BarTexture 				= "Текстура индикатора"
