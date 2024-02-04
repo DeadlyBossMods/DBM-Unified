@@ -982,6 +982,7 @@ end
 --------------
 --  Events  --
 --------------
+---@alias DBMEvent WowEvent|CombatlogEvent|DBMUnfilteredEvent
 do
 	local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 	local registeredEvents = {}
@@ -1301,7 +1302,7 @@ do
 	end
 
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss2" which only trigger the event for the given unit ids
-	---@param ... WowEvent|string
+	---@param ... DBMEvent|string
 	function DBM:RegisterEvents(...)
 		for i = 1, select('#', ...) do
 			local event = select(i, ...)
@@ -1408,6 +1409,7 @@ do
 		end
 	end
 
+	---@param ... DBMEvent|string
 	function DBM:RegisterShortTermEvents(...)
 		DBM:Debug("RegisterShortTermEvents fired", 2)
 		local _shortTermRegisterEvents = {...}
@@ -7459,6 +7461,7 @@ end
 --------------
 --  Events  --
 --------------
+---@param ... DBMEvent|string
 function bossModPrototype:RegisterEventsInCombat(...)
 	if self.inCombatOnlyEvents then
 		geterrorhandler()("combat events already set")
