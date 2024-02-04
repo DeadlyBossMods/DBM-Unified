@@ -3948,7 +3948,7 @@ function DBM:LoadMod(mod, force)
 		if reason == "DISABLED" then
 			self:AddMsg(L.LOAD_MOD_DISABLED:format(mod.name))
 		elseif reason then
-			self:AddMsg(L.LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_" .. reason] or CL.Unknown)))
+			self:AddMsg(L.LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_" .. reason] or CL.UNKNOWN)))
 		else
 			self:Debug("LoadAddOn failed and did not give reason")
 		end
@@ -5430,8 +5430,8 @@ do
 					SetCVar("Sound_EnableSFX", 0)
 					self.Options.RestoreSettingSFX = true
 				end
-				if self.Options.DisableAmbiance and GetCVar("Sound_EnableAmbiance") == "1" then
-					SetCVar("Sound_EnableAmbiance", 0)
+				if self.Options.DisableAmbiance and GetCVar("Sound_EnableAmbience") == "1" then
+					SetCVar("Sound_EnableAmbience", 0)
 					self.Options.RestoreSettingAmbiance = true
 				end
 				if self.Options.DisableMusic and GetCVar("Sound_EnableMusic") == "1" then
@@ -5933,7 +5933,7 @@ do
 					self.Options.RestoreSettingSFX = nil
 				end
 				if self.Options.RestoreSettingAmbiance then
-					SetCVar("Sound_EnableAmbiance", 1)
+					SetCVar("Sound_EnableAmbience", 1)
 					self.Options.RestoreSettingAmbiance = nil
 				end
 				if self.Options.RestoreSettingMusic then
@@ -6744,9 +6744,9 @@ do
 			self:Debug("Restoring Sound_EnableSFX CVAR")
 		end
 		if self.Options.RestoreSettingAmbiance then
-			SetCVar("Sound_EnableAmbiance", 1)
+			SetCVar("Sound_EnableAmbience", 1)
 			self.Options.RestoreSettingAmbiance = nil
-			self:Debug("Restoring Sound_EnableAmbiance CVAR")
+			self:Debug("Restoring Sound_EnableAmbience CVAR")
 		end
 		if self.Options.RestoreSettingMusic then
 			SetCVar("Sound_EnableMusic", 1)
