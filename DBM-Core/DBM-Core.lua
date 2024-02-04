@@ -5429,8 +5429,8 @@ do
 					SetCVar("Sound_EnableSFX", 0)
 					self.Options.RestoreSettingSFX = true
 				end
-				if self.Options.DisableAmbiance and GetCVar("Sound_EnableAmbiance") == "1" then
-					SetCVar("Sound_EnableAmbiance", 0)
+				if self.Options.DisableAmbiance and GetCVar("Sound_EnableAmbience") == "1" then
+					SetCVar("Sound_EnableAmbience", 0)
 					self.Options.RestoreSettingAmbiance = true
 				end
 				if self.Options.DisableMusic and GetCVar("Sound_EnableMusic") == "1" then
@@ -5932,7 +5932,7 @@ do
 					self.Options.RestoreSettingSFX = nil
 				end
 				if self.Options.RestoreSettingAmbiance then
-					SetCVar("Sound_EnableAmbiance", 1)
+					SetCVar("Sound_EnableAmbience", 1)
 					self.Options.RestoreSettingAmbiance = nil
 				end
 				if self.Options.RestoreSettingMusic then
@@ -6743,9 +6743,9 @@ do
 			self:Debug("Restoring Sound_EnableSFX CVAR")
 		end
 		if self.Options.RestoreSettingAmbiance then
-			SetCVar("Sound_EnableAmbiance", 1)
+			SetCVar("Sound_EnableAmbience", 1)
 			self.Options.RestoreSettingAmbiance = nil
-			self:Debug("Restoring Sound_EnableAmbiance CVAR")
+			self:Debug("Restoring Sound_EnableAmbience CVAR")
 		end
 		if self.Options.RestoreSettingMusic then
 			SetCVar("Sound_EnableMusic", 1)
