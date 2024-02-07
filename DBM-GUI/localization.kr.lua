@@ -355,10 +355,10 @@ L.CBTRole							= "특정 역할 전용 주문"
 L.CBTPhase							= "페이즈 전환"
 L.CBTImportant						= "사용자 지정 중요 주문"
 --Dropdown Options
---L.SAOne						= "Global Sound 1 (Personal)"
---L.SATwo						= "Global Sound 2 (Everyone)"
---L.SAThree					= "Global Sound 3 (High Priority Action)"
---L.SAFour					= "Global Sound 4 (High Priority Run Away)"
+L.SAOne						= "일반 음성 1 (개인 알림)"
+L.SATwo						= "일반 음성 2 (전체 알림)"
+L.SAThree					= "일반 음성 3 (동작 1순위)"
+L.SAFour					= "일반 음성 4 (도망치기 1순위)"
 L.ColorDropGeneric					= "일반 (기본 설정)"
 L.ColorDrop1						= "색상 1"
 L.ColorDrop2						= "색상 2"
@@ -525,7 +525,7 @@ L.HideTooltips				= "보스 전투중 툴팁 완전히 숨기기"
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "공대장 제어 설정"
 L.Area_FeatureOverrides				= "기능 무시 설정"
-L.OverrideIcons 					= "공격대에서 자신 포함 모든 사용자들의 공격대 징표 설정을 비활성화 (DBM이 원하는 방식대로 징표를 지정하게 만들려면 비활성화 대신 강제 적용 설정을 사용하세요)"
+L.OverrideIcons 					= "공격대에서 자신 포함 모든 사용자들의 공격대 징표 설정을 비활성화"-- (Use override instead of disable if you want DBM to do marking under your terms)
 L.OverrideSay						= "공격대에서 자신 포함 모든 사용자들의 말풍선/일반 대화 메시지 설정 비활성화"
 L.DisableStatusWhisperShort			= "공격대/파티의 현재 상태/답변 귓속말 비활성화"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "공격대/파티의 길드와 연동된 공략 진도 메시지 비활성화"--Duplicated from privacy but makes sense to include option in both panels
