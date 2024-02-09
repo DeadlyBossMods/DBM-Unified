@@ -4279,7 +4279,7 @@ do
 						fishingPole = true
 					end
 				end
-				if IsInRaid() and difference >= 30 then
+				if IsInRaid() and difference >= 18 then
 					dummyMod.geartext:Show(L.GEAR_WARNING:format(floor(difference)))
 				elseif IsInRaid() and (not weapon or fishingPole) then
 					dummyMod.geartext:Show(L.GEAR_WARNING_WEAPON)
