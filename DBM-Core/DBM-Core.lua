@@ -88,7 +88,7 @@ if isRetail then
 	DBM.ReleaseRevision = releaseDate(2024, 2, 8) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 9--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
-	DBM.DisplayVersion = "1.15.12"
+	DBM.DisplayVersion = "1.15.13 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 2, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 elseif isBCC then
