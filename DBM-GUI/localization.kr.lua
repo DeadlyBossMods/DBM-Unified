@@ -509,7 +509,7 @@ L.Area_Cinematics					= "게임내 시네마틱 재생 차단"
 L.DuringFight						= "보스 전투중 컷신 재생 차단"--uses explicite IsEncounterInProgress check
 L.InstanceAnywhere					= "던전이나 공격대 인스턴스에서 비전투 컷신 재생 차단"
 L.NonInstanceAnywhere				= "위험: 야외 컷신 재생 차단 (권장하지 않음)"
-L.OnlyAfterSeen						= "한번 봤던 컷신만 재생 차단 (강력 권장, 한번은 스토리를 보는게 좋습니다)"
+L.OnlyAfterSeen						= "한번 봤던 컷신만 재생 차단 (컷신이 한번은 나오기 때문에 스토리를 이해하려면 이 설정을 강력히 추천합니다)"
 --Sound
 L.Area_Sound						= "게임내 소리 차단"
 L.DisableSFX					= "보스 전투중 효과 음량 비활성화"
