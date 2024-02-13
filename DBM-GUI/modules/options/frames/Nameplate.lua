@@ -194,7 +194,15 @@ textFontSizeSlider.myheight = 0
 
 local textEnable = style:CreateCheckButton(L.Enable, true, nil, "NPIconTextEnabled")
 textEnable:SetPoint("TOPLEFT", TextFontStyleDropDown, "TOPLEFT", 20, -35)
-textEnable.myheight = 330
+textEnable.myheight = 380
+
+local iconTextMaxLenSlider = style:CreateSlider(L.NPIcon_MaxTextLen, 3, 25, 1, 150)
+iconTextMaxLenSlider:SetPoint("TOPLEFT", textFontSizeSlider, "BOTTOMLEFT", 0, -20)
+iconTextMaxLenSlider:SetValue(DBM.Options.NPIconTextMaxLen)
+iconTextMaxLenSlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconTextMaxLen = self:GetValue()
+end)
+iconTextMaxLenSlider.myheight = 0
 
 local testbutton = style:CreateButton(L.NPDemo, 100, 16)
 testbutton:SetPoint("TOPRIGHT", style.frame, "TOPRIGHT", -2, -4)
@@ -225,6 +233,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconTextFontStyle = DBM.DefaultOptions.NPIconTextFontStyle
 	DBM.Options.NPIconTextFontSize = DBM.DefaultOptions.NPIconTextFontSize
 	DBM.Options.NPIconTextEnabled = DBM.DefaultOptions.NPIconTextEnabled
+	DBM.Options.NPIconTextMaxLen = DBM.DefaultOptions.NPIconTextMaxLen
 	-- Set UI visuals
 	auraSizeSlider:SetValue(DBM.DefaultOptions.NPIconSize)
 	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
@@ -240,5 +249,6 @@ resetbutton:SetScript("OnClick", function()
 	TextFontStyleDropDown:SetSelectedValue(DBM.DefaultOptions.NPIconTextFontStyle)
 	textFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTextFontSize)
 	textEnable:SetChecked(DBM.DefaultOptions.NPIconTextEnabled)
+	iconTextMaxLenSlider:SetValue(DBM.DefaultOptions.NPIconTextMaxLen)
 end)
 resetbutton.myheight = 0

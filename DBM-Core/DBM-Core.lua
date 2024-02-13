@@ -379,6 +379,7 @@ DBM.DefaultOptions = {
 	NPIconTextFont = "standardFont",
 	NPIconTextFontStyle = "None",
 	NPIconTextFontSize = 10,
+	NPIconTextMaxLen = 7,
 	DontPlayCountdowns = false,
 	DontSendYells = false,
 	BlockNoteShare = false,

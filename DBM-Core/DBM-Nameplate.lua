@@ -41,6 +41,33 @@ local DBMNameplateFrame = CreateFrame("Frame", "DBMNameplate", UIParent)
 DBMNameplateFrame:SetFrameStrata('BACKGROUND')
 DBMNameplateFrame:Hide()
 
+----------------------
+-- Helper functions --
+----------------------
+function CleanSubString(text, i, j)
+	if type(text) == "string" and text ~= "" and i and i > 0 and j and j > 0 then
+		i = floor(i)
+		j = floor(j)
+		local b1 = (#text > 0) and strbyte(strsub(text, #text, #text)) or nil
+		local b2 = (#text > 1) and strbyte(strsub(text, #text-1, #text)) or nil
+		local b3 = (#text > 2) and strbyte(strsub(text, #text-2, #text)) or nil
+
+		if b1 and (b1 < 194 or b1 > 244) then
+			text = strsub (text, i, j)
+		elseif b1 and b1 >= 194 and b1 <= 244 then
+			text = strsub (text, i*2 - 1, j*2)
+
+		elseif b2 and b2 >= 224 and b2 <= 244 then
+			text = strsub (text, i*3 - 2, j*3)
+
+		elseif b3 and b3 >= 240 and b3 <= 244 then
+			text = strsub (text, i*4 - 3, j*3)
+		end
+	end
+
+	return text
+end
+
 --------------------------
 -- Aura frame functions --
 --------------------------
@@ -576,7 +603,7 @@ do
 
 		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
-			local display = strsub(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, 7)
+			local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
 			--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
 			local curTime =  GetTime()
 
@@ -612,7 +639,7 @@ do
 			for _, curGuid in pairs(getAllShownGUIDs()) do
 				local tmpId = id .. curGuid
 				local color = {DBT:GetColorForType(colorType)}
-				local display = strsub(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, 7)
+				local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
 				--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
 				local curTime =  GetTime()
 
