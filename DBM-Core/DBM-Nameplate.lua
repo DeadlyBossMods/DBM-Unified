@@ -173,7 +173,7 @@ do
 
 		local typeOffset = DBM.Options.NPIconSize/4
 		local prev,total_width,first_icon
-		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --center is default
+		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --top is default
 		local centered = false
 		local centeredVertical = false
 		local growthDirection = DBM.Options.NPIconGrowthDirection
@@ -201,7 +201,6 @@ do
 			anchor, anchorRel = 'BOTTOM','TOP'
 			centeredVertical = true
 		else
-			anchor, anchorRel = 'LEFT','RIGHT'
 			centered = true
 		end
 
