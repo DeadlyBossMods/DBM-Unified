@@ -50,6 +50,8 @@ CL.FAR_AWAY					= "먼 곳"
 CL.PIT							= "구멍"--Pit, as in hole in ground
 CL.TOTEM							= "토템"
 CL.TOTEMS							= "토템"
+--CL.HORIZONTAL						= "Horizontal"
+--CL.VERTICAL							= "Vertical"
 --Mechanics
 CL.BOMB								= "폭탄"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.BOMBS							= "폭탄"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
@@ -93,7 +95,3 @@ CL.MARKS							= "징표"--Plural of above
 CL.CURSE							= "저주"
 CL.CURSES							= "저주"
 CL.SWIRLS							= "회오리"--Plural of Swirl
---NOTE, many common locals are auto localized:
---Bomb (37859), Bombs (167180), Scream (31295), Breath (17088), Beam (173303), Beams (207544), Charge (100), Knockback (28405), Portal (161722), Portals (109400)
---Fixate (12021), Trap (181341), Meteor (28884), Shield (151702), Teleport (4801), Fear (5782), Roar (140459), Leap (47482), Orb (265315), Tornados (86189)
---Pull (193997), Push (359132), Swirl (143413)

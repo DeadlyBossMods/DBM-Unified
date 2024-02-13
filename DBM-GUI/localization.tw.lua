@@ -578,7 +578,10 @@ L.NPAuraSize				= "光環像素大小 (平方): %d"
 L.NPIcon_BarOffSetX 		= "圖示水平偏移：%d"
 L.NPIcon_BarOffSetY 		= "圖示垂直偏移：%d"
 L.NPIcon_GrowthDirection 	= "圖示增長方向"
+--L.NPIconAnchorPoint		 			= "Icon Anchor Point"
 L.NPDemo					= "測試 (靠近名條)"
+--L.FontTypeTimer						= "Select timer font"
+--L.FontTypeText						= "Select text font"
 
 -- Misc
 L.Area_General				= "一般"

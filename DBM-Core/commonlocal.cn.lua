@@ -54,6 +54,8 @@ CL.FAR_AWAY							= "远离"
 CL.PIT								= "洞"
 CL.TOTEM							= "图腾"
 CL.TOTEMS							= "图腾"
+--CL.HORIZONTAL						= "Horizontal"
+--CL.VERTICAL							= "Vertical"
 -- 机制
 CL.BOMB								= "炸弹"
 CL.BOMBS							= "炸弹"

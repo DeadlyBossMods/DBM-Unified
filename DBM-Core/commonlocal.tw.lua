@@ -50,6 +50,8 @@ CL.FAR_AWAY					= "遠離"
 CL.PIT						= "坑洞"--Pit, as in hole in ground
 CL.TOTEM					= "圖騰"
 CL.TOTEMS					= "圖騰"
+--CL.HORIZONTAL						= "Horizontal"
+--CL.VERTICAL							= "Vertical"
 --Mechanics
 CL.BOMB						= "炸彈"
 CL.BOMBS					= "炸彈"

@@ -579,7 +579,10 @@ L.NPAuraSize				= "Tamaño del aura: %d"
 L.NPIcon_BarOffSetX 		= "Desplazamiento del icono X: %d"
 L.NPIcon_BarOffSetY 		= "Desplazamiento del icono X Y: %d"
 L.NPIcon_GrowthDirection 	= "Dirección de crecimiento del icono"
+--L.NPIconAnchorPoint		 			= "Icon Anchor Point"
 L.NPDemo					= "Prueba (Acercase de placas de nombre)"
+--L.FontTypeTimer						= "Select timer font"
+--L.FontTypeText						= "Select text font"
 
 -- Misc
 L.Area_General				= "General"
