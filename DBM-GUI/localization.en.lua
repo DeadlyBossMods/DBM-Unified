@@ -567,6 +567,8 @@ L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
 L.NPDemo							= "Test (Be near nameplates)"
 
 L.TabCategory_Plugins				= "Plugins"
+L.FontTypeTimer						= "Select timer font"
+L.FontTypeText						= "Select text font"
 
 -- Misc
 L.Area_General						= "General"

@@ -19,6 +19,21 @@ local CooldownFrame_Set = CooldownFrame_Set
 --function locals
 local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame
 
+
+--Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
+local standardFont
+if LOCALE_koKR then
+	standardFont = "Fonts\\2002.TTF"
+elseif LOCALE_zhCN then
+	standardFont = "Fonts\\ARKai_T.ttf"
+elseif LOCALE_zhTW then
+	standardFont = "Fonts\\blei00d.TTF"
+elseif LOCALE_ruRU then
+	standardFont = "Fonts\\FRIZQT___CYR.TTF"
+else
+	standardFont = "Fonts\\FRIZQT__.TTF"
+end
+
 --------------------
 --  Create Frame  --
 --------------------
@@ -33,10 +48,9 @@ do
 	local function AuraFrame_CreateIcon(frame)
 		-- base frame
 		---@class DBMNamePlateIconFrame: Button, BackdropTemplate
-		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame, BackdropTemplateMixin and "BackdropTemplate")
+		local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame, "BackdropTemplate")
 		iconFrame:EnableMouse(false)
 		iconFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
-		--local iconFrame = CreateFrame("Button", "DBMNameplateAI" .. #frame.icons, DBMNameplateFrame)
 		iconFrame:SetSize(DBM.Options.NPIconSize+2, DBM.Options.NPIconSize+2)
 		iconFrame:Hide()
 
@@ -60,15 +74,21 @@ do
 		-- CD text
 		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "overlay", "NumberFontNormal")
 		iconFrame.cooldown.timer:SetPoint ("center")
-		--local font, _, flags = iconFrame.cooldown.timer:GetFont() --TODO: Options
-		--iconFrame.cooldown.timer:SetFont(font, 18, flags)
+		local font = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
+		local fontSize = DBM.Options.NPIconTimerFontSize
+		local style = DBM.Options.NPIconTimerFontStyle == "None" and nil or DBM.Options.NPIconTimerFontStyle
+		print(font, fontSize, style)
+		iconFrame.cooldown.timer:SetFont(font, fontSize, style)
 		iconFrame.cooldown.timer:Show()
 		iconFrame.timerText = iconFrame.cooldown.timer
 
 		iconFrame.text = iconFrame:CreateFontString(nil, "overlay", "GameFontNormal")
 		iconFrame.text:SetPoint("bottom", iconFrame, "top", 0, 2)
-		local font, _, flags = iconFrame.text:GetFont() --TODO: Options
-		iconFrame.text:SetFont(font, 10, flags)
+		local font = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
+		local fontSize = DBM.Options.NPIconTextFontSize
+		local style = DBM.Options.NPIconTextFontStyle == "None" and nil or DBM.Options.NPIconTextFontStyle
+		print(font, fontSize, style)
+		iconFrame.text:SetFont(font, fontSize, style)
 		iconFrame.text:Hide()
 
 		iconFrame:SetScript ("OnUpdate", frame.UpdateTimerText)

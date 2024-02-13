@@ -60,17 +60,104 @@ local iconGrowthDirection = style:CreateDropdown(L.NPIcon_GrowthDirection, dirs,
 	DBM.Options.NPIconGrowthDirection = value
 end)
 iconGrowthDirection:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", -20, -25)
-iconGrowthDirection.myheight = 85
+iconGrowthDirection.myheight = 0
 
-local testbutton = general:CreateButton(L.NPDemo, 100, 16)
+local Fonts = DBM_GUI:MixinSharedMedia3("font", {
+	{
+		text	= DEFAULT,
+		value	= "standardFont"
+	},
+	{
+		text	= "Arial",
+		value	= "Fonts\\ARIALN.TTF"
+	},
+	{
+		text	= "Skurri",
+		value	= "Fonts\\SKURRI_CYR.ttf"
+	},
+	{
+		text	= "Morpheus",
+		value	= "Fonts\\MORPHEUS_CYR.ttf"
+	}
+})
+
+local FontDropDownTimer = style:CreateDropdown(L.FontTypeTimer, Fonts, "DBM", "NPIconTimerFont", function(value)
+	DBM.Options.NPIconTimerFont = value
+end)
+FontDropDownTimer:SetPoint("TOPLEFT", iconGrowthDirection, "TOPLEFT", 0, -70)
+FontDropDownTimer.myheight = 0
+
+local FontStyles = {
+	{
+		text	= L.None,
+		value	= "None"
+	},
+	{
+		text	= L.Outline,
+		value	= "OUTLINE",
+		flag	= true
+	},
+	{
+		text	= L.ThickOutline,
+		value	= "THICKOUTLINE",
+		flag	= true
+	},
+	{
+		text	= L.MonochromeOutline,
+		value	= "MONOCHROME,OUTLINE",
+		flag	= true
+	},
+	{
+		text	= L.MonochromeThickOutline,
+		value	= "MONOCHROME,THICKOUTLINE",
+		flag	= true
+	}
+}
+
+local TimerFontStyleDropDown = style:CreateDropdown(L.FontStyle, FontStyles, "DBM", "NPIconTimerFontStyle", function(value)
+	DBM.Options.NPIconTimerFontStyle = value
+end)
+TimerFontStyleDropDown:SetPoint("LEFT", FontDropDownTimer, "RIGHT", 25, 0)
+TimerFontStyleDropDown.myheight = 0
+
+local timerFontSizeSlider = style:CreateSlider(L.FontSize, 8, 60, 1, 150)
+timerFontSizeSlider:SetPoint("TOPLEFT", FontDropDownTimer, "TOPLEFT", 20, -40)
+timerFontSizeSlider:SetValue(DBM.Options.NPIconTimerFontSize)
+timerFontSizeSlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconTimerFontSize = self:GetValue()
+end)
+timerFontSizeSlider.myheight = 0
+
+local FontDropDownText = style:CreateDropdown(L.FontTypeText, Fonts, "DBM", "NPIconTextFont", function(value)
+	DBM.Options.NPIconTextFont = value
+end)
+FontDropDownText:SetPoint("TOPLEFT", timerFontSizeSlider, "TOPLEFT", -20, -70)
+FontDropDownText.myheight = 0
+
+local TextFontStyleDropDown = style:CreateDropdown(L.FontStyle, FontStyles, "DBM", "NPIconTextFontStyle", function(value)
+	DBM.Options.NPIconTextFontStyle = value
+end)
+TextFontStyleDropDown:SetPoint("LEFT", FontDropDownText, "RIGHT", 25, 0)
+TextFontStyleDropDown.myheight = 0
+
+local textFontSizeSlider = style:CreateSlider(L.FontSize, 8, 60, 1, 150)
+textFontSizeSlider:SetPoint("TOPLEFT", FontDropDownText, "TOPLEFT", 20, -40)
+textFontSizeSlider:SetValue(DBM.Options.NPIconTextFontSize)
+textFontSizeSlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconTextFontSize = self:GetValue()
+end)
+textFontSizeSlider.myheight = 310
+
+local testbutton = style:CreateButton(L.NPDemo, 100, 16)
 testbutton:SetPoint("TOPRIGHT", style.frame, "TOPRIGHT", -2, -4)
 testbutton:SetNormalFontObject(GameFontNormalSmall)
 testbutton:SetHighlightFontObject(GameFontNormalSmall)
 testbutton:SetScript("OnClick", function()
 	DBM:DemoMode()
 end)
+testbutton.myheight = 0
 
-local resetbutton = general:CreateButton(L.SpecWarn_ResetMe, 120, 16)
+local resetbutton = style:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 resetbutton:SetPoint("BOTTOMRIGHT", style.frame, "BOTTOMRIGHT", -2, 4)
 resetbutton:SetNormalFontObject(GameFontNormalSmall)
 resetbutton:SetHighlightFontObject(GameFontNormalSmall)
@@ -80,8 +167,21 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconXOffset = DBM.DefaultOptions.NPIconXOffset
 	DBM.Options.NPIconYOffset = DBM.DefaultOptions.NPIconYOffset
 	DBM.Options.NPIconGrowthDirection = DBM.DefaultOptions.NPIconGrowthDirection
+	DBM.Options.NPIconTimerFont = DBM.DefaultOptions.NPIconTimerFont
+	DBM.Options.NPIconTimerFontStyle = DBM.DefaultOptions.NPIconTimerFontStyle
+	DBM.Options.NPIconTimerFontSize = DBM.DefaultOptions.NPIconTimerFontSize
+	DBM.Options.NPIconTextFont = DBM.DefaultOptions.NPIconTextFont
+	DBM.Options.NPIconTextFontStyle = DBM.DefaultOptions.NPIconTextFontStyle
+	DBM.Options.NPIconTextFontSize = DBM.DefaultOptions.NPIconTextFontSize
 	-- Set UI visuals
 	auraSizeSlider:SetValue(DBM.DefaultOptions.NPIconSize)
 	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
 	iconOffsetYSlider:SetValue(DBM.DefaultOptions.NPIconYOffset)
+	FontDropDownTimer:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFont)
+	TimerFontStyleDropDown:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFontStyle)
+	timerFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTimerFontSize)
+	FontDropDownText:SetSelectedValue(DBM.DefaultOptions.NPIconTextFont)
+	TextFontStyleDropDown:SetSelectedValue(DBM.DefaultOptions.NPIconTextFontStyle)
+	textFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTextFontSize)
 end)
+resetbutton.myheight = 0
