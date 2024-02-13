@@ -604,11 +604,9 @@ else--TBC and Vanilla
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
 	}
 	-- Season of Discovery
-	if C_Seasons and C_Seasons.GetActiveSeason() == 2 then
-		instanceDifficultyBylevel = {
-            [48] = {25, 3}, -- Blackfathom deeps level up raid
-            [90] = {40, 3}, -- Gnomeregan level up raid
-        }
+	if C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder then
+		instanceDifficultyBylevel[48] = {25, 3}, -- Blackfathom deeps level up raid
+		instanceDifficultyBylevel[90] = {40, 3}, -- Gnomeregan level up raid
 	end
 end
 
@@ -5005,7 +5003,10 @@ do
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
 		self:Debug("ENCOUNTER_START event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size)
 		if dbmIsEnabled then
-			self:CheckAvailableMods()
+			--Only nag in raids on engage
+			if IsInRaid() then
+				self:CheckAvailableMods()
+			end
 			if combatInfo[LastInstanceMapID] then
 				for _, v in ipairs(combatInfo[LastInstanceMapID]) do
 					if not v.noESDetection and not (#inCombat > 0 and v.noMultiBoss) then
@@ -5028,7 +5029,10 @@ do
 
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		self:Debug("ENCOUNTER_END event fired: " .. encounterID .. " " .. name .. " " .. difficulty .. " " .. size .. " " .. success)
-		self:CheckAvailableMods()
+		if success == 0 then
+			--Only nag on wipes (in any content)
+			self:CheckAvailableMods()
+		end
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
