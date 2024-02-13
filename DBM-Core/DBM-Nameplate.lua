@@ -14,7 +14,7 @@ local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
 ---@cast GetNamePlates fun(): table[] -- https://github.com/Ketho/vscode-wow-api/issues/122
-local twipe, floor, strsub= table.wipe, math.floor, _G.strsub
+local twipe, floor, strsub, strbyte= table.wipe, math.floor, _G.strsub, _G.strbyte
 local CooldownFrame_Set = CooldownFrame_Set
 --function locals
 local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame
@@ -44,7 +44,7 @@ DBMNameplateFrame:Hide()
 ----------------------
 -- Helper functions --
 ----------------------
-function CleanSubString(text, i, j)
+local function CleanSubString(text, i, j)
 	if type(text) == "string" and text ~= "" and i and i > 0 and j and j > 0 then
 		i = floor(i)
 		j = floor(j)
