@@ -3,6 +3,7 @@ if not DBM_COMMON_L then DBM_COMMON_L = {} end
 
 local CL = DBM_COMMON_L
 
+--General
 CL.NONE						= "無"
 CL.RANDOM					= "隨機"
 CL.UNKNOWN					= "未知"--UNKNOWN which is "Unknown" (does u vs U matter?)
@@ -14,6 +15,7 @@ CL.NO_DEBUFF				= "沒有%s"--For use in places like info frame where you put "N
 CL.ALLY						= "隊友"--Such as "Move to Ally"
 CL.ALLIES					= "隊友"--Such as "Move to Allies"
 CL.TANK						= "坦克"--Such as "Move to Tank"
+CL.CLEAR					= "清除"
 CL.SAFE						= "安全"
 CL.NOTSAFE					= "不安全"
 CL.SEASONAL					= "季節性"--Used for option headers to label options that apply to seasonal mechanics (Such as season of mastery on classic era)
@@ -71,6 +73,8 @@ CL.TANKCOMBO				= "坦克連擊"
 CL.AOEDAMAGE				= "AOE傷害"
 CL.GROUPSOAK				= "隊伍分傷"
 CL.GROUPSOAKS				= "隊伍分傷"
+CL.HEALABSORB				= "治療吸收"
+CL.HEALABSORBS				= "治療吸收"
 CL.DODGES					= "躲避"
 CL.POOL						= "圈"
 CL.POOLS					= "圈"
@@ -86,3 +90,6 @@ CL.TRAPS					= "陷阱"--Doesn't have a direct auto localize so has to be manual
 CL.ROOTS					= "定身"
 CL.MARK						= "標記"--As in short text for all the encounter mechanics that start or end in "Mark"
 CL.MARKS					= "標記"--Plural of above
+CL.CURSE					= "詛咒"
+CL.CURSES					= "詛咒"
+CL.SWIRLS					= "迴旋"--Plural of Swirl

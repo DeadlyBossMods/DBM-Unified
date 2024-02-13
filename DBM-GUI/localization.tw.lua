@@ -15,13 +15,12 @@ L.OTabDungeons				= "隊伍/單獨"
 L.OTabWorld					= "世界首領"
 L.OTabScenarios				= "事件"
 L.OTabPlugins				= "其他"
-L.OTabPlugins				= "核心插件"
 L.OTabOptions				= "核心選項"
 L.OTabAbout					= "關於"
 
 L.FOLLOWER					= "追隨者"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 
-L.TabCategory_CURRENT_SEASON		= "當前賽季"
+L.TabCategory_CURRENT_SEASON	= "當前賽季"
 
 L.TabCategory_OTHER			= "其它模組"
 L.TabCategory_AFFIXES		= "詞綴"
@@ -67,6 +66,7 @@ L.Area_ProfilesSetup		= "DBM配置檔使用指南"
 L.Core_GUI 					= "核心 & 圖形界面"
 L.General 					= "一般DBM核心選項"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
+L.EnableCompartmentIcon		= "顯示整合按鈕"
 L.UseSoundChannel			= "設置DBM警告的音效頻道"
 L.UseMasterChannel			= "主聲道"
 L.UseDialogChannel			= "對話聲道"
@@ -354,6 +354,10 @@ L.CBTRole					= "角色類型法術"
 L.CBTPhase					= "階段轉換"
 L.CBTImportant				= "使用者重要法術"
 --Dropdown Options
+L.SAOne						= "通用音效 1 (個人)"
+L.SATwo						= "通用音效 2 (全部人)"
+L.SAThree					= "通用音效 3 (高優先動作)"
+L.SAFour					= "通用音效 4 (高優先跑開)"
 L.ColorDropGeneric			= "通用 (原始)"
 L.ColorDrop1				= "顏色 1"
 L.ColorDrop2				= "顏色 2"
@@ -407,16 +411,17 @@ L.Area_SoundOptions				= "聲音選項"
 L.TabCategory_Filters	 	= "全局禁用及過濾"
 L.Area_DBMFiltersSetup		= "DBM過濾器指南"
 L.Area_BlizzFiltersSetup	= "暴雪過濾器指南"
--- Panel: DBM Features
-L.Panel_SpamFilter					= "DBM功能設置"
+
+-- Panel: Toggle DBM Features
+L.Panel_SpamFilter					= "停用DBM功能"
 
 L.Area_SpamFilter_SpecFeatures		= "通告功能"
 L.SpamBlockNoShowAnnounce			= "不顯示任何一般（非強調）通告提示文字或播放警告音效"
 L.SpamBlockNoSpecWarnText			= "不顯示特別提示文字"
 L.SpamBlockNoSpecWarnFlash			= "特別提示時不閃爍螢幕"
 L.SpamBlockNoSpecWarnVibrate		= "特別提示時不震動控制器"
-L.SpamBlockNoSpecWarnSound			= "不播放特別提示音效 (如果在“語音警告”面板中啟用了語音包，則仍允許語音包)"
-L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
+L.SpamBlockNoSpecWarnSound			= "不播放特別提示音效 (在倒數與語音包面板中啟用的語音仍會播放)"
+L.SpamBlockNoPrivateAuraSound		= "不登記私人光環音效"
 
 L.Area_SpamFilter_Timers			= "全局計時禁用及過濾選項"
 L.SpamBlockNoShowBossTimers			= "不顯示地城/團隊首領的計時器"
@@ -435,7 +440,6 @@ L.SpamBlockNoSetIcon				= "不設置標記在目標上"
 L.SpamBlockNoRangeFrame				= "不顯示距離框架"
 L.SpamBlockNoInfoFrame				= "不顯示訊息框架"
 L.SpamBlockNoHudMap					= "不要顯示HudMap"
-
 L.SpamBlockNoYells					= "不送出大喊至頻道"
 L.SpamBlockNoNoteSync				= "不接受註記分享"
 L.SpamBlockAutoGossip				= "不要自動處理對話內容"
@@ -456,7 +460,6 @@ L.PT_Threshold						= "不要播放高於%d秒以上的休息/開戰/自訂倒�
 L.Panel_ReducedInformation			= "減少訊息"
 
 L.Area_SpamFilter_Anounces			= "全局警告禁用及過濾選項"
-L.SpamBlockNoShowAnnounce			= "不顯示任何提示文字或播放警告音效"
 L.SpamBlockNoShowTgtAnnounce		= "不顯示目標的提示文字或播放警告音效 (上列選項會覆蓋此選項)"
 L.SpamBlockNoTrivialSpecWarnSound	= "如果相對你等級是不重要的內容則不要播放特別提示音效 (播放使用者選擇的標準提示音效替代)"
 
@@ -467,7 +470,8 @@ L.FilterVoidFormSay					= "在虛空型態時不要發送圖示/倒數計時聊�
 
 L.Area_SpecFilter					= "角色職責過濾選項"
 L.FilterTankSpec					= "非坦克角色職責時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
-L.FilterDispels						= "過濾可驅散技能如果你的驅散技正在冷卻中"
+L.FilterDispels						= "如果你的驅散技能正在冷卻中，過濾可驅散技能"
+L.FilterCrowdControl				= "如果你的控場技能正在冷卻中，過濾基於打斷的控場通告"
 L.FilterTrashWarnings				= "過濾所有小怪警告在普通與英雄以及過往版本的地城"
 
 L.Area_BInterruptFilter				= "首領打斷過濾選項"
@@ -481,7 +485,7 @@ L.Area_TInterruptFilter				= "小怪打斷過濾選項"--Reuses above 3 strings
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "減少DBM的控制"
 L.Area_SpamFilter_SpecRoleFilters	= "特別警告類型過濾 (控制DBM要怎麼做)"
-L.SpamSpecInformationalOnly			= "刪除所有特別警告的說明文字/語音警告 (需要UI重載)。警報仍顯示和播放聲音，但將是通用和非指示性"
+L.SpamSpecInformationalOnly			= "更改所有特別警告的說明文字/語音警告 (需要UI重載)。警報仍顯示和播放聲音，但將是通用和非指示性"
 L.SpamSpecRoleDispel				= "徹底過濾'驅散'警告 (完全無文字或聲音)"
 L.SpamSpecRoleInterrupt				= "過濾'打斷'警告 (完全無文字或聲音)"
 L.SpamSpecRoleDefensive				= "過濾'減傷'警告 (完全無文字或聲音)"
@@ -492,25 +496,35 @@ L.SpamSpecRoleSwitch				= "過濾'切換目標''小怪' 警報 (完全無文字�
 L.SpamSpecRoleGTFO					= "過濾'地板技能'警告 (完全無文字或聲音)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard			= "暴雪內建功能設置"
-L.Area_HideBlizzard				= "禁用及隱藏暴雪功能選項"
-L.HideBossEmoteFrame			= "首領戰鬥時隱藏團隊首領表情框架"
-L.HideWatchFrame				= "首領戰鬥時隱藏任務目標框架。如果沒有追蹤中的成就，或是不在傳奇+。"
-L.HideGarrisonUpdates			= "首領戰鬥時隱藏追隨者任務完成提示"
-L.HideGuildChallengeUpdates		= "首領戰鬥時隱藏公會挑戰完成提示"
-L.HideQuestTooltips				= "首領戰鬥時隱藏任務目標提示"
-L.HideTooltips					= "首領戰鬥時完全地隱藏滑鼠提示"
-L.DisableSFX					= "首領戰鬥時禁用音效頻道（注意：如果啟用此選項，則即使戰鬥進入時音效未打開，戰鬥結束時也會打開聲音效果）"
-L.DisableCinematics				= "禁用遊戲中的過場動畫"
-L.OnlyFight						= "只有戰鬥中，每次動畫播放一次之後"
-L.AfterFirst					= "在副本中，每次動畫播放一次之後"
-L.CombatOnly					= "在任何戰鬥中停用"
-L.RaidCombat					= "只在首領戰鬥中停用"
+L.Panel_HideBlizzard				= "阻擋暴雪功能"
+--Toast
+L.Area_HideToast					= "停用暴雪彈出提示 (跳出提醒)"
+L.HideGarrisonUpdates				= "首領戰鬥時隱藏追隨者彈出提示"
+L.HideGuildChallengeUpdates			= "首領戰鬥時隱藏公會挑戰彈出提示"
+--L.HideBossKill					= "Hide boss kill toasts"--NYI
+--L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+--Cut Scenes
+L.Area_Cinematics					= "阻擋遊戲中的動畫"
+L.DuringFight						= "首領戰鬥時阻擋戰鬥過場動畫"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "在地下城或團隊副本中的任何地方阻擋非戰鬥過場動畫"
+L.NonInstanceAnywhere				= "危險: 在室外開放世界阻擋過場動畫 (不建議)"
+L.OnlyAfterSeen						= "只有阻擋過場動畫，至少播放一次之後您選擇阻擋 (至少體驗一次劇情，強烈建議此選項)"
+--Sound
+L.Area_Sound						= "阻擋遊戲中聲音"
+L.DisableSFX						= "首領戰鬥時停用音效頻道"
+L.DisableAmbiance					= "首領戰鬥時停用環境頻道"
+L.DisableMusic						= "首領戰鬥時停用音樂頻道 (注意: 如果啟用，在事件音效中啟用的自訂音樂將不會播放)"
+--Other
+L.Area_HideBlizzard					= "停用 & 隱藏其他暴雪提示"
+L.HideBossEmoteFrame				= "首領戰鬥時隱藏團隊首領表情框架"
+L.HideWatchFrame					= "首領戰鬥時隱追蹤框架(任務目標)，如果沒有追踪成就，或不是在傳奇+中"
+L.HideQuestTooltips					= "首領戰鬥時隱藏任務目標提示"--Currently hidden (NYI)
+L.HideTooltips						= "首領戰鬥時隱藏完全隱藏提示"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "團隊領隊控制項"
 L.Area_FeatureOverrides				= "功能覆蓋選項"
-L.OverrideIcons 					= "禁用團隊中所有玩家的圖示標記，包括我自己 (如果您希望DBM按您的原則進行標記，請使用覆蓋而不是禁用)"
+L.OverrideIcons 					= "禁用團隊中所有玩家的圖示標記，包括我自己" --(如果您希望DBM按您的原則進行標記，請使用覆蓋而不是禁用)
 L.OverrideSay						= "禁用團隊中所有玩家的聊天泡泡/說訊息，包含我自己"
 L.DisableStatusWhisperShort			= "禁用整個團隊的狀態/回覆密語"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "禁用整個團隊同步到公會的進度訊息"--Duplicated from privacy but makes sense to include option in both panels
@@ -565,8 +579,6 @@ L.NPIcon_BarOffSetX 		= "圖示水平偏移：%d"
 L.NPIcon_BarOffSetY 		= "圖示垂直偏移：%d"
 L.NPIcon_GrowthDirection 	= "圖示增長方向"
 L.NPDemo					= "測試 (靠近名條)"
-
-L.TabCategory_Plugins		= "掛件"
 
 -- Misc
 L.Area_General				= "一般"

@@ -72,6 +72,7 @@ L.Area_ProfilesSetup		= "DBM 配置文件指南"
 L.Core_GUI 					= "核心与图形"
 L.General 					= "DBM核心综合设置"
 L.EnableMiniMapIcon			= "显示小地图按钮"
+--L.EnableCompartmentIcon	= "Show compartment button"
 L.UseSoundChannel			= "设置DBM使用的声道"
 L.UseMasterChannel			= "主声道"
 L.UseDialogChannel			= "对话声道"
@@ -104,6 +105,27 @@ L.ShowWAKeys				= "在技能名称旁边显示 WeakAuras 键，以便使用DBM�
 L.NoDescription				= "此技能无描述说明"
 L.CustomOptions				= "此类别包含针对没有自己的技能或事件ID的事件的自定义选项。 这些选项已使用自定义手动 ID 分组在一起，以便于创建 WeakAuras"
 
+-- Panel: Auto Logging
+L.Panel_AutoLogging			= "自动记录"
+--Auto Logging: Logging toggles/types
+L.Area_AutoLogging			= "自动战斗日志开关"
+L.AutologBosses				= "自动采用官方格式记录日志。"
+L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
+--Auto Logging: Global filter Options
+L.Area_AutoLoggingFilters	= "自动记录选项"
+L.RecordOnlyBosses			= "不记录小怪数据 (只记录团队BOSS数据，使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
+L.DoNotLogLFG				= "不记录随机5人本/团队副本"
+--Auto Logging: Recorded Content types
+L.Area_AutoLoggingContent	= "自动记录内容"
+--L.LogCurrentMythicRaids				= "Current level Mythic raids"--Retail Only
+L.LogCurrentRaids			= "当前等级团队副本"
+L.LogTWRaids				= "时光团队副本或通过克罗米进入的团队副本"--Retail Only
+L.LogTrivialRaids			= "低等级团队"
+L.LogCurrentMPlus			= "当前等级的M+5人本"--Retail Only
+--L.LogCurrentMythicZero				= "Current level Mythic 0 dungeons"--Retail Only
+L.LogTWDungeons				= "时光5人本或通过克罗米进入的5人本"--Retail Only
+L.LogCurrentHeroic			= "当前等级的英雄5人本"
+
 -- Panel: Extra Features
 L.Panel_ExtraFeatures		= "其他功能"
 
@@ -119,25 +141,6 @@ L.SKT_Enabled				= "总是显示最速胜利计时条(覆盖单独BOSS设置)"
 L.ShowRespawn				= "Boss战斗未完成时显示Boss刷新计时条"
 L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
 L.ShowBerserkWarnings		= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
-
--- Panel: Auto Logging
-L.Panel_AutoLogging			= "自动记录"
---Auto Logging: Logging toggles/types
-L.Area_AutoLogging			= "自动战斗日志开关"
-L.AutologBosses				= "自动采用官方格式记录日志。"
-L.AdvancedAutologBosses		= "自动采用 Transcriptor 记录日志"
---Auto Logging: Global filter Options
-L.Area_AutoLoggingFilters	= "自动记录选项"
-L.RecordOnlyBosses			= "不记录小怪数据 (只记录团队BOSS数据，使用 /dbm pull 可提前记录并使得记录更准确，如提前偷药水或是召唤大军。)"
-L.DoNotLogLFG				= "不记录随机5人本/团队副本"
---Auto Logging: Recorded Content types
-L.Area_AutoLoggingContent	= "自动记录内容"
-L.LogCurrentRaids			= "当前等级团队副本"
-L.LogTWRaids				= "时光团队副本或通过克罗米进入的团队副本"--Retail Only
-L.LogTrivialRaids			= "低等级团队"
-L.LogCurrentMPlus			= "当前等级的M+5人本"--Retail Only
-L.LogTWDungeons				= "时光5人本或通过克罗米进入的5人本"--Retail Only
-L.LogCurrentHeroic			= "当前等级的英雄5人本"
 --
 L.Area_3rdParty				= "第三方插件选项"
 L.oRA3AnnounceConsumables	= "在战斗开始时通报oRA3消耗品检查"
@@ -234,7 +237,7 @@ L.SpecialWarnHeader5		= "类型 5: 设置警报选项，并包含玩家姓名"
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "聊天窗口消息"
-L.FrameArea		= "聊天窗口选项"
+L.SelectChatFrameArea		= "聊天窗口选项"
 L.SelectChatFrameButton		= "选择聊天窗口"
 L.SelectChatFrameInfoIdle		= "消息在 %s 中显示。"
 L.SelectChatFrameDefaultName	= "默认聊天窗口"
@@ -311,6 +314,7 @@ L.Area_ColorBytype			= "计时条分类着色指南"
 -- Panel: Color by Type
 L.Panel_ColorByType	 		= "计时条分类着色"
 L.AreaTitle_BarColors		= "计时条颜色"
+--L.AreaTitle_ImpBarColors			= "Important Bar Colors (These are bars set important by user)"
 L.BarTexture				= "计时条材质"
 L.BarStyle					= "计时条样式"
 L.BarDBM					= "DBM(有动画)"
@@ -339,6 +343,8 @@ L.BarStartColorPhase		= "初始颜色 (阶段转换)"
 L.BarEndColorPhase			= "结束颜色 (阶段转换)"
 L.BarStartColorUI			= "初始颜色 (自定义)"
 L.BarEndColorUI				= "结束颜色 (自定义)"
+--L.BarStartColorI2					= "Start color 8 (Important)"
+--L.BarEndColorI2						= "End color 8 (Important)"
 --Type 7 options
 L.Bar7Header				= "自定义计时条选项"
 L.Bar7ForceLarge			= "总是使用大型计时条"
@@ -353,6 +359,10 @@ L.CBTRole					= "剧情"
 L.CBTPhase					= "阶段转换"
 L.CBTImportant				= "重要 (自定义)"
 --Dropdown Options
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 L.ColorDropGeneric					= "通用技能配色"
 L.ColorDrop1						= "小怪来临配色"
 L.ColorDrop2						= "AOE技能配色"
@@ -390,6 +400,7 @@ L.Highest					= "顶部最高"
 L.Lowest					= "顶部最低"
 L.NoBarFade					= "使用开始/结束颜色作为长/短计时条颜色，而不是颜色渐变"
 L.BarInlineIcons			= "显示条内图标"
+--L.DisableRightClickBar				= "Disable right click to cancel timers"
 L.ShortTimerText			= "使用更短的计时条文字 (当可行时)"
 L.KeepBar					= "保持计时条显示直到技能被释放"
 L.KeepBar2					= "(当被模组支持时)"
@@ -414,6 +425,7 @@ L.SpamBlockNoSpecWarnText			= "不显示特殊警报提示文字"
 L.SpamBlockNoSpecWarnFlash			= "特殊警报时不闪烁屏幕"
 L.SpamBlockNoSpecWarnVibrate		= "特殊警报时不振动"
 L.SpamBlockNoSpecWarnSound			= "不播放特殊团队警报的声音（如果在“语音警报”面板中启用了语音包，则仍然允许语音包）"
+--L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
 
 L.Area_SpamFilter_Timers			= "计时器过滤选项"
 L.SpamBlockNoShowBossTimers			= "不为Boss显示计时条"
@@ -463,6 +475,7 @@ L.FilterVoidFormSay					= "当在虚无状态下，不播发位置或报数喊�
 L.Area_SpecFilter					= "角色过滤选项"
 L.FilterTankSpec					= "当非坦克专精时，过滤掉给予坦克的专用信息"
 L.FilterDispels						= "当驱散技能在冷却时, 过滤掉驱散提示"
+--L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
 L.FilterTrashWarnings				= "当进入低等级、普通或英雄副本时，过滤掉所有小怪警报"
 
 L.Area_BInterruptFilter				= "Boss打断过滤选项"
@@ -487,20 +500,30 @@ L.SpamSpecRoleSwitch				= "过滤 '转火' 警报 (没文字也没声音)"
 L.SpamSpecRoleGTFO					= "过滤 '快躲开' 警报 (没文字也没声音)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard		= "隐藏游戏自带内容"
-L.Area_HideBlizzard			= "隐藏游戏自带提示选项"
-L.HideBossEmoteFrame		= "Boss 战斗中隐藏Boss表情框体"
-L.HideWatchFrame			= "在没有成就追踪的情况下，Boss战斗中隐藏任务追踪框体"
-L.HideGarrisonUpdates		= "Boss 战斗中隐藏要塞队列完成提示"
-L.HideGuildChallengeUpdates	= "Boss 战斗中隐藏公会挑战成功信息"
-L.HideQuestTooltips			= "Boss 战斗中隐藏鼠标提示窗体中的任务进度"
-L.HideTooltips				= "Boss 战斗中完全隐藏鼠标提示窗体"
-L.DisableSFX				= "Boss 战斗中关闭音效(注意：如果你开启了这个选项，即使你在战斗开始时已关闭音效，战斗结束后音效也会被开启)"
-L.DisableCinematics			= "自动跳过游戏内过场动画"
-L.OnlyFight					= "只有在战斗中，每部动画播放了一次之后跳过"
-L.AfterFirst				= "仅第一次播放"
-L.CombatOnly				= "在任何战斗中隐藏"
-L.RaidCombat				= "在BOSS战斗中隐藏 "
+L.Panel_HideBlizzard				= "Block Blizzard Features"
+--Toast
+L.Area_HideToast					= "Disable blizzard toasts (popups)"
+L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
+L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
+--L.HideBossKill					= "Hide boss kill toasts"--NYI
+--L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+--Cut Scenes
+L.Area_Cinematics					= "Block in-game cinematics"
+L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
+L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
+L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+--Sound
+L.Area_Sound						= "Block in-game sounds"
+L.DisableSFX						= "Disable sound effects channel during boss fights"
+L.DisableAmbiance					= "Disable ambiance channel during boss fights"
+L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+--Other
+L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
+L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
+L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
+L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
+L.HideTooltips						= "Completely hide tooltips during boss fights"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "团队队长控制项"
@@ -509,6 +532,10 @@ L.OverrideIcons 					= "禁用团队中所有玩家的团队标记，包括我�
 L.OverrideSay						= "禁用团队中所有玩家的聊天泡泡/说话功能，包含我自己"
 L.DisableStatusWhisperShort			= "禁用整个团队的私聊状态回复"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "禁用整个团队的公会进度消息同步"--Duplicated from privacy but makes sense to include option in both panels
+--L.DisabledForDropdown				= "Choose boss mod(s) disable is sent to"--NYI
+--L.DiabledForBoth					= "Disable above features for both DBM and BW"--NYI
+--L.DiabledForDBM					= "Disable above features for only DBM users"--NYI
+--L.DiabledForBW					= "Disable above features for only BW users"--NYI
 
 L.Area_ConfigOverrides				= "设定覆盖选项 (施工中)"--NYI
 L.OverrideBossAnnounceOptions		= "使用我的配置覆盖全团的通告配置"--NYI
@@ -556,8 +583,6 @@ L.NPIcon_BarOffSetX 		= "技能图标X轴偏移: %d"
 L.NPIcon_BarOffSetY 		= "技能图标Y轴偏移: %d"
 L.NPIcon_GrowthDirection 	= "技能图标出现方向"
 L.NPDemo					= "测试 (靠近姓名版)"
-
-L.TabCategory_Plugins		= "挂件"
 
 -- Misc
 L.Area_General				= "一般"

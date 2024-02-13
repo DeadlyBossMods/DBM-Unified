@@ -13,3 +13,14 @@ trim_trailing_whitespace = false
 [{*.yml,.pkgmeta}]
 indent_style = space
 indent_size = 2
+
+[*.lua]
+# foo + bar * 5
+space_around_math_operator = true
+# foo = {1, 2, 3}
+space_around_table_field_list = false
+# mod:SetGeneralLocalization{name = "foo"}
+space_before_function_call_single_arg = false
+# -- comment not indented above else/elseif
+# elseif bar then
+never_indent_comment_on_if_branch = true

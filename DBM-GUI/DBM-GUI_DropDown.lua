@@ -26,7 +26,7 @@ tabFrame1:Hide()
 tabFrame1:SetFrameStrata("TOOLTIP")
 tabFrame1.offset = 0
 tabFrame1:ApplyBackdrop()
-tabFrame1:SetBackdropColor(0.1, 0.1, 0.1, 0.6)
+tabFrame1:SetBackdropColor(0.1, 0.1, 0.1, 0.9)
 tabFrame1:SetBackdropBorderColor(0.4, 0.4, 0.4)
 
 -- Temporary hack, till I get both versions running smoothly on the new system
@@ -41,7 +41,7 @@ tabFrame1List:SetScript("OnVerticalScroll", function(self, offset)
 	tabFrame1:Refresh()
 end)
 Mixin(tabFrame1List, BackdropTemplateMixin)
-tabFrame1List:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.6)
+tabFrame1List:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.9)
 
 local tabFrame1ScrollBar = _G[tabFrame1List:GetName() .. "ScrollBar"]
 tabFrame1ScrollBar:SetMinMaxValues(0, 11)

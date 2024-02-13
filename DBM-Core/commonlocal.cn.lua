@@ -1,4 +1,3 @@
--- CL.Core
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- Mini Dragon(projecteurs@gmail.com) <流浪者酒馆-Brilla@金色平原> 20231212
@@ -11,9 +10,9 @@ local CL = DBM_COMMON_L
 -- 基本
 CL.NONE								= "无"
 CL.RANDOM							= "随机"
+CL.UNKNOWN							= "未知"
 CL.NEXT								= "下一个 %s"
 CL.COOLDOWN							= "%s 冷却"
-CL.UNKNOWN							= "未知"
 CL.INCOMING							= "%s 即将到来"
 CL.INTERMISSION						= "转场"
 CL.NO_DEBUFF						= "没有 %s"
@@ -78,6 +77,8 @@ CL.TANKCOMBO						= "坦克连击"
 CL.AOEDAMAGE						= "AOE 伤害"
 CL.GROUPSOAK						= "群体吸收"
 CL.GROUPSOAKS						= "群体吸收"
+--CL.HEALABSORB						= "Heal Absorb"
+--CL.HEALABSORBS					= "Heal Absorbs"
 CL.DODGES							= "躲闪"
 CL.POOL								= "池子"
 CL.POOLS							= "池子"
@@ -93,3 +94,6 @@ CL.TRAPS							= "陷阱"
 CL.ROOTS							= "树根"
 CL.MARK								= "标记"
 CL.MARKS							= "标记"
+--CL.CURSE							= "Curse"
+--CL.CURSES							= "Curses"
+--CL.SWIRLS							= "Swirls"--Plural of Swirl

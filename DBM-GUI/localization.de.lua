@@ -49,6 +49,7 @@ L.Statistic_BestRank		= "Höchste Stufe:"
 -- Tab: General Core Options
 L.General 					= "Allgemeine Grundeinstellungen"
 L.EnableMiniMapIcon			= "Aktiviere Minimap-Symbol"
+--L.EnableCompartmentIcon	= "Show compartment button"
 L.UseSoundChannel			= "Audiokanal um DBM-Sounddateien abzuspielen"
 L.UseMasterChannel			= "Master Audiokanal"
 L.UseDialogChannel			= "Dialog Audiokanal"
@@ -90,6 +91,10 @@ L.ThickOutline				= "mit dickem Umriss"
 L.MonochromeOutline			= "ohne Glättung, mit Umriss"
 L.MonochromeThickOutline	= "ohne Glätt., mit dickem Umriss"
 L.RaidWarnSound				= "Sound für Schlachtzugwarnungen"
+--L.SAOne						= "Global Sound 1 (Personal)"
+--L.SATwo						= "Global Sound 2 (Everyone)"
+--L.SAThree					= "Global Sound 3 (High Priority Action)"
+--L.SAFour					= "Global Sound 4 (High Priority Run Away)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Allgemeine Meldungen"
@@ -247,6 +252,7 @@ L.FilterInterrupts2			= "nicht von akt. Ziel/Fokusziel gewirkt (immer) oder Unte
 L.FilterInterrupts3			= "nicht von akt. Ziel/Fokusziel gewirkt (immer) oder Unterbrech. auf CD (Boss & Trash)"
 L.FilterInterruptNoteName	= "Unterdrücke Warnungen für unterbrechbare Zauber (mit Zählung), falls die Warnung nicht deinen Namen in der nutzerdefinierten Notiz enthält"
 L.FilterDispels				= "Unterdrücke Warnungen für reinigbare Zauber, falls deine Reinigungen noch abklingen"
+--L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
 L.FilterTrashWarnings		= "Unterdrücke alle \"Trash\"-Gegner Warnungen in normalen und heroischen Dungeons"
 
 L.Area_PullTimer			= "Filtereinstellungen für Pull-, Pausen-, und benutzerdefinierte Timer"
@@ -257,19 +263,31 @@ L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen
 L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-Timer"
 L.PT_Threshold				= "Zeige keinen opt. Countd. für Pausen-/Nutzer-Timer über: %d"
 
-L.Panel_HideBlizzard		= "Deaktivierung von Spielelementen"
-L.Area_HideBlizzard			= "Einstellungen zum Deaktivieren und Verbergen von Spielelementen"
-L.HideBossEmoteFrame		= "Verberge das Fenster \"RaidBossEmoteFrame\" während Bosskämpfen"
-L.HideWatchFrame			= "Verberge das Fenster für die Questverfolgung während Bosskämpfen, falls keine Erfolge verfolgt werden und falls nicht Schwierigkeitsgrad Mythisch+"
-L.HideGarrisonUpdates		= "Verberge Garnisonsmeldungen während Bosskämpfen"
-L.HideGuildChallengeUpdates	= "Verberge Gildenerfolgsmeldungen während Bosskämpfen"
-L.HideQuestTooltips			= "Verberge Questziele in Tooltips während Bosskämpfen"
-L.HideTooltips				= "Verberge Tooltips vollständig während Bosskämpfen"
-L.DisableSFX				= "Deaktiviere Soundeffekte während Bosskämpfen"
-L.DisableCinematics			= "Verberge Videosequenzen"
-L.AfterFirst				= "Nach jeweils einmaligem Abspielen"
-L.CombatOnly				= "im Kampf deaktivieren (alle)"
-L.RaidCombat				= "im Kampf deaktivieren (nur Bosse)"
+-- Panel: Blizzard Features
+L.Panel_HideBlizzard				= "Block Blizzard Features"
+--Toast
+L.Area_HideToast					= "Disable blizzard toasts (popups)"
+L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
+L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
+--L.HideBossKill					= "Hide boss kill toasts"--NYI
+--L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+--Cut Scenes
+L.Area_Cinematics					= "Block in-game cinematics"
+L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
+L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
+L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+--Sound
+L.Area_Sound						= "Block in-game sounds"
+L.DisableSFX						= "Disable sound effects channel during boss fights"
+L.DisableAmbiance					= "Disable ambiance channel during boss fights"
+L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+--Other
+L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
+L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
+L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
+L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
+L.HideTooltips						= "Completely hide tooltips during boss fights"
 
 L.Panel_ExtraFeatures		= "Sonstige Funktionen"
 --

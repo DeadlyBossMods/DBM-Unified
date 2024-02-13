@@ -977,7 +977,7 @@ local function onUpdate(frame, table)
 		if friendlyEvents[currentEvent] then
 			local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(extraName or leftText)) or "player"--Prevent nil logical error
 			if unitId then
-				local _, _, _, mapId = UnitPosition(unitId)
+				local mapId = select(-1, UnitPosition(unitId))--In instances in 10.2.5, blizzard truncates UnitPosition to scrub x and y args, meaning it only has 2 returns, not 4, so can't select 4 anymore, have to -1 so it auto chooses last arg be it a 2 or a 4
 				if mapId == currentMapId then
 					local _, class = UnitClass(unitId)
 					if class then
@@ -1104,7 +1104,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 		return
 	end
 	prevLines = 0
-	currentMapId = select(4, UnitPosition("player"))
+	currentMapId = select(-1, UnitPosition("player"))
 	modLines = modMaxLines
 	if DBM.Options.InfoFrameLines and DBM.Options.InfoFrameLines ~= 0 then
 		maxLines = DBM.Options.InfoFrameLines

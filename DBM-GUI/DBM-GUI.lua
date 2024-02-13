@@ -691,8 +691,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 		end
 
 		local importExportProfilesArea = panel:CreateArea(L.Area_ImportExportProfile)
-		local test = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
-		test:SetPoint("TOPLEFT", 15, -10)
+		local importExportText = importExportProfilesArea:CreateText(L.ImportExportInfo, nil, true)
 		local exportProfile = importExportProfilesArea:CreateButton(L.ButtonExportProfile, 120, 20, function()
 			local exportProfile = {}
 			local profileID = playerLevel > 9 and DBM_UseDualProfile and GetSpecializationGroup() or 0
@@ -701,8 +700,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 			end
 			DBM_GUI:CreateExportProfile(exportProfile)
 		end)
-		exportProfile.myheight = 0
-		exportProfile:SetPoint("TOPLEFT", 12, -25)
+		exportProfile:SetPoint("TOPLEFT", importExportText, "BOTTOMLEFT", 0, -12)
 		local importProfile = importExportProfilesArea:CreateButton(L.ButtonImportProfile, 120, 20, function()
 			DBM_GUI:CreateImportProfile(function(importTable)
 				local errors = {}
@@ -738,7 +736,7 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 				end
 			end)
 		end)
-		importProfile.myheight = 0
+		importProfile.myheight = 12
 		importProfile:SetPoint("LEFT", exportProfile, "RIGHT", 2, 0)
 	end
 
@@ -776,10 +774,10 @@ function DBM_GUI:CreateBossModTab(addon, panel, subtab)
 				return -- No stats available for this? Possibly a bug
 			end
 
-			local Title			= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
+			local Title			= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight)
 
 			local function CreateText(text, header)
-				local frame = area:CreateText(text or "", nil, nil, header and GameFontHighlightSmall or GameFontNormalSmall, "LEFT")
+				local frame = area:CreateText(text or "", nil, nil, header and GameFontHighlightSmall or GameFontNormalSmall)
 				frame:Hide()
 				return frame
 			end
@@ -941,13 +939,20 @@ do
 		end
 	end
 
+    local expansions = {"CLASSIC", "BC", "WOTLK", "CATA", "MOP", "WOD", "LEG", "BFA", "SHADOWLANDS", "DRAGONFLIGHT"}
+
 	-- WotLK compat, search for "local C_AddOns" in DBM-Core.lua for more details
 	local IsAddOnLoaded = C_AddOns.IsAddOnLoaded or IsAddOnLoaded ---@diagnostic disable-line:deprecated
 	function DBM_GUI:UpdateModList()
 		for _, addon in ipairs(DBM.AddOns) do
 			if not addon.panel then
+				local customName
+				--Auto truncate Raid, Dungeon, and World boss mods to only display expansion name in list
+				if addon.type == "RAID" or addon.type == "PARTY" or addon.type == "WORLDBOSS" then
+					customName = _G["EXPANSION_NAME" .. (tIndexOf(expansions, addon.category:upper()) or 99) - 1]
+				end
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
-				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, nil, true, addon.modId)
+				addon.panel = DBM_GUI:CreateNewPanel(addon.name or "Error: No-modId", addon.type, false, customName, true, addon.modId)
 				if addon.modId == "DBM-Affixes" then -- If affixes, hide second general entry (as it's under Current Season)
 					DBM_GUI.tabs[3].buttons[#DBM_GUI.tabs[3].buttons].hidden = true
 				end

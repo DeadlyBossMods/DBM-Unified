@@ -1,9 +1,9 @@
-## Interface: 100200
-## Interface-Classic: 11500
+## Interface: 100205
+## Interface-Classic: 11501
 ## Interface-BCC: 20504
 ## Interface-Wrath: 30403
-## X-Min-Interface: 100200
-## X-Min-Interface-Classic: 11500
+## X-Min-Interface: 100205
+## X-Min-Interface-Classic: 11501
 ## X-Min-Interface-BCC: 20504
 ## X-Min-Interface-Wrath: 30403
 

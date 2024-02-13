@@ -1,15 +1,27 @@
 local L = DBM_GUI_L
 
+local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+
 local coreoptions = DBM_GUI.Cat_General:CreateNewPanel(L.Core_GUI, "option")
 
 local generaloptions = coreoptions:CreateArea(L.General)
 
-local MiniMapIcon = generaloptions:CreateCheckButton(L.EnableMiniMapIcon, true)
-MiniMapIcon:SetScript("OnClick", function(self)
+local miniMapIcon = generaloptions:CreateCheckButton(L.EnableMiniMapIcon, true)
+miniMapIcon:SetScript("OnClick", function(self)
 	DBM:ToggleMinimapButton()
 	self:SetChecked(not DBM_MinimapIcon.hide)
 end)
-MiniMapIcon:SetChecked(not DBM_MinimapIcon.hide)
+miniMapIcon:SetChecked(not DBM_MinimapIcon.hide)
+
+if isRetail then
+	local compartmentIcon = generaloptions:CreateCheckButton(L.EnableCompartmentIcon)
+	compartmentIcon:SetScript("OnClick", function(self)
+		DBM:ToggleCompartmentButton()
+		self:SetChecked(DBM_MinimapIcon.showInCompartment)
+	end)
+	compartmentIcon:SetChecked(DBM_MinimapIcon.showInCompartment)
+	compartmentIcon:SetPoint("LEFT", miniMapIcon, "RIGHT", 200, 0)
+end
 
 local soundChannelsList = {
 	{
@@ -114,7 +126,7 @@ ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
 
 local resizeOptions = coreoptions:CreateArea(L.ResizeOptions)
 
-resizeOptions:CreateText(L.ResizeInfo, nil, true, nil, nil, 0)
+resizeOptions:CreateText(L.ResizeInfo, nil, true)
 
 local optionsFrame = _G["DBM_GUI_OptionsFrame"]
 

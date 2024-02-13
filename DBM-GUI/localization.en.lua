@@ -2,7 +2,7 @@ DBM_GUI_L = {}
 
 local L = DBM_GUI_L
 
-L.MainFrame							= "Deadly Boss Mods"
+L.MainFrame							= "Deadly Boss Mods" -- OPTIONAL
 
 L.TranslationByPrefix				= "Translated by "
 L.TranslationBy 					= nil -- your name here, localizers!
@@ -66,6 +66,7 @@ L.Area_ProfilesSetup				= "DBM Profiles usage guide"
 L.Core_GUI 							= "Core & GUI"
 L.General 							= "General DBM Core Options"
 L.EnableMiniMapIcon					= "Show minimap button"
+L.EnableCompartmentIcon				= "Show compartment button"
 L.UseSoundChannel					= "Set audio channel used by DBM to play alert sounds"
 L.UseMasterChannel					= "Master audio channel."
 L.UseDialogChannel					= "Dialog audio channel."
@@ -182,6 +183,7 @@ L.TabCategory_Alerts	 			= "Alerts"
 L.Area_SpecAnnounceConfig			= "Special Announce visuals and sound guide"
 L.Area_SpecAnnounceNotes			= "Special Announce Notes guide"
 L.Area_VoicePackInfo				= "Information on DBM Voice Packs"
+
 -- Panel: Raidwarning
 L.Tab_RaidWarning 					= "Announcements"
 L.RaidWarning_Header				= "Announce Options"
@@ -283,11 +285,11 @@ L.Area_VoicePackAdvOptions			= "Voice Pack Advanced Options"
 L.SpecWarn_AlwaysVoice				= "Always play all spoken alerts (Even if Special Announce disabled. Useful for some Raid Leaders in niche situations, not recommended otherwise)"
 L.VPDontMuteSounds					= "Disable muting of regular alert sounds when using voice pack (use this only if you desire to hear BOTH during alerts)"
 L.Area_VPLearnMore					= "Learn more about voice packs and how to use these options"
-L.VPLearnMore						= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r"
+L.VPLearnMore						= "|cFF73C2FBhttps://github.com/DeadlyBossMods/DBM-Retail/wiki/%5BGuide%5D-DBM-&-Voicepacks#2022-update|r" -- OPTIONAL
 L.Area_BrowseOtherVP				= "Browse other voice packs on curse"
-L.BrowseOtherVPs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r"
+L.BrowseOtherVPs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+voice|r" -- OPTIONAL
 L.Area_BrowseOtherCT				= "Browse countdown packs on curse"
-L.BrowseOtherCTs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r"
+L.BrowseOtherCTs					= "|cFF73C2FBhttps://www.curseforge.com/wow/addons/search?search=dbm+count+pack|r" -- OPTIONAL
 
 -- Panel: Event Sounds
 L.Panel_EventSounds					= "Event Sounds (Victory, Wipe, etc)"
@@ -355,18 +357,25 @@ L.CBTRole							= "Specific Role Spell"
 L.CBTPhase							= "Phase Change"
 L.CBTImportant						= "User Important Spell"
 --Dropdown Options
-L.ColorDropGeneric					= "Generic (Original)"
-L.ColorDrop1						= "Color 1"
-L.ColorDrop2						= "Color 2"
-L.ColorDrop3						= "Color 3"
-L.ColorDrop4						= "Color 4"
-L.ColorDrop5						= "Color 5"
-L.ColorDrop6						= "Color 6"
-L.CDDImportant1						= "Important 1"
-L.CDDImportant2						= "Important 2"
-L.CVoiceOne							= "Count Voice 1"
-L.CVoiceTwo							= "Count Voice 2"
-L.CVoiceThree						= "Count Voice 3"
+--Special Announce Dropdowns
+L.SAOne								= "Global Sound 1 (Personal)"
+L.SATwo								= "Global Sound 2 (Everyone)"
+L.SAThree							= "Global Sound 3 (High Priority Action)"
+L.SAFour							= "Global Sound 4 (High Priority Run Away)"
+--Timer Dropdowns
+L.ColorDropGeneric					= "Generic (Default: Untyped)"
+L.ColorDrop1						= "Color 1 (Default: Add)"
+L.ColorDrop2						= "Color 2 (Default: AOE)"
+L.ColorDrop3						= "Color 3 (Default: Targeted)"
+L.ColorDrop4						= "Color 4 (Default: Interrupt)"
+L.ColorDrop5						= "Color 5 (Default: Role)"
+L.ColorDrop6						= "Color 6 (Default: Stage)"
+L.CDDImportant1						= "Important 1 (Non-Defaulted)"
+L.CDDImportant2						= "Important 2 (Non-Defaulted)"
+--Countdown Dropdowns
+L.CVoiceOne							= "Global Countdown 1"
+L.CVoiceTwo							= "Global Countdown 2"
+L.CVoiceThree						= "Global Countdown 3"
 
 -- Panel: Bar Appearance
 L.Panel_Appearance	 				= "Bar Appearance"
@@ -408,6 +417,7 @@ L.Area_SoundOptions					= "Sound Options"
 L.TabCategory_Filters	 			= "Global Disables & Filters"
 L.Area_DBMFiltersSetup				= "DBM Filters guide"
 L.Area_BlizzFiltersSetup			= "Blizzard Filters guide"
+
 -- Panel: Toggle DBM Features
 L.Panel_SpamFilter					= "Disable DBM Features"
 
@@ -416,7 +426,7 @@ L.SpamBlockNoShowAnnounce			= "Do not show text or play sound for ANY general (n
 L.SpamBlockNoSpecWarnText			= "Do not show special announce text"
 L.SpamBlockNoSpecWarnFlash			= "Do not show special announce screen flash"
 L.SpamBlockNoSpecWarnVibrate		= "Do not vibrate controller on special announce"
-L.SpamBlockNoSpecWarnSound			= "Do not play special announce sounds (still permits voice packs, if one is enabled in Spoken Alerts panel)"
+L.SpamBlockNoSpecWarnSound			= "Do not play special announce sounds (voice packs sounds enabled in Countdowns &amp; Voice Packs panel will still play)"
 L.SpamBlockNoPrivateAuraSound		= "Do not register private aura sounds"
 
 L.Area_SpamFilter_Timers			= "Timer Features"
@@ -467,10 +477,11 @@ L.FilterVoidFormSay					= "Do not send chat icon or countdown chat yells when in
 L.Area_SpecFilter					= "Role Filter Options"
 L.FilterTankSpec					= "Filter announcements designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' announcements are now all on by default.)"
 L.FilterDispels						= "Filter announcements for dispelable spells if your dispel is on cooldown"
-L.FilterTrashWarnings				= "Filter all trash mob announcements in normal, heroic, and trivial (outleveled) dungeons"
+L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
+L.FilterTrashWarnings				= "Filter all trash mob announcements in follower, normal, heroic, and trivial (outleveled) dungeons"
 
 L.Area_BInterruptFilter				= "Boss Interrupt Filter Options"
-L.FilterTargetFocus					= "Filter if caster is not current target/focus"
+L.FilterTargetFocus					= "Filter if caster is not current target/focus/softenemy"
 L.FilterInterruptCooldown			= "Filter if interrupt spell is on cooldown"
 L.FilterInterruptHealer				= "Filter if you're in a healer spec"
 L.FilterInterruptNoteName			= "Filter if alert has a count but your name isn't in the custom note"--Only used on bosses, trash mods don't assign counts
@@ -480,7 +491,7 @@ L.Area_TInterruptFilter				= "Trash Interrupt Filter Options"--Reuses above 3 st
 -- Panel: DBM Handholding
 L.Panel_HandFilter					= "Reduce DBM Handholding"
 L.Area_SpamFilter_SpecRoleFilters	= "Special Announce Type Filters (control how much handholding DBM does)"
-L.SpamSpecInformationalOnly			= "Remove all instructional text/spoken alerts from special announcements (Requires UI Reload). Alerts still show and play audio but will be generic and less directive"
+L.SpamSpecInformationalOnly			= "Change all instructional text/voice pack alerts from special announcements (Requires UI Reload). Alerts still show and play audio but will be generic and less directive"
 L.SpamSpecRoleDispel				= "Filter 'dispel' alerts entirely (No text or sound at all)"
 L.SpamSpecRoleInterrupt				= "Filter 'interrupt' alerts (No text or sound at all)"
 L.SpamSpecRoleDefensive				= "Filter 'defensive' alerts (No text or sound at all)"
@@ -492,24 +503,34 @@ L.SpamSpecRoleGTFO					= "Filter 'gtfo' alerts (No text or sound at all)"
 
 -- Panel: Blizzard Features
 L.Panel_HideBlizzard				= "Block Blizzard Features"
-L.Area_HideBlizzard					= "Disable & Hide Blizzard Features"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
+--Toast
+L.Area_HideToast					= "Disable blizzard toasts (popups)"
 L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
 L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"
+--L.HideBossKill					= "Hide boss kill toasts"--NYI
+--L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+--Cut Scenes
+L.Area_Cinematics					= "Block in-game cinematics"
+L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
+L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
+L.OnlyAfterSeen						= "Only block cut scenes, you selected to block, after they have been seen at least once. (To experience story as intended at least once, this option is strongly recommended)"
+--Sound
+L.Area_Sound						= "Block in-game sounds"
+L.DisableSFX						= "Disable sound effects channel during boss fights"
+L.DisableAmbiance					= "Disable ambiance channel during boss fights"
+L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+--Other
+L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
+L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
+L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
+L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
 L.HideTooltips						= "Completely hide tooltips during boss fights"
-L.DisableSFX						= "Disable sound effects channel during boss fights (Note: If you enable this option it'll turn sound effects on when fight ends even if they weren't on when entering fight)"
-L.DisableCinematics					= "Hide in-game cinematics"
-L.OnlyFight							= "Only during fight, after each movie has played once"
-L.AfterFirst						= "In instance, after each movie has played once"
-L.CombatOnly						= "Disable in combat (any)"
-L.RaidCombat						= "Disable in combat (bosses only)"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Raid Leader Controls"
 L.Area_FeatureOverrides				= "Feature Override Options"
-L.OverrideIcons 					= "Disable icon marking for all users in raid, including your own (Use override instead of disable if you want DBM to do marking under your terms)"
+L.OverrideIcons 					= "Disable icon marking for all users in raid, including your own"-- (Use override instead of disable if you want DBM to do marking under your terms)
 L.OverrideSay						= "Disable chat bubble/SAY messages for all users in the raid, including your own"
 L.DisableStatusWhisperShort			= "Disable status/reply whispers for the entire group"--Duplicated from privacy but makes sense to include option in both panels
 L.DisableGuildStatusShort			= "Disable progression messages from being synced to guild for the entire group"--Duplicated from privacy but makes sense to include option in both panels
@@ -568,8 +589,6 @@ L.NPDemo							= "Test (Be near nameplates)"
 L.FontTypeTimer						= "Select timer font"
 L.FontTypeText						= "Select text font"
 
-L.TabCategory_Plugins				= "Plugins"
-
 -- Misc
 L.Area_General						= "General"
 L.Area_Position						= "Position"
@@ -581,4 +600,4 @@ L.FontColor							= "Font color"
 L.FontShadow						= "Font Shadow"
 L.FontType							= "Select font"
 
-L.FontHeight	= 16
+L.FontHeight	= 16 -- OPTIONAL
