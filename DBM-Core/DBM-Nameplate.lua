@@ -74,21 +74,19 @@ do
 		-- CD text
 		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "overlay", "NumberFontNormal")
 		iconFrame.cooldown.timer:SetPoint ("center")
-		local font = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
-		local fontSize = DBM.Options.NPIconTimerFontSize
-		local style = DBM.Options.NPIconTimerFontStyle == "None" and nil or DBM.Options.NPIconTimerFontStyle
-		print(font, fontSize, style)
-		iconFrame.cooldown.timer:SetFont(font, fontSize, style)
+		local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
+		local timerFontSize = DBM.Options.NPIconTimerFontSize
+		local timerStyle = DBM.Options.NPIconTimerFontStyle == "None" and nil or DBM.Options.NPIconTimerFontStyle
+		iconFrame.cooldown.timer:SetFont(timerFont, timerFontSize, timerStyle)
 		iconFrame.cooldown.timer:Show()
 		iconFrame.timerText = iconFrame.cooldown.timer
 
 		iconFrame.text = iconFrame:CreateFontString(nil, "overlay", "GameFontNormal")
 		iconFrame.text:SetPoint("bottom", iconFrame, "top", 0, 2)
-		local font = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
-		local fontSize = DBM.Options.NPIconTextFontSize
-		local style = DBM.Options.NPIconTextFontStyle == "None" and nil or DBM.Options.NPIconTextFontStyle
-		print(font, fontSize, style)
-		iconFrame.text:SetFont(font, fontSize, style)
+		local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
+		local textFontSize = DBM.Options.NPIconTextFontSize
+		local textStyle = DBM.Options.NPIconTextFontStyle == "None" and nil or DBM.Options.NPIconTextFontStyle
+		iconFrame.text:SetFont(textFont, textFontSize, textStyle)
 		iconFrame.text:Hide()
 
 		iconFrame:SetScript ("OnUpdate", frame.UpdateTimerText)
