@@ -580,7 +580,10 @@ L.NPAuraSize				= "아이콘 픽셀 크기 (정사각형): %d"
 L.NPIcon_BarOffSetX 				= "아이콘 위치 조정 X: %d"
 L.NPIcon_BarOffSetY 				= "아이콘 위치 조정 Y: %d"
 L.NPIcon_GrowthDirection 			= "아이콘 생성 방향"
+--L.NPIconAnchorPoint		 			= "Icon Anchor Point"
 L.NPDemo							= "테스트 (이름표 근처에서 실행)"
+--L.FontTypeTimer						= "Select timer font"
+--L.FontTypeText						= "Select text font"
 
 -- Misc
 L.Area_General				= "일반"

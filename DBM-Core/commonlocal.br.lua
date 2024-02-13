@@ -51,6 +51,8 @@ CL.FRONT							= "A frente"
 --CL.PIT								= "Pit"--Pit, as in hole in ground
 --CL.TOTEM							= "Totem"
 --CL.TOTEMS							= "Totems"
+--CL.HORIZONTAL						= "Horizontal"
+--CL.VERTICAL							= "Vertical"
 --Mechanics
 --CL.BOMB								= "Bomb"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 --CL.BOMBS							= "Bombs"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
