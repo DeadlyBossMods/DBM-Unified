@@ -171,11 +171,12 @@ do
 			end
 		end)
 
-		local typeOffset = DBM.Options.NPIconSize/4
+		local iconSpacing = DBM.Options.NPIconSpacing
+		local typeOffset = DBM.Options.NPIconSize/4 + iconSpacing
 		local prev,total_width,first_icon
 		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --top is default
 		local centered = false
-		local centeredVertical = false
+		local vertical = false
 		local growthDirection = DBM.Options.NPIconGrowthDirection
 		local anchorPoint = DBM.Options.NPIconAnchorPoint
 		if anchorPoint == "TOP" then
@@ -191,15 +192,18 @@ do
 		end
 		if growthDirection == "UP" then
 			anchor, anchorRel = 'BOTTOM','TOP'
+			vertical = true
 		elseif growthDirection == "DOWN" then
 			anchor, anchorRel = 'TOP','BOTTOM'
+			vertical = true
 		elseif growthDirection == "LEFT" then
 			anchor, anchorRel = 'RIGHT','LEFT'
 		elseif growthDirection == "RIGHT" then
 			anchor, anchorRel = 'LEFT','RIGHT'
 		elseif growthDirection == "CENTER_VERTICAL" then
 			anchor, anchorRel = 'BOTTOM','TOP'
-			centeredVertical = true
+			centered = true
+			vertical = true
 		else
 			centered = true
 		end
@@ -224,9 +228,9 @@ do
 					first_icon = iconFrame
 					iconFrame:SetPoint(mainAnchor,frame.parent,mainAnchorRel, DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
 				else
-					local xOffset = (prev.aura_tbl.auraType ~= iconFrame.aura_tbl.auraType) and typeOffset or 0
-					total_width = total_width + iconFrame:GetWidth() + xOffset --width equals height, so we're fine
-					iconFrame:SetPoint(anchor,prev,anchorRel, xOffset, 0)
+					local spacing = (prev.aura_tbl.auraType ~= iconFrame.aura_tbl.auraType) and typeOffset or 0 + iconSpacing
+					total_width = total_width + iconFrame:GetWidth() + spacing --width equals height, so we're fine
+					iconFrame:SetPoint(anchor,prev,anchorRel, not vertical and spacing or 0, vertical and spacing or 0)
 				end
 
 				prev = iconFrame
@@ -236,8 +240,8 @@ do
 		if first_icon and total_width and total_width > 0 then
 			-- shift first icon to match anchor point
 			first_icon:SetPoint(mainAnchor,frame.parent,mainAnchorRel,
-				-floor((centered and total_width or 0)/2) + DBM.Options.NPIconXOffset,
-				-floor((centeredVertical and total_width or 0)/2) + DBM.Options.NPIconYOffset) -- icons are squares. tracking one total size is ok.
+				-floor((centered and not vertical and total_width or 0)/2) + DBM.Options.NPIconXOffset,
+				-floor((centered and vertical and total_width or 0)/2) + DBM.Options.NPIconYOffset) -- icons are squares. tracking one total size is ok.
 		end
 	end
 	local function AuraFrame_AddAura(frame,aura_tbl,batch)
@@ -727,7 +731,7 @@ do
 
 		elseif not guid and barsTestMode then
 			for _, curGuid in pairs(getAllShownGUIDs()) do
-				for _,aura_tbl in ipairs(units[curGuid]) do
+				for _,aura_tbl in ipairs(units[curGuid] or {}) do
 					if aura_tbl.id == id then
 						NameplateIcon_Hide(true, curGuid, aura_tbl.index, false)
 						break

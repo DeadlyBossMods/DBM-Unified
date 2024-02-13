@@ -33,6 +33,14 @@ iconOffsetYSlider:HookScript("OnValueChanged", function(self)
 end)
 iconOffsetYSlider.myheight = 0
 
+local iconSpacingSlider = style:CreateSlider(L.NPIcon_Spacing, -50, 50, 1, 200)
+iconSpacingSlider:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", 0, -10)
+iconSpacingSlider:SetValue(DBM.Options.NPIconSpacing)
+iconSpacingSlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconSpacing = self:GetValue()
+end)
+iconSpacingSlider.myheight = 0
+
 local dirs = {
 	{
 		text	= CL.UP,
@@ -63,7 +71,7 @@ local dirs = {
 local iconGrowthDirection = style:CreateDropdown(L.NPIcon_GrowthDirection, dirs, "DBM", "NPIconGrowthDirection", function(value)
 	DBM.Options.NPIconGrowthDirection = value
 end)
-iconGrowthDirection:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", -20, -35)
+iconGrowthDirection:SetPoint("TOPLEFT", iconSpacingSlider, "BOTTOMLEFT", -20, -35)
 iconGrowthDirection.myheight = 0
 
 local anchors = {
@@ -206,6 +214,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconSize = DBM.DefaultOptions.NPIconSize
 	DBM.Options.NPIconXOffset = DBM.DefaultOptions.NPIconXOffset
 	DBM.Options.NPIconYOffset = DBM.DefaultOptions.NPIconYOffset
+	DBM.Options.NPIconSpacing = DBM.DefaultOptions.NPIconSpacing
 	DBM.Options.NPIconGrowthDirection = DBM.DefaultOptions.NPIconGrowthDirection
 	DBM.Options.NPIconAnchorPoint = DBM.DefaultOptions.NPIconAnchorPoint
 	DBM.Options.NPIconTimerFont = DBM.DefaultOptions.NPIconTimerFont
@@ -220,6 +229,7 @@ resetbutton:SetScript("OnClick", function()
 	auraSizeSlider:SetValue(DBM.DefaultOptions.NPIconSize)
 	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
 	iconOffsetYSlider:SetValue(DBM.DefaultOptions.NPIconYOffset)
+	iconSpacingSlider:SetValue(DBM.DefaultOptions.NPIconSpacing)
 	iconGrowthDirection:SetSelectedValue(DBM.DefaultOptions.NPIconGrowthDirection)
 	iconAnchorPoint:SetSelectedValue(DBM.DefaultOptions.NPIconAnchorPoint)
 	FontDropDownTimer:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFont)
