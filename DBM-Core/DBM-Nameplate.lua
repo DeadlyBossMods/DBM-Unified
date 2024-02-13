@@ -175,19 +175,33 @@ do
 		local prev,total_width,first_icon
 		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --center is default
 		local centered = false
-		if DBM.Options.NPIconGrowthDirection == "UP" then
+		local centeredVertical = false
+		local growthDirection = DBM.Options.NPIconGrowthDirection
+		local anchorPoint = DBM.Options.NPIconAnchorPoint
+		if anchorPoint == "TOP" then
 			mainAnchor, mainAnchorRel = 'BOTTOM','TOP'
-			anchor, anchorRel = 'BOTTOM','TOP'
-		elseif DBM.Options.NPIconGrowthDirection == "DOWN" then
+		elseif anchorPoint == "BOTTOM" then
 			mainAnchor, mainAnchorRel = 'TOP','BOTTOM'
-			anchor, anchorRel = 'TOP','BOTTOM'
-		elseif DBM.Options.NPIconGrowthDirection == "LEFT" then
+		elseif anchorPoint == "LEFT" then
 			mainAnchor, mainAnchorRel = 'RIGHT','LEFT'
-			anchor, anchorRel = 'RIGHT','LEFT'
-		elseif DBM.Options.NPIconGrowthDirection == "RIGHT" then
+		elseif anchorPoint == "RIGHT" then
 			mainAnchor, mainAnchorRel = 'LEFT','RIGHT'
+		elseif anchorPoint == "CENTER" then
+			mainAnchor, mainAnchorRel = 'CENTER','CENTER'
+		end
+		if growthDirection == "UP" then
+			anchor, anchorRel = 'BOTTOM','TOP'
+		elseif growthDirection == "DOWN" then
+			anchor, anchorRel = 'TOP','BOTTOM'
+		elseif growthDirection == "LEFT" then
+			anchor, anchorRel = 'RIGHT','LEFT'
+		elseif growthDirection == "RIGHT" then
 			anchor, anchorRel = 'LEFT','RIGHT'
-		else --centered
+		elseif growthDirection == "CENTER_VERTICAL" then
+			anchor, anchorRel = 'BOTTOM','TOP'
+			centeredVertical = true
+		else
+			anchor, anchorRel = 'LEFT','RIGHT'
 			centered = true
 		end
 
@@ -223,7 +237,8 @@ do
 		if first_icon and total_width and total_width > 0 then
 			-- shift first icon to match anchor point
 			first_icon:SetPoint(mainAnchor,frame.parent,mainAnchorRel,
-				-floor((centered and total_width or 0)/2) + DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
+				-floor((centered and total_width or 0)/2) + DBM.Options.NPIconXOffset,
+				-floor((centeredVertical and total_width or 0)/2) + DBM.Options.NPIconYOffset) -- icons are squares. tracking one total size is ok.
 		end
 	end
 	local function AuraFrame_AddAura(frame,aura_tbl,batch)

@@ -369,6 +369,7 @@ DBM.DefaultOptions = {
 	NPIconXOffset = 0,
 	NPIconYOffset = 0,
 	NPIconGrowthDirection = "CENTER",
+	NPIconAnchorPoint = "TOP",
 	NPIconTimerFont = "standardFont",
 	NPIconTimerFontStyle = "None",
 	NPIconTimerFontSize = 18,

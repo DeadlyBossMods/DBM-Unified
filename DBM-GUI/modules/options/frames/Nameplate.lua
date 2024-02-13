@@ -51,16 +51,49 @@ local dirs = {
 		value	= "RIGHT",
 	},
 	{
-		text	= CL.CENTER,
+		text	= CL.CENTER .. " (" .. CL.HORIZONTAL .. ")",
 		value	= "CENTER",
+	},
+	{
+		text	= CL.CENTER .. " (" .. CL.VERTICAL .. ")",
+		value	= "CENTER_VERTICAL",
 	},
 }
 
 local iconGrowthDirection = style:CreateDropdown(L.NPIcon_GrowthDirection, dirs, "DBM", "NPIconGrowthDirection", function(value)
 	DBM.Options.NPIconGrowthDirection = value
 end)
-iconGrowthDirection:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", -20, -25)
+iconGrowthDirection:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", -20, -35)
 iconGrowthDirection.myheight = 0
+
+local anchors = {
+	{
+		text	= CL.TOP,
+		value	= "TOP",
+	},
+	{
+		text	= CL.BOTTOM,
+		value	= "BOTTOM",
+	},
+	{
+		text	= CL.LEFT,
+		value	= "LEFT",
+	},
+	{
+		text	= CL.RIGHT,
+		value	= "RIGHT",
+	},
+	{
+		text	= CL.CENTER,
+		value	= "CENTER",
+	},
+}
+
+local iconAnchorPoint = style:CreateDropdown(L.NPIconAnchorPoint, anchors, "DBM", "NPIconAnchorPoint", function(value)
+	DBM.Options.NPIconAnchorPoint = value
+end)
+iconAnchorPoint:SetPoint("LEFT", iconGrowthDirection, "RIGHT", 115, 0)
+iconAnchorPoint.myheight = 0
 
 local Fonts = DBM_GUI:MixinSharedMedia3("font", {
 	{
@@ -146,7 +179,7 @@ textFontSizeSlider:SetValue(DBM.Options.NPIconTextFontSize)
 textFontSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconTextFontSize = self:GetValue()
 end)
-textFontSizeSlider.myheight = 310
+textFontSizeSlider.myheight = 320
 
 local testbutton = style:CreateButton(L.NPDemo, 100, 16)
 testbutton:SetPoint("TOPRIGHT", style.frame, "TOPRIGHT", -2, -4)
@@ -167,6 +200,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconXOffset = DBM.DefaultOptions.NPIconXOffset
 	DBM.Options.NPIconYOffset = DBM.DefaultOptions.NPIconYOffset
 	DBM.Options.NPIconGrowthDirection = DBM.DefaultOptions.NPIconGrowthDirection
+	DBM.Options.NPIconAnchorPoint = DBM.DefaultOptions.NPIconAnchorPoint
 	DBM.Options.NPIconTimerFont = DBM.DefaultOptions.NPIconTimerFont
 	DBM.Options.NPIconTimerFontStyle = DBM.DefaultOptions.NPIconTimerFontStyle
 	DBM.Options.NPIconTimerFontSize = DBM.DefaultOptions.NPIconTimerFontSize
@@ -177,6 +211,8 @@ resetbutton:SetScript("OnClick", function()
 	auraSizeSlider:SetValue(DBM.DefaultOptions.NPIconSize)
 	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
 	iconOffsetYSlider:SetValue(DBM.DefaultOptions.NPIconYOffset)
+	iconGrowthDirection:SetSelectedValue(DBM.DefaultOptions.NPIconGrowthDirection)
+	iconAnchorPoint:SetSelectedValue(DBM.DefaultOptions.NPIconAnchorPoint)
 	FontDropDownTimer:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFont)
 	TimerFontStyleDropDown:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFontStyle)
 	timerFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTimerFontSize)
