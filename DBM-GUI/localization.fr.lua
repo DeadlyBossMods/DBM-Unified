@@ -16,6 +16,8 @@ L.OTabPlugins	= "Core Plugins"
 L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "À propos"
 
+--L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+
 L.TabCategory_OTHER			= "Autres modules"
 
 L.BossModLoaded 			= "Statistiques %s"
@@ -30,7 +32,7 @@ L.MoveMe 					= "Déplacez-moi"
 L.Button_OK 				= "OK"
 L.Button_Cancel 			= "Annuler"
 L.Button_LoadMod 			= "Charger le module"
-L.Mod_Enabled				= "Activer ce module"
+L.Mod_Enabled				= "Activer: %s"
 L.Mod_Reset					= "Charger les options par défaut"
 L.Reset 					= "Réinit."
 L.Import					= "Importer"

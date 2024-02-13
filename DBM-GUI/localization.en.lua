@@ -10,11 +10,17 @@ L.Website							= "Visit us on discord at |cFF73C2FBhttps://discord.gg/deadlybos
 L.WebsiteButton						= "Website"
 
 L.OTabBosses						= "Boss Options"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids							= "Raid"--Raids & PVP
-L.OTabDungeons						= "Party/Solo"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
-L.OTabPlugins						= "Core Plugins"
+L.OTabRaids							= "Raids"--Just pve raids
+L.OTabDungeons						= "Dungeons"--Just dungeons
+L.OTabWorld							= "World Bosses"--Since there are so many world mods, enough to get their own tab
+L.OTabScenarios						= "Scenarios"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
+L.OTabPlugins						= "Other"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions						= "Core Options"
 L.OTabAbout							= "About"
+
+L.FOLLOWER							= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+
+L.TabCategory_CURRENT_SEASON		= "Current Season"
 
 L.TabCategory_OTHER					= "Other Mods"
 L.TabCategory_AFFIXES				= "Affixes"
@@ -31,7 +37,7 @@ L.MoveMe 							= "Move me"
 L.Button_OK 						= "OK"
 L.Button_Cancel 					= "Cancel"
 L.Button_LoadMod 					= "Load AddOn"
-L.Mod_Enabled						= "Enable boss mod"
+L.Mod_Enabled						= "Enable: %s"
 L.Mod_Reset							= "Load default options"
 L.Reset 							= "Reset"
 L.Import							= "Import"
@@ -226,7 +232,14 @@ L.SpecialWarnHeader4				= "Type 4: Set options for HIGH priority run away specia
 L.SpecialWarnHeader5				= "Type 5: Set options for announcements with notes containing your player name"
 
 -- Panel: Generalwarnings
-L.Tab_GeneralMessages 				= "Chatframe Messages"
+L.Tab_GeneralMessages 				= "Chat Frame Messages"
+L.SelectChatFrameArea				= "Chat Frame Options"
+L.SelectChatFrameButton				= "Select chat frame"
+L.SelectChatFrameInfoIdle			= "Messages are shown in %s."
+L.SelectChatFrameDefaultName		= "the default chat frame"
+L.SelectChatFrameInfoDone			= "Messages will be shown in this chat frame."
+L.SelectChatFrameInfoSelect			= "Click on a chat frame to select it."
+L.SelectChatFrameInfoSelectNow		= "Click to select %s."
 L.CoreMessages						= "Core Message Options"
 L.ShowPizzaMessage 					= "Show timer broadcast messages in chat frame"
 L.ShowAllVersions	 				= "Show boss mod versions for all group members in chat frame when doing a version check. (If disabled, still does out of date/current summery)"
@@ -552,6 +565,8 @@ L.NPIcon_BarOffSetX 				= "Icon Offset X: %d"
 L.NPIcon_BarOffSetY 				= "Icon Offset Y: %d"
 L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
 L.NPDemo							= "Test (Be near nameplates)"
+
+L.TabCategory_Plugins				= "Plugins"
 
 -- Misc
 L.Area_General						= "General"

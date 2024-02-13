@@ -1,5 +1,8 @@
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 local setmetatable, type, ipairs, tinsert = setmetatable, type, ipairs, table.insert
-local DBM, DBM_GUI = DBM, DBM_GUI
+local DBM = DBM
 
 local function GetDepth(self, parentID, depth) -- Called internally
 	depth = depth or 1
@@ -39,12 +42,15 @@ end
 
 local ListFrameButtonsPrototype = {}
 
-function ListFrameButtonsPrototype:CreateCategory(frame, parentID)
+function ListFrameButtonsPrototype:CreateCategory(frame, parentID, forceChildren)
 	if type(frame) ~= "table" then
 		DBM:AddMsg("Failed to create category - frame is not a table")
 		return false
 	end
 	frame.depth = parentID and GetDepth(self, parentID) or 1
+	if forceChildren then
+		frame.haschilds = true
+	end
 	SetParentHasChilds(self, parentID)
 	tinsert(self.buttons, {
 		frame		= frame,
@@ -56,7 +62,7 @@ end
 function ListFrameButtonsPrototype:GetVisibleTabs()
 	local tabs = {}
 	for _, v in ipairs(self.buttons) do
-		if not v.parentID then
+		if not v.parentID and not v.hidden then
 			tinsert(tabs, v)
 			if v.frame.showSub then
 				GetVisibleSubTabs(self, v.frame.ID, tabs)
@@ -75,7 +81,3 @@ function DBM_GUI:CreateNewFauxScrollFrameList()
 	self.tabs[#self.tabs + 1] = mt
 	return mt
 end
-
--- TODO: Should this go somewhere else?
-_G["DBM_GUI_Bosses"] = DBM_GUI:CreateNewFauxScrollFrameList()
-_G["DBM_GUI_Options"] = DBM_GUI:CreateNewFauxScrollFrameList()

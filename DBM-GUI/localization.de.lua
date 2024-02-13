@@ -18,7 +18,7 @@ L.TabCategory_OTHER			= "Sonstige Boss Mods"
 L.BossModLoaded 			= "Statistiken von %s"
 L.BossModLoad_now 			= [[Dieses Boss Mod ist nicht geladen. Es wird automatisch geladen, wenn du die Instanz betrittst. Du kannst auch auf den Button klicken um das Boss Mod manuell zu laden.]]
 
-
+--L.FOLLOWER				= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 
 L.PosX						= "Position X"
 L.PosY						= "Position Y"
@@ -27,7 +27,7 @@ L.MoveMe 					= "Positionieren"
 L.Button_OK 				= "OK"
 L.Button_Cancel 			= "Abbrechen"
 L.Button_LoadMod 			= "Lade Boss Mod"
-L.Mod_Enabled				= "Aktiviere Boss Mod"
+L.Mod_Enabled				= "Aktiviere: %s"
 L.Mod_Reset					= "Lade Standardeinstellungen"
 L.Reset 					= "Zurücksetzen"
 

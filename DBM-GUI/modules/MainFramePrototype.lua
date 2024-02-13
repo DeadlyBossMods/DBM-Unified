@@ -1,35 +1,39 @@
 local L = DBM_GUI_L
 
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
-local isModernAPI = DBM:GetTOC() > 100000--Purposely left this way, wrath 3.4.1 doesn't like changes in THIS file (TODO, see if same problem exists in 1.14.4)
+
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
 
 local DDM = LibStub:GetLibrary("LibDropDownMenu")
 
 local select, ipairs, mfloor, mmax, mmin = select, pairs, math.floor, math.max, math.min
-local CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal = CreateFrame, GameFontHighlightSmall, GameFontNormalSmall, GameFontNormal
-local DBM, DBM_GUI = DBM, DBM_GUI
+local CreateFrame, GameFontNormal = CreateFrame, GameFontNormal
+local DBM = DBM
 
----@class DBMOptionsFrame: Frame, BackdropTemplate
+---@class DBMOptionsFrame: Frame
 ---@field tabs table
-local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "BackdropTemplate")
+local frame = CreateFrame("Frame", "DBM_GUI_OptionsFrame", UIParent, "NineSlicePanelTemplate")
+
+local selectedPagePerTab = {}
 
 function frame:UpdateMenuFrame()
-	local listFrame = _G["DBM_GUI_OptionsFrameList"]
-	if not listFrame.buttons then
+	local listFrame = _G[frame:GetName() .. "List"]
+	if not listFrame or not listFrame.buttons then
 		return
 	end
 	local displayedElements = self.tab and DBM_GUI.tabs[self.tab]:GetVisibleTabs() or {}
 	local bigList = mfloor((listFrame:GetHeight() - 8) / 18)
+	local scrollBar = _G[listFrame:GetName() .. "ScrollBar"]
 	if #displayedElements > bigList then
-		_G[listFrame:GetName() .. "List"]:Show()
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
+		scrollBar:Show()
+		scrollBar:SetMinMaxValues(0, (#displayedElements - bigList) * 18)
 	else
-		_G[listFrame:GetName() .. "List"]:Hide()
-		_G[listFrame:GetName() .. "ListScrollBar"]:SetValue(0)
+		scrollBar:Hide()
+		scrollBar:SetValue(0)
 	end
 	for i = 1, #listFrame.buttons do
 		local button = listFrame.buttons[i]
-		button:SetWidth(bigList and 185 or 209)
 		button:UnlockHighlight()
 		local element = displayedElements[i + (listFrame.offset or 0)]
 		if not element or i > bigList then
@@ -49,11 +53,11 @@ function frame:DisplayButton(button, element)
 	button:SetHeight(18)
 	button.element = element
 	button.text:ClearAllPoints()
-	button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2)
+	button.text:SetPoint("LEFT", (element.haschilds and 14 or 6) + 8 * element.depth, 2)
 	button.toggle:ClearAllPoints()
 	button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1)
-	button:SetNormalFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
-	button:SetHighlightFontObject(element.depth > 2 and GameFontHighlightSmall or element.depth == 2 and GameFontNormalSmall or GameFontNormal)
+	button.text:SetFontObject(element.haschilds and GameFontNormal or GameFontWhite)
+	button.text:SetTextScale(0.9)
 	if element.haschilds then
 		button.toggle:SetNormalTexture(element.showSub and 130821 or 130838) -- "Interface\\Buttons\\UI-MinusButton-UP", "Interface\\Buttons\\UI-PlusButton-UP"
 		button.toggle:SetPushedTexture(element.showSub and 130820 or 130836) -- "Interface\\Buttons\\UI-MinusButton-DOWN", "Interface\\Buttons\\UI-PlusButton-DOWN"
@@ -87,10 +91,10 @@ local function resize(targetFrame, first)
 					if child.mytype == "ability" and child2.mytype then
 						child2:SetShown(not child.hidden)
 						if child2.mytype == "spelldesc" then
-							child2:SetShown(child.hidden)
+							child2:SetShown(child2.hasDesc and true or child.hidden)
 							_G[child:GetName() .. "Title"]:Show()
-							_G[child2:GetName() .. "Text"]:SetShown(child.hidden)
-							if child2:IsVisible() then
+							_G[child2:GetName() .. "Text"]:SetShown(child2.hasDesc and true or child.hidden)
+							if child.hidden then
 								neededHeight = 0
 							end
 						end
@@ -105,6 +109,7 @@ local function resize(targetFrame, first)
 							if not child2.myheight or child2.mytype == "spelldesc" then
 								child2.myheight = text:GetStringHeight() + 20 -- + padding
 							end
+							lastObject = child2
 						elseif child2.mytype == "checkbutton" then
 							local buttonText = child2.textObj
 							buttonText:SetWidth(width - child2.widthPad - 57)
@@ -152,6 +157,8 @@ local function resize(targetFrame, first)
 							end
 						end
 						neededHeight = neededHeight + (child2.myheight or child2:GetHeight())
+					elseif child2.myheight and child2:IsVisible() then
+						neededHeight = neededHeight + child2.myheight
 					end
 				end
 				child:SetHeight(neededHeight)
@@ -173,6 +180,7 @@ function frame:DisplayFrame(targetFrame)
 	if select("#", targetFrame:GetChildren()) == 0 then
 		return
 	end
+	selectedPagePerTab[self.tab] = targetFrame
 	local scrollBar = _G["DBM_GUI_OptionsFramePanelContainerFOVScrollBar"]
 	scrollBar:Show()
 	local changed = DBM_GUI.currentViewing ~= targetFrame
@@ -236,51 +244,29 @@ function frame:DisplayFrame(targetFrame)
 	end
 end
 
-function frame:DeselectTab(i)
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Show();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Show();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Show();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Hide();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Hide();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Hide();
-	self.tabs[i]:Hide()
-end
-
-function frame:SelectTab(i)
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Hide();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Hide();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Hide();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Show();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Show();
-	_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Show();
-	self.tabs[i]:Show()
+if not isRetail then
+	frame.tabsGroup = CreateRadioButtonGroup()
 end
 
 function frame:CreateTab(tab)
 	tab:Hide()
 	local i = #self.tabs + 1
 	self.tabs[i] = tab
+	DBM_GUI:CreateNewFauxScrollFrameList()
 	---@class DBMOptionsFrameTabButtonTemplate: Button
-	local button = CreateFrame("Button", "DBM_GUI_OptionsFrameTab" .. i, self, "OptionsFrameTabButtonTemplate")
-	local buttonText = _G[button:GetName() .. "Text"]
-	button.Text = buttonText
-	button.Left = _G[button:GetName() .. "Left"]
-	button.Right = _G[button:GetName() .. "Right"]
-	buttonText:SetText(tab.name)
-	buttonText:SetPoint("LEFT", 22, -2)
-	buttonText:Show()
-	button:Show()
-	if i == 1 then
-		button:SetPoint("TOPLEFT", self:GetName(), 20, -18)
+	---@field Text FontString -- From MinimalTabTemplate/PanelTopTabButtonTemplate
+	local button = CreateFrame("Button", frame:GetName() .. "Tab" .. i, self, isRetail and "PanelTopTabButtonTemplate" or "MinimalTabTemplate")
+	button.Text:SetText(tab.name)
+	if isRetail then
+		PanelTemplates_SetNumTabs(self, i)
 	else
-		button:SetPoint("TOPLEFT", "DBM_GUI_OptionsFrameTab" .. (i - 1), "TOPRIGHT", isModernAPI and 5 or -15, 0)
+		self.tabsGroup:AddButton(button)
+		button:SetSize(button.Text:GetStringWidth() + 18, 33)
 	end
-	if isModernAPI then
-		button:HookScript("OnShow", function()
-			_G[button:GetName() .. "Middle"]:SetWidth(buttonText:GetWidth())
-			_G[button:GetName() .. "MiddleDisabled"]:SetWidth(buttonText:GetWidth())
-			_G[button:GetName() .. "HighlightTexture"]:SetPoint("RIGHT", 10, -4)
-		end)
+	if i == 1 then
+		button:SetPoint("TOPLEFT", self:GetName(), 20, -29)
+	else
+		button:SetPoint("TOPLEFT", "DBM_GUI_OptionsFrameTab" .. (i - 1), "TOPRIGHT", 5, 0)
 	end
 	button:SetScript("OnClick", function()
 		self:ShowTab(i)
@@ -290,21 +276,15 @@ end
 function frame:ShowTab(tab)
 	self.tab = tab
 	self:UpdateMenuFrame()
-	for i = 1, #DBM_GUI.tabs do
-		if i == tab then
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Hide()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Hide()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Hide()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Show()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Show()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Show()
-		else
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "Left"]:Show()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "Middle"]:Show()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "Right"]:Show()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "LeftDisabled"]:Hide()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "MiddleDisabled"]:Hide()
-			_G["DBM_GUI_OptionsFrameTab" .. i .. "RightDisabled"]:Hide()
-		end
+	if isRetail then
+		PanelTemplates_SetTab(self, tab)
+	else
+		self.tabsGroup:SelectAtIndex(tab)
+	end
+	if selectedPagePerTab[tab] then
+		self:DisplayFrame(selectedPagePerTab[tab])
+	elseif DBM_GUI.currentViewing then
+		DBM_GUI.currentViewing:Hide()
+		DBM_GUI.currentViewing = nil
 	end
 end

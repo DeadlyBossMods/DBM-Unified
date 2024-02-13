@@ -1,5 +1,8 @@
 local L		= DBM_GUI_L
 
+---@class DBMGUI
+local DBM_GUI = DBM_GUI
+
 DBM_GUI.Cat_Filters = DBM_GUI:CreateNewPanel(L.TabCategory_Filters, "option")
 
 local FiltersArea1		= DBM_GUI.Cat_Filters:CreateArea(L.Area_BasicSetup)

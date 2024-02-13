@@ -1,7 +1,7 @@
 -- Diablohu(diablohudream@gmail.com)
 -- yleaf(yaroot@gmail.com)
 -- sunlcy@NGA
--- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20230727
+-- Mini Dragon <流浪者酒馆-Brilla@金色平原> 20240115
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_L then DBM_GUI_L = {} end
@@ -18,11 +18,17 @@ L.WebsiteButton				= "网页"
 L.OTabBosses	= "模块"
 L.OTabRaids		= "副本"
 L.OTabDungeons	= "地下城"
-L.OTabPlugins	= "核心插件"
-L.OTabOptions	= "选项"
+L.OTabWorld		= "世界Boss"
+L.OTabScenarios	= "场景"
+L.OTabPlugins	= "其他"
+L.OTabOptions	= "核心选项"
 L.OTabAbout		= "关于"
 
-L.TabCategory_OTHER			= "其它"
+L.FOLLOWER	= "追随者"
+
+L.TabCategory_CURRENT_SEASON		= "当前赛季"
+
+L.TabCategory_OTHER			= "其它模块"
 L.TabCategory_AFFIXES		= "前缀"
 
 L.BossModLoaded 			= "%s 状态"
@@ -37,7 +43,7 @@ L.MoveMe 					= "移动我"
 L.Button_OK 				= "确定"
 L.Button_Cancel 			= "取消"
 L.Button_LoadMod 			= "加载模块"
-L.Mod_Enabled				= "开启模块"
+L.Mod_Enabled				= "开启: %s"
 L.Mod_Reset					= "恢复默认设置"
 L.Reset 					= "重置"
 L.Import					= "导入"
@@ -112,7 +118,10 @@ L.TimerGeneral 				= "计时器选项"
 L.SKT_Enabled				= "总是显示最速胜利计时条(覆盖单独BOSS设置)"
 L.ShowRespawn				= "Boss战斗未完成时显示Boss刷新计时条"
 L.ShowQueuePop				= "显示随机小队/团队查找器确认计时条"
---
+L.ShowBerserkWarnings		= "Show announcements at 10/5/3/1 minutes and at 30/10 seconds remaining on $spell:26662 timer"
+
+-- Panel: Auto Logging
+L.Panel_AutoLogging			= "自动记录"
 --Auto Logging: Logging toggles/types
 L.Area_AutoLogging			= "自动战斗日志开关"
 L.AutologBosses				= "自动采用官方格式记录日志。"
@@ -224,7 +233,14 @@ L.SpecialWarnHeader4		= "类型 4: 设置“高优先级”选项会避免特殊
 L.SpecialWarnHeader5		= "类型 5: 设置警报选项，并包含玩家姓名"
 
 -- Panel: Generalwarnings
-L.Tab_GeneralMessages 		= "综合信息"
+L.Tab_GeneralMessages 		= "聊天窗口消息"
+L.FrameArea		= "聊天窗口选项"
+L.SelectChatFrameButton		= "选择聊天窗口"
+L.SelectChatFrameInfoIdle		= "消息在 %s 中显示。"
+L.SelectChatFrameDefaultName	= "默认聊天窗口"
+L.SelectChatFrameInfoDone		= "消息会在本聊天窗口中显示。"
+L.SelectChatFrameInfoSelect		= "选择一个聊天窗口。"
+L.SelectChatFrameInfoSelectNow	= "点击以选择 %s."
 L.CoreMessages				= "核心信息设置"
 L.ShowPizzaMessage 			= "在聊天窗口中显示计时条广播信息"
 L.ShowAllVersions	 		= "当执行版本检查时,在聊天窗口中显示所有团员的Boss模组版本(如果禁用，仍旧显示过期/目前总结)"
@@ -327,20 +343,30 @@ L.BarEndColorUI				= "结束颜色 (自定义)"
 L.Bar7Header				= "自定义计时条选项"
 L.Bar7ForceLarge			= "总是使用大型计时条"
 L.Bar7CustomInline			= "使用自定义 '!' 图标"
---Dropdown Options
-L.CBTGeneric				= "通用"
-L.CBTAdd					= "小怪"
-L.CBTAOE					= "AOE"
-L.CBTTargeted				= "点名"
-L.CBTInterrupt				= "打断"
+--Timer Example Texts
+L.CBTGeneric				= "通用技能"
+L.CBTAdd					= "小怪来临"
+L.CBTAOE					= "AOE技能"
+L.CBTTargeted				= "点名技能"
+L.CBTInterrupt				= "打断技能"
 L.CBTRole					= "剧情"
-L.CBTPhase					= "阶段"
+L.CBTPhase					= "阶段转换"
 L.CBTImportant				= "重要 (自定义)"
+--Dropdown Options
+L.ColorDropGeneric					= "通用技能配色"
+L.ColorDrop1						= "小怪来临配色"
+L.ColorDrop2						= "AOE技能配色"
+L.ColorDrop3						= "点名技能配色"
+L.ColorDrop4						= "打断技能配色"
+L.ColorDrop5						= "特殊角色技能配色"
+L.ColorDrop6						= "剧情配色"
+L.CDDImportant1						= "重要 1"
+L.CDDImportant2						= "重要 2"
 L.CVoiceOne					= "倒数 1"
 L.CVoiceTwo					= "倒数 2"
 L.CVoiceThree				= "倒数 3"
 
--- Panel: Timers
+-- Panel: Bar Appearance
 L.Panel_Appearance	 		= "计时条设置"
 L.Panel_Behavior	 		= "计时条特性"
 L.AreaTitle_BarSetup		= "计时条综合设置"
@@ -370,6 +396,11 @@ L.KeepBar2					= "(当被模组支持时)"
 L.FadeBar					= "隐藏超出技能范围的计时条"
 L.BarSkin					= "计时条外观"
 
+-- Panel: Pull, Break, Combat
+L.Panel_PullBreakCombat				= "开怪选项"
+
+L.Area_SoundOptions					= "声音选项"
+
 -- Tab: Global Disables & Filters
 L.TabCategory_Filters	 	= "禁用及过滤选项"
 L.Area_DBMFiltersSetup		= "DBM 信息过滤指南"
@@ -392,15 +423,15 @@ L.SpamBlockNoShowUTimers			= "不显示用户自定义生成的计时条(Custom/
 L.SpamBlockNoCountdowns				= "不要播放倒计时语音"
 
 L.Area_SpamFilter_Nameplates		= "姓名版全局开启与过滤选项"
-L.SpamBlockNoNameplate				= "不显示姓名面板光环"
-L.SpamBlockNoBossGUIDs				= "不要在Plater姓名版上显示主Boss的姓名版光环\n(若在Plater中启动了该功能，您仍然可以看到小怪和Boss的计时条)"
+L.SpamBlockNoNameplate				= "不为特殊Boss机制显示姓名面板技能图标"
+L.SpamBlockNoNameplateCD			= "不为技能冷却显示姓名面板技能图标"
+L.SpamBlockNoBossGUIDs				= "不要在Plater姓名版上显示主Boss的姓名版技能图标\n(若在Plater中启动了该功能，您仍然可以看到小怪和Boss的计时条)"
 
 L.Area_SpamFilter_Misc		= "其他全局过滤设置"
 L.SpamBlockNoSetIcon		= "不在目标上设定标记"
 L.SpamBlockNoRangeFrame		= "不显示距离雷达框体"
 L.SpamBlockNoInfoFrame		= "不显示信息框体"
 L.SpamBlockNoHudMap			= "不显示 HudMap"
-
 L.SpamBlockNoYells			= "不在战斗中大喊"
 L.SpamBlockNoNoteSync		= "不接受别人分享的自定义备注"
 L.SpamBlockAutoGossip 		= "不自动密聊回复状态"
@@ -518,9 +549,15 @@ L.Panel_Range				= "距离框"
 
 -- Panel: Nameplate
 L.Panel_Nameplates			= "姓名板"
-L.UseNameplateHandoff		= "将姓名板上显示技能图标移交给支持的插件（KuiNameplates，Threat Plates，Plater），而不是DBM处理。 推荐使用此选项，因为能通过姓名板插件完成更高级的功能和配置。"
 L.Area_NPStyle				= "样式(注意：仅能使用DBM配置支持的样式。)"
+L.NPAuraText				= "在姓名版图标旁边显示计时器"
 L.NPAuraSize				= "技能图标大小 (比例): %d"
+L.NPIcon_BarOffSetX 		= "技能图标X轴偏移: %d"
+L.NPIcon_BarOffSetY 		= "技能图标Y轴偏移: %d"
+L.NPIcon_GrowthDirection 	= "技能图标出现方向"
+L.NPDemo					= "测试 (靠近姓名版)"
+
+L.TabCategory_Plugins		= "挂件"
 
 -- Misc
 L.Area_General				= "一般"

@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 std = "lua51"
 max_line_length = false
 exclude_files = {
@@ -49,9 +50,11 @@ globals = {
 
 	-- Utility functions
 	"CopyTable",
-	"geterrorhandler",
+	"Enum",
 	"fastrandom",
 	"format",
+	"geterrorhandler",
+	"securecall",
 	"strjoin",
 	"strsplit",
 	"tContains",
@@ -60,8 +63,6 @@ globals = {
 	"tinsert",
 	"tostringall",
 	"tremove",
-	"Enum",
-	"securecall",
 
 	-- WoW
 	"ALL",
@@ -98,6 +99,7 @@ globals = {
 	"GUILD",
 	"GUILD_INTEREST_RP",
 	"HIDE",
+	"HIGHLIGHT_FONT_COLOR",
 	"LARGE",
 	"LOCK_FRAME",
 	"MAX_TALENT_TABS", -- Classic
@@ -148,6 +150,8 @@ globals = {
 	"AlertFrame",
 	"BackdropTemplateMixin",
 	"ChatFontNormal",
+	"CreateRadioButtonGroup", -- Classic Era
+	"CooldownFrame_Set",
 	"UIParent",
 	"GameFontHighlight",
 	"GameFontHighlightSmall",
@@ -155,6 +159,7 @@ globals = {
 	"GameFontNormalSmall",
 	"GameFontWhite",
 	"MovieFrame",
+	"NineSliceUtil",
 	"ObjectiveTrackerFrame",
 	"QuestWatchFrame", -- Classic Era / BCC
 	"RaidBossEmoteFrame",
@@ -170,6 +175,8 @@ globals = {
 	"ObjectiveTracker_Collapse",
 	"ObjectiveTracker_Expand",
 	"OptionsList_OnLoad",
+	"PanelTemplates_SetNumTabs",
+	"PanelTemplates_SetTab",
 	"StaticPopup_Hide",
 	"StaticPopup_Show",
 	"TimerTracker_OnEvent",
@@ -194,6 +201,7 @@ globals = {
 	"C_BattleNet.GetFriendAccountInfo",
 	"C_BattleNet.GetGameAccountInfoByID",
 	"C_ChallengeMode.GetActiveKeystoneInfo",
+	"C_ChallengeMode.GetMapTable",
 	"C_ChatInfo.IsAddonMessagePrefixRegistered",
 	"C_ChatInfo.RegisterAddonMessagePrefix",
 	"C_ChatInfo.SendAddonMessageLogged",
@@ -253,6 +261,7 @@ globals = {
 	"EJ_GetInstanceInfo",
 	"EJ_GetCreatureInfo",
 	"EJ_SetDifficulty",
+	"EnumerateFrames",
 	"FlashClientIcon",
 	"FreeTimerTrackerTimer",
 	"GameTooltip",

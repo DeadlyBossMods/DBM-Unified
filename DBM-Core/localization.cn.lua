@@ -30,7 +30,8 @@ L.COPY_URL_DIALOG					= "复制网址"
 L.COPY_WA_DIALOG					= "复制WA代码"
 
 --Post Patch 7.1
-L.NO_RANGE					= "距离雷达在副本中无法使用，该功能会使用文本代替"
+L.TEXT_ONLY_RANGE			= "因API限制，距离窗体只能显示绝对距离值。"
+L.NO_RANGE					= "距离窗体已无法使用。本命令将会被移除。"
 L.NO_ARROW					= "箭头在副本中无法使用"
 L.NO_HUD						= "HUDMap 在副本中无法使用"
 
@@ -392,7 +393,7 @@ L.AUTO_SPEC_WARN_OPTIONS.soon			= "特殊警报：$spell:%s即将到来"
 L.AUTO_SPEC_WARN_OPTIONS.sooncount		= "特殊警报：$spell:%s即将到来(带计数)"
 L.AUTO_SPEC_WARN_OPTIONS.prewarn 		= "特殊警报：%s秒前预警$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.bait			= "特殊警报: $spell:%s需要引诱"
-L.AUTO_SPEC_WARN_OPTIONS.dispel			= "特殊警报：需要驱散或偷取$spell:%s"
+L.AUTO_SPEC_WARN_OPTIONS.dispel			= "特殊警报：需要驱散$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.interrupt		= "特殊警报：需要打断$spell:%s"
 L.AUTO_SPEC_WARN_OPTIONS.interruptcount	= "特殊警报：需要打断$spell:%s(带计数)"
 L.AUTO_SPEC_WARN_OPTIONS.you				= "特殊警报：当你受到$spell:%s影响时"
@@ -594,3 +595,4 @@ L.WORLD_BUFFS.zgHeart		 = "我们就要摆脱夺灵者的威胁了，只差最�
 L.WORLD_BUFFS.zgHeartBooty	 = "夺灵者已经被打败了！我们不再有危险了！"
 L.WORLD_BUFFS.zgHeartYojamba = "开始仪式，我的仆从们。我们必须把哈卡完全打回扭曲虚空中！"
 L.WORLD_BUFFS.rendHead		 = "那个假的酋长，雷德·黑手，已经倒下了！"
+L.WORLD_BUFFS.blackfathomBoon = "黑暗深渊的祝福"

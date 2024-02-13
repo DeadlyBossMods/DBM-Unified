@@ -5,15 +5,21 @@ local L = DBM_GUI_L
 
 L.TranslationByPrefix		= "번역: "
 L.TranslationBy 			= "Elnarfim"
-L.Website					= "디스코드 채널 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 방문해 보세요. 트위터 팔로우 @deadlybossmods 또는 @MysticalOS"
+L.Website					= "디스코드 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 방문해 보세요. SNS에서 @deadlybossmods 또는 @MysticalOS를 팔로우하세요"
 L.WebsiteButton				= "웹사이트"
 
 L.OTabBosses					= "보스 설정"--Deprecated and will be deleted once tabs no longer use this
-L.OTabRaids						= "공격대"--Raids & PVP
-L.OTabDungeons						= "파티/1인"--1-5 person content (Dungeons, MoP Scenarios, World Events, Brawlers, Proving Grounds, Visions, Torghast, etc)
-L.OTabPlugins					= "핵심 플러그인"
+L.OTabRaids						= "공격대"--Just pve raids
+L.OTabDungeons						= "던전"--Just dungeons
+L.OTabWorld						= "필드 보스"--Since there are so many world mods, enough to get their own tab
+L.OTabScenarios						= "시나리오"--Future use, will be used for scenarios and delves, likely after there are more than 2 mods (so probably 12.x or later)
+L.OTabPlugins						= "기타"--Scenarios, PVP, Delves (11.x), Solo/Challenge content (torghast, mage tower, etc)
 L.OTabOptions					= "핵심 설정"
 L.OTabAbout						= "소개"
+
+--L.FOLLOWER						= "추종자"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+
+L.TabCategory_CURRENT_SEASON		= "현재 시즌"
 
 L.TabCategory_OTHER			= "기타 모드"
 L.TabCategory_AFFIXES		= "어픽스"
@@ -30,7 +36,7 @@ L.MoveMe 					= "위치 이동"
 L.Button_OK					= "확인"
 L.Button_Cancel				= "취소"
 L.Button_LoadMod			= "애드온 로드"
-L.Mod_Enabled				= "보스 모드 활성화"
+L.Mod_Enabled				= "활성화: %s"
 L.Mod_Reset					= "설정 기본값 로드"
 L.Reset						= "초기화"
 L.Import					= "가져오기"
@@ -227,6 +233,13 @@ L.SpecialWarnHeader5		= "유형 5: 메모에 당신의 이름이 있을 때 알�
 
 -- Panel: Generalwarnings
 L.Tab_GeneralMessages 		= "대화창 메시지"
+L.SelectChatFrameArea				= "대화창 설정"
+L.SelectChatFrameButton				= "대화창 선택"
+L.SelectChatFrameInfoIdle			= "%s에 메시지가 표시됩니다."
+L.SelectChatFrameDefaultName		= "기본 대화창"
+L.SelectChatFrameInfoDone			= "이 대화창에 메시지가 표시됩니다."
+L.SelectChatFrameInfoSelect			= "대화창을 클릭해서 선택합니다."
+L.SelectChatFrameInfoSelectNow		= "클릭해서 %s|1을;를; 선택하세요."
 L.CoreMessages				= "기본 메시지 설정"
 L.ShowPizzaMessage 			= "대화창에 전송받은 타이머 표시"
 L.ShowAllVersions	 		= "버전 검사시 대화창에 모든 파티/공격대원의 보스 모드 버전을 표시합니다. (설정을 꺼도 구버전/신버전으로 간략하게 표시됨)"
@@ -386,7 +399,7 @@ L.FadeBar					= "사정거리 밖의 스킬에 대한 타이머 바 숨김"
 L.BarSkin					= "바 스킨"
 
 -- Panel: Pull, Break, Combat
-L.Panel_PullBreakCombat				= "풀링 & 휴식"
+L.Panel_PullBreakCombat				= "풀링과 휴식"
 
 L.Area_SoundOptions					= "효과음 설정"
 
@@ -430,13 +443,13 @@ L.Area_Restore				= "DBM 복구 설정 (DBM이 보스 모드 종료시 이전 �
 L.SpamBlockNoIconRestore	= "아이콘 설정 상태를 저장하지 않고 전투 종료시 원래대로 복구"
 L.SpamBlockNoRangeRestore	= "모드가 '숨김' 명령을 내렸을 때 이전 설정 상태로 거리 창 복구 안함"
 
-L.Area_PullTimer			= "풀링, 휴식, 전투, 사용자 지정 바 관련 필터 설정"
+L.Area_PullTimer			= "풀링, 휴식, 사용자 지정 바 관련 필터 설정"
 L.DontShowPTNoID			= "같은 지역에 없는 사용자가 보낸 DBM 풀링 타이머 차단 (지역 ID 없이 전송된 BigWigs 타이머는 차단하지 않습니다)"
 L.DontShowPT				= "풀링/휴식 타이머 표시 안함"
 L.DontShowPTText			= "풀링/휴식 알림 텍스트 표시 안함"
 L.DontShowPTCountdownText	= "풀링 초읽기 숫자 표시 안함"
-L.DontPlayPTCountdown		= "풀링/휴식/전투/사용자 지정 초읽기 전구간 음성 재생 안함"
-L.PT_Threshold				= "휴식/전투/사용자 지정 타이머 초읽기 음성 재생 안함: %d초 까지"
+L.DontPlayPTCountdown		= "풀링/휴식/사용자 지정 초읽기 전구간 음성 재생 안함"
+L.PT_Threshold				= "풀링/휴식/사용자 지정 타이머 초읽기 음성 재생 안함: %d초 까지"
 
 -- Panel: Reduce Information
 L.Panel_ReducedInformation			= "정보량 줄이기"
@@ -551,6 +564,8 @@ L.NPIcon_BarOffSetX 				= "아이콘 위치 조정 X: %d"
 L.NPIcon_BarOffSetY 				= "아이콘 위치 조정 Y: %d"
 L.NPIcon_GrowthDirection 			= "아이콘 생성 방향"
 L.NPDemo							= "테스트 (이름표 근처에서 실행)"
+
+L.TabCategory_Plugins				= "플러그인"
 
 -- Misc
 L.Area_General				= "일반"

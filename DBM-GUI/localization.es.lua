@@ -17,6 +17,8 @@ L.OTabPlugins	= "Plugins"
 L.OTabOptions	= "Opciones"
 L.OTabAbout		= "Acerca de"
 
+--L.FOLLOWER	= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+
 L.TabCategory_OTHER    		= "Otros módulos"
 
 L.BossModLoaded 			= "Estadísticas de %s"
@@ -31,7 +33,7 @@ L.MoveMe 					= "Posición"
 L.Button_OK 				= "Aceptar"
 L.Button_Cancel 			= "Cancelar"
 L.Button_LoadMod 			= "Cargar módulo"
-L.Mod_Enabled				= "Activar módulo"
+L.Mod_Enabled				= "Activar: %s"
 L.Mod_Reset					= "Cargar opciones por defecto"
 L.Reset 					= "Restaurar"
 L.Import					= "Importar"

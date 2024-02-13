@@ -229,12 +229,15 @@ do
 	local fCounter = 1
 
 	local function createBarFrame(self)
+		---@class DBTBarFrame: Frame
 		local frame = CreateFrame("Frame", "DBT_Bar_" .. fCounter, smallBarsAnchor)
 		frame:SetSize(195, 20)
 		frame:SetScript("OnUpdate", onUpdate)
 		frame:SetScript("OnMouseDown", onMouseDown)
 		frame:SetScript("OnMouseUp", onMouseUp)
 		frame:SetScript("OnHide", onHide)
+		---@type DBTBar
+		frame.obj = nil
 		local bar = CreateFrame("StatusBar", "$parentBar", frame)
 		bar:SetPoint("CENTER", frame, "CENTER")
 		bar:SetSize(195, 20)
@@ -320,6 +323,7 @@ do
 				newBar.alwaysHuge = nil
 			else -- Duplicate code ;(
 				local newFrame = createBarFrame(self)
+				---@class DBTBar
 				newBar = setmetatable({
 					frame = newFrame,
 					id = id,
@@ -342,7 +346,7 @@ do
 					isCooldown = isCooldown,
 					lastUpdate = GetTime(),
 				}, mt)
-				newFrame.obj = newBar ---@diagnostic disable-line: inject-field
+				newFrame.obj = newBar
 			end
 			self.numBars = self.numBars + 1
 			-- Bars that start huge by config (important color type or huge flag)
