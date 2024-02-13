@@ -161,6 +161,9 @@ timerFontSizeSlider:HookScript("OnValueChanged", function(self)
 end)
 timerFontSizeSlider.myheight = 0
 
+local timerEnable = style:CreateCheckButton(L.Enable, true, nil, "NPIconTimerEnabled")
+timerEnable:SetPoint("TOPLEFT", TimerFontStyleDropDown, "TOPLEFT", 20, -35)
+
 local FontDropDownText = style:CreateDropdown(L.FontTypeText, Fonts, "DBM", "NPIconTextFont", function(value)
 	DBM.Options.NPIconTextFont = value
 end)
@@ -179,7 +182,11 @@ textFontSizeSlider:SetValue(DBM.Options.NPIconTextFontSize)
 textFontSizeSlider:HookScript("OnValueChanged", function(self)
 	DBM.Options.NPIconTextFontSize = self:GetValue()
 end)
-textFontSizeSlider.myheight = 320
+textFontSizeSlider.myheight = 0
+
+local textEnable = style:CreateCheckButton(L.Enable, true, nil, "NPIconTextEnabled")
+textEnable:SetPoint("TOPLEFT", TextFontStyleDropDown, "TOPLEFT", 20, -35)
+textEnable.myheight = 330
 
 local testbutton = style:CreateButton(L.NPDemo, 100, 16)
 testbutton:SetPoint("TOPRIGHT", style.frame, "TOPRIGHT", -2, -4)
@@ -204,9 +211,11 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconTimerFont = DBM.DefaultOptions.NPIconTimerFont
 	DBM.Options.NPIconTimerFontStyle = DBM.DefaultOptions.NPIconTimerFontStyle
 	DBM.Options.NPIconTimerFontSize = DBM.DefaultOptions.NPIconTimerFontSize
+	DBM.Options.NPIconTimerEnabled = DBM.DefaultOptions.NPIconTimerEnabled
 	DBM.Options.NPIconTextFont = DBM.DefaultOptions.NPIconTextFont
 	DBM.Options.NPIconTextFontStyle = DBM.DefaultOptions.NPIconTextFontStyle
 	DBM.Options.NPIconTextFontSize = DBM.DefaultOptions.NPIconTextFontSize
+	DBM.Options.NPIconTextEnabled = DBM.DefaultOptions.NPIconTextEnabled
 	-- Set UI visuals
 	auraSizeSlider:SetValue(DBM.DefaultOptions.NPIconSize)
 	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
@@ -216,8 +225,10 @@ resetbutton:SetScript("OnClick", function()
 	FontDropDownTimer:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFont)
 	TimerFontStyleDropDown:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFontStyle)
 	timerFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTimerFontSize)
+	timerEnable:SetChecked(DBM.DefaultOptions.NPIconTimerEnabled)
 	FontDropDownText:SetSelectedValue(DBM.DefaultOptions.NPIconTextFont)
 	TextFontStyleDropDown:SetSelectedValue(DBM.DefaultOptions.NPIconTextFontStyle)
 	textFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTextFontSize)
+	textEnable:SetChecked(DBM.DefaultOptions.NPIconTextEnabled)
 end)
 resetbutton.myheight = 0

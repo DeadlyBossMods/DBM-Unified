@@ -258,7 +258,7 @@ do
 			iconFrame:SetBackdropBorderColor(1, 1, 1, 1)
 		end
 
-		if aura_tbl.display and aura_tbl.display ~= "" then --TODO: Options
+		if DBM.Options.NPIconTextEnabled and aura_tbl.display and aura_tbl.display ~= "" then
 			iconFrame.text:SetText(aura_tbl.display)
 			iconFrame.text:SetTextColor(aura_tbl.color[1], aura_tbl.color[2], aura_tbl.color[3], 1)
 			iconFrame.text:Show()
@@ -304,7 +304,7 @@ do
 		local aura_tbl = self.aura_tbl
 		if ((self.lastUpdateCooldown or 0) + 0.09) <= now then --throttle a bit
 			aura_tbl.remaining = (aura_tbl.startTime + (aura_tbl.duration or 0) - now)
-			if aura_tbl.remaining > 0 then --TODO: Options to show/hide text
+			if DBM.Options.NPIconTimerEnabled and (aura_tbl.remaining > 0) then
 				if self.formatWithDecimals then
 					self.cooldown.timer:SetText(AuraFrame_FormatTimeDecimal(aura_tbl.remaining))
 				else
