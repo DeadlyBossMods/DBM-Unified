@@ -605,8 +605,8 @@ else--TBC and Vanilla
 	}
 	-- Season of Discovery
 	if C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder then
-		instanceDifficultyBylevel[48] = {25, 3}, -- Blackfathom deeps level up raid
-		instanceDifficultyBylevel[90] = {40, 3}, -- Gnomeregan level up raid
+		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
+		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 	end
 end
 
