@@ -565,10 +565,10 @@ L.NPIcon_BarOffSetX 				= "Icon Offset X: %d"
 L.NPIcon_BarOffSetY 				= "Icon Offset Y: %d"
 L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
 L.NPDemo							= "Test (Be near nameplates)"
-
-L.TabCategory_Plugins				= "Plugins"
 L.FontTypeTimer						= "Select timer font"
 L.FontTypeText						= "Select text font"
+
+L.TabCategory_Plugins				= "Plugins"
 
 -- Misc
 L.Area_General						= "General"
