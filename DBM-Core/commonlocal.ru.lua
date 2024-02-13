@@ -50,6 +50,8 @@ CL.FAR_AWAY					= "Далеко"
 CL.PIT						= "Лунка"
 CL.TOTEM					= "Тотем"
 CL.TOTEMS					= "Тотемы"
+CL.HORIZONTAL				= "Горизонтально"
+CL.VERTICAL					= "Вертикально"
 --Mechanics
 CL.BOMB						= "Бомба"
 CL.BOMBS					= "Бомбы"
