@@ -33,6 +33,14 @@ iconOffsetYSlider:HookScript("OnValueChanged", function(self)
 end)
 iconOffsetYSlider.myheight = 0
 
+local iconSpacingSlider = style:CreateSlider(L.NPIcon_Spacing, -50, 50, 1, 200)
+iconSpacingSlider:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", 0, -10)
+iconSpacingSlider:SetValue(DBM.Options.NPIconSpacing)
+iconSpacingSlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconSpacing = self:GetValue()
+end)
+iconSpacingSlider.myheight = 0
+
 local dirs = {
 	{
 		text	= CL.UP,
@@ -63,7 +71,7 @@ local dirs = {
 local iconGrowthDirection = style:CreateDropdown(L.NPIcon_GrowthDirection, dirs, "DBM", "NPIconGrowthDirection", function(value)
 	DBM.Options.NPIconGrowthDirection = value
 end)
-iconGrowthDirection:SetPoint("TOPLEFT", iconOffsetYSlider, "BOTTOMLEFT", -20, -35)
+iconGrowthDirection:SetPoint("TOPLEFT", iconSpacingSlider, "BOTTOMLEFT", -20, -35)
 iconGrowthDirection.myheight = 0
 
 local anchors = {
@@ -186,7 +194,15 @@ textFontSizeSlider.myheight = 0
 
 local textEnable = style:CreateCheckButton(L.Enable, true, nil, "NPIconTextEnabled")
 textEnable:SetPoint("TOPLEFT", TextFontStyleDropDown, "TOPLEFT", 20, -35)
-textEnable.myheight = 330
+textEnable.myheight = 380
+
+local iconTextMaxLenSlider = style:CreateSlider(L.NPIcon_MaxTextLen, 3, 25, 1, 150)
+iconTextMaxLenSlider:SetPoint("TOPLEFT", textFontSizeSlider, "BOTTOMLEFT", 0, -20)
+iconTextMaxLenSlider:SetValue(DBM.Options.NPIconTextMaxLen)
+iconTextMaxLenSlider:HookScript("OnValueChanged", function(self)
+	DBM.Options.NPIconTextMaxLen = self:GetValue()
+end)
+iconTextMaxLenSlider.myheight = 0
 
 local testbutton = style:CreateButton(L.NPDemo, 100, 16)
 testbutton:SetPoint("TOPRIGHT", style.frame, "TOPRIGHT", -2, -4)
@@ -206,6 +222,7 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconSize = DBM.DefaultOptions.NPIconSize
 	DBM.Options.NPIconXOffset = DBM.DefaultOptions.NPIconXOffset
 	DBM.Options.NPIconYOffset = DBM.DefaultOptions.NPIconYOffset
+	DBM.Options.NPIconSpacing = DBM.DefaultOptions.NPIconSpacing
 	DBM.Options.NPIconGrowthDirection = DBM.DefaultOptions.NPIconGrowthDirection
 	DBM.Options.NPIconAnchorPoint = DBM.DefaultOptions.NPIconAnchorPoint
 	DBM.Options.NPIconTimerFont = DBM.DefaultOptions.NPIconTimerFont
@@ -216,10 +233,12 @@ resetbutton:SetScript("OnClick", function()
 	DBM.Options.NPIconTextFontStyle = DBM.DefaultOptions.NPIconTextFontStyle
 	DBM.Options.NPIconTextFontSize = DBM.DefaultOptions.NPIconTextFontSize
 	DBM.Options.NPIconTextEnabled = DBM.DefaultOptions.NPIconTextEnabled
+	DBM.Options.NPIconTextMaxLen = DBM.DefaultOptions.NPIconTextMaxLen
 	-- Set UI visuals
 	auraSizeSlider:SetValue(DBM.DefaultOptions.NPIconSize)
 	iconOffsetXSlider:SetValue(DBM.DefaultOptions.NPIconXOffset)
 	iconOffsetYSlider:SetValue(DBM.DefaultOptions.NPIconYOffset)
+	iconSpacingSlider:SetValue(DBM.DefaultOptions.NPIconSpacing)
 	iconGrowthDirection:SetSelectedValue(DBM.DefaultOptions.NPIconGrowthDirection)
 	iconAnchorPoint:SetSelectedValue(DBM.DefaultOptions.NPIconAnchorPoint)
 	FontDropDownTimer:SetSelectedValue(DBM.DefaultOptions.NPIconTimerFont)
@@ -230,5 +249,6 @@ resetbutton:SetScript("OnClick", function()
 	TextFontStyleDropDown:SetSelectedValue(DBM.DefaultOptions.NPIconTextFontStyle)
 	textFontSizeSlider:SetValue(DBM.DefaultOptions.NPIconTextFontSize)
 	textEnable:SetChecked(DBM.DefaultOptions.NPIconTextEnabled)
+	iconTextMaxLenSlider:SetValue(DBM.DefaultOptions.NPIconTextMaxLen)
 end)
 resetbutton.myheight = 0

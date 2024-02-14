@@ -14,7 +14,7 @@ local num_units = 0
 local playerName, playerGUID = UnitName("player"), UnitGUID("player")--Cache these, they never change
 local GetNamePlateForUnit, GetNamePlates = C_NamePlate.GetNamePlateForUnit, C_NamePlate.GetNamePlates
 ---@cast GetNamePlates fun(): table[] -- https://github.com/Ketho/vscode-wow-api/issues/122
-local twipe, floor, strsub= table.wipe, math.floor, _G.strsub
+local twipe, floor, strsub, strbyte= table.wipe, math.floor, _G.strsub, _G.strbyte
 local CooldownFrame_Set = CooldownFrame_Set
 --function locals
 local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame
@@ -40,6 +40,33 @@ end
 local DBMNameplateFrame = CreateFrame("Frame", "DBMNameplate", UIParent)
 DBMNameplateFrame:SetFrameStrata('BACKGROUND')
 DBMNameplateFrame:Hide()
+
+----------------------
+-- Helper functions --
+----------------------
+local function CleanSubString(text, i, j)
+	if type(text) == "string" and text ~= "" and i and i > 0 and j and j > 0 then
+		i = floor(i)
+		j = floor(j)
+		local b1 = (#text > 0) and strbyte(strsub(text, #text, #text)) or nil
+		local b2 = (#text > 1) and strbyte(strsub(text, #text-1, #text)) or nil
+		local b3 = (#text > 2) and strbyte(strsub(text, #text-2, #text)) or nil
+
+		if b1 and (b1 < 194 or b1 > 244) then
+			text = strsub (text, i, j)
+		elseif b1 and b1 >= 194 and b1 <= 244 then
+			text = strsub (text, i*2 - 1, j*2)
+
+		elseif b2 and b2 >= 224 and b2 <= 244 then
+			text = strsub (text, i*3 - 2, j*3)
+
+		elseif b3 and b3 >= 240 and b3 <= 244 then
+			text = strsub (text, i*4 - 3, j*3)
+		end
+	end
+
+	return text
+end
 
 --------------------------
 -- Aura frame functions --
@@ -171,11 +198,12 @@ do
 			end
 		end)
 
-		local typeOffset = DBM.Options.NPIconSize/4
+		local iconSpacing = DBM.Options.NPIconSpacing
+		local typeOffset = DBM.Options.NPIconSize/4 + iconSpacing
 		local prev,total_width,first_icon
 		local mainAnchor,mainAnchorRel,anchor,anchorRel = 'BOTTOM','TOP','LEFT','RIGHT' --top is default
 		local centered = false
-		local centeredVertical = false
+		local vertical = false
 		local growthDirection = DBM.Options.NPIconGrowthDirection
 		local anchorPoint = DBM.Options.NPIconAnchorPoint
 		if anchorPoint == "TOP" then
@@ -191,15 +219,18 @@ do
 		end
 		if growthDirection == "UP" then
 			anchor, anchorRel = 'BOTTOM','TOP'
+			vertical = true
 		elseif growthDirection == "DOWN" then
 			anchor, anchorRel = 'TOP','BOTTOM'
+			vertical = true
 		elseif growthDirection == "LEFT" then
 			anchor, anchorRel = 'RIGHT','LEFT'
 		elseif growthDirection == "RIGHT" then
 			anchor, anchorRel = 'LEFT','RIGHT'
 		elseif growthDirection == "CENTER_VERTICAL" then
 			anchor, anchorRel = 'BOTTOM','TOP'
-			centeredVertical = true
+			centered = true
+			vertical = true
 		else
 			centered = true
 		end
@@ -224,9 +255,9 @@ do
 					first_icon = iconFrame
 					iconFrame:SetPoint(mainAnchor,frame.parent,mainAnchorRel, DBM.Options.NPIconXOffset, DBM.Options.NPIconYOffset)
 				else
-					local xOffset = (prev.aura_tbl.auraType ~= iconFrame.aura_tbl.auraType) and typeOffset or 0
-					total_width = total_width + iconFrame:GetWidth() + xOffset --width equals height, so we're fine
-					iconFrame:SetPoint(anchor,prev,anchorRel, xOffset, 0)
+					local spacing = (prev.aura_tbl.auraType ~= iconFrame.aura_tbl.auraType) and typeOffset or 0 + iconSpacing
+					total_width = total_width + iconFrame:GetWidth() + spacing --width equals height, so we're fine
+					iconFrame:SetPoint(anchor,prev,anchorRel, not vertical and spacing or 0, vertical and spacing or 0)
 				end
 
 				prev = iconFrame
@@ -236,8 +267,8 @@ do
 		if first_icon and total_width and total_width > 0 then
 			-- shift first icon to match anchor point
 			first_icon:SetPoint(mainAnchor,frame.parent,mainAnchorRel,
-				-floor((centered and total_width or 0)/2) + DBM.Options.NPIconXOffset,
-				-floor((centeredVertical and total_width or 0)/2) + DBM.Options.NPIconYOffset) -- icons are squares. tracking one total size is ok.
+				-floor((centered and not vertical and total_width or 0)/2) + DBM.Options.NPIconXOffset,
+				-floor((centered and vertical and total_width or 0)/2) + DBM.Options.NPIconYOffset) -- icons are squares. tracking one total size is ok.
 		end
 	end
 	local function AuraFrame_AddAura(frame,aura_tbl,batch)
@@ -572,7 +603,7 @@ do
 
 		if (id and guid) then
 			local color = {DBT:GetColorForType(colorType)}
-			local display = strsub(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, 7)
+			local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
 			--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
 			local curTime =  GetTime()
 
@@ -608,7 +639,7 @@ do
 			for _, curGuid in pairs(getAllShownGUIDs()) do
 				local tmpId = id .. curGuid
 				local color = {DBT:GetColorForType(colorType)}
-				local display = strsub(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, 7)
+				local display = CleanSubString(string.match(name or msg or "", "^%s*(.-)%s*$" ), 1, DBM.Options.NPIconTextMaxLen)
 				--local display = string.match(name or msg or "", "^%s*(.-)%s*$" )
 				local curTime =  GetTime()
 
@@ -727,7 +758,7 @@ do
 
 		elseif not guid and barsTestMode then
 			for _, curGuid in pairs(getAllShownGUIDs()) do
-				for _,aura_tbl in ipairs(units[curGuid]) do
+				for _,aura_tbl in ipairs(units[curGuid] or {}) do
 					if aura_tbl.id == id then
 						NameplateIcon_Hide(true, curGuid, aura_tbl.index, false)
 						break
