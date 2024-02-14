@@ -99,7 +99,7 @@ DBT.DefaultOptions = {
 	Sort = "Sort",
 	DesaturateValue = 1,
 	-- Huge bar
-	EnlargeBarTime = 11,
+	EnlargeBarTime = 9.9,
 	HugeBarXOffset = 0,
 	HugeBarYOffset = 0,
 	HugeWidth = 200,
