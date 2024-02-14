@@ -585,7 +585,12 @@ L.NPAuraSize						= "Icon Pixel size (squared): %d"
 L.NPIcon_BarOffSetX 				= "Icon Offset X: %d"
 L.NPIcon_BarOffSetY 				= "Icon Offset Y: %d"
 L.NPIcon_GrowthDirection 			= "Icon Growth Direction"
+L.NPIcon_Spacing		 			= "Icon Spacing: %d"
+L.NPIcon_MaxTextLen		 			= "Max. Text Length: %d"
+L.NPIconAnchorPoint		 			= "Icon Anchor Point"
 L.NPDemo							= "Test (Be near nameplates)"
+L.FontTypeTimer						= "Select timer font"
+L.FontTypeText						= "Select text font"
 
 -- Misc
 L.Area_General						= "General"

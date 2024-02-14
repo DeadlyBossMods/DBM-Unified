@@ -50,6 +50,8 @@ CL.FAR_AWAY					= "alejarte"
 CL.PIT						= "Fosa"--Pit, as in hole in ground
 CL.TOTEM					= "Tótem"
 CL.TOTEMS					= "Tótems"
+--CL.HORIZONTAL						= "Horizontal"
+--CL.VERTICAL							= "Vertical"
 --Mechanics
 CL.BOMB						= "Bomba"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.BOMBS					= "Bombas"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert

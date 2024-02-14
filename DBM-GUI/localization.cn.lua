@@ -582,7 +582,10 @@ L.NPAuraSize				= "技能图标大小 (比例): %d"
 L.NPIcon_BarOffSetX 		= "技能图标X轴偏移: %d"
 L.NPIcon_BarOffSetY 		= "技能图标Y轴偏移: %d"
 L.NPIcon_GrowthDirection 	= "技能图标出现方向"
+--L.NPIconAnchorPoint		 			= "Icon Anchor Point"
 L.NPDemo					= "测试 (靠近姓名版)"
+--L.FontTypeTimer						= "Select timer font"
+--L.FontTypeText						= "Select text font"
 
 -- Misc
 L.Area_General				= "一般"
