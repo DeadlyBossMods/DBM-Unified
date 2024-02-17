@@ -50,8 +50,8 @@ CL.FAR_AWAY					= "먼 곳"
 CL.PIT							= "구멍"--Pit, as in hole in ground
 CL.TOTEM							= "토템"
 CL.TOTEMS							= "토템"
---CL.HORIZONTAL						= "Horizontal"
---CL.VERTICAL							= "Vertical"
+CL.HORIZONTAL							= "가로"
+CL.VERTICAL							= "세로"
 --Mechanics
 CL.BOMB								= "폭탄"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.BOMBS							= "폭탄"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
