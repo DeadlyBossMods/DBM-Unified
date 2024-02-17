@@ -392,6 +392,27 @@ local function updateHealth()
 	updateIcons()
 end
 
+local bossHealthSortedLines = {}
+local function updateBossHealth()
+	twipe(lines)
+	twipe(bossHealthSortedLines)
+	local bossHealth, localizedBossNames = DBM:GetCachedBossHealth()
+	for cId, name in pairs(value[1]) do
+		if type(name) ~= "string" then
+			name = localizedBossNames[cId] or ("Boss " .. cId)
+		end
+		lines[name] = bossHealth[cId] or math.huge
+		bossHealthSortedLines[#bossHealthSortedLines + 1] = name
+	end
+	tsort(bossHealthSortedLines, function(e1, e2)
+		return lines[e1] > lines[e2]
+	end)
+	for name, hp in pairs(lines) do
+		lines[name] = hp < math.huge and (math.ceil(hp) .. "%") or DBM_COMMON_L.UNKNOWN
+	end
+	updateLines(bossHealthSortedLines)
+end
+
 local function updatePlayerPower()
 	twipe(lines)
 	local threshold = value[1]
@@ -906,6 +927,7 @@ end
 
 local events = {
 	["health"] = updateHealth,
+	["bosshealth"] = updateBossHealth,
 	["playerpower"] = updatePlayerPower,
 	["enemypower"] = updateEnemyPower,
 	["enemyabsorb"] = updateEnemyAbsorb,
@@ -968,7 +990,7 @@ local function onUpdate(frame, table)
 			error("DBM InfoFrame: leftText cannot be nil, Notify DBM author. Infoframe force shutting down ", 2)
 			frame:Hide()
 			return
-		elseif leftText and type(leftText) ~= "string" then
+		elseif type(leftText) ~= "string" then
 			leftText = tostring(leftText)
 		end
 		local rightText = lines[leftText]
@@ -1142,7 +1164,7 @@ function infoFrame:Show(modMaxLines, event, ...)
 	currentEvent = event
 	if event == "playerbuff" or event == "playerbaddebuff" or event == "playergooddebuff" then
 		sortMethod = 3 -- Sort by group ID
-	elseif event == "health" or event == "playerdebuffremaining" then
+	elseif event == "health" or event == "playerdebuffremaining" or event == "bosshealth" then
 		sortMethod = 2 -- Sort lowest first
 	elseif (event == "playerdebuffstacks" or event == "table") and value[2] and type(value[2]) == "number" then
 		sortMethod = value[2]
