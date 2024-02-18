@@ -3144,6 +3144,8 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		if first then
 			savedStats[id] = savedStats[id] or {}
 			local stats = savedStats[id]
+			stats.followerKills = stats.followerKills or 0
+			stats.followerPulls = stats.followerPulls or 0
 			stats.normalKills = stats.normalKills or 0
 			stats.normalPulls = stats.normalPulls or 0
 			stats.heroicKills = stats.heroicKills or 0
@@ -3449,6 +3451,8 @@ function DBM:ClearAllStats(modId)
 		local mod = self:GetModByName(id)
 		-- prevent nil table error
 		local defaultStats = {}
+		defaultStats.followerKills = 0
+		defaultStats.followerPulls = 0
 		defaultStats.normalKills = 0
 		defaultStats.normalPulls = 0
 		defaultStats.heroicKills = 0
