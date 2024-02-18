@@ -458,7 +458,7 @@ local usedProfile = "Default"
 local dbmIsEnabled = true
 private.dbmIsEnabled = dbmIsEnabled
 -- Table variables
-local newerVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+local newerVersionPerson, forceDisablePerson, cSyncSender, eeSyncSender, iconSetRevision, iconSetPerson, loadcIds, inCombat, oocBWComms, combatInfo, bossIds, raid, autoRespondSpam, queuedBattlefield, bossHealth, bossNames, bossHealthuIdCache, lastBossEngage, lastBossDefeat = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 -- False variables
 local voiceSessionDisabled, targetEventsRegistered, combatInitialized, healthCombatInitialized, watchFrameRestore, questieWatchRestore, bossuIdFound, timerRequestInProgress = false, false, false, false, false, false, false, false
 -- Nil variables
@@ -5296,24 +5296,24 @@ function checkWipe(self, confirm)
 	end
 end
 
-function checkBossHealth(self, onlyHighest)
+function checkBossHealth(self, mod)
 	if #inCombat > 0 then
 		for _, v in ipairs(inCombat) do
 			if not v.multiMobPullDetection or v.mainBoss then
-				self:GetBossHP(v.mainBoss or v.combatInfo.mob or -1, onlyHighest)
+				self:GetBossHP(v.mainBoss or v.combatInfo.mob or -1, mod.onlyHighest)
 			else
 				for _, mob in ipairs(v.multiMobPullDetection) do
-					self:GetBossHP(mob, onlyHighest)
+					self:GetBossHP(mob, mod.onlyHighest)
 				end
 			end
 		end
-		self:Schedule(1, checkBossHealth, self, onlyHighest)
+		self:Schedule(mod.bossHealthUpdateTime or 1, checkBossHealth, self, mod)
 	end
 end
 
 function checkCustomBossHealth(self, mod)
 	mod:CustomHealthUpdate()
-	self:Schedule(1, checkCustomBossHealth, self, mod)
+	self:Schedule(mod.bossHealthUpdateTime or 1, checkCustomBossHealth, self, mod)
 end
 
 do
@@ -5471,9 +5471,9 @@ do
 				end
 				--boss health info scheduler
 				if mod.CustomHealthUpdate then
-					self:Schedule(1, checkCustomBossHealth, self, mod)
+					self:Schedule(mod.bossHealthUpdateTime or 1, checkCustomBossHealth, self, mod)
 				else
-					self:Schedule(1, checkBossHealth, self, mod.onlyHighest)
+					self:Schedule(mod.bossHealthUpdateTime or 1, checkBossHealth, self, mod)
 				end
 			end
 			--process global options
@@ -8559,6 +8559,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 		if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
 			bossHealth[cIdOrGUID] = hp
 		end
+		bossNames[cIdOrGUID] = UnitName(uId)
 		return hp, uId, UnitName(uId)
 	--Focus, does not exist in classic
 	elseif isRetail and ((self:GetCIDFromGUID(UnitGUID("focus")) == cIdOrGUID or UnitGUID("focus") == cIdOrGUID) and UnitHealthMax("focus") ~= 0) then
@@ -8567,6 +8568,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 		if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
 			bossHealth[cIdOrGUID] = hp
 		end
+		bossNames[cIdOrGUID] = UnitName("focus")
 		return hp, "focus", UnitName("focus")
 	else
 		--Boss UnitIds
@@ -8581,6 +8583,7 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 						bossHealth[cIdOrGUID] = hp
 					end
 					bossHealthuIdCache[cIdOrGUID] = unitID
+					bossNames[cIdOrGUID] = UnitName(unitID)
 					return hp, unitID, UnitName(unitID)
 				end
 			end
@@ -8597,7 +8600,25 @@ function DBM:GetBossHP(cIdOrGUID, onlyHighest)
 					bossHealth[cIdOrGUID] = hp
 				end
 				bossHealthuIdCache[cIdOrGUID] = unitId
+				bossNames[cIdOrGUID] = UnitName(unitId)
 				return hp, unitId, UnitName(unitId)
+			end
+		end
+		if not isRetail then
+			--Scan a few nameplates if we don't have raid boss uIDs, but not worth trying all of them
+			for i = 1, 20 do
+				local unitId = "nameplate" .. i
+				local bossguid = UnitGUID(unitId)
+				if (self:GetCIDFromGUID(bossguid) == cIdOrGUID or bossguid == cIdOrGUID) and UnitHealthMax(unitId) ~= 0 then
+					if bossHealth[cIdOrGUID] and (UnitHealth(unitId) == 0 and not UnitIsDead(unitId)) then return bossHealth[cIdOrGUID], unitId, UnitName(unitId) end--Return last non 0 value if value is 0, since it's last valid value we had.
+					local hp = UnitHealth(unitId) / UnitHealthMax(unitId) * 100
+					if not onlyHighest or onlyHighest and hp > (bossHealth[cIdOrGUID] or 0) then
+						bossHealth[cIdOrGUID] = hp
+					end
+					bossHealthuIdCache[cIdOrGUID] = unitId
+					bossNames[cIdOrGUID] = UnitName(unitId)
+					return hp, unitId, UnitName(unitId)
+				end
 			end
 		end
 	end
@@ -8657,6 +8678,10 @@ function bossModPrototype:GetLowestBossHealth()
 end
 
 bossModPrototype.GetBossHP = DBM.GetBossHP
+
+function DBM:GetCachedBossHealth()
+	return bossHealth, bossNames
+end
 
 -------------------------
 --  Timers Table Util  --
