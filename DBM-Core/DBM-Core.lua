@@ -2666,6 +2666,9 @@ do
 		end
 	end
 
+	--This is primarily used for cached player unitIds by name lookup
+	--I'm not even sure why a boss check is in it, since GetBossUnitId existed (and is now deprecated)
+	--I'll leave the boss checking for now since I don't know if any mods (or core) are using this function this way
 	function DBM:GetRaidUnitId(name)
 		for i = 1, 10 do
 			local unitId = "boss" .. i
@@ -2692,27 +2695,75 @@ do
 	}
 
 	local bossTargetuIds = {
-		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10", "focus", "target"
+		"boss1", "boss2", "boss3", "boss4", "boss5", "boss6", "boss7", "boss8", "boss9", "boss10"
 	}
 
 	--Not to be confused with GetUnitIdFromCID
-	function DBM:GetUnitIdFromGUID(guid, scanOnlyBoss)
-		local unitID
-		--First use blizzard internal client token check, but only if it's not boss only (because blizzard checks every token imaginable, even more than fullUids does)
-		if UnitTokenFromGUID and not scanOnlyBoss then
-			unitID = UnitTokenFromGUID(guid)
+	function DBM:GetUnitIdFromGUID(guid, bossOnly)
+		local returnUnitID
+		--First use blizzard internal client token check but only if it's not boss only
+		--(because blizzard checks every token imaginable, even more than fullUids does and they have boss as the END in their order selection)
+		--DBM prioiritzes the most common/useful tokens first, and rarely iterates passed even boss1, which is first token in OUR priorities
+		if UnitTokenFromGUID and not bossOnly then
+			returnUnitID = UnitTokenFromGUID(guid)
 		end
-		if unitID then
-			return unitID
+		if returnUnitID then
+			return returnUnitID
 		else
-			local usedTable = scanOnlyBoss and bossTargetuIds or fullUids
+			local usedTable = bossOnly and bossTargetuIds or fullUids
 			for _, unitId in ipairs(usedTable) do
 				local guid2 = UnitGUID(unitId)
 				if guid == guid2 then
-					return unitId
+					return returnUnitID
 				end
 			end
 		end
+	end
+
+	--Not to be confused with GetUnitIdFromGUID, in this function we don't know a specific guid so can't use UnitTokenFromGUID
+	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
+		local returnUnitID
+		--Always prioritize a quick boss unit scan on retail first
+		if not isClassic and not isBCC then
+			for i = 1, 10 do
+				local unitId = "boss" .. i
+				local bossGUID = UnitGUID(unitId)
+				local cid = self:GetCIDFromGUID(bossGUID)
+				if cid == creatureID then
+					returnUnitID = unitId
+				end
+			end
+		end
+		if not returnUnitID and not bossOnly then
+			for _, unitId in ipairs(fullUids) do
+				local guid2 = UnitGUID(unitId)
+				local cid = self:GetCIDFromGUID(guid2)
+				if cid == creatureID then
+					returnUnitID = unitId
+				end
+			end
+		end
+		return returnUnitID
+	end
+
+	--Deprecated, only old mods use this (newer mods use GetUnitIdFromGUID or GetUnitIdFromCID)
+	function DBM:GetBossUnitId(name, bossOnly)
+		local returnUnitID
+		if not isClassic and not isBCC then
+			for i = 1, 10 do
+				if UnitName("boss" .. i) == name then
+					returnUnitID = "boss" .. i
+				end
+			end
+		end
+		if not returnUnitID and not bossOnly then
+			for uId in self:GetGroupMembers() do
+				if UnitName(uId .. "target") == name and not UnitIsPlayer(uId .. "target") then
+					returnUnitID = uId .. "target"
+				end
+			end
+		end
+		return returnUnitID
 	end
 
 	function DBM:GetPlayerGUIDByName(name)
@@ -2854,48 +2905,6 @@ end
 function DBM:IsCreatureGUID(guid)
 	local guidType = strsplit("-", guid or "")
 	return guidType and (guidType == "Creature" or guidType == "Vehicle")--To determine, add pet or not?
-end
-
-function DBM:GetBossUnitId(name, bossOnly)--Deprecated, only old mods use this
-	local returnUnitID
-	for i = 1, 10 do
-		if UnitName("boss" .. i) == name then
-			returnUnitID = "boss" .. i
-		end
-	end
-	if not returnUnitID and not bossOnly then
-		for uId in self:GetGroupMembers() do
-			if UnitName(uId .. "target") == name and not UnitIsPlayer(uId .. "target") then
-				returnUnitID = uId .. "target"
-			end
-		end
-	end
-	return returnUnitID
-end
-
---Not to be confused with GetUnitIdFromGUID
-function DBM:GetUnitIdFromCID(creatureID, bossOnly)
-	local returnUnitID
-	for i = 1, 10 do
-		local unitId = "boss" .. i
-		local bossGUID = UnitGUID(unitId)
-		local cid = self:GetCIDFromGUID(bossGUID)
-		if cid == creatureID then
-			returnUnitID = unitId
-		end
-	end
-	--Didn't find valid unitID from boss units, scan raid targets
-	if not returnUnitID and not bossOnly then
-		for uId in DBM:GetGroupMembers() do--Do not use self on this function, because self might be bossModPrototype
-			local unitId = uId .. "target"
-			local bossGUID = UnitGUID(unitId)
-			local cid = self:GetCIDFromGUID(bossGUID)
-			if cid == creatureID then
-				returnUnitID = unitId
-			end
-		end
-	end
-	return returnUnitID
 end
 
 --Scope, will only check if a unit is within 43 yards now
@@ -3135,6 +3144,8 @@ function DBM:LoadModOptions(modId, inCombat, first)
 		if first then
 			savedStats[id] = savedStats[id] or {}
 			local stats = savedStats[id]
+			stats.followerKills = stats.followerKills or 0
+			stats.followerPulls = stats.followerPulls or 0
 			stats.normalKills = stats.normalKills or 0
 			stats.normalPulls = stats.normalPulls or 0
 			stats.heroicKills = stats.heroicKills or 0
@@ -3440,6 +3451,8 @@ function DBM:ClearAllStats(modId)
 		local mod = self:GetModByName(id)
 		-- prevent nil table error
 		local defaultStats = {}
+		defaultStats.followerKills = 0
+		defaultStats.followerPulls = 0
 		defaultStats.normalKills = 0
 		defaultStats.normalPulls = 0
 		defaultStats.heroicKills = 0
