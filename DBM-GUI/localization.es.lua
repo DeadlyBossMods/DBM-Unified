@@ -67,7 +67,7 @@ L.Area_ProfilesSetup		= "Guía de uso de perfiles de DBM"
 L.Core_GUI 					= "Generales e interfaz"
 L.General 					= "Opciones generales de DBM"
 L.EnableMiniMapIcon			= "Mostrar botón junto al minimapa"
---L.EnableCompartmentIcon	= "Show compartment button"
+L.EnableCompartmentIcon	= "Mostrar botón de compartimento"
 L.UseSoundChannel			= "Canal de audio para alertas"
 L.UseMasterChannel			= "Canal de audio principal"
 L.UseDialogChannel			= "Canal de audio de diálogo"
@@ -355,10 +355,10 @@ L.CBTRole					= "Rol"
 L.CBTPhase					= "Fase"
 L.CBTImportant				= "Importante (usuario)"
 --Dropdown Options
---L.SAOne						= "Global Sound 1 (Personal)"
---L.SATwo						= "Global Sound 2 (Everyone)"
---L.SAThree					= "Global Sound 3 (High Priority Action)"
---L.SAFour					= "Global Sound 4 (High Priority Run Away)"
+L.SAOne						= "Sonido global 1 (personal)"
+L.SATwo						= "Sonido global 2 (todos)"
+L.SAThree					= "Global Sound 3 (acción de alta prioridad)"
+L.SAFour					= "Global Sound 4 (huida de alta prioridad)"
 L.ColorDropGeneric			= "Genérico (original)"
 L.ColorDrop1				= "Color 1"
 L.ColorDrop2				= "Color 2"
@@ -472,7 +472,7 @@ L.FilterVoidFormSay			= "Desactivar el envío de mensajes de posición y cuenta 
 L.Area_SpecFilter			= "Opciones de filtros de rol"
 L.FilterTankSpec			= "Ocultar avisos designados para tanques cuando no sea tu rol"
 L.FilterDispels				= "Ocular avisos de facultades disipables si tu disipación no está disponible"
---L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
+L.FilterCrowdControl		= "Filtrar anuncios para interrupciones basadas en el control de multitudes si tu control de multitudes está en tiempo de reutilización."
 L.FilterTrashWarnings		= "Ocultar todos los avisos de enemigos menores en mazmorras normales y heroicas"
 
 L.Area_BInterruptFilter				= "Opciones de filtro de interrupción de jefe"
@@ -497,30 +497,30 @@ L.SpamSpecRoleSwitch				= "Filtrar las alertas de 'cambio de objetivo' y 'bichos
 L.SpamSpecRoleGTFO					= "Filtrar las alertas 'salga' por completo (sin texto ni sonido)"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Block Blizzard Features"
+L.Panel_HideBlizzard				= "Bloquear funciones de Blizzard"
 --Toast
-L.Area_HideToast					= "Disable blizzard toasts (popups)"
-L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
-L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
---L.HideBossKill					= "Hide boss kill toasts"--NYI
---L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+L.Area_HideToast					= "Desactivar notificaciones emergentes de Blizzard"
+L.HideGarrisonUpdates				= "Ocultar notificaciones de seguidores durante encuentros contra jefes"
+L.HideGuildChallengeUpdates			= "Ocultar notificaciones de desafíos de hermandad durante encuentros contra jefes"
+L.HideBossKill						= "Ocultar notificaciones de muerte de jefes"--NYI
+L.HideVaultUnlock					= "Ocultar notificaciones de desbloqueo de la cámara"--NYI
 --Cut Scenes
-L.Area_Cinematics					= "Block in-game cinematics"
-L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
-L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
-L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+L.Area_Cinematics 					= "Bloquear cinemáticas del juego"
+L.DuringFight 						= "Bloquear escenas de corte durante encuentros de jefes" --uses explicite IsEncounterInProgress check
+L.InstanceAnywhere 					= "Bloquear escenas de corte no relacionadas con combate en cualquier lugar dentro de una mazmorra o estancia de banda"
+L.NonInstanceAnywhere 				= "¡PELIGRO! Bloquear escenas de corte en el mundo exterior abierto (NO recomendado)"
+L.OnlyAfterSeen 					= "Solo bloquear escenas de corte después de haberlas visto al menos una vez (MUY recomendado, para experimentar la historia como se pretendía al menos una vez)"
 --Sound
-L.Area_Sound						= "Block in-game sounds"
-L.DisableSFX						= "Disable sound effects channel during boss fights"
-L.DisableAmbiance					= "Disable ambiance channel during boss fights"
-L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+L.Area_Sound 						= "Bloquear sonidos del juego"
+L.DisableSFX 						= "Desactivar canal de efectos de sonido durante encuentros de jefe"
+L.DisableAmbiance 					= "Desactivar canal de ambiente durante encuentros de jefe"
+L.DisableMusic 						= "Desactivar canal de música durante combates de jefes (Nota: Si está activado, la música personalizada de jefes no se reproducirá si está activada en sonidos de eventos)"
 --Other
-L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.Area_HideBlizzard 				= "Desactivar y ocultar otras molestias de Blizzard"
+L.HideBossEmoteFrame 				= "Ocultar marco de emociones de jefe de banda durante encuentros de jefe"
+L.HideWatchFrame 					= "Ocultar marco de seguimiento (objetivos) durante encuentros de jefe si no se están siguiendo logros y si no está en un Mítico+"
+L.HideQuestTooltips 				= "Ocultar objetivos de misión de las descripciones emergentes durante encuentros de jefes" --Currently hidden (NYI)
+L.HideTooltips 						= "Ocultar completamente las descripciones emergentes durante encuentros de jefe"
 
 -- Panel: Raid Leader Controls
 L.Tab_RLControls					= "Controles de líder de banda"
@@ -579,10 +579,10 @@ L.NPAuraSize				= "Tamaño del aura: %d"
 L.NPIcon_BarOffSetX 		= "Desplazamiento del icono X: %d"
 L.NPIcon_BarOffSetY 		= "Desplazamiento del icono X Y: %d"
 L.NPIcon_GrowthDirection 	= "Dirección de crecimiento del icono"
---L.NPIconAnchorPoint		 			= "Icon Anchor Point"
+L.NPIconAnchorPoint			= "Punto de anclaje del icono"
 L.NPDemo					= "Prueba (Acercase de placas de nombre)"
---L.FontTypeTimer						= "Select timer font"
---L.FontTypeText						= "Select text font"
+L.FontTypeTimer			= "Seleccionar fuente del temporizador"
+L.FontTypeText			= "Seleccionar fuente de texto"
 
 -- Misc
 L.Area_General				= "General"
