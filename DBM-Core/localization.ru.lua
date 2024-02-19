@@ -466,7 +466,7 @@ L.AUTO_TIMER_TEXTS.next 			= "%s"
 L.AUTO_TIMER_TEXTS.nextcount		= "%s (%%s)"
 L.AUTO_TIMER_TEXTS.nextsource		= "%s: %%s"
 L.AUTO_TIMER_TEXTS.nextspecial		= "Спецспособность"
-L.AUTO_TIMER_TEXTS.nextcombo		= ""%%1$s + %%2$s"
+L.AUTO_TIMER_TEXTS.nextcombo		= "%%1$s + %%2$s"
 
 L.AUTO_TIMER_TEXTS.achievement		= "%s"
 L.AUTO_TIMER_TEXTS.stage			= "Фаза"
