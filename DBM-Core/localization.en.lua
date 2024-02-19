@@ -471,13 +471,13 @@ L.AUTO_TIMER_TEXTS = {
 	cdcount								= "%s (%%s)",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 	cdsource							= "%s: >%%s<",--Now same as next, as the ~ was moved to timer number -- OPTIONAL
 	cdspecial							= "Special",--Now same as next, as the ~ was moved to timer number
-	cdcombo								= "%s + %%s",--Now same as next, as the ~ was moved to timer number
+	cdcombo								= "%%1$s + %%2$s",--Now same as next, as the ~ was moved to timer number
 
 	next								= "%s", -- OPTIONAL
 	nextcount							= "%s (%%s)", -- OPTIONAL
 	nextsource							= "%s: >%%s<", -- OPTIONAL
 	nextspecial							= "Special",
-	nextcombo							= "%s + %%s",--Now same as next, as the ~ was moved to timer number
+	nextcombo							= "%%1$s + %%2$s",--Now same as next, as the ~ was moved to timer number
 
 	achievement							= "%s", -- OPTIONAL
 	stage								= "Stage",
