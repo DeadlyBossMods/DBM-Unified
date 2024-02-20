@@ -141,7 +141,7 @@ do
 		--Perform normal scan criteria matching
 		elseif targetname and targetuid and targetname ~= CL.UNKNOWN and (not targetFilter or (targetFilter and targetFilter ~= targetname)) then
 			if not IsInGroup() then scanTimes = 1 end--Solo, no reason to keep scanning, give faster warning. But only if first scan is actually a valid target, which is why i have this check HERE
-			if (isEnemyScan and UnitIsFriend("player", targetuid) or (onlyPlayers and not UnitIsUnit("player", targetuid)) or mod:IsTanking(targetuid, bossuid)) and not isFinalScan then--On player scan, ignore tanks. On enemy scan, ignore friendly player. On Only player, ignore npcs and pets
+			if (isEnemyScan and UnitIsFriend("player", targetuid) or (onlyPlayers and not UnitIsUnit("player", targetuid)) or mod:IsTanking(targetuid, bossuid, nil, true)) and not isFinalScan then--On player scan, ignore active tank. On enemy scan, ignore friendly player. On Only player, ignore npcs and pets
 				if targetScanCount[cidOrGuid] < scanTimes then--Make sure no infinite loop.
 					mod:ScheduleMethod(scanInterval, "BossTargetScanner", cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, nil, targetFilter, tankFilter, onlyPlayers, filterFallback)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan, or npc/pet on only person)
 				else--Go final scan.
