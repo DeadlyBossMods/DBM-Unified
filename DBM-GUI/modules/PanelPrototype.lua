@@ -114,6 +114,8 @@ function PanelPrototype:CreateSpellDesc(text)
 	else
 		if text == "" then
 			text = L.NoDescription
+		else
+			test.hasDesc = true
 		end
 		textblock:SetText(text)
 	end
