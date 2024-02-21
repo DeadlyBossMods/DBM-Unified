@@ -10573,11 +10573,11 @@ do
 		frame:SetFrameStrata("HIGH")
 	end
 
-	function DBM:ShowTestSpecialWarning(_, number, noSound, force) -- text, number, noSound, force
+	function DBM:ShowTestSpecialWarning(text, number, noSound, force) -- text, number, noSound, force
 		if moving then
 			return
 		end
-		self:AddSpecialWarning(L.MOVE_SPECIAL_WARNING_TEXT)
+		self:AddSpecialWarning(text or L.MOVE_SPECIAL_WARNING_TEXT)
 		frame:SetFrameStrata("TOOLTIP")
 		self:Unschedule(testWarningEnd)
 		self:Schedule(self.Options.SpecialWarningDuration2 * 1.3, testWarningEnd)
