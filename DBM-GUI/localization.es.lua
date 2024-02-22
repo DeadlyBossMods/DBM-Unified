@@ -404,7 +404,7 @@ L.FadeBar					= "Desteñir barras de habilidades lejanas"
 L.BarSkin					= "Skin de barra"
 
 -- Panel: Pull, Break, Combat
-L.Panel_PullBreakCombat				= "Inicio & descanso"
+L.Panel_PullBreakCombat				= "Inicio y descanso"
 
 L.Area_SoundOptions					= "Opciones de sonido"
 
