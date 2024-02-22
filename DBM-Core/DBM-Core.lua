@@ -84,11 +84,11 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.26"
+	DBM.DisplayVersion = "10.2.27 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
-	DBM.DisplayVersion = "1.15.18"
+	DBM.DisplayVersion = "1.15.19 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
 elseif isBCC then
@@ -96,7 +96,7 @@ elseif isBCC then
 	DBM.ReleaseRevision = releaseDate(2024, 1, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 3--When this is incremented, trigger force disable regardless of major patch
 elseif isWrath then
-	DBM.DisplayVersion = "3.4.61"
+	DBM.DisplayVersion = "3.4.62 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 2, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 end
@@ -2714,16 +2714,14 @@ do
 			for _, unitId in ipairs(usedTable) do
 				local guid2 = UnitGUID(unitId)
 				if guid == guid2 then
-					returnUnitID = unitId
+					return unitId
 				end
 			end
 		end
-		return returnUnitID
 	end
 
 	--Not to be confused with GetUnitIdFromGUID, in this function we don't know a specific guid so can't use UnitTokenFromGUID
 	function DBM:GetUnitIdFromCID(creatureID, bossOnly)
-		local returnUnitID
 		--Always prioritize a quick boss unit scan on retail first
 		if not isClassic and not isBCC then
 			for i = 1, 10 do
@@ -2731,7 +2729,7 @@ do
 				local bossGUID = UnitGUID(unitId)
 				local cid = self:GetCIDFromGUID(bossGUID)
 				if cid == creatureID then
-					returnUnitID = unitId
+					return unitId
 				end
 			end
 		end
@@ -2740,11 +2738,10 @@ do
 				local guid2 = UnitGUID(unitId)
 				local cid = self:GetCIDFromGUID(guid2)
 				if cid == creatureID then
-					returnUnitID = unitId
+					return unitId
 				end
 			end
 		end
-		return returnUnitID
 	end
 
 	--Deprecated, only old mods use this (newer mods use GetUnitIdFromGUID or GetUnitIdFromCID)
