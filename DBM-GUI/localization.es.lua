@@ -116,11 +116,11 @@ L.DoNotLogLFG				= "No registras Buscar Grupo o Buscar Banda (contenido en cola)
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
 L.LogCurrentMythicRaids				= "Bandas míticos de nivel actual"--Retail Only
 L.LogCurrentRaids					= "Bandas no míticas de nivel actual (heroico, normal y buscar bandas si el filtro está desactivado)"
-L.LogTWRaids						= "Timewalking or Chromie Time raids"--Retail Only
+--L.LogTWRaids						= "Timewalking or Chromie Time raids"--Retail Only
 L.LogTrivialRaids					= "Bandas triviales (de bajo nivel)"
 L.LogCurrentMPlus					= "Mazmorras M+ de nivel actual"--Retail Only
 L.LogCurrentMythicZero				= "Mazmorras Mítica 0 de nivel actual"--Retail Only
-L.LogTWDungeons						= "Timewalking or Chromie Time dungeons"--Retail Only
+--L.LogTWDungeons						= "Timewalking or Chromie Time dungeons"--Retail Only
 L.LogCurrentHeroic					= "Mazmorras heroicas de nivel actual (Nota: si estás haciendo mazmorra por cola y quieres que se registre, desactiva el filtro Buscar Grupo)"
 
 -- Panel: Extra Features
@@ -492,7 +492,7 @@ L.SpamSpecRoleInterrupt				= "Filtrar las alertas 'interrumpir' por completo (si
 L.SpamSpecRoleDefensive				= "Filtrar las alertas 'defensiva' por completo (sin texto ni sonido)"
 L.SpamSpecRoleTaunt					= "Filtrar las alertas 'irritar' por completo (sin texto ni sonido)"
 L.SpamSpecRoleSoak					= "Filtrar las alertas 'daño' por completo (sin texto ni sonido)"
-L.SpamSpecRoleStack					= "Filtrar las alertas 'pila de perjuicios' por completo (sin texto ni sonido)"
+L.SpamSpecRoleStack					= "Filtrar las alertas 'acumulaciones de perjuicios' por completo (sin texto ni sonido)"
 L.SpamSpecRoleSwitch				= "Filtrar las alertas de 'cambio de objetivo' y 'bichos' (sin texto ni sonido)"
 L.SpamSpecRoleGTFO					= "Filtrar las alertas 'salga' por completo (sin texto ni sonido)"
 
