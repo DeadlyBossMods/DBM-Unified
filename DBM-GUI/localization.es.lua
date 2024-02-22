@@ -145,7 +145,7 @@ L.Area_Invite				= "Opciones de invitación"
 L.AutoAcceptFriendInvite	= "Aceptar automáticamente invitaciones a grupos de amigos"
 L.AutoAcceptGuildInvite		= "Aceptar automáticamente invitaciones a grupos de miembros de la hermandad"
 L.Area_Advanced				= "Opciones avanzadas"
-L.FakeBW					= "Camuflar DBM como si fuera BigWigs en comprobaciones de versión (útil para hermandades que obligan a Utilizar BigWigs)"
+L.FakeBW					= "Camuflar DBM como si fuera BigWigs en comprobaciones de versión (útil para hermandades que obligan a utilizar BigWigs)"
 L.AITimer					= "Generar temporizadores automáticamente para encuentros no vistos anteriormente mediante la IA de temporizadores interna de DBM (útil para probar jefes por primera vez en el RPP). No funciona correctamente en encuentros con múltiples esbirros que comparten la misma facultad."
 
 -- Panel: Profiles
