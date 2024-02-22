@@ -2733,7 +2733,7 @@ do
 				end
 			end
 		end
-		if not returnUnitID and not bossOnly then
+		if not bossOnly then
 			for _, unitId in ipairs(fullUids) do
 				local guid2 = UnitGUID(unitId)
 				local cid = self:GetCIDFromGUID(guid2)
