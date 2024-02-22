@@ -2714,10 +2714,11 @@ do
 			for _, unitId in ipairs(usedTable) do
 				local guid2 = UnitGUID(unitId)
 				if guid == guid2 then
-					return returnUnitID
+					returnUnitID = unitId
 				end
 			end
 		end
+		return returnUnitID
 	end
 
 	--Not to be confused with GetUnitIdFromGUID, in this function we don't know a specific guid so can't use UnitTokenFromGUID
