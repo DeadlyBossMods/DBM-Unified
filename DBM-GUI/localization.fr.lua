@@ -16,7 +16,7 @@ L.OTabPlugins	= "Core Plugins"
 L.OTabOptions	= GAMEOPTIONS_MENU
 L.OTabAbout		= "À propos"
 
---L.FOLLOWER								= "Follower"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
+L.FOLLOWER				= "Sujet"--i.e. the new dungeon type in 10.2.5. I haven't found a translated string yet
 
 L.TabCategory_OTHER			= "Autres modules"
 
@@ -61,7 +61,7 @@ L.Area_ProfilesSetup		= "Guide d'utilisation des profiles DBM"
 L.Core_GUI 					= "Core & Interface"
 L.General 					= "Options générales de DBM core"
 L.EnableMiniMapIcon			= "Afficher l'icône de la minicarte"
---L.EnableCompartmentIcon	= "Show compartment button"
+L.EnableCompartmentIcon		= "Afficher le bouton de compartiment"
 L.UseSoundChannel			= "Configurer le canal audio utilisé par DBM pour jouer les sons d'alerte"
 L.UseMasterChannel			= "Canal audio Principal"
 L.UseDialogChannel			= "Canal audio Discussion"
@@ -89,7 +89,7 @@ L.Editbox_WindowHeight		= "Hauteur de la fenêtre"
 L.UIGroupingOptions			= "Options d'interface partagées (requiet de recharger l'interface pour tout module qui serait déjà chargé)"
 L.GroupOptionsExcludeIcon	= "Exclure l'option \"Définir l'icône sur\" du regroupement par capacité (elles seront regroupées dans la catégorie \"Icônes\" comme avant)"
 L.AutoExpandSpellGroups		= "Déplier automatiquement les options liées à la même capacité"
---L.ShowSpellDescWhenExpanded	= "Continue showing spell description when groups are expanded"--Might not be used
+L.ShowSpellDescWhenExpanded	= "Continuer à afficher la description du sort lorsque les groupes sont déployés."--Might not be used
 L.NoDescription				= "Cette capacité n'a aucune description"
 
 -- Panel: Extra Features
@@ -182,10 +182,10 @@ L.ThickOutline				= "Epais"
 L.MonochromeOutline			= "Monochrome simple"
 L.MonochromeThickOutline	= "Monochrome épais"
 L.RaidWarnSound				= "Jouer un son sur les alertes raid"
---L.SAOne						= "Global Sound 1 (Personal)"
---L.SATwo						= "Global Sound 2 (Everyone)"
---L.SAThree					= "Global Sound 3 (High Priority Action)"
---L.SAFour					= "Global Sound 4 (High Priority Run Away)"
+L.SAOne						= "Son global 1 (personnel)"
+L.SATwo 					= "Son global 2 (tout le monde)"
+L.SAThree 					= "Son global 3 (action de haute priorité)"
+L.SAFour 					= "Son global 4 (fuite de haute priorité)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Alertes spéciales"
@@ -414,7 +414,7 @@ L.FilterInterrupts2			= "Si le lanceur n'est pas la cible/focus actuelle (Toujou
 L.FilterInterrupts3			= "Si le lanceur n'est pas la cible/focus actuelle (Toujours) ou interruption en recharge (Boss &amp; Trash)"
 L.FilterInterruptNoteName	= "Filtrer les alertes des sorts interruptibles (avec compte) si l'alerte ne contient pas votre nom dans la note personnalisée"
 L.FilterDispels				= "Filtrer les alertes de dissipations si votre sort de dissipation est en recharge"
---L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
+L.FilterCrowdControl		= "Filtrer les annonces pour les interruptions basées sur le contrôle de foule si votre CC est en temps de recharge."
 L.FilterTrashWarnings		= "Filtrer toutes les annonces liées aux trash dans les donjons normaux &amp; héroïques"
 
 L.Area_PullTimer			= "Options du filtre des décomptes de pull, pause, & personnalisé"
@@ -426,30 +426,30 @@ L.DontPlayPTCountdown		= "Ne jouer aucun son de décompte de pull/pause/perso"
 L.PT_Threshold				= "Pas de son du décompte de pull/pause/perso au delà de : %d"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Block Blizzard Features"
+L.Panel_HideBlizzard				= "Bloquer les fonctionnalités de Blizzard."
 --Toast
-L.Area_HideToast					= "Disable blizzard toasts (popups)"
-L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
-L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
---L.HideBossKill					= "Hide boss kill toasts"--NYI
---L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+L.Area_HideToast 					= "Désactiver les notifications Blizzard"
+L.HideGarrisonUpdates 				= "Cacher les notifications de suivi pendant les combats de boss"
+L.HideGuildChallengeUpdates 		= "Cacher les notifications de défi de guilde pendant les combats de boss"
+L.HideBossKill 						= "Cacher les notifications de mort de boss" --NYI
+L.HideVaultUnlock					= "Cacher les notifications de déblocage du coffre" --NYI
 --Cut Scenes
-L.Area_Cinematics					= "Block in-game cinematics"
-L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
-L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
-L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
---Sound
-L.Area_Sound						= "Block in-game sounds"
-L.DisableSFX						= "Disable sound effects channel during boss fights"
-L.DisableAmbiance					= "Disable ambiance channel during boss fights"
-L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
---Other
-L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.Area_Cinematics 					= "Bloquer les cinématiques en jeu"
+L.DuringFight 						= "Bloquer les cinématiques en combat pendant les rencontres de boss" -- utilise une vérification explicite de IsEncounterInProgress
+L.InstanceAnywhere 					= "Bloquer les cinématiques non liées au combat n'importe où à l'intérieur d'une instance de donjon ou de raid"
+L.NonInstanceAnywhere 				= "DANGER : Bloquer les cinématiques en extérieur dans le monde ouvert (NON recommandé)"
+L.OnlyAfterSeen 					= "Ne bloquer les cinématiques qu'après les avoir vues au moins une fois (Vivement recommandé pour vivre l'histoire telle qu'elle a été conçue au moins une fois)"
+-- Son
+L.Area_Sound 						= "Bloquer les sons en jeu"
+L.DisableSFX 						= "Désactiver le canal des effets sonores pendant les combats de boss"
+L.DisableAmbiance 					= "Désactiver le canal de l'ambiance sonore pendant les combats de boss"
+L.DisableMusic 						= "Désactiver le canal de la musique pendant les combats de boss (Remarque : Si activé, la musique de boss personnalisée ne sera pas jouée si elle est activée dans les sons d'événement)"
+-- Autres
+L.Area_HideBlizzard 				= "Désactiver et cacher d'autres irritants Blizzard"
+L.HideBossEmoteFrame 				= "Cacher le cadre des émotes de boss de raid pendant les combats de boss"
+L.HideWatchFrame 					= "Cacher le cadre de suivi (objectifs) pendant les combats de boss s'il n'y a pas d'exploits en cours de suivi et si ce n'est pas dans une Mythique +"
+L.HideQuestTooltips 				= "Cacher les objectifs de quête des info-bulles pendant les combats de boss" --Currently hidden (NYI)
+L.HideTooltips 						= "Cacher complètement les info-bulles pendant les combats de boss"
 
 -- Panel: Privacy
 L.Tab_Privacy 				= "Messages privés"
