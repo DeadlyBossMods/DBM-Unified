@@ -5234,7 +5234,8 @@ end
 --  Kill/Wipe Detection  --
 ---------------------------
 
-function checkWipe(self, confirm)
+local lastValidCombat = 0
+function checkWipe(self, confirm, confirmTime)
 	if #inCombat > 0 then
 		if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText, difficultyIndex, LastGroupSize, difficultyModifier = self:GetCurrentInstanceDifficulty()
@@ -5275,21 +5276,27 @@ function checkWipe(self, confirm)
 			end
 		end
 		if wipe == 0 then
+			lastValidCombat = GetTime()--Time stamp last valid in combat
 			self:Schedule(3, checkWipe, self)
 		elseif confirm then
-			for i = #inCombat, 1, -1 do
-				local mod = inCombat[i]
-				if not mod.noStatistics then
-					self:Debug("You wiped. Reason : " .. (wipe == 1 and "No combat unit found in your party." or "No boss found : " .. (wipe or "nil")))
+			local timeSinceValid = GetTime() - lastValidCombat
+			if timeSinceValid > confirmTime then
+				for i = #inCombat, 1, -1 do
+					local mod = inCombat[i]
+					if not mod.noStatistics then
+						self:Debug("You wiped. Reason : " .. (wipe == 1 and "No combat unit found in your party." or "No boss found : " .. (wipe or "nil")))
+					end
+					self:EndCombat(mod, true, nil, "checkWipe")
 				end
-				self:EndCombat(mod, true, nil, "checkWipe")
+			else--Have not reached required out of combat time yet, check again every 3 seconds until we do
+				self:Schedule(3, checkWipe, self, true, confirmTime)
 			end
 		else
 			local maxDelayTime = (savedDifficulty == "worldboss" and 15) or 5 --wait 10s more on worldboss do actual wipe.
 			for _, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
-			self:Schedule(maxDelayTime, checkWipe, self, true)
+			self:Schedule(maxDelayTime, checkWipe, self, true, maxDelayTime)
 		end
 	end
 end
