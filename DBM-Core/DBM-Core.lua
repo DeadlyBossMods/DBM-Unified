@@ -3739,10 +3739,16 @@ do
 		end
 	end
 
+	local sodPvpZones = {
+		[1440] = true, -- Ashenvale
+		[1434] = true, -- Stranglethorn Vale
+	}
 	function DBM:CheckAvailableModsByMap()
 		local mapId = C_Map.GetBestMapForUnit("player")
-		if mapId == 1440 and not UnitOnTaxi("player") and playerLevel >= 25 and C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery then -- SoD
-			if not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
+		if not mapId then return end
+		if UnitOnTaxi("player") then return end -- Don't spam the player if they are just passing through
+		if C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery then
+			if sodPvpZones[mapId] and not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
 			end
