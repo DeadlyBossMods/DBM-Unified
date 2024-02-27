@@ -5296,7 +5296,7 @@ function checkWipe(self, confirm, confirmTime)
 			for _, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
-			self:Schedule(maxDelayTime, checkWipe, self, true, maxDelayTime)
+			self:Schedule(3, checkWipe, self, true, maxDelayTime)
 		end
 	end
 end
