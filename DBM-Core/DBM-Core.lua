@@ -615,7 +615,7 @@ else--TBC and Vanilla
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
 	}
 	-- Season of Discovery
-	if C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder then
+	if C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery then
 		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 	end
@@ -3741,7 +3741,7 @@ do
 
 	function DBM:CheckAvailableModsByMap()
 		local mapId = C_Map.GetBestMapForUnit("player")
-		if mapId == 1440 and not UnitOnTaxi("player") and playerLevel >= 25 and C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.Placeholder then -- SoD
+		if mapId == 1440 and not UnitOnTaxi("player") and playerLevel >= 25 and C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery then -- SoD
 			if not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
