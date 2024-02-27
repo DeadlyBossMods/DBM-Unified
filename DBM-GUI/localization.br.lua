@@ -52,14 +52,14 @@ L.NoSound					= "Sem som"
 L.IconsInUse				= "Ícones utilizados por esse módulo"
 
 -- Tab: Boss Statistics
-L.BossStatistics			= "Estatísticas do Chefe"
+L.BossStatistics			= "Estatísticas do chefe"
 L.Statistic_Kills			= "Vitórias:"
 L.Statistic_Wipes			= "Derrotas:"
 L.Statistic_Incompletes		= "Incompletos:"--Para cenários, TODO, encontrar um jeito limpo de substituir derrotas por estatística incompleto para mods de cenário
 L.Statistic_BestKill		= "Melhor tempo:"
 
 -- Tab: General Options
-L.TabCategory_Options		= "Opções Gerais"
+L.TabCategory_Options		= "Opções gerais"
 L.Area_BasicSetup			= "Dicas iniciais de configuração do DBM"
 L.Area_ModulesForYou		= "Quais módulos DBM são adequados para você?"
 L.Area_ProfilesSetup		= "Guia de uso de perfis DBM"
@@ -81,7 +81,7 @@ L.Button_TestBars			= "Iniciar barras de teste"
 L.Button_MoveBars			= "Mover barras"
 L.Button_ResetInfoRange		= "Resetar quadros de informações/distância"
 
-L.ModelOptions				= "Opções do Visualizador de Modelos 3D"
+L.ModelOptions				= "Opções do visualizador de modelos 3D"
 L.EnableModels				= "Habilitar modelos 3D nas opções de chefe"
 L.ModelSoundOptions			= "Definir opção de som para o visualizador de modelos"
 L.ModelSoundShort			= "Curto"
@@ -109,9 +109,9 @@ L.ChallengeTimerPersonal	= "Pessoal"
 L.ChallengeTimerRealm		= "Reino"
 
 -- Tab: Raidwarning
-L.Tab_RaidWarning 			= "Avisos de Raide"
-L.RaidWarning_Header		= "Opções de Avisos de Raide"
-L.RaidWarnColors 			= "Cores dos Avisos de Raide"
+L.Tab_RaidWarning 			= "Avisos de raide"
+L.RaidWarning_Header		= "Opções de avisos de raide"
+L.RaidWarnColors 			= "Cores dos avisos de raide"
 L.RaidWarnColor_1 			= "Cor 1"
 L.RaidWarnColor_2 			= "Cor 2"
 L.RaidWarnColor_3		 	= "Cor 3"
@@ -125,24 +125,19 @@ L.WarningIconRight 			= "Mostrar ícone do lado direito."
 L.WarningIconChat 			= "Mostrar ícones no chat"
 
 -- estavam faltando as linhas abaixo
-L.Warn_Duration				= "duração do aviso: %0.1f seg"
-L.None						= "nada"
+L.Warn_Duration				= "Duração do aviso: %0.1f seg"
+L.None						= "Nenhum"
 L.Outline					= "Contorno"
 L.ThickOutline				= "Espessura do contorno"
-L.MonochromeOutline			= "Contorno Monocromático"
-L.MonochromeThickOutline	= "Espessura do contorno Monocromático"
-L.RaidWarnSound				= "toque som no aviso de raide"
+L.MonochromeOutline			= "Contorno monocromático"
+L.MonochromeThickOutline	= "Espessura do contorno monocromático"
+L.RaidWarnSound				= "Toque som no aviso de raide"
 
--- não existem no en.lua
-L.RaidWarnMessage 			= "Obrigado por utilizar o Deadly Boss Mods" -- não existe no en.lua
-L.BarWhileMove 				= "Aviso de Raide móvel" -- não existe no en.lua
-L.RaidWarnSound				= "Tocar som junto com o aviso na raide" -- não existe no en.lua
---L.SAOne						= "Global Sound 1 (Personal)"
---L.SATwo						= "Global Sound 2 (Everyone)"
---L.SAThree					= "Global Sound 3 (High Priority Action)"
---L.SAFour					= "Global Sound 4 (High Priority Run Away)"
-
-
+-- Special Announce Dropdowns
+L.SAOne     				= "Som global 1 (pessoal)"
+L.SATwo     				= "Som global 2 (todos)"
+L.SAThree   				= "Som global 3 (ação de alta prioridade)"
+L.SAFour    				= "Som global 4 (fuga de alta prioridade)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Mensagens em geral"
@@ -187,8 +182,8 @@ L.BarSort					= "Selecionar pelo tempo restante"
 
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Avisos Raide Especiais"
-L.Area_SpecWarn				= "Opções de Avisos Especiais"
+L.Panel_SpecWarnFrame		= "Avisos raide especiais"
+L.Area_SpecWarn				= "Opções de avisos especiais"
 L.ShowSWarningsInChat 		= "Exibir avisos especiais no quadro de chat"
 L.SpecWarn_FlashFrameRepeat	= "Repetir %d vezes (se habilitado)"
 L.SpecWarn_FlashRepeat		= "Repetir piscada"
@@ -229,8 +224,8 @@ L.SpamBlockNoRangeRestore	= "Não restaurar o quadro de distancia para o estado 
 
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter			= "Filtros Global e de Spam"
-L.Area_SpamFilter			= "Opções do filtro Global"
+L.Panel_SpamFilter			= "Filtros global e de spam"
+L.Area_SpamFilter			= "Opções do filtro global"
 L.DontShowFarWarnings		= "Não exibir anúncios/temporizadores para eventos que estão longe"
 L.StripServerName			= "Tira com nome do reino em avisos e temporizadores"
 
@@ -238,9 +233,9 @@ L.Area_SpecFilter			= "Opções de especialização"
 L.FilterTankSpec			= "Filtrar mensagens designadas para tank role quando não for tank. (Nota: Desabilitar esta função não é recomendado para a maioria dos usuários já que avisos de 'taunt' ( insultos ) estão habilitados por definição.)"
 L.FilterInterrupts			= "Filtrar avisos para habilidades passivas de cortes ( interrupts ) se o alvo não for o seu target ou focus ( Não se aplica para magias criticas que resultaram em derrota caso não seja interrompida)"
 L.FilterDispels				= "Filtrar avisos para magias dissipáveis se a seu dissipar estiver em recarga."
---L.FilterCrowdControl				= "Filter announcements for crowd control based interrupts if your CC is on cooldown"
+L.FilterCrowdControl		= "Filtrar anúncios para controle de multidão com base em interrupções se o seu controle de multidão estiver em recarga."
 
-L.Area_PullTimer			= "Opções de Filtros de Puxada, pausa, & Temporizador customizados"
+L.Area_PullTimer			= "Opções de filtros de puxada, pausa, & temporizador customizados"
 L.DontShowPTNoID			= "Bloquear o temporizador de Puxada se não foi enviado na mesma zona que você"
 L.DontShowPT				= "Não exibir a barra de puxada"
 L.DontShowPTText			= "Não exibir texto de anúncio do temporizador de puxada"
@@ -249,41 +244,41 @@ L.DontShowPTCountdownText	= "Não exibir o texto da contagem regressiva de puxad
 L.PT_Threshold				= "Não exibir o texto da contagem regressiva de puxada/customizado acima de: %d"
 
 -- Panel: Blizzard Features
-L.Panel_HideBlizzard				= "Block Blizzard Features"
+L.Panel_HideBlizzard				= "Bloquear funcionalidades da Blizzard"
 --Toast
-L.Area_HideToast					= "Disable blizzard toasts (popups)"
-L.HideGarrisonUpdates				= "Hide follower toasts during boss fights"
-L.HideGuildChallengeUpdates			= "Hide guild challenge toasts during boss fights"
---L.HideBossKill					= "Hide boss kill toasts"--NYI
---L.HideVaultUnlock					= "Hide vault unlock toasts"--NYI
+L.Area_HideToast					= "Desativar avisos da Blizzard (pop-ups)"
+L.HideGarrisonUpdates				= "Ocultar avisos de seguidores durante combate contra chefes"
+L.HideGuildChallengeUpdates			= "Ocultar avisos de desafios de guilda durante combate contra chefes"
+L.HideBossKill						= "Ocultar avisos de morte de chefes"--NYI
+L.HideVaultUnlock					= "Ocultar avisos de desbloqueio do cofre"--NYI
 --Cut Scenes
-L.Area_Cinematics					= "Block in-game cinematics"
-L.DuringFight						= "Block in combat cut scenes during boss encounters"--uses explicite IsEncounterInProgress check
-L.InstanceAnywhere					= "Block non combat cut scenes anywhere inside a dungeon or raid instance"
-L.NonInstanceAnywhere				= "DANGER: Block cut scenes in outdoor open world (NOT recommended)"
-L.OnlyAfterSeen						= "Only block cut scenes after they have been seen at least once (STRONGLY recommended, to experience story as intended at least once)"
+L.Area_Cinematics					= "Bloquear cenas cinemáticas no jogo"
+L.DuringFight						= "Bloquear cenas de combate durante encontros com chefes"--uses explicite IsEncounterInProgress check
+L.InstanceAnywhere					= "Bloquear cenas não relacionadas a combate em qualquer lugar dentro de uma masmorra ou raide"
+L.NonInstanceAnywhere				= "PERIGO: Bloquear cenas em áreas externas de mundo aberto (NÃO recomendado)"
+L.OnlyAfterSeen						= "Apenas bloquear cenas depois de terem sido vistas pelo menos uma vez (ALTAMENTE recomendado, para experiência de história como pretendido pelo menos uma vez)"
 --Sound
-L.Area_Sound						= "Block in-game sounds"
-L.DisableSFX						= "Disable sound effects channel during boss fights"
-L.DisableAmbiance					= "Disable ambiance channel during boss fights"
-L.DisableMusic						= "Disable music channel during boss fights (Note: If enabled, custom boss music will not play if enabled in event sounds)"
+L.Area_Sound						= "Bloquear sons no jogo"
+L.DisableSFX						= "Desativar efeitos sonoros durante combate contra chefes"
+L.DisableAmbiance					= "Desativar ambiente sonoro durante combate contra chefes"
+L.DisableMusic						= "Desativar música durante combate contra chefes (Nota: Se ativado, a música personalizada do chefe não será reproduzida se estiver ativada nos sons de evento)"
 --Other
-L.Area_HideBlizzard					= "Disable & Hide other Blizzard Annoyances"
-L.HideBossEmoteFrame				= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame					= "Hide watch (objectives) frame during boss fights if no achievements are being tracked and if not in a Mythic+"
-L.HideQuestTooltips					= "Hide quest objectives from tooltips during boss fights"--Currently hidden (NYI)
-L.HideTooltips						= "Completely hide tooltips during boss fights"
+L.Area_HideBlizzard					= "Desativar e ocultar outras inconveniências da Blizzard"
+L.HideBossEmoteFrame				= "Ocultar quadro de emotes de chefes de raide durante combate contra chefes"
+L.HideWatchFrame					= "Ocultar quadro de acompanhamento (objetivos) durante combate contra chefes se nenhum feito estiver sendo rastreado e se não estiver em um Mítico+"
+L.HideQuestTooltips					= "Ocultar objetivos de missões dos tooltips durante combate contra chefes"--Currently hidden (NYI)
+L.HideTooltips						= "Ocultar completamente os tooltips durante lutas contra chefes"
 
 L.DisableSFX				= "Desativa o canal de efeitos sonoros durante lutas contra chefes"
 L.DisableCinematics			= "Esconder as cinematics in-game"
 L.AfterFirst				= "Depois que o vídeo for assistido uma vez"
 
-L.Panel_ExtraFeatures		= "Características Extra"
+L.Panel_ExtraFeatures		= "Funcionalidades extra"
 L.Area_ChatAlerts			= "Opções de alerta do Chat"
 L.RoleSpecAlert				= "Exibir mensagem de alerta quando sua especialização de saque não corresponder à sua especialização atual ao entrar na raide"
 L.CheckGear					= "Envia um mensagem de alerta quando o seu ilvl equipado for muito menor do que o ilvl nas bolsas(40+)"
 L.WorldBossAlert			= "Exibir mensagem de alerta quando um chefe do mundo possivelmente for atacado no seu reino por membros da sua guilda ou amigos (inaccurate if sender is CRZed)"
-L.Area_SoundAlerts			= "Opções de Som de Alerta"
+L.Area_SoundAlerts			= "Opções de som de alerta"
 L.LFDEnhance				= "Tocar o som de TodosProntos para checagem de papéis &amp; CB/LDG no canal de áudio principal(I.E. sons funcionam mesmo que os efeitos sonoros estejam desligados e são geralmente mais altos)"
 L.WorldBossNearAlert		= "Tocar o som de TodosProntos quando chefes do mundo perto de você que você precisa estiverem sendo atacados (Sobrepõe opção específica de chefe)"
 L.AFKHealthWarning			= "Tocar som de alerta quando você estiver perdendo vida enquanto estiver LDT"
@@ -297,7 +292,7 @@ L.Area_Invite				= "Opções de convite"
 L.AutoAcceptFriendInvite	= "Aceitar convites de amigos automaticamente"
 L.AutoAcceptGuildInvite		= "Aceitar convites de membros da guilda automaticamente"
 L.Area_Advanced				= "Opções avançadas"
-L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM ( útil para guildas que forçam o uso de BigWigs )"
+L.FakeBW					= "Fingir ser BigWigs em checagens de versão ao invés de ser DBM (útil para guildas que forçam o uso de BigWigs)"
 
 L.Panel_Profile				= "Perfil"
 L.Area_CreateProfile		= "Criação de perfil"
