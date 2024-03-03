@@ -28,7 +28,7 @@ local function updateChatInfoText()
 	selectFrameInfo:SetText(L.SelectChatFrameInfoIdle:format(
 		DBM.Options.ChatFrame == "DEFAULT_CHAT_FRAME" and L.SelectChatFrameDefaultName
 			or HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(DBM.Options.ChatFrame)
-			or HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.Unknown)
+			or HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(DBM_COMMON_L.UNKNOWN)
 	))
 	selectFrameInfo:GetWidth() -- this somehow fixes a bug that the updated text sometimes doesn't show
 end

@@ -19,6 +19,8 @@ local CooldownFrame_Set = CooldownFrame_Set
 --function locals
 local NameplateIcon_Hide, Nameplate_UnitAdded, CreateAuraFrame
 
+---@class DBMNameplate: NameplateBase
+---@field DBMAuraFrame DBMAuraFrame
 
 --Hard code STANDARD_TEXT_FONT since skinning mods like to taint it (or worse, set it to nil, wtf?)
 local standardFont
@@ -99,8 +101,8 @@ do
 		--iconFrame.cooldown.noCooldownCount = true --OmniCC override flag
 
 		-- CD text
-		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "overlay", "NumberFontNormal")
-		iconFrame.cooldown.timer:SetPoint ("center")
+		iconFrame.cooldown.timer = iconFrame.cooldown:CreateFontString (nil, "OVERLAY", "NumberFontNormal")
+		iconFrame.cooldown.timer:SetPoint ("CENTER")
 		local timerFont = DBM.Options.NPIconTimerFont == "standardFont" and standardFont or DBM.Options.NPIconTimerFont
 		local timerFontSize = DBM.Options.NPIconTimerFontSize
 		local timerStyle = DBM.Options.NPIconTimerFontStyle == "None" and nil or DBM.Options.NPIconTimerFontStyle
@@ -108,8 +110,8 @@ do
 		iconFrame.cooldown.timer:Show()
 		iconFrame.timerText = iconFrame.cooldown.timer
 
-		iconFrame.text = iconFrame:CreateFontString(nil, "overlay", "GameFontNormal")
-		iconFrame.text:SetPoint("bottom", iconFrame, "top", 0, 2)
+		iconFrame.text = iconFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		iconFrame.text:SetPoint("BOTTOM", iconFrame, "TOP", 0, 2)
 		local textFont = DBM.Options.NPIconTextFont == "standardFont" and standardFont or DBM.Options.NPIconTextFont
 		local textFontSize = DBM.Options.NPIconTextFontSize
 		local textStyle = DBM.Options.NPIconTextFontStyle == "None" and nil or DBM.Options.NPIconTextFontStyle
@@ -355,6 +357,7 @@ do
 		end
 	end
 
+	---@class DBMAuraFrame
 	local auraframe_proto = {
 		CreateIcon = AuraFrame_CreateIcon,
 		GetIcon = AuraFrame_GetIcon,
@@ -396,6 +399,7 @@ local function NameplateIcon_UpdateUnitAuras(isGUID,unit)
 	-- find frame for this unit;
 	if not isGUID then
 		local frame = GetNamePlateForUnit(unit)
+		---@cast frame DBMNameplate?
 		if frame and frame.DBMAuraFrame then
 			frame.DBMAuraFrame:ArrangeIcons()
 		end
@@ -479,6 +483,7 @@ function NameplateIcon_Hide(isGUID, unit, index, force)
 	-- (or hide all visible textures if force ~= nil)
 	if not isGUID and not force then --Only need to find one unit
 		local frame = GetNamePlateForUnit(unit)
+		---@cast frame DBMNameplate?
 		if frame and frame.DBMAuraFrame then
 			if not index then
 				frame.DBMAuraFrame:RemoveAll()
