@@ -30,6 +30,7 @@ local testBuild = IsTestBuild()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_GameRules.IsHardcoreActive()
+local isSoD = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
@@ -615,7 +616,7 @@ else--TBC and Vanilla
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
 	}
 	-- Season of Discovery
-	if C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery then
+	if isSoD then
 		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 	end
@@ -3747,7 +3748,7 @@ do
 		local mapId = C_Map.GetBestMapForUnit("player")
 		if not mapId then return end
 		if UnitOnTaxi("player") then return end -- Don't spam the player if they are just passing through
-		if C_Seasons and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery then
+		if isSoD then
 			if sodPvpZones[mapId] and not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
@@ -7606,6 +7607,11 @@ function DBM:IsRetail()
 	return isRetail
 end
 bossModPrototype.IsRetail = DBM.IsRetail
+
+function DBM:IsSeasonOfDiscovery()
+	return isSoD
+end
+bossModPrototype.IsSeasonOfDiscovery = DBM.IsSeasonOfDiscovery
 
 function bossModPrototype:IsFollower()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
@@ -11500,12 +11506,14 @@ do
 		obj:AddOption(optionDefault, optionName, colorType, countdown, spellId, timerType)
 		tinsert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
-		if timerType == "achievement" then
-			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format((GetAchievementLink(spellId) or ""):gsub("%[(.+)%]", "%1"))
-		elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" or timerType == "roleplay" then--Timers without spellid, generic (do not add stagecontext here, it has spellname parsing)
-			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]--Using more than 1 stage timer or more than 1 special timer will break this, fortunately you should NEVER use more than 1 of either in a mod
-		else
-			self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(unparsedId)
+		if not self.localization.options[id] or self.localization.options[id] == id then
+			if timerType == "achievement" then
+				self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format((GetAchievementLink(spellId) or ""):gsub("%[(.+)%]", "%1"))
+			elseif timerType == "cdspecial" or timerType == "nextspecial" or timerType == "stage" or timerType == "stagecount" or timerType == "stagecountcycle" or timerType == "intermission" or timerType == "intermissioncount" or timerType == "roleplay" then--Timers without spellid, generic (do not add stagecontext here, it has spellname parsing)
+				self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]--Using more than 1 stage timer or more than 1 special timer will break this, fortunately you should NEVER use more than 1 of either in a mod
+			else
+				self.localization.options[id] = L.AUTO_TIMER_OPTIONS[timerType]:format(unparsedId)
+			end
 		end
 		return obj
 	end
