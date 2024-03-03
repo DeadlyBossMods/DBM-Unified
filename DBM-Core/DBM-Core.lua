@@ -616,7 +616,7 @@ else--TBC and Vanilla
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
 	}
 	-- Season of Discovery
-	if currentSeason == Enum.SeasonID.SeasonOfDiscovery then
+	if Enum.SeasonID and currentSeason == Enum.SeasonID.SeasonOfDiscovery then
 		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 	end
@@ -3748,7 +3748,7 @@ do
 		local mapId = C_Map.GetBestMapForUnit("player")
 		if not mapId then return end
 		if UnitOnTaxi("player") then return end -- Don't spam the player if they are just passing through
-		if self:IsSeasonal(Enum.SeasonID.SeasonOfDiscovery) then
+		if Enum.SeasonID and self:IsSeasonal(Enum.SeasonID.SeasonOfDiscovery) then
 			if sodPvpZones[mapId] and not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
