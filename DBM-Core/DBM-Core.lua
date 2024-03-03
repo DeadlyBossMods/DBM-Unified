@@ -30,7 +30,7 @@ local testBuild = IsTestBuild()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_GameRules.IsHardcoreActive()
-local isSoD = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery
+local currentSeason = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason()
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
@@ -616,7 +616,7 @@ else--TBC and Vanilla
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
 	}
 	-- Season of Discovery
-	if isSoD then
+	if currentSeason == Enum.SeasonID.SeasonOfDiscovery then
 		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 	end
@@ -3748,7 +3748,7 @@ do
 		local mapId = C_Map.GetBestMapForUnit("player")
 		if not mapId then return end
 		if UnitOnTaxi("player") then return end -- Don't spam the player if they are just passing through
-		if isSoD then
+		if self:IsSeasonal(Enum.SeasonID.SeasonOfDiscovery) then
 			if sodPvpZones[mapId] and not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
@@ -7568,24 +7568,13 @@ function bossModPrototype:IsNormal()
 	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront"
 end
 
-do
-	local isSeasonal
-	function DBM:IsSeasonal()
-		--Once set to true, we stop checking api an return cache
-		--But if not set true we keep checking api because the api (or buff) will return false if called too early and we don't want to cache that
-		if not isSeasonal then
-			local IsClassicSeason = C_Seasons and C_Seasons.HasActiveSeason()
-			if IsClassicSeason then
-				isSeasonal = true
-				DBM:Debug("Setting Classic seasonal to true")
-			else
-				isSeasonal = false
-				DBM:Debug("Setting Classic seasonal to false")
-			end
-		end
-		return isSeasonal
+---@param season Enum.SeasonID?
+function DBM:IsSeasonal(season)
+	if season then
+		return season == currentSeason
+	else
+		return not not currentSeason
 	end
-	bossModPrototype.IsSeasonal = DBM.IsSeasonal
 end
 
 function DBM:IsFated()
@@ -7608,10 +7597,6 @@ function DBM:IsRetail()
 end
 bossModPrototype.IsRetail = DBM.IsRetail
 
-function DBM:IsSeasonOfDiscovery()
-	return isSoD
-end
-bossModPrototype.IsSeasonOfDiscovery = DBM.IsSeasonOfDiscovery
 
 function bossModPrototype:IsFollower()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
