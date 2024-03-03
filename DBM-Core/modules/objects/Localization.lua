@@ -29,7 +29,7 @@ local defaultCatLocalization = {
 local defaultTimerLocalization = {
 	__index = setmetatable({
 		timer_berserk = L.GENERIC_TIMER_BERSERK,
-		timer_combat = L.GENERIC_TIMER_COMBAT
+		timer_combat = L.AUTO_TIMER_TEXTS.combat
 	}, returnKey)
 }
 
@@ -41,7 +41,7 @@ local defaultAnnounceLocalization = {
 local defaultOptionLocalization = {
 	__index = setmetatable({
 		timer_berserk = L.OPTION_TIMER_BERSERK,
-		timer_combat = L.OPTION_TIMER_COMBAT,
+		timer_combat = L.AUTO_TIMER_OPTIONS.combat,
 	}, returnKey)
 }
 
