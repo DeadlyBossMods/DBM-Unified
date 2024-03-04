@@ -30,7 +30,7 @@ local testBuild = IsTestBuild()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
 local isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_GameRules.IsHardcoreActive()
-local isSoD = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfDiscovery
+local currentSeason = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason()
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
@@ -616,7 +616,7 @@ else--TBC and Vanilla
 		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
 	}
 	-- Season of Discovery
-	if isSoD then
+	if Enum.SeasonID and currentSeason == Enum.SeasonID.SeasonOfDiscovery then
 		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 	end
@@ -3748,7 +3748,7 @@ do
 		local mapId = C_Map.GetBestMapForUnit("player")
 		if not mapId then return end
 		if UnitOnTaxi("player") then return end -- Don't spam the player if they are just passing through
-		if isSoD then
+		if Enum.SeasonID and self:IsSeasonal(Enum.SeasonID.SeasonOfDiscovery) then
 			if sodPvpZones[mapId] and not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
@@ -4178,7 +4178,7 @@ do
 			private.chatBubblesDisabled = true
 		end
 		if activated then
-			AddMsg(L.OVERRIDE_ACTIVATED)
+			DBM:AddMsg(L.OVERRIDE_ACTIVATED)
 		end
 	end
 
@@ -4725,7 +4725,7 @@ do
 		lastBossEngage[bossName .. faction] = GetTime()
 		if DBM.Options.WorldBuffAlert and #inCombat == 0 then
 			DBM:Debug("WBA sync processing")
-			local factionText = faction == "Alliance" and FACTION_ALLIANCE or faction == "Horde" and FACTION_HORDE or L.BOTH
+			local factionText = faction == "Alliance" and FACTION_ALLIANCE or faction == "Horde" and FACTION_HORDE or CL.BOTH
 			local buffName, _, buffIcon = DBM:GetSpellInfo(tonumber(spellId) or 0)
 			DBM:AddMsg(L.WORLDBUFF_STARTED:format(buffName or CL.UNKNOWN, factionText, sender))
 			DBM:PlaySoundFile(DBM.Options.RaidWarningSound, true)
@@ -7037,10 +7037,10 @@ do
 			testWarning3 = testMod:NewAnnounce("%s", 3, "135826")
 			testTimer1 = testMod:NewTimer(20, "%s", "136116", nil, nil)
 			testTimer2 = testMod:NewTimer(20, "%s ", "134170", nil, nil, 1)
-			testTimer3 = testMod:NewTimer(20, "%s  ", isRetail and "136194" or "136221", nil, nil, 3, L.MAGIC_ICON, nil, 1, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-			testTimer4 = testMod:NewTimer(20, "%s   ", "136116", nil, nil, 4, L.INTERRUPT_ICON)
-			testTimer5 = testMod:NewTimer(20, "%s    ", "135826", nil, nil, 2, L.HEALER_ICON, nil, 3, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
-			testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, L.TANK_ICON, nil, 2, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
+			testTimer3 = testMod:NewTimer(20, "%s  ", isRetail and "136194" or "136221", nil, nil, 3, CL.MAGIC_ICON, nil, 1, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
+			testTimer4 = testMod:NewTimer(20, "%s   ", "136116", nil, nil, 4, CL.INTERRUPT_ICON)
+			testTimer5 = testMod:NewTimer(20, "%s    ", "135826", nil, nil, 2, CL.HEALER_ICON, nil, 3, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
+			testTimer6 = testMod:NewTimer(20, "%s     ", "136116", nil, nil, 5, CL.TANK_ICON, nil, 2, 4, nil, nil, nil, nil, nil, nil, "next")--inlineIcon, keep, countdown, countdownMax, r, g, b, spellId, requiresCombat, waCustomName, customType
 			testTimer7 = testMod:NewTimer(20, "%s      ", "136116", nil, nil, 6)
 			testTimer8 = testMod:NewTimer(20, "%s       ", "136116", nil, nil, 7)
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s", nil, nil, nil, 1, 2)
@@ -7091,9 +7091,9 @@ end
 DBT:SetAnnounceHook(function(bar)
 	local prefix
 	if bar.color and bar.color.r == 1 and bar.color.g == 0 and bar.color.b == 0 then
-		prefix = L.HORDE or FACTION_HORDE
+		prefix = FACTION_HORDE
 	elseif bar.color and bar.color.r == 0 and bar.color.g == 0 and bar.color.b == 1 then
-		prefix = L.ALLIANCE or FACTION_ALLIANCE
+		prefix = FACTION_ALLIANCE
 	end
 	if prefix then
 		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName() .. "BarName"]:GetText(), floor(bar.timer / 60), bar.timer % 60)
@@ -7568,24 +7568,13 @@ function bossModPrototype:IsNormal()
 	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront"
 end
 
-do
-	local isSeasonal
-	function DBM:IsSeasonal()
-		--Once set to true, we stop checking api an return cache
-		--But if not set true we keep checking api because the api (or buff) will return false if called too early and we don't want to cache that
-		if not isSeasonal then
-			local IsClassicSeason = C_Seasons and C_Seasons.HasActiveSeason()
-			if IsClassicSeason then
-				isSeasonal = true
-				DBM:Debug("Setting Classic seasonal to true")
-			else
-				isSeasonal = false
-				DBM:Debug("Setting Classic seasonal to false")
-			end
-		end
-		return isSeasonal
+---@param season Enum.SeasonID?
+function DBM:IsSeasonal(season)
+	if season then
+		return season == currentSeason
+	else
+		return not not currentSeason
 	end
-	bossModPrototype.IsSeasonal = DBM.IsSeasonal
 end
 
 function DBM:IsFated()
@@ -7608,10 +7597,6 @@ function DBM:IsRetail()
 end
 bossModPrototype.IsRetail = DBM.IsRetail
 
-function DBM:IsSeasonOfDiscovery()
-	return isSoD
-end
-bossModPrototype.IsSeasonOfDiscovery = DBM.IsSeasonOfDiscovery
 
 function bossModPrototype:IsFollower()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
@@ -9246,6 +9231,7 @@ do
 			soundOption = 0--No Sound
 		end
 		icon = parseSpellIcon(icon)
+		---@class Announce
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
@@ -9334,6 +9320,7 @@ do
 		return obj
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewYouAnnounce(spellId, color, ...)
 		return newAnnounce(self, "you", spellId, color or 1, ...)
 	end
@@ -9342,62 +9329,77 @@ do
 		return newAnnounce(self, "target", spellId, color or 3, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, true)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
 		return newAnnounce(self, "target", spellId, color or 3, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewTargetSourceAnnounce(spellId, color, ...)
 		return newAnnounce(self, "targetsource", spellId, color or 3, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewTargetCountAnnounce(spellId, color, ...)
 		return newAnnounce(self, "targetcount", spellId, color or 3, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewSpellAnnounce(spellId, color, ...)
 		return newAnnounce(self, "spell", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewIncomingAnnounce(spellId, color, ...)
 		return newAnnounce(self, "incoming", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewIncomingCountAnnounce(spellId, color, ...)
 		return newAnnounce(self, "incomingcount", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewEndAnnounce(spellId, color, ...)
 		return newAnnounce(self, "ends", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewEndTargetAnnounce(spellId, color, ...)
 		return newAnnounce(self, "endtarget", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewFadesAnnounce(spellId, color, ...)
 		return newAnnounce(self, "fades", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewAddsLeftAnnounce(spellId, color, ...)
 		return newAnnounce(self, "addsleft", spellId, color or 3, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewCountAnnounce(spellId, color, ...)
 		return newAnnounce(self, "count", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewStackAnnounce(spellId, color, ...)
 		return newAnnounce(self, "stack", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, _, soundOption) -- spellId, color, castTime, icon, optionDefault, optionName, noArg, soundOption
 		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, soundOption)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewSoonAnnounce(spellId, color, ...)
 		return newAnnounce(self, "soon", spellId, color or 2, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewSoonCountAnnounce(spellId, color, ...)
 		return newAnnounce(self, "sooncount", spellId, color or 2, ...)
 	end
@@ -9411,22 +9413,27 @@ do
 		return newAnnounce(self, "prewarn", spellId, color or 2, icon, optionDefault, optionName, nil, time, soundOption)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewBaitAnnounce(spellId, color, ...)
 		return newAnnounce(self, "bait", spellId, color or 3, ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewPhaseAnnounce(stage, color, icon, ...)
 		return newAnnounce(self, "stage", stage, color or 2, icon or "136116", ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewPhaseChangeAnnounce(color, icon, ...)
 		return newAnnounce(self, "stagechange", 0, color or 2, icon or "136116", ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewPrePhaseAnnounce(stage, color, icon, ...)
 		return newAnnounce(self, "prestage", stage, color or 2, icon or "136116", ...)
 	end
 
+	---@overload fun(self, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, soundOption, noFilter): Announce
 	function bossModPrototype:NewMoveToAnnounce(spellId, color, ...)
 		return newAnnounce(self, "moveto", spellId, color or 3, ...)
 	end
@@ -9556,46 +9563,57 @@ do
 		return DBMScheduler:Unschedule(self.Yell, self.mod, self, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewYell(...)
 		return newYell(self, "yell", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewShortYell(...)
 		return newYell(self, "shortyell", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewCountYell(...)
 		return newYell(self, "count", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewFadesYell(...)
 		return newYell(self, "fade", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewShortFadesYell(...)
 		return newYell(self, "shortfade", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewIconFadesYell(...)
 		return newYell(self, "iconfade", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewPosYell(...)
 		return newYell(self, "position", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewShortPosYell(...)
 		return newYell(self, "shortposition", ...)
 	end
 
+	---@overload fun(self: DBMMod, self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewComboYell(...)
 		return newYell(self, "combo", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewPlayerRepeatYell(...)
 		return newYell(self, "repeatplayer", ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, yellText, optionDefault, optionName, chatType): Yell
 	function bossModPrototype:NewIconRepeatYell(...)
 		return newYell(self, "repeaticon", ...)
 	end
@@ -10342,186 +10360,232 @@ do
 		return obj
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSpell(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "spell", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningEnd(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "ends", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningFades(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "fades", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSoon(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "soon", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningBait(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "bait", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningDispel(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "dispel", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningInterrupt(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "interrupt", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningInterruptCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "interruptcount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningYou(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "you", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningYouCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "youcount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningYouPos(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "youpos", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningYouPosCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "youposcount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSoakPos(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "soakpos", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningTarget(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "target", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningTargetCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "targetcount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningDefensive(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "defensive", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningTaunt(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "taunt", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningClose(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "close", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningMove(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "move", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningKeepMove(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "keepmove", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningStopMove(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "stopmove", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningGTFO(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "gtfo", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningDodge(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "dodge", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningDodgeCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "dodgecount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningDodgeLoc(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "dodgeloc", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningMoveAway(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "moveaway", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningMoveAwayCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "moveawaycount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningMoveTo(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "moveto", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSoak(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "soak", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSoakCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "soakcount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningJump(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "jump", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningRun(spellId, optionDefault, optionName, optionVersion, runSound, ...)
 		return newSpecialWarning(self, "run", spellId, nil, optionDefault, optionName, optionVersion, runSound or 4, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningRunCount(spellId, optionDefault, optionName, optionVersion, runSound, ...)
 		return newSpecialWarning(self, "runcount", spellId, nil, optionDefault, optionName, optionVersion, runSound or 4, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningCast(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "cast", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningLookAway(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "lookaway", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningReflect(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "reflect", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "count", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSoonCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "sooncount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, stacks, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningStack(spellId, optionDefault, stacks, ...)
 		return newSpecialWarning(self, "stack", spellId, stacks, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSwitch(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "switch", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningSwitchCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "switchcount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningAdds(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "adds", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningAddsCount(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "addscount", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningAddsCustom(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "addscustom", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningTargetChange(spellId, optionDefault, ...)
 		return newSpecialWarning(self, "targetchange", spellId, nil, optionDefault, ...)
 	end
 
+	---@overload fun(self: DBMMod, spellId, optionDefault, time, optionName, optionVersion, runSound, hasVoice, difficulty): SpecialWarning
 	function bossModPrototype:NewSpecialWarningPreWarn(spellId, optionDefault, time, ...)
 		return newSpecialWarning(self, "prewarn", spellId, time, optionDefault, ...)
 	end
@@ -11518,29 +11582,29 @@ do
 		return obj
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewTargetTimer(...)
 		return newTimer(self, "target", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewTargetCountTimer(...)
 		return newTimer(self, "targetcount", ...)
 	end
 
 	--Buff/Debuff/event on boss
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewBuffActiveTimer(...)
 		return newTimer(self, "active", ...)
 	end
 
 	----Buff/Debuff on players
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewBuffFadesTimer(...)
 		return newTimer(self, "fades", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCastTimer(timer, ...)
 		if tonumber(timer) and timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
@@ -11552,7 +11616,7 @@ do
 		return newTimer(self, "cast", timer, ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCastCountTimer(timer, ...)
 		if tonumber(timer) and timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
@@ -11564,7 +11628,7 @@ do
 		return newTimer(self, "castcount", timer, ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCastSourceTimer(timer, ...)
 		if tonumber(timer) and timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
@@ -11576,101 +11640,101 @@ do
 		return newTimer(self, "castsource", timer, ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCDTimer(...)
 		return newTimer(self, "cd", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCDCountTimer(...)
 		return newTimer(self, "cdcount", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCDSourceTimer(...)
 		return newTimer(self, "cdsource", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewNextTimer(...)
 		return newTimer(self, "next", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewNextCountTimer(...)
 		return newTimer(self, "nextcount", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewNextSourceTimer(...)
 		return newTimer(self, "nextsource", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewAchievementTimer(...)
 		return newTimer(self, "achievement", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCDSpecialTimer(...)
 		return newTimer(self, "cdspecial", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewNextSpecialTimer(...)
 		return newTimer(self, "nextspecial", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCDComboTimer(...)
 		return newTimer(self, "cdcombo", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewNextComboTimer(...)
 		return newTimer(self, "nextcombo", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewStageTimer(...)
 		return newTimer(self, "stage", ...)
 	end
 	bossModPrototype.NewPhaseTimer = bossModPrototype.NewStageTimer--Deprecated naming, once all mods are converted over, NewPhaseTimer will be wiped out for NewStageTimer
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewStageCountTimer(...)
 		return newTimer(self, "stagecount", ...)
 	end
 
 	--Used mainly for compat with BW/LW timers where they use "stages" but then use the spell/journal descriptor instead of "stage d"
 	--Basically, it's a generic spellName timer for "stages" callback
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewStageContextTimer(...)
 		return newTimer(self, "stagecontext", ...)
 	end
 
 	--Same as NewStageContextTimer, with count
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewStageContextCountTimer(...)
 		return newTimer(self, "stagecontextcount", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewStageCountCycleTimer(...)
 		return newTimer(self, "stagecountcycle", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewIntermissionTimer(...)
 		return newTimer(self, "intermission", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewIntermissionCountTimer(...)
 		return newTimer(self, "intermissioncount", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewRPTimer(...)
 		return newTimer(self, "roleplay", ...)
 	end
@@ -11679,37 +11743,37 @@ do
 		return newTimer(self, "combat", timer, nil, nil, nil, nil, 0, "132349", nil, nil, 1, 5)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewAddsTimer(...)
 		return newTimer(self, "adds", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewAddsCustomTimer(...)
 		return newTimer(self, "addscustom", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCDNPTimer(...)
 		return newTimer(self, "cdnp", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewNextNPTimer(...)
 		return newTimer(self, "nextnp", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewCDCountNPTimer(...)
 		return newTimer(self, "cdcountnp", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewNextCountNPTimer(...)
 		return newTimer(self, "nextcountnp", ...)
 	end
 
-	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?)
+	---@overload fun(self: DBMMod, timer: number|string, spellId: number|string?, timerText: number|string?, optionDefault: boolean|string?, optionName: string|number?, colorType: number?, texture: number|string?, inlineIcon: string?, keep: boolean?, countdown: number?, countdownMax: number?, r: number?, g: number?, b: number?, requiresCombat: boolean?): Timer
 	function bossModPrototype:NewAITimer(...)
 		return newTimer(self, "ai", ...)
 	end

@@ -447,7 +447,7 @@ do
 		end
 		local DBM_UsedProfile = DBM_UsedProfile or "Default"
 		if not id or not DBT_AllPersistentOptions[DBM_UsedProfile] or not DBT_AllPersistentOptions[DBM_UsedProfile][id] then
-			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLY_ERROR:format(id or DBM_CORE_L.UNKNOWN))
+			DBM:AddMsg(DBM_CORE_L.PROFILE_APPLY_ERROR:format(id or DBM_COMMON_L.UNKNOWN))
 			return
 		end
 		self:AddDefaultOptions(DBT_AllPersistentOptions[DBM_UsedProfile][id], self.DefaultOptions)
@@ -465,7 +465,7 @@ do
 		local DBM_UsedProfile = DBM_UsedProfile or "Default"
 		if not hasPrinted then
 			if not name or not DBT_AllPersistentOptions[name] then
-				DBM:AddMsg(DBM_CORE_L.PROFILE_COPY_ERROR:format(name or DBM_CORE_L.UNKNOWN))
+				DBM:AddMsg(DBM_CORE_L.PROFILE_COPY_ERROR:format(name or DBM_COMMON_L.UNKNOWN))
 				return
 			elseif name == DBM_UsedProfile then
 				DBM:AddMsg(DBM_CORE_L.PROFILE_COPY_ERROR_SELF)

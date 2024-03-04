@@ -1,6 +1,7 @@
-DBM_CORE_L = {}
+---@class DBMLocale
+local L = {}
 
-local L = DBM_CORE_L
+DBM_CORE_L = L
 
 L.DEADLY_BOSS_MODS						= "Deadly Boss Mods" -- NO TRANSLATE
 L.DBM									= "DBM" -- NO TRANSLATE
