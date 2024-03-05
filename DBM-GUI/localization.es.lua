@@ -111,7 +111,7 @@ L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcript
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters	= "Filtros del registro automático"
 L.RecordOnlyBosses			= "Registrar solo encuentros de jefe (excluye todos los combates contra enemigos que no son jefes; escribe '/dbm pull' antes de iniciar un encuentro para registrar el uso previo de pociones)"
-L.DoNotLogLFG				= "No registras Buscar Grupo o Buscar Banda (contenido en cola)"
+L.DoNotLogLFG				= "No registrar Buscar Grupo o Buscar Banda (contenido en cola)"
 --
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
 L.LogCurrentMythicRaids				= "Bandas míticos de nivel actual"--Retail Only
