@@ -240,6 +240,7 @@ L.RANGERADAR_IN_RANGE_TEXT	= "%d人在监视距离内（%0.1f码）"
 L.RANGECHECK_IN_RANGE_TEXT	= "%d人在监视距离内"
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1f码)"--One target
 
+--L.INFOFRAME_TITLE						= "DBM Info Frame"
 L.INFOFRAME_SHOW_SELF		= "总是显示你的能量"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "设置最大行数"
 L.INFOFRAME_SETCOLS				= "设置最大列数"

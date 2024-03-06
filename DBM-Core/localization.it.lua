@@ -237,6 +237,7 @@ L.RANGERADAR_IN_RANGE_TEXT	= "%d vicini (%0.1fm)" -- Multi
 L.RANGECHECK_IN_RANGE_TEXT	= "%d vicini" -- Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 L.RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)" -- One target
 
+--L.INFOFRAME_TITLE						= "DBM Info Frame"
 L.INFOFRAME_SHOW_SELF		= "Visualizza sempre la tua forza"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "Imposta linee massime"
 --L.INFOFRAME_SETCOLS						= "Set max columns"
