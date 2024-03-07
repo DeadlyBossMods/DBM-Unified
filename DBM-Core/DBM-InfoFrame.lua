@@ -1230,7 +1230,7 @@ function infoFrame:SetHeader(text)
 	if not frame then
 		createFrame()
 	end
-	frame.header:SetText(text or "DBM Info Frame")
+	frame.header:SetText(text or L.INFOFRAME_TITLE)
 end
 
 function infoFrame:ClearLines()

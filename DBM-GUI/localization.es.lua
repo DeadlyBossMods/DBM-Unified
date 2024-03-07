@@ -111,7 +111,7 @@ L.AdvancedAutologBosses		= "Registrar encuentros automáticamente con Transcript
 --Auto Logging: Global filter Options
 L.Area_AutoLoggingFilters	= "Filtros del registro automático"
 L.RecordOnlyBosses			= "Registrar solo encuentros de jefe (excluye todos los combates contra enemigos que no son jefes; escribe '/dbm pull' antes de iniciar un encuentro para registrar el uso previo de pociones)"
-L.DoNotLogLFG				= "No registras Buscar Grupo o Buscar Banda (contenido en cola)"
+L.DoNotLogLFG				= "No registrar Buscar Grupo o Buscar Banda (contenido en cola)"
 --
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
 L.LogCurrentMythicRaids				= "Bandas míticos de nivel actual"--Retail Only
@@ -256,7 +256,7 @@ L.Area_ChatAlerts			= "Opciones de alertas adicionales"
 L.RoleSpecAlert				= "Mostrar mensaje de alerta al unirte a una banda cuando tu especialización de botín no coincida con tu especialización actual"
 L.CheckGear					= "Mostrar mensaje de alerta al iniciar un encuentro cuando tu nivel de equipo sea como mínimo 40 niveles menor que el de tu inventario o no tengas equipada un arma principal"
 L.WorldBossAlert			= "Mostrar mensaje de alerta cuando un amigo o miembro de hermandad inicie un encuentro contra un jefe de mundo (impreciso si el jugador en combate está en otro reino)"
-L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando un beneficio mundial empieza en tu reino"
+L.WorldBuffAlert			= "Mostrar mensaje de alerta y temporizador cuando un beneficio del mundo empieza en tu reino"
 
 L.Area_BugAlerts			= "Opciones de alertas de informes de fallos"
 L.BadTimerAlert				= "Mostrar mensaje en el chat cuando DBM detecte un temporizador erróneo"
@@ -443,11 +443,11 @@ L.SpamBlockNoInfoFrame		= "Ocultar marcos de información"
 L.SpamBlockNoHudMap			= "Ocultar indicadores"
 L.SpamBlockNoYells			= "Desactivar envío automático de mensajes en el chat"
 L.SpamBlockNoNoteSync		= "Rechazar automáticamente notas compartidas"
-L.SpamBlockAutoGossip		= "No manejar automáticamente los diálogos de chismes."
+L.SpamBlockAutoGossip		= "No manejar automáticamente los diálogos."
 
 L.Area_Restore				= "Opciones de restauración"
 L.SpamBlockNoIconRestore	= "Restaurar iconos al acabar el encuentro"
-L.SpamBlockNoRangeRestore	= "Mantener los marcos de distancia cuando los módulos intenten esconderlos"
+L.SpamBlockNoRangeRestore	= "Mantener los marcos de distancia cuando los módulos intenten ocultarlos"
 
 L.Area_PullTimer			= "Opciones de filtros de inicio de encuentro, descanso, y personalizados"
 L.DontShowPTNoID			= "Ocultar temporizadores de inicio de encuentro que se inician en zonas distintas"
@@ -493,7 +493,7 @@ L.SpamSpecRoleDefensive				= "Filtrar las alertas 'defensiva' por completo (sin 
 L.SpamSpecRoleTaunt					= "Filtrar las alertas 'irritar' por completo (sin texto ni sonido)"
 L.SpamSpecRoleSoak					= "Filtrar las alertas 'daño' por completo (sin texto ni sonido)"
 L.SpamSpecRoleStack					= "Filtrar las alertas 'acumulaciones de perjuicios' por completo (sin texto ni sonido)"
-L.SpamSpecRoleSwitch				= "Filtrar las alertas de 'cambio de objetivo' y 'bichos' (sin texto ni sonido)"
+L.SpamSpecRoleSwitch				= "Filtrar las alertas 'cambio de objetivo' y 'bichos' (sin texto ni sonido)"
 L.SpamSpecRoleGTFO					= "Filtrar las alertas 'huida' por completo (sin texto ni sonido)"
 
 -- Panel: Blizzard Features
@@ -560,7 +560,7 @@ L.WhisperStats 				= "Incluir estadísticas de victoria y derrota en las respues
 L.DisableStatusWhisper 		= "Desactivar susurros automáticos de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder). Solo se aplica a bandas en dificultad normal, heroica y mítica, y a mazmorras de piedra angular."
 L.Area_SyncMessages			= "Opciones de sincronización de addons"
 L.DisableGuildStatus 		= "Desactivar mensajes de hermandad de estado de encuentro del grupo o banda para todos los jugadores (requiere ser el líder)."
-L.EnableWBSharing 			= "Compartir tus inicios y victorias de encuentros con jefes de mundo con tu hermandad y amigos de Battle.net que estén en el mismo reino que tú"
+L.EnableWBSharing 			= "Compartir tus inicios y victorias de encuentros con jefes del mundo con tu hermandad y amigos de Battle.net que están en el mismo reino que tú"
 
 -- Tab: Frames & Integrations
 L.TabCategory_Frames		= "Marcos e integración"
@@ -577,7 +577,7 @@ L.Area_NPStyle				= "Contorno (solo cuando DBM controla las placas de nombres)"
 L.NPAuraText				= "Mostrar texto del temporizador en los iconos de la placa de nombre"
 L.NPAuraSize				= "Tamaño del aura: %d"
 L.NPIcon_BarOffSetX 		= "Desplazamiento del icono X: %d"
-L.NPIcon_BarOffSetY 		= "Desplazamiento del icono X Y: %d"
+L.NPIcon_BarOffSetY 		= "Desplazamiento del icono Y: %d"
 L.NPIcon_GrowthDirection 	= "Dirección de crecimiento del icono"
 L.NPIcon_Spacing		 	= "Espaciado del icono: %d"
 L.NPIcon_MaxTextLen		 	= "Longitud del texto máx.: %d"

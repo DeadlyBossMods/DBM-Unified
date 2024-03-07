@@ -235,6 +235,7 @@ L.RANGERADAR_IN_RANGE_TEXT	= "%d joueurs à portée"
 --L.RANGECHECK_IN_RANGE_TEXT				= "%d in range"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 L.RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fm)"--One target
 
+--L.INFOFRAME_TITLE						= "DBM Info Frame"
 L.INFOFRAME_SHOW_SELF		= "Toujours afficher votre puissance"		-- Always show your own power value even if you are below the threshold
 --L.INFOFRAME_SETLINES					= "Set max lines"
 --L.INFOFRAME_SETCOLS						= "Set max columns"

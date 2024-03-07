@@ -31,8 +31,8 @@ L.COPY_URL_DIALOG					= "Копировать ссылку"
 L.COPY_WA_DIALOG					= "Копировать ключ WA"
 
 --Post Patch 7.1
-L.TEXT_ONLY_RANGE					= "Радар ограничен только текстом из-за ограничений API в этой зоне"
-L.NO_RANGE							= "Радар не может быть использован из-за ограничений API в этой зоне"
+L.TEXT_ONLY_RANGE					= "Радар ограничен только текстом, поскольку Blizzard отключила эту функцию в этой зоне."
+L.NO_RANGE							= "Радар не может быть использован, поскольку Blizzard отключила некоторые функции в этой зоне."
 L.NO_ARROW							= "Стрелка не может быть использована в подземельях"
 L.NO_HUD							= "HUDMap не может быть использован в подземельях"
 
@@ -237,7 +237,8 @@ L.RANGERADAR_IN_RANGE_TEXT			= "%d в радиусе (%0.1fм)"
 L.RANGECHECK_IN_RANGE_TEXT			= "%d в радиусе"
 L.RANGERADAR_IN_RANGE_TEXTONE		= "%s (%0.1fм)"
 
-L.INFOFRAME_SHOW_SELF				= "Всегда показывать Вашу энергию"
+L.INFOFRAME_TITLE					= "Инфофрейм DBM"
+L.INFOFRAME_SHOW_SELF				= "Всегда показывать свою энергию"
 L.INFOFRAME_SETLINES				= "Максимальное число строк"
 L.INFOFRAME_SETCOLS					= "Максимальное число столбцов"
 L.INFOFRAME_LINESDEFAULT			= "По умолчанию"
