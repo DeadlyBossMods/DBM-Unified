@@ -1,6 +1,7 @@
 local _, private = ...
 DBMExtraGlobal = {}
 
+local _, _, _, wowTOC = GetBuildInfo()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
 
