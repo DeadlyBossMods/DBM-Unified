@@ -116,11 +116,11 @@ L.DoNotLogLFG				= "No registrar Buscar Grupo o Buscar Banda (contenido en cola)
 L.Area_AutoLoggingContent			= "Contenido del registro automático"
 L.LogCurrentMythicRaids				= "Bandas míticos de nivel actual"--Retail Only
 L.LogCurrentRaids					= "Bandas no míticas de nivel actual (heroico, normal y buscar bandas si el filtro está desactivado)"
---L.LogTWRaids						= "Timewalking or Chromie Time raids"--Retail Only
+L.LogTWRaids						= "Bandas de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
 L.LogTrivialRaids					= "Bandas triviales (de bajo nivel)"
 L.LogCurrentMPlus					= "Mazmorras M+ de nivel actual"--Retail Only
 L.LogCurrentMythicZero				= "Mazmorras Mítica 0 de nivel actual"--Retail Only
---L.LogTWDungeons						= "Timewalking or Chromie Time dungeons"--Retail Only
+L.LogTWDungeons						= "Mazmorras de Paseo en el tiempo o Tiempo de Cromi"--Retail Only
 L.LogCurrentHeroic					= "Mazmorras heroicas de nivel actual (Nota: si estás haciendo mazmorra por cola y quieres que se registre, desactiva el filtro Buscar Grupo)"
 
 -- Panel: Extra Features
@@ -484,7 +484,7 @@ L.Area_BInterruptFilterFooter		= "Si no se selecciona ningún filtro, se muestra
 L.Area_TInterruptFilter				= "Opciones de filtro de interrupción de bichos"--Reuses above 3 strings
 
 -- Panel: DBM Handholding
-L.Panel_HandFilter					= "Reducir la sujeción del DBM"
+L.Panel_HandFilter					= "Reducir la sujeción de DBM"
 L.Area_SpamFilter_SpecRoleFilters	= "Filtros de tipo de anuncio especial (controla cuánta comunicación realiza DBM)"
 L.SpamSpecInformationalOnly			= "Remover todo el texto instructivo/alertas de los anuncios especiales (requiere recarga de la interfaz de usuario). Las alertas seguirán mostrando y reproduciendo audio, pero serán genéricas y no directivas."
 L.SpamSpecRoleDispel				= "Filtrar las alertas 'disipar' por completo (sin texto ni sonido)"
