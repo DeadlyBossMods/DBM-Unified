@@ -324,7 +324,7 @@ L.AUTO_ANNOUNCE_TEXTS.stack				= "%s sur >%%s< (%%d)"
 L.AUTO_ANNOUNCE_TEXTS.moveto			= "%s - dirigez-vous vers >%%s<"
 
 local prewarnOption 					= "Alerte préventive concernant $spell:%s"
-L.AUTO_ANNOUNCE_OPTIONS.you				= "Annonce lorsque $spell:%s est sur vous.",
+L.AUTO_ANNOUNCE_OPTIONS.you				= "Annonce lorsque $spell:%s est sur vous."
 L.AUTO_ANNOUNCE_OPTIONS.target			= "Annonce les cibles de $spell:%s"
 L.AUTO_ANNOUNCE_OPTIONS.targetNF		= "Annonce les cibles de $spell:%s (ignore le filtre de cible global)"
 L.AUTO_ANNOUNCE_OPTIONS.targetsource	= "Annonce les cibles de $spell:%s (avec la source)"
