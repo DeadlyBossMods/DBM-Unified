@@ -31,8 +31,8 @@ L.COPY_URL_DIALOG					= "URL 복사"
 L.COPY_WA_DIALOG						= "WA 키 복사"
 
 --Post Patch 7.1
-L.TEXT_ONLY_RANGE					= "이 지역에서는 API 제한으로 거리 창을 텍스트 방식으로만 사용할 수 있습니다."
-L.NO_RANGE					= "이 지역에선 API 제한으로 거리 창을 사용할 수 없습니다."
+L.TEXT_ONLY_RANGE					= "이 지역에서는 블리자드가 일부 기능을 막아서 거리 창을 텍스트 방식으로만 사용할 수 있습니다."
+L.NO_RANGE					= "이 지역에서는 블리자드가 일부 기능을 막아서 거리 창을 사용할 수 없습니다."
 L.NO_ARROW					= "화살표 기능을 인스턴스 던전에서 사용할 수 없습니다"
 L.NO_HUD						= "HUD 기능을 인스턴스 던전에서 사용할 수 없습니다"
 
@@ -231,11 +231,11 @@ L.RANGERADAR_IN_RANGE_TEXT	= "거리 내 %d명 (%0.1fm)"
 L.RANGECHECK_IN_RANGE_TEXT	= "거리 내 %d명"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
---L.INFOFRAME_TITLE						= "DBM Info Frame"
+L.INFOFRAME_TITLE			= "DBM 정보 창"
 L.INFOFRAME_SHOW_SELF		= "내 자원 항상 보기"		-- Always show your own power value even if you are below the threshold
 L.INFOFRAME_SETLINES			= "최대 줄 갯수 지정"
-	L.INFOFRAME_SETCOLS		= "최대 열 갯수 지정"
-L.INFOFRAME_LINESDEFAULT		= "모드 기본값"
+L.INFOFRAME_SETCOLS		= "최대 열 갯수 지정"
+L.INFOFRAME_LINESDEFAULT		= "보스 모듈이 자동 설정"
 L.INFOFRAME_LINES_TO			= "줄 %d개"
 L.INFOFRAME_COLS_TO			= "열 %d개"
 L.INFOFRAME_POWER			= "기력"
