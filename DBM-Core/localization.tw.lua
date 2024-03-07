@@ -237,11 +237,11 @@ L.RANGERADAR_IN_RANGE_TEXT		= "%d在範圍內(%0.1f碼)"--Multi
 L.RANGECHECK_IN_RANGE_TEXT		= "%d在範圍內"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 L.RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1f碼)"--One target
 
---L.INFOFRAME_TITLE						= "DBM Info Frame"
+L.INFOFRAME_TITLE				= "DBM資訊框架"
 L.INFOFRAME_SHOW_SELF			= "總是顯示你的能量"
 L.INFOFRAME_SETLINES			= "設定最大行數"
 L.INFOFRAME_SETCOLS				= "設定最大行數"
-L.INFOFRAME_LINESDEFAULT		= "由插件設定"
+L.INFOFRAME_LINESDEFAULT		= "由首領模組自動設定"
 L.INFOFRAME_LINES_TO			= "%d 行"
 L.INFOFRAME_COLS_TO				= "%d 行"
 L.INFOFRAME_POWER				= "能量"
