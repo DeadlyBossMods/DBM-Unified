@@ -33,7 +33,7 @@ local isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_Game
 local currentSeason = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason()
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
---local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
+local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
 
 local DBMPrefix = isClassic and "D5C" or isWrath and "D5WC" or "D5"--D5 will be used for all future classic flavors as well
 local DBMSyncProtocol = 1
@@ -98,6 +98,10 @@ elseif isBCC then
 	PForceDisable = 3--When this is incremented, trigger force disable regardless of major patch
 elseif isWrath then
 	DBM.DisplayVersion = "3.4.63 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 3, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
+elseif isCata then
+	DBM.DisplayVersion = "4.4.0 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 3, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 end
@@ -1653,7 +1657,7 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
-			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or ""))) or 0
+			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or isCata and "-Cata" or ""))) or 0
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -1737,6 +1741,8 @@ do
 								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-BCC") or minToc)
 							elseif isWrath then
 								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-Wrath") or minToc)
+							elseif isCata then
+								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-Cata") or minToc)
 							end
 
 							local firstMapId = mapIdTable[1]
@@ -3729,7 +3735,7 @@ do
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM-Challenges"))
 			end
 		else--Classic
-			local checkedDungeon = isWrath and "DBM-Party-WotLK" or isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
+			local checkedDungeon = isCata and "DBM-Party-Cataclysm" or isWrath and "DBM-Party-WotLK" or isBCC and "DBM-Party-BC" or "DBM-Party-Vanilla"
 			if instanceDifficultyBylevel[LastInstanceMapID] and instanceDifficultyBylevel[LastInstanceMapID][2] == 2 and not C_AddOns.DoesAddOnExist(checkedDungeon) then
 				AddMsg(self, L.MOD_AVAILABLE:format("DBM Dungeon mods"))
 			end
@@ -4984,6 +4990,8 @@ do
 		if watchFrameRestore then
 			if isRetail then
 				ObjectiveTracker_Expand()
+			elseif isCata then
+				--Do nothing til we see code
 			elseif isWrath then
 				WatchFrame:Show()
 			else -- Classic Era / BCC
@@ -5496,7 +5504,7 @@ do
 			local trackedAchievements
 			if isClassic or isBCC then
 				trackedAchievements = false
-			elseif isWrath then
+			elseif isWrath then--And isCata?
 				trackedAchievements = (GetNumTrackedAchievements() > 0)
 			else
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
@@ -5508,7 +5516,7 @@ do
 					--	watchFrameRestore = true
 					--end
 				else
-					if isWrath then
+					if WatchFrame then
 						if WatchFrame:IsVisible() then
 							WatchFrame:Hide()
 							watchFrameRestore = true
@@ -5952,6 +5960,8 @@ do
 							--ObjectiveTracker_Expand()
 						elseif isWrath then
 							WatchFrame:Show()
+						elseif isCata then
+							--Do Nothing for now
 						else -- Classic Era / BCC
 							QuestWatchFrame:Show()
 						end
@@ -10616,7 +10626,7 @@ do
 	end
 
 	do
-		local minVoicePackVersion = isRetail and 15 or isWrath and 16 or 10
+		local minVoicePackVersion = isRetail and 16 or isCata and 16 or isWrath and 16 or 10
 
 		function DBM:CheckVoicePackVersion(value)
 			local activeVP = self.Options.ChosenVoicePack2
