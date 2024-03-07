@@ -33,7 +33,8 @@ local isHardcoreServer = C_GameRules and C_GameRules.IsHardcoreActive and C_Game
 local currentSeason = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) and C_Seasons and C_Seasons.HasActiveSeason() and C_Seasons.GetActiveSeason()
 local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
-local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)
+--local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)--NYI in first build
+local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
 
 local DBMPrefix = isClassic and "D5C" or isWrath and "D5WC" or "D5"--D5 will be used for all future classic flavors as well
 local DBMSyncProtocol = 1
@@ -593,6 +594,21 @@ if isRetail then
 		[2286] = {60, 2}, [2289] = {60, 2}, [2290] = {60, 2}, [2287] = {60, 2}, [2285] = {60, 2}, [2293] = {60, 2}, [2291] = {60, 2}, [2284] = {60, 2}, [2441] = {60, 2},--Shadowlands Dungeons
 		[2520] = {70, 2}, [2451] = {70, 2}, [2516] = {70, 2}, [2519] = {70, 2}, [2526] = {70, 2}, [2515] = {70, 2}, [2521] = {70, 2}, [2527] = {70, 2}, [2579] = {70, 2},--Dragonflight Dungeons
 	}
+elseif isCata then--Since 2 dungeons were changed from vanilla to cata dungeons, it has it's own table and it's NOT using retail table cause the dungeons reworked in Mop are still vanilla dungeons in classic (plus diff level caps)
+	instanceDifficultyBylevel = {
+		--World
+		[0] = {60, 1}, [1] = {60, 1},--Eastern Kingdoms and Kalimdor world bosses.
+		[530] = {70, 1},--Outlands World Bosses
+		--Raids
+		[509] = {60, 3}, [531] = {60, 3}, [469] = {60, 3}, [409] = {60, 3}, [309] = {60, 3},--Classic Raids (309 is legacy ZG)
+		[564] = {70, 3}, [534] = {70, 3}, [532] = {70, 3}, [565] = {70, 3}, [544] = {70, 3}, [548] = {70, 3}, [580] = {70, 3}, [550] = {70, 3}, [568] = {70, 3},--BC Raids (568 is legacy ZA)
+		[615] = {80, 3}, [724] = {80, 3}, [649] = {80, 3}, [616] = {80, 3}, [631] = {80, 3}, [533] = {80, 3}, [249] = {80, 3}, [603] = {80, 3}, [624] = {80, 3},--Wrath Raids
+		[757] = {85, 3}, [671] = {85, 3}, [669] = {85, 3}, [967] = {85, 3}, [720] = {85, 3}, [951] = {85, 3}, [754] = {85, 3},--Cata Raids
+		--Dungeons
+		[429] = {45, 2}, [389] = {18, 2}, [349] = {52, 2}, [329] = {60, 2}, [289] = {60, 2}, [230] = {60, 2}, [229] = {60, 2}, [209] = {54, 2}, [189] = {45, 2}, [129] = {47, 2}, [109] = {60, 2}, [90] = {34, 2}, [70] = {52, 2}, [48] = {32, 2}, [47] = {42, 2}, [43] = {27, 2}, [36] = {25, 2}, [34] = {32, 2},--Classic Dungeons
+		[540] = {70, 2}, [558] = {70, 2}, [556] = {70, 2}, [555] = {70, 2}, [542] = {70, 2}, [546] = {70, 2}, [545] = {70, 2}, [547] = {70, 2}, [553] = {70, 2}, [554] = {70, 2}, [552] = {70, 2}, [557] = {70, 2}, [269] = {70, 2}, [560] = {70, 2}, [543] = {70, 2}, [585] = {70, 2},--BC Dungeons
+		[619] = {80, 2}, [601] = {80, 2}, [595] = {80, 2}, [600] = {80, 2}, [604] = {80, 2}, [602] = {80, 2}, [599] = {80, 2}, [576] = {80, 2}, [578] = {80, 2}, [574] = {80, 2}, [575] = {80, 2}, [608] = {80, 2}, [658] = {80, 2}, [632] = {80, 2}, [668] = {80, 2}, [650] = {80, 2},--Wrath Dungeons
+		[755] = {85, 2}, [645] = {85, 2}, [36] = {85, 2}, [670] = {85, 2}, [644] = {85, 2}, [33] = {85, 2}, [643] = {85, 2}, [725] = {85, 2}, [657] = {85, 2}, [309] = {85, 2}, [859] = {85, 2}, [568] = {85, 2}, [938] = {85, 2}, [940] = {85, 2}, [939] = {85, 2}, [646] = {85, 2},--Cata Dungeons
 elseif isWrath then--Since naxx is moved to northrend, wrath and cata can't use tbc/classics table
 	instanceDifficultyBylevel = {
 		--World
