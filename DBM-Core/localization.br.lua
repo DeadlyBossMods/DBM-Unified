@@ -9,7 +9,7 @@ if dateTable.day and dateTable.month and dateTable.day == 1 and dateTable.month 
 	L.DBM								= "BW"
 end
 
-L.HOW_TO_USE_MOD					= "Bem vindo ao "..L.DBM..". Digite /dbm help para obter uma lista dos comandos disponíveis. Para acessar as opções, digite /dbm no seu bate-papo para começar a configuração. Carregue zonas específicas manualmente para configurar opções específicas de cada chefe para o seu gosto pessoal. O "..L.DBM.." tenta fazer isso automaticamente para você, observando sua spec na primeira vez que é executado. De qualquer forma, você pode querer habilitar outras opções."
+L.HOW_TO_USE_MOD					= "Bem vindo ao " .. L.DBM .. " Digite /dbm help para obter uma lista dos comandos disponíveis. Para acessar as opções, digite /dbm no seu bate-papo para começar a configuração. Carregue zonas específicas manualmente para configurar opções específicas de cada chefe para o seu gosto pessoal. O "..L.DBM.." tenta fazer isso automaticamente para você, observando sua spec na primeira vez que é executado. De qualquer forma, você pode querer habilitar outras opções."
 L.SILENT_REMINDER 					= "Lembrete: " .. L.DBM .. " ainda está em modo silencioso."
 L.NEWS_UPDATE 						= "|h|c11ff1111Notícias|r|h: Esta atualização é basicamente uma reedição da versão 9.1.9 para limpar uma detecção falsa de malware no hash da versão anterior do arquivo. Saiba mais sobre isso |Hgarrmission:DBM:news|h|cff3588ff[aqui]|r|h"
 
@@ -468,7 +468,7 @@ L.AUTO_TIMER_TEXTS.nextsource			= "Próx. %s: >%%s<"
 L.AUTO_TIMER_TEXTS.nextspecial			= "Especial"
 
 L.AUTO_TIMER_TEXTS.achievement			= "%s"
-L.AUTO_TIMER_TEXTS.stage				= "Fase",
+L.AUTO_TIMER_TEXTS.stage				= "Fase"
 L.AUTO_TIMER_TEXTS.stagecount			= "Fase %%s"--NOT BUGGED, stage is 2nd arg, spellID is ignored on purpose
 L.AUTO_TIMER_TEXTS.stagecountcycle		= "Fase %%s (%%s)"--^^. Example: Stage 2 (3) for a fight that alternates stage 1 and stage 2, but also tracks total cycles
 L.AUTO_TIMER_TEXTS.stagecontext			= "%s" -- OPTIONAL
@@ -597,7 +597,7 @@ L.HUD_USAGE								= {
  "Alvos válidos: alvo, foco, <nome do jogador>",
  "Durações válidas: qualquer número (em segundos). Se deixado em branco, será utilizado 20 minutos.",
  "/dbm hud hide: desativa objetos de HUD gerados pelo usuário"
---}
+}
 
 L.ARROW_MOVABLE						= "Seta móvel"
 L.ARROW_WAY_USAGE 					= "/dway <x> <y>: Cria uma seta que aponta para uma localização específica (usando coordenadas locais do mapa da zona)"
