@@ -48,7 +48,7 @@ L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Esta disponíve
 
 L.COMBAT_STARTED					= "%s na mira. Boa sorte e divirta-se! :)"
 L.COMBAT_STARTED_IN_PROGRESS		= "Entrando em uma luta em progresso contra %s. Boa sorte e divirta-se! :)"
-L.GUILD_COMBAT_STARTED				= "%s engrenou em combate com a Guilda"--Uncomment when updated, args have changed
+L.GUILD_COMBAT_STARTED				= "%s engrenou em combate com a guilda"--Uncomment when updated, args have changed
 L.SCENARIO_STARTED					= "%s começou. Boa sorte e divirta-se! :)"
 L.SCENARIO_STARTED_IN_PROGRESS		= "Juntando-se à %s em progresso. Boa sorte e divirta-se! :)"
 L.BOSS_DOWN							= "%s derrotado após %s!"
