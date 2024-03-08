@@ -3771,7 +3771,7 @@ do
 		local mapId = C_Map.GetBestMapForUnit("player")
 		if not mapId then return end
 		if UnitOnTaxi("player") then return end -- Don't spam the player if they are just passing through
-		if Enum.SeasonID and self:IsSeasonal(Enum.SeasonID.SeasonOfDiscovery) then
+		if self:IsSeasonal("SeasonOfDiscovery") then
 			if sodPvpZones[mapId] and not pvpShown and not C_AddOns.DoesAddOnExist("DBM-PvP") then
 				self:AddMsg(L.MOD_AVAILABLE:format("DBM-PvP"))
 				pvpShown = true
@@ -7595,10 +7595,10 @@ function bossModPrototype:IsNormal()
 	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront"
 end
 
----@param season Enum.SeasonID?
+---@param season SeasonID?
 function DBM:IsSeasonal(season)
-	if season then
-		return season == currentSeason
+	if season and Enum.SeasonID then
+		return Enum.SeasonID[season] == currentSeason
 	else
 		return not not currentSeason
 	end
