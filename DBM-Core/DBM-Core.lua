@@ -4201,7 +4201,7 @@ do
 			private.chatBubblesDisabled = true
 		end
 		if activated then
-			DBM:AddMsg(L.OVERRIDE_ACTIVATED)
+			AddMsg(DBM, L.OVERRIDE_ACTIVATED)
 		end
 	end
 
