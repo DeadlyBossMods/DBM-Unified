@@ -1,7 +1,9 @@
 local _, private = ...
 DBMExtraGlobal = {}
 
+local _, _, _, wowTOC = GetBuildInfo()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
+local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
 
 --[[local specFlags ={
 	["Tank"] = true,
@@ -616,8 +618,24 @@ function DBMExtraGlobal:rebuildSpecTable()
 				["SpellCaster"] = true,
 				["CasterDps"] = true,
 			},
-			["DEATHKNIGHT1"] = {--Just treat all DKs as all roles, they are hybrid as hell in wrath and any spec can be any role
+			["DEATHKNIGHT1"] = {--Just treat all DKs as all roles in wrath, they are hybrid as hell in wrath and any spec can be any role
 				["Tank"] = true,
+				["Melee"] = true,
+				["Dps"] = isCata and false or true,
+				["MeleeDps"] = true,
+				["Physical"] = true,
+				["HasInterrupt"] = true,
+			},
+			["DEATHKNIGHT2"] = {--Just treat all DKs as all roles in wrath, they are hybrid as hell in wrath and any spec can be any role
+				["Tank"] = isCata and false or true,
+				["Melee"] = true,
+				["Dps"] = true,
+				["MeleeDps"] = true,
+				["Physical"] = true,
+				["HasInterrupt"] = true,
+			},
+			["DEATHKNIGHT3"] = {--Just treat all DKs as all roles in wrath, they are hybrid as hell in wrath and any spec can be any role
+				["Tank"] = isCata and false or true,
 				["Melee"] = true,
 				["Dps"] = true,
 				["MeleeDps"] = true,
@@ -633,8 +651,6 @@ function DBMExtraGlobal:rebuildSpecTable()
 		specRoleTable["ROGUE3"] = specRoleTable["ROGUE1"]--Subtlety Rogue same as Assassination
 		specRoleTable["WARLOCK2"] = specRoleTable["WARLOCK1"]--Demonology Warlock same as Affliction
 		specRoleTable["WARLOCK3"] = specRoleTable["WARLOCK1"]--Destruction Warlock same as Affliction
-		specRoleTable["DEATHKNIGHT2"] = specRoleTable["DEATHKNIGHT1"]
-		specRoleTable["DEATHKNIGHT3"] = specRoleTable["DEATHKNIGHT1"]
 	end
 	private.specRoleTable = specRoleTable
 end
