@@ -5436,6 +5436,8 @@ do
 			end
 			--check completed. starting combat
 			tinsert(inCombat, mod)
+			-- Pull time is always considered as in combat, this makes sure checkWipe() triggers only after the minimum time without combat has passed since start.
+			lastValidCombat = GetTime()
 			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 				mod.inCombatOnlyEventsRegistered = 1
 				mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
