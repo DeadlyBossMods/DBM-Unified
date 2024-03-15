@@ -86,24 +86,24 @@ local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
 if isRetail then
-	DBM.DisplayVersion = "10.2.29 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 3, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "10.2.30 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 10--When this is incremented, trigger force disable regardless of major patch
 elseif isClassic then
-	DBM.DisplayVersion = "1.15.20 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 3, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	DBM.DisplayVersion = "1.15.21 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 6--When this is incremented, trigger force disable regardless of major patch
 elseif isBCC then
 	DBM.DisplayVersion = "2.6.0 alpha"--When TBC returns (and it will one day). It'll probably be game version 2.6
 	DBM.ReleaseRevision = releaseDate(2024, 1, 9) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 3--When this is incremented, trigger force disable regardless of major patch
-elseif isWrath then
-	DBM.DisplayVersion = "3.4.63 alpha"
-	DBM.ReleaseRevision = releaseDate(2024, 3, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
-	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 elseif isCata then
 	DBM.DisplayVersion = "4.4.0 alpha"
 	DBM.ReleaseRevision = releaseDate(2024, 3, 5) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
+elseif isWrath then
+	DBM.DisplayVersion = "3.4.64 alpha"
+	DBM.ReleaseRevision = releaseDate(2024, 3, 15) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 	PForceDisable = 5--When this is incremented, trigger force disable regardless of major patch
 end
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -1674,7 +1674,7 @@ do
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
-			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isWrath and "-Wrath" or isCata and "-Cata" or ""))) or 0
+			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface" .. (isClassic and "-Classic" or isBCC and "-BCC" or isCata and "-Cata" or isWrath and "-Wrath" or ""))) or 0
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -1756,10 +1756,10 @@ do
 							local minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface") or 0)
 							if isBCC then
 								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-BCC") or minToc)
-							elseif isWrath then
-								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-Wrath") or minToc)
 							elseif isCata then
 								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-Cata") or minToc)
+							elseif isWrath then
+								minToc = tonumber(C_AddOns.GetAddOnMetadata(i, "X-Min-Interface-Wrath") or minToc)
 							end
 
 							local firstMapId = mapIdTable[1]
@@ -5007,9 +5007,7 @@ do
 		if watchFrameRestore then
 			if isRetail then
 				ObjectiveTracker_Expand()
-			elseif isCata then
-				--Do nothing til we see code
-			elseif isWrath then
+			elseif isCata or isWrath then
 				WatchFrame:Show()
 			else -- Classic Era / BCC
 				QuestWatchFrame:Show()
@@ -5523,7 +5521,7 @@ do
 			local trackedAchievements
 			if isClassic or isBCC then
 				trackedAchievements = false
-			elseif isWrath then--And isCata?
+			elseif isWrath or isCata then
 				trackedAchievements = (GetNumTrackedAchievements() > 0)
 			else
 				trackedAchievements = (C_ContentTracking and C_ContentTracking.GetTrackedIDs(2)[1])
@@ -5977,10 +5975,8 @@ do
 					if watchFrameRestore then
 						if isRetail then
 							--ObjectiveTracker_Expand()
-						elseif isWrath then
+						elseif isCata or isWrath then
 							WatchFrame:Show()
-						elseif isCata then
-							--Do Nothing for now
 						else -- Classic Era / BCC
 							QuestWatchFrame:Show()
 						end
@@ -6195,7 +6191,7 @@ do
 			if MAX_TALENT_TABS then
 				for i = 1, MAX_TALENT_TABS do
 					if i <= numTabs then
-						local _, _, pointsSpent = GetTalentTabInfo(i)
+						local pointsSpent = isCata and select(5, GetTalentTabInfo(i)) or select(3, GetTalentTabInfo(i))
 						if pointsSpent > highestPointsSpent then
 							highestPointsSpent = pointsSpent
 							currentSpecGroup = i
