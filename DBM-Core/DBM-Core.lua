@@ -514,13 +514,12 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Serpentshrine",--Combined into DBM-Raids-BC
 	"DBM-ZulAman", -- Part of Cataclysm party mods on retail, and merged into DBM-Raids-BC on classic
 
-	"DBM-Raids-Cata",--Combined into DBM-Raids-Cataclysm (otherwise, toc file has issues on cata classic)
-	"DBM-BaradinHold",--Combined into DBM-Raids-Cataclysm
-	"DBM-BastionTwilight",--Combined into DBM-Raids-Cataclysm
-	"DBM-BlackwingDescent",--Combined into DBM-Raids-Cataclysm
-	"DBM-DragonSoul",--Combined into DBM-Raids-Cataclysm
-	"DBM-Firelands",--Combined into DBM-Raids-Cataclysm
-	"DBM-ThroneFourWinds",--Combined into DBM-Raids-Cataclysm
+	"DBM-BaradinHold",--Combined into DBM-Raids-Cata
+	"DBM-BastionTwilight",--Combined into DBM-Raids-Cata
+	"DBM-BlackwingDescent",--Combined into DBM-Raids-Cata
+	"DBM-DragonSoul",--Combined into DBM-Raids-Cata
+	"DBM-Firelands",--Combined into DBM-Raids-Cata
+	"DBM-ThroneFourWinds",--Combined into DBM-Raids-Cata
 
 	"DBM-HeartofFear",--Combined into DBM-Raids-MoP
 	"DBM-MogushanVaults",--Combined into DBM-Raids-MoP
@@ -3736,7 +3735,7 @@ do
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM BC/Vanilla mods"))
 				elseif wrathZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-WoTLK") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Wrath of the Lich King mods"))
-				elseif cataZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Cataclysm") then
+				elseif cataZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-Cata") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Cataclysm mods"))
 				elseif mopZones[LastInstanceMapID] and not C_AddOns.DoesAddOnExist("DBM-Raids-MoP") then
 					AddMsg(self, L.MOD_AVAILABLE:format("DBM Mists of Pandaria mods"))
