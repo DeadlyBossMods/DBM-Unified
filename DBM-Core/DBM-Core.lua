@@ -7623,6 +7623,10 @@ function DBM:IsRetail()
 end
 bossModPrototype.IsRetail = DBM.IsRetail
 
+function DBM:IsCata()
+	return isCata
+end
+bossModPrototype.IsCata = DBM.IsCata
 
 function bossModPrototype:IsFollower()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
