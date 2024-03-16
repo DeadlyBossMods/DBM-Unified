@@ -44,7 +44,8 @@ L.LOOT_SPEC_REMINDER				= "Ваша текущая специализация %s
 
 L.BIGWIGS_ICON_CONFLICT				= L.DBM .. " обнаружил, что у Вас включена установка меток в BigWigs и " .. L.DBM .. " одновременно. Пожалуйста, отключите метки в одном из них, чтобы избежать конфликтов."
 
-L.MOD_AVAILABLE						= "Для этого контента доступен дополнительный модуль %s. Вы можете скачать его с Curse, Wago, WoWI или со страницы релизов на GitHub."
+L.MOD_AVAILABLE						= "Для этого контента доступен дополнительный модуль %s, но он не установлен. Вы можете скачать его с Curse, Wago, WoWI или со страницы релизов на GitHub."
+L.MOD_MISSING						= "Модуль рейдов отсутствует"
 
 L.COMBAT_STARTED					= "%s вступает в бой. Удачи! :)"
 L.COMBAT_STARTED_IN_PROGRESS		= "%s вступает в бой (в процессе). Удачи! :)"
@@ -184,7 +185,8 @@ L.VOICE_COUNT_MISSING				= "Голос отсчёта %d использует г
 L.BIG_WIGS							= "BigWigs"
 L.WEAKAURA_KEY						= " (|cff308530Ключ WA:|r %s)"
 
-L.UPDATEREMINDER_HEADER				= "Ваша версия " .. L.DEADLY_BOSS_MODS .. " устарела.\n Версия %s (%s) доступна для загрузки через Curse, Wago, WoWI или со страницы релизов GitHub"
+L.UPDATEREMINDER_HEADER				= "Ваша версия " .. L.DEADLY_BOSS_MODS .. " устарела.\n Версия %s (%s) доступна для загрузки через Curse, Wago, WoWI или со страницы релизов GitHub."
+L.UPDATEREMINDER_HEADER_SUBMODULE	= "Ваш модуль %s устарел.\n Версию %s можно загрузить через Curse, Wago, WoWI или со страницы релизов GitHub."
 L.UPDATEREMINDER_FOOTER				= "Нажмите " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  ", чтобы скопировать ссылку загрузки в буфер обмена."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Нажмите " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  ", чтобы скопировать в буфер обмена."
 L.UPDATEREMINDER_DISABLE			= "ПРЕДУПРЕЖДЕНИЕ: В связи с тем, что Ваш " .. L.DEADLY_BOSS_MODS.. " устарел и несовместим с более новыми версиями "..L.DBM..", он был принудительно отключен и не может использоваться до тех пор, пока не будет обновлен. Это делается для того, чтобы несовместимые моды не мешали игре ни Вам, ни другим участникам группы."
