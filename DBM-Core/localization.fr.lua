@@ -184,7 +184,8 @@ L.VOICE_COUNT_MISSING		= "Le compte à rebours de la voix %d se trouve dans un p
 L.BIG_WIGS					= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY				= " (|cff308530Clé WA:|r %s)"
 
-L.UPDATEREMINDER_HEADER_SUBMODULE	= "Votre version de "..L.DEADLY_BOSS_MODS.." est périmée.\nLa version %s (%s) est disponible au Curse, Wago, WoWInterface ou Github."
+L.UPDATEREMINDER_HEADER				= "Votre version de "..L.DEADLY_BOSS_MODS.." est périmée.\nLa version %s (%s) est disponible au Curse, Wago, WoWInterface ou Github."
+L.UPDATEREMINDER_HEADER_SUBMODULE	= "Votre module de %s est périmé.\n La version %s est disponible au Curse, Wago, WoWInterface ou Github."
 L.UPDATEREMINDER_FOOTER				= "Faites la combinaison " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien de téléchargement dans votre presse-papier."
 L.UPDATEREMINDER_FOOTER_GENERIC 	= "Faites la combinaison " .. (IsMacClient() and "Cmd-C" or "Ctrl-C") .. " pour copier le lien dans votre presse-papier."
 L.UPDATEREMINDER_DISABLE			= "ATTENTION : Compte tenu que votre version de "..L.DEADLY_BOSS_MODS.." est périmée et incompatible avec les nouvelles versions, "..L.DBM.." a été désactivé jusqu'à ce que vous le mettiez à jour. Ceci, pour éviter de mauvaises expériences de jeu pour vous et les membres du raid."
