@@ -38,7 +38,7 @@ local isWrath = WOW_PROJECT_ID == (WOW_PROJECT_WRATH_CLASSIC or 11)
 --local isCata = WOW_PROJECT_ID == (WOW_PROJECT_CATA_CLASSIC or 99)--NYI in first build
 local isCata = (wowTOC >= 40400) and (wowTOC < 50000)
 
-local DBMPrefix = isClassic and "D5C" or isWrath and "D5WC" or "D5"--D5 will be used for all future classic flavors as well
+local DBMPrefix = "D5"
 local DBMSyncProtocol = 1
 private.DBMPrefix = DBMPrefix
 private.DBMSyncProtocol = DBMSyncProtocol
@@ -4890,6 +4890,10 @@ do
 			else
 				handleSync(channel, correctSender, strsplit("\t", msg))
 			end
+		elseif (prefix == "D5WC" or prefix == "D5C") and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "GUILD") then
+			--Accept Legacy syncs for about 3 months. 03-16-24
+			local correctSender = GetCorrectSender(senderOne, senderTwo)
+			handleSync(channel, correctSender, strsplit("\t", msg))
 		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT") then
 			local bwPrefix, bwMsg, extra = strsplit("^", msg)
 			if bwPrefix and bwMsg then
@@ -6826,6 +6830,12 @@ do
 		if type(C_ChatInfo.RegisterAddonMessagePrefix) == "function" then
 			if not C_ChatInfo.RegisterAddonMessagePrefix(DBMPrefix) then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix("D5C") then -- old classic prefix for older version checks
+				--Nothing
+			end
+			if not C_ChatInfo.RegisterAddonMessagePrefix("D5WC") then -- old classic prefix for older version checks
+				--Nothing
 			end
 			if not C_ChatInfo.IsAddonMessagePrefixRegistered("BigWigs") then
 				if not C_ChatInfo.RegisterAddonMessagePrefix("BigWigs") then
