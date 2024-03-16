@@ -44,7 +44,8 @@ L.LOOT_SPEC_REMINDER				= "A sua especialização atual é %s. A sua escolha atu
 
 L.BIGWIGS_ICON_CONFLICT				= L.DBM .. " detectou que você tem ícones habilitados tanto no BigWigs quanto no "..L.DBM..". Por favor desabilite um dos dois para evitar conflitos com o líder da raide"
 
-L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Esta disponível em |Hgarrmission:DBM:forums|h|cff3588ffdeadlybossmods.com|r. Está mensagem só será exibida uma vez."
+L.MOD_AVAILABLE						= "%s esta disponível para este conteúdo. Você pode baixá-lo no Curse, Wago, WoWI ou Github."
+L.MOD_MISSING						= "Sem módulo de raide"
 
 L.COMBAT_STARTED					= "%s na mira. Boa sorte e divirta-se! :)"
 L.COMBAT_STARTED_IN_PROGRESS		= "Entrando em uma luta em progresso contra %s. Boa sorte e divirta-se! :)"
@@ -184,7 +185,7 @@ L.VOICE_COUNT_MISSING				= "Voz de contagem regressiva %d esta selecionada para 
 L.BIG_WIGS							= "BigWigs" -- OPTIONAL
 L.WEAKAURA_KEY						= " (|cff308530Chave WA:|r %s)"
 
-L.UPDATEREMINDER_HEADER				= "Sua versão do "..L.DEADLY_BOSS_MODS.." está desatualizada.\n A versão %s (%s) está disponível para baixar no site da curse, WoWI ou aqui:"
+L.UPDATEREMINDER_HEADER_SUBMODULE	= "Sua versão do "..L.DEADLY_BOSS_MODS.." está desatualizada.\n A versão %s (%s) está disponível para baixar no site de Curse, Wago, WoWI ou Github."
 L.UPDATEREMINDER_FOOTER				= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
 L.UPDATEREMINDER_FOOTER_GENERIC		= "Pressione Ctrl+C para copiar o link de download para a área de transferência."
 L.UPDATEREMINDER_DISABLE			= "AVISO: O seu "..L.DBM.." foi desativado por estar drasticamente desatualizado (pelo menos %d revisões), atualize para utilizar novamente. Isso garante que versões antigas ou códigos incompatíveis não arruínem à experiência de jogo para você ou para os membros da raide."
