@@ -4551,9 +4551,13 @@ do
 	syncHandlers["V"] = function(sender, protocol, revision, version, displayVersion, locale, iconEnabled, forceDisable, classicSubVers, VPVersion)
 		revision, version, classicSubVers = tonumber(revision), tonumber(version), tonumber(classicSubVers)
 		if protocol >= 3 then
-			--We don't actually want to store it if it doesn't exist, and 0 is placeholder value we want to ignore
+			--Nil it out on retail, replace with string on classic versions
 			if classicSubVers and classicSubVers == 0 then
-				classicSubVers = nil
+				if isRetail then
+					classicSubVers = nil
+				else
+					classicSubVers = L.MOD_MISSING
+				end
 			end
 		elseif protocol >= 2 then
 			--Protocol 2 did not send classicSubVers
@@ -4580,9 +4584,13 @@ do
 
 	guildSyncHandlers["GV"] = function(sender, _, revision, version, displayVersion, forceDisable, classicSubVers)
 		revision, version, forceDisable, classicSubVers = tonumber(revision), tonumber(version), tonumber(forceDisable) or 0, tonumber(classicSubVers)
-		--We don't actually want to store it if it doesn't exist, and 0 is placeholder value we want to ignore
+		--Nil it out on retail, replace with string on classic versions
 		if classicSubVers and classicSubVers == 0 then
-			classicSubVers = nil
+			if isRetail then
+				classicSubVers = nil
+			else
+				classicSubVers = L.MOD_MISSING
+			end
 		end
 		if revision and version and displayVersion then
 			DBM:Debug("Received G version info from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision) .. ", Display Version " .. displayVersion, 3)
