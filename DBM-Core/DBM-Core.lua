@@ -552,10 +552,6 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 
 	"DBM-DMF",--Combined into DBM-WorldEvents
 }
-if isRetail then
-	--Retail doesn't use this folder, classic era, bc, and wrath still do
-	table.insert(bannedMods, "DBM-Azeroth")--Merged into DBM-Core events mod.
-end
 
 --[InstanceID] = {level,zoneType}
 --zoneType: 1 = outdoor, 2 = dungeon, 3 = raid
