@@ -7627,6 +7627,11 @@ function DBM:IsCata()
 end
 bossModPrototype.IsCata = DBM.IsCata
 
+function DBM:IsPostCata()
+	return isCata or isRetail
+end
+bossModPrototype.IsPostCata = DBM.IsPostCata
+
 function bossModPrototype:IsFollower()
 	local diff = savedDifficulty or DBM:GetCurrentInstanceDifficulty()
 	return diff == "follower"
